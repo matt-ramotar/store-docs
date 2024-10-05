@@ -1,0 +1,365 @@
+---
+title: Quickstart
+description: "Let's build your first Store."
+---
+
+In this example, we'll build a simple Store to fetch and cache ski resort data for a skiing app, [Trails](https://github.com/MobileNativeFoundation/Trails).
+
+## Prerequisites
+
+- [Kotlin Multiplatform Project Setup](https://www.oracle.com/java/technologies/javase-jdk17-downloads.html): Basic understanding of KMP and a project set up with shared `commonMain` code.
+- [Coroutines and Flow](https://kotlinlang.org/docs/gradle.html): Basic understanding of Kotlin Coroutines and Flow for asynchronous programming.
+- [Gradle](https://docs.gradle.org/current/userguide/installation.html): Familiarity with Gradle for dependency management.
+
+## Installation
+
+<Steps>
+  <Step title="Add the Dependency">
+    Add the Store library to your project's dependencies. Since we're working with a KMP project, we'll add the dependency to the `commonMain` source set.
+
+```kotlin build.gradle.kts
+commonMain {
+  dependencies {
+    implementation("org.mobilenativefoundation.store:store5:5.1.0-alpha04")
+  }
+}
+```
+
+  </Step>
+  <Step title="Sync the Project">
+    After adding the dependency, sync your project with Gradle to download the Store library.
+  </Step>
+
+</Steps>
+
+## Building a Store
+
+Now, let's build a simple Store to fetch and cache ski resort data from a hypothetical API and cache it for offline access.
+
+<Steps>
+  <Step title="Define the Data Models">
+    Define the models for a ski trail.
+
+<CodeGroup>
+
+```kotlin TrailNetworkModel.kt
+// This represents the data we receive from the network.
+
+@Serializable
+data class TrailNetworkModel(
+  val id: String,
+  val name: String,
+  val difficulty: String,
+  val distance: Double,
+  val elevationGain: Double,
+  val status: String,
+  val description: String,
+)
+```
+
+```sql TrailEntity.sq
+// This represents the data we write to the local database.
+
+CREATE TABLE trail_entity (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    distance REAL NOT NULL,
+    elevation_gain REAL NOT NULL,
+    status TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+```
+
+```kotlin Trail.kt
+// This represents the data used in the UI layer.
+
+data class Trail(
+  val id: String,
+  val name: String,
+  val difficulty: TrailDifficulty,
+  val distance: Double,
+  val elevationGain: Double,
+  val status: String,
+  val description: String,
+)
+```
+
+</CodeGroup>
+
+  </Step>
+  <Step title="Create the API Interface">
+    Define and implement an interface for your network calls. In this example, we'll use [Ktor](https://ktor.io/docs/welcome.html) for HTTP requests.
+
+<CodeGroup>
+
+```kotlin TrailsApi.kt
+interface TrailsApi {
+  suspend fun fetchTrail(id: String): TrailNetworkModel
+}
+```
+
+```kotlin RealTrailsApi.kt
+class RealTrailsApi(private val httpClient: HttpClient): TrailsApi {
+  override suspend fun fetchTrail(id: String): TrailNetworkModel {
+    return httpClient.get<TrailNetworkModel>("https://api.trails.com/trails/$id")
+  }
+}
+```
+
+</CodeGroup>
+
+  </Step>
+
+  <Step title="Implement Converters">
+  We need to convert between our network model, domain model, and local database model.
+
+<CodeGroup>
+
+```kotlin TrailsConverters.kt
+object TrailsConverters {
+  private fun networkToDomain(networkModel: TrailNetworkModel): Trail {
+    return Trail(...)
+  }
+
+  private fun domainToEntity(domainModel: Trail): TrailEntity {
+    return TrailEntity(...)
+  }
+
+  private fun entityToDomain(entityModel: TrailEntity): Trail {
+    return Trail(...)
+  }
+}
+```
+
+```kotlin TrailsConverterFactory.kt
+object TrailsConverterFactory {
+  fun create(): Converter<TrailNetworkModel, Trail, TrailEntity> {
+    return Converter<TrailNetworkModel, Trail, TrailEntity>.Builder()
+    .fromNetworkToCommon(TrailsConverters::networkToDomain)
+    .fromCommonToSOT(TrailsConverters::domainToEntity)
+    .fromSOTToCommon(TrailsConverters::entityToDomain)
+    .build()
+  }
+}
+```
+
+  </CodeGroup>
+
+  </Step>
+
+     <Step title="Create the Fetcher">
+
+Our Fetcher will interact with the network data source using the TrailsApi interface.
+
+```kotlin TrailsFetcherFactory.kt
+class TrailsFetcherFactory(api: TrailsApi) {
+  fun create(): Fetcher<String, TrailNetworkModel> {
+    return Fetcher.of { trailId: String ->
+      api.fetchTrail(trailId)
+    }
+  }
+}
+```
+
+  </Step>
+
+   <Step title="Create the Source of Truth">
+  Our Source of Truth will delegate to a local [SqlDelight](https://sqldelight.github.io/sqldelight) database.
+
+```kotlin TrailsSourceOfTruthFactory.kt
+class TrailsSourceOfTruthFactory(database: TrailsDatabase) {
+  private val queries = database.trailEntityQueries
+
+  fun create(): SourceOfTruth<String, TrailEntity, Trail> {
+    return SourceOfTruth.of<String, TrailEntity, Trail>(
+      reader = { trailId ->
+          queries.selectById(trailId).asFlow().mapToOneOrNull().map { entity ->
+              entity?.let { TrailConverters.entityToDomain(it) }
+          }
+      },
+      writer = { _, trail ->
+          val entity = TrailConverters.domainToEntity(trail)
+          queries.insertTrail(...)
+      },
+      delete = { trailId ->
+          queries.deleteById(trailId)
+      },
+      deleteAll = {
+          queries.deleteAll()
+      }
+    )
+  }
+}
+```
+
+  </Step>
+
+     <Step title="Build the Store">
+
+Provide the Fetcher, Source of Truth, and Converter implementations to the Store Builder.
+
+```kotlin TrailsStoreFactory.kt
+class TrailsStoreFactory(
+  private val converterFactory: TrailsConverterFactory,
+  private val fetcherFactory: TrailsFetcherFactory,
+  private val sourceOfTruthFactory: TrailsSourceOfTruthFactory
+) {
+  fun create(): Store<String, Trail> {
+    val fetcher = fetcherFactory.create()
+    val sourceOfTruth = sourceOfTruthFactory.create()
+    val converter = converterFactory.create()
+
+    return StoreBuilder
+      .from<String, Trail, TrailNetworkModel>(fetcher, sourceOfTruth)
+      .converter(converter)
+      .build()
+  }
+}
+```
+
+  </Step>
+  
+  </Steps>
+
+## Using the Store
+
+Now, let's use the Store to fetch and cache ski trail data.
+
+<Steps>
+  <Step title="Build a StateFlow Stream">
+
+We'll use [Molecule](https://github.com/cashapp/molecule) to build a StateFlow stream of Trail data.
+
+<CodeGroup>
+```kotlin TrailEvent.kt
+sealed interface TrailEvent {
+  data object Refresh: TrailEvent
+}
+```
+
+```kotlin TrailState.kt
+data class TrailState(
+  val trail: Trail?,
+  val loading: Boolean,
+  val error: TrailError?
+)
+```
+
+```kotlin TrailPresenter.kt
+@Composable
+fun trailPresenter(
+  trailId: String,
+  events: Flow<TrailEvent>,
+  store: Store<String, Trail>
+): TrailState {
+  var trail by remember { mutableStateOf<Trail?>(null) }
+  var loading by remember { mutableStateOf(false) }
+  var error by remember { mutableStateOf<TrailError?>(null) }
+
+  return TrailState(trail, loading, error)
+}
+```
+
+</CodeGroup>
+
+</Step>
+
+ <Step title="Support Observing Trail Data">
+
+```kotlin TrailPresenter.kt
+@Composable
+fun trailPresenter(
+  trailId: String,
+  events: Flow<TrailEvent>,
+  store: Store<String, Trail>
+): TrailState {
+
+  // Set up states, as above
+
+  LaunchedEffect(Unit) {
+    loading = true
+    store.stream(trailId).collect { storeReadResponse ->
+      val data = storeReadResponse.dataOrNull()
+      val error = storeReadResponse.errorOrNull()
+      val loading = data == null && error == null
+
+      this.trail = data
+      this.loading = loading
+      this.error = error.toDomainError()
+
+    }
+  }
+
+  // Return a TrailState model, as above
+}
+```
+
+ </Step>
+
+  <Step title="Support Force Refreshing Trail Data">
+
+```kotlin TrailPresenter.kt
+@Composable
+fun trailPresenter(
+  trailId: String,
+  events: Flow<TrailEvent>,
+  store: Store<String, Trail>
+): TrailState {
+
+  // Set up states, as above
+
+  // Observe the trail, as above
+
+  LaunchedEffect(Unit) {
+    events.collect { event ->
+      when (event) {
+        is TrailEvent.Refresh -> {
+          store.refresh(trailId)
+        }
+      }
+    }
+  }
+
+  // Return a TrailState model, as above
+}
+```
+
+ </Step>
+
+</Steps>
+
+## Next Steps
+
+Now that you have built your first Store, it's time to explore what else is possible:
+
+<CardGroup cols={3}>
+
+<Card
+  title="Deep Dive into Store"
+  icon="mask-snorkel"
+  iconType="duotone"
+  href="/guides/learn-about-store/challenges-at-scale"
+>
+  Comprehensive explanation of Store internals and the underlying principles.
+</Card>
+
+<Card
+  title="Use Case Guides"
+  icon="atom-simple"
+  iconType="duotone"
+  href="/guides/learn-about-store/challenges-at-scale"
+>
+  End-to-end implementation guides for common use cases.
+</Card>
+
+<Card
+  title="Store Cookbook"
+  icon="hat-chef"
+  iconType="duotone"
+  href="/guides/learn-about-store/challenges-at-scale"
+>
+  Our collection of recipes showcasing fun and effective ways of using Store.
+</Card>
+
+</CardGroup>

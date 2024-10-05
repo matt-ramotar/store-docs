@@ -1,91 +1,104 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Mobile Native Foundation",
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#d29882",
+    "light": "#d29882",
+    "dark": "#d29882",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#16161a",
+      "to": "#16161a"
+    },
+    "background": {
+      "light": "#fdfdf7",
+      "dark": "#1c1c1c"
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
-    }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
+
   "tabs": [
     {
+      "name": "User Guides",
+      "url": "guides"
+    },
+
+    {
+      "name": "Release Notes",
+      "url": "release-notes"
+    },
+    {
+      "name": "Developer Newsletter",
+      "url": "developer-newsletter"
+    }
+  ],
+
+  "topbarLinks": [
+    {
       "name": "API Reference",
-      "url": "api-reference"
+      "url": "https://github.com/MobileNativeFoundation/Store"
+    },
+
+    {
+      "name": "Support",
+      "url": "https://github.com/MobileNativeFoundation/Store"
     }
   ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
+
+  "topbarCtaButton": {
+    "url": "https://github.com/MobileNativeFoundation/Store",
+    "type": "github"
+  },
+
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Get started",
       "pages": [
-        "introduction",
-        "quickstart",
-        "development"
+        "guides/get-started/meet-store",
+        "guides/get-started/intro",
+        "guides/get-started/quickstart"
       ]
     },
+
     {
-      "group": "Essentials",
+      "group": "Learn about Store",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "guides/learn-about-store/challenges-at-scale",
+        {
+          "group": "Use cases",
+          "pages": ["guides/learn-about-store/use-cases/overview"]
+        }
       ]
     },
+
     {
-      "group": "API Documentation",
+      "group": "Build with Store",
+      "pages": ["guides/build-with-store/introduction"]
+    },
+
+    {
+      "group": "Community resources",
       "pages": [
-        "api-reference/introduction"
+        "guides/community-resources/store-4-kotlin-conf-2019",
+        "guides/community-resources/meet-store5-droidcon-sf-2023"
       ]
     },
+
     {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
+      "group": "Release Notes",
+      "pages": ["release-notes/overview"]
+    },
+    {
+      "group": "Developer Newsletter",
+      "pages": ["developer-newsletter/overview"]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://x.com/mobilenativefdn",
+    "github": "https://github.com/MobileNativeFoundation",
+    "linkedin": "https://www.linkedin.com/company/mobile-native-foundation"
   }
 }
