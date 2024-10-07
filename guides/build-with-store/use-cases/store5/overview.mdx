@@ -1,0 +1,188 @@
+---
+title: "Guides to common use cases"
+sidebarTitle: "Overview"
+description: "Store is designed to excel in a wide range of use cases. Explore these in-depth production guides to learn how to build common use cases with Store."
+version: "5"
+---
+
+<CardGroup cols={3}>
+  <Card
+    title="Offline-First Data Access with Store and SqlDelight"
+    icon="wifi-slash"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/offline-first-data-access-with-store-and-sql-delight"
+    
+  >
+    Learn how to implement an offline-first architecture using Store and SqlDelight, enabling your app to provide seamless data access even without a network connection.
+  </Card>
+  
+    <Card
+    title="Data Synchronization and Conflict Resolution"
+    icon="rotate"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/data-synchronization-and-conflict-resolution"
+    >
+    Master data synchronization between local and remote sources using `MutableStore`, including strategies for detection and resolution to maintain data integrity.
+
+  </Card>
+
+    <Card
+    title="Error Handling and Retry Strategies"
+    icon="triangle-exclamation"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/error-handling-and-retry-strategies"
+
+>
+
+    Implement robust error handling and retry mechanisms with Store, ensuring your app gracefully recovers from network failures and provides a reliable user experience.
+
+  </Card>
+  <Card
+    title="Authentication and Secure Data Access"
+    icon="user-shield"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/authentication-and-secure-data-access"
+  >
+    Integrate authentication flows with Store to manage secure data access, handle token refresh, and protect sensitive information within your application.
+  </Card>
+
+    <Card
+    title="Real-Time Data Updates"
+    icon="bolt"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/real-time-data-updates"
+    >
+    Learn to handle real-time data streams using Store, incorporating WebSockets or Server-Sent Events to keep your app's data instantly up-to-date.
+
+  </Card>
+
+    <Card
+    title="Handling Complex Data Relationships"
+    icon="diagram-project"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/handling-complex-data-relationships"
+
+>
+
+    Navigate the challenges of managing complex relational data structures with Store, including nested data and associations like comments, ratings, and user profiles.
+
+  </Card>
+  <Card
+    title="Advanced Caching Strategies"
+    icon="gauge-simple-high"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/advanced-caching-strategies"
+  >
+    Optimize your app's performance with advanced caching strategies in Store, customizing cache policies, eviction strategies, and managing cache size limitations.
+  </Card>
+
+    <Card
+    title="Testing Store and Its Associated Components"
+    icon="vial"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/testing-store-and-its-components"
+
+>
+
+    Ensure the reliability of your data layer by learning best practices for testing Stores, Fetchers, and Source of Truth implementations in your applications.
+
+  </Card>
+
+    <Card
+    title="Multiplatform Implementation"
+    icon="laptop-mobile"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/multiplatform-integration"
+
+>
+
+    Explore how to effectively use Store in a Kotlin Multiplatform project, sharing code across Android, iOS, and other platforms with consistent behavior.
+
+  </Card>
+  <Card
+    title="Integration with Jetpack Compose and SwiftUI"
+    icon="layer-group"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/integration-with-jetpack-compose-and-swift-ui"
+  >
+    Connect Store with modern UI frameworks, enabling reactive and responsive interfaces driven by Store's data streams.
+  </Card>
+
+    <Card
+    title="Migration from Existing Data Layers"
+    icon="swap"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/migrating-from-existing-data-layers"
+
+>
+
+    Learn strategies for migrating your existing data management solutions to Store, minimizing disruption and leveraging Store's powerful features.
+
+  </Card>
+
+    <Card
+    title="Security and Data Encryption"
+    icon="lock"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/security-and-data-encryption"
+
+>
+
+    Implement data encryption and security best practices with Store to protect sensitive data stored locally and ensure compliance with security standards.
+
+  </Card>
+  <Card
+    title="Working with Non-Paginated Lists"
+    icon="list"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/working-with-non-paginated-lists"
+  >
+    Utilize `StoreMultiCache` to cache lists of items (collections) and decompose them into individual items (singles). This allows efficient caching and retrieval of both the entire collection and its individual elements.
+  </Card>
+
+    <Card
+    title="Ensuring Data Integrity and Freshness"
+    icon="code"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/ensuring-data-integrity-and-freshness"
+
+>
+
+    Implement `Validator` in your Store to check if cached data is still valid before emitting it to the UI or caching it. This can include time-based validation or custom logic to determine data validity.
+
+  </Card>
+
+<Card
+  title="Integrating Store with State Management Libraries Like Redux"
+  icon="webhook"
+  iconType="duotone"
+  href="/guides/build-with-store/use-cases/store5/integrating-store-with-state-management-libraries-like-redux"
+>
+  Connect Store's data streams to your state management solution to ensure the
+  UI reacts to data changes efficiently.
+</Card>
+
+    <Card
+    title="Implementing Fallback Mechanisms to Enhance Resilience"
+    icon="helmet-safety"
+    iconType="duotone"
+    href="/guides/build-with-store/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience"
+
+>
+
+    Learn how to set up primary and secondary fetchers, enabling your app to automatically switch to alternative data sources or strategies when the primary fetcher fails.
+
+  </Card>
+
+<Card
+  title="Pagination and Infinite Scrolling"
+  icon="files"
+  iconType="duotone"
+  href="/guides/build-with-store/use-cases/store5/pagination-and-infinite-scrolling"
+>
+  Discover how to efficiently load large datasets by implementing pagination and
+  infinite scrolling with Store, providing smooth user experiences when browsing
+  extensive lists.
+</Card>
+
+</CardGroup>

@@ -1,0 +1,71 @@
+---
+title: "Store foundations"
+sidebarTitle: "Overview"
+version: "5"
+---
+
+<CardGroup cols={2}>
+  <Card title="Store" icon="store-lock" iconType="duotone" href="/guides/learn-about-store/concepts/store5/store">
+    Typed repository that returns a flow of `Data`/`Loading`/`Error` from local and network data sources.
+  </Card>
+
+    <Card title="Mutable Store" icon="store" iconType="duotone" href="/guides/learn-about-store/concepts/store5/mutable-store">
+    Mutable repository implementation that allows create (C), read (R), update (U) and delete (D) operations for local and network resources.
+
+  </Card>
+
+<Card
+  title="Source of Truth"
+  icon="database"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/source-of-truth"
+>
+  Persists items.
+</Card>
+
+<Card
+  title="Fetcher"
+  icon="cloud-arrow-down"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/fetcher"
+>
+  Defines how data will be fetched over the network.
+</Card>
+
+<Card
+  title="Updater"
+  icon="rotate"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/updater"
+>
+  Defines how local changes will be pushed to the network.
+</Card>
+
+<Card
+  title="Bookkeeper"
+  icon="receipt"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/bookkeeper"
+>
+  Tracks metadata of local changes and records synchronization failures.
+</Card>
+
+<Card
+  title="Validator"
+  icon="shield-check"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/validator"
+>
+  Returns whether an item is valid.
+</Card>
+
+<Card
+  title="Converter"
+  icon="swap"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/converter"
+>
+  Converts items between `Network`/`Local`/`Domain` representations.
+</Card>
+
+</CardGroup>
