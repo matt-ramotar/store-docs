@@ -151,5 +151,8 @@
     "x": "https://x.com/mobilenativefdn",
     "github": "https://github.com/MobileNativeFoundation",
     "linkedin": "https://www.linkedin.com/company/mobile-native-foundation"
+  },
+  "codeBlock": {
+    "mode": "auto"
   }
 }
