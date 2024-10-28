@@ -11,7 +11,8 @@
     "og:description": "Store is our solution for working with data in Kotlin. Whether you're building alone or with a team of thousands, Store can help.",
     "og:image": "/images/hero-dark.png",
     "og:logo": "/logo/light.svg",
-    "og:image:width"
+    "og:image:width": "900",
+    "og:image:height": "600"
   },
   "favicon": "/favicon.svg",
   "versions": ["5"],
