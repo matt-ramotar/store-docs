@@ -4,13 +4,23 @@ description: "Let's build your first Store."
 version: "5"
 ---
 
-In this example, we'll build a simple Store to fetch and cache ski resort data for a skiing app, [Trails](https://github.com/MobileNativeFoundation/Trails).
+In this example, we'll build a simple Store to fetch and cache posts for the [Trails](https://github.com/MobileNativeFoundation/Trails) app.
+
+<Note>
+  The code for this example is available in the
+  [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
+</Note>
 
 ## Prerequisites
+
+<Info>
+Quick Links to Prerequisites:
 
 - [Kotlin Multiplatform Project Setup](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html): Basic understanding of KMP and a project set up with shared `commonMain` code.
 - [Coroutines and Flow](https://kotlinlang.org/docs/coroutines-overview.html): Basic understanding of Kotlin Coroutines and Flow for asynchronous programming.
 - [Gradle](https://kotlinlang.org/docs/gradle.html): Familiarity with Gradle for dependency management.
+
+</Info>
 
 ## Installation
 
@@ -18,13 +28,38 @@ In this example, we'll build a simple Store to fetch and cache ski resort data f
   <Step title="Add the Dependency">
     Add the Store library to your project's dependencies. Since we're working with a KMP project, we'll add the dependency to the `commonMain` source set.
 
+```toml libs.versions.toml
+[versions]
+store = "5.1.0"
+
+[libraries]
+store = { module = "org.mobilenativefoundation.store:store5", version.ref = "store" }
+```
+
 ```kotlin build.gradle.kts
 commonMain {
   dependencies {
-    implementation("org.mobilenativefoundation.store:store5:5.1.0-alpha04")
+    implementation(libs.store)
   }
 }
 ```
+
+<Tip>
+Understanding Version Catalogs:
+
+The `libs.versions.toml` file is part of Gradle's Version Catalogs feature, which simplifies dependency management.
+
+If you're not using Version Catalogs, you can add the dependency directly to your `build.gradle.kts`:
+
+```kotlin
+dependencies {
+    implementation("org.mobilenativefoundation.store:store5:5.1.0")
+}
+```
+
+For more information on Version Catalogs, visit the [Gradle Documentation](https://docs.gradle.org/current/userguide/platforms.html).
+
+</Tip>
 
   </Step>
   <Step title="Sync the Project">
@@ -35,77 +70,162 @@ commonMain {
 
 ## Building a Store
 
-Now, let's build a simple Store to fetch and cache ski resort data from a hypothetical API and cache it for offline access.
+Now, let's build a simple Store to fetch and cache posts from our API and cache it for offline access.
 
 <Steps>
   <Step title="Define the Data Models">
-    Define the models for a ski trail.
+    Define the models for a post.
 
 <CodeGroup>
 
-```kotlin TrailNetworkModel.kt
-// This represents the data we receive from the network.
+```kotlin Network Model
+package org.mobilenativefoundation.trails.backend.models
 
 @Serializable
-data class TrailNetworkModel(
-  val id: String,
-  val name: String,
-  val difficulty: String,
-  val distance: Double,
-  val elevationGain: Double,
-  val status: String,
-  val description: String,
+data class PostNetworkModel(
+    val id: Int,
+    val creatorId: Int,
+    val caption: String?,
+    val platform: Platform,
+    val createdAt: LocalDateTime,
+    val likesCount: Long,
+    val commentsCount: Long,
+    val sharesCount: Long,
+    val viewsCount: Long,
+    val isSponsored: Boolean,
+    val locationName: String?,
+    val coverUrl: String,
+    val isFavoritedByCurrentUser: Boolean
 )
 ```
 
-```sql TrailEntity.sq
-// This represents the data we write to the local database.
+```sql Local Database Model
+package org.mobilenativefoundation.trails.xplat.lib.db
 
-CREATE TABLE trail_entity (
-    id TEXT NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
-    difficulty TEXT NOT NULL,
-    distance REAL NOT NULL,
-    elevation_gain REAL NOT NULL,
-    status TEXT NOT NULL,
-    description TEXT NOT NULL
+CREATE TABLE postEntity (
+    id INTEGER PRIMARY KEY,
+    creator_id INTEGER NOT NULL,
+    caption TEXT,
+    created_at TEXT NOT NULL,
+    likes_count INTEGER NOT NULL,
+    comments_count INTEGER NOT NULL,
+    shares_count INTEGER NOT NULL,
+    views_count INTEGER NOT NULL,
+    is_sponsored INTEGER NOT NULL,
+    cover_url TEXT NOT NULL,
+    platform TEXT AS Platform NOT NULL,
+    location_name TEXT,
+    is_favorited_by_current_user INTEGER NOT NULL,
+    FOREIGN KEY (creator_id) REFERENCES creatorEntity(id)
 );
 ```
 
-```kotlin Trail.kt
-// This represents the data used in the UI layer.
+```kotlin Domain Model
+package org.mobilenativefoundation.trails.xplat.lib.models
 
-data class Trail(
-  val id: String,
-  val name: String,
-  val difficulty: TrailDifficulty,
-  val distance: Double,
-  val elevationGain: Double,
-  val status: String,
-  val description: String,
+data class Post(
+    val id: Int,
+    val creatorId: Int,
+    val caption: String?,
+    val createdAt: LocalDateTime,
+    val likesCount: Long,
+    val commentsCount: Long,
+    val sharesCount: Long,
+    val viewsCount: Long,
+    val isSponsored: Boolean,
+    val coverURL: String,
+    val platform: Platform,
+    val locationName: String?,
+    val isFavoritedByCurrentUser: Boolean
 )
 ```
 
 </CodeGroup>
 
+<Note>
+Using [SqlDelight](https://sqldelight.github.io/sqldelight) for Local Database Models:
+
+The SQL schema defined using SqlDelight will generate Kotlin models for you. Here's how the `PostEntity` class might look after generation:
+
+```kotlin
+data class PostEntity(
+    val id: Long,
+    val creator_id: Long,
+    val caption: String?,
+    val created_at: String,
+    val likes_count: Long,
+    val comments_count: Long,
+    val shares_count: Long,
+    val views_count: Long,
+    val is_sponsored: Long,
+    val cover_url: String,
+    val platform: Platform,
+    val location_name: String?,
+    val is_favorited_by_current_user: Long
+)
+```
+
+For more details on how SqlDelight generates Kotlin classes from SQL schemas, check out the [SqlDelight Docs](https://sqldelight.github.io/sqldelight).
+
+</Note>
+
   </Step>
   <Step title="Create the API Interface">
     Define and implement an interface for your network calls. In this example, we'll use [Ktor](https://ktor.io/docs/welcome.html) for HTTP requests.
 
+    <Note>
+    Dependency Injection Context:
+
+    [Trails](https://github.com/MobileNativeFoundation/Trails) uses [kotlin-inject](https://github.com/evant/kotlin-inject), a compile-time dependency injection library for Kotlin. The `@Inject` annotation indicates a class can be injected.
+    </Note>
+
 <CodeGroup>
 
-```kotlin TrailsApi.kt
-interface TrailsApi {
-  suspend fun fetchTrail(id: String): TrailNetworkModel
+```kotlin APIs
+package org.mobilenativefoundation.trails.xplat.lib.rest.api
+
+interface PostOperations {
+    suspend fun getPost(id: Int): PostNetworkModel
+    suspend fun updatePost(post: PostNetworkModel): Boolean
 }
+
+interface TrailsApi: PostOperations
 ```
 
-```kotlin RealTrailsApi.kt
-class RealTrailsApi(private val httpClient: HttpClient): TrailsApi {
-  override suspend fun fetchTrail(id: String): TrailNetworkModel {
-    return httpClient.get<TrailNetworkModel>("https://api.trails.com/trails/$id")
-  }
+```kotlin Implementations
+package org.mobilenativefoundation.trails.xplat.lib.rest.impl
+
+internal object TrailsEndpoints {
+    private const val ROOT_API_URL = "https://api.trails.mattramotar.dev"
+    fun getPost(id: Int) = "$ROOT_API_URL/posts/$id"
+    fun updatePost(id: Int) = "$ROOT_API_URL/posts/$id"
 }
+
+@Inject
+class RealPostOperations(
+    private val httpClient: HttpClient = httpClient()
+) : PostOperations {
+
+    override suspend fun getPost(id: Int): PostNetworkModel {
+        val url = TrailsEndpoints.getPost(id)
+        val response = httpClient.get(url)
+        return response.body()
+    }
+
+    override suspend fun updatePost(post: PostNetworkModel): Boolean {
+        val url = TrailsEndpoints.updatePost(post.id)
+        val response = httpClient.put(url) {
+            setBody(post)
+        }
+        return response.body()
+    }
+}
+
+@Inject
+class RealTrailsClient(
+    private val postOperations: PostOperations
+) : TrailsClient,
+    PostOperations by postOperations
 ```
 
 </CodeGroup>
@@ -117,31 +237,107 @@ class RealTrailsApi(private val httpClient: HttpClient): TrailsApi {
 
 <CodeGroup>
 
-```kotlin TrailsConverters.kt
-object TrailsConverters {
-  private fun networkToDomain(networkModel: TrailNetworkModel): Trail {
-    return Trail(...)
-  }
+```kotlin Network to Domain
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
 
-  private fun domainToEntity(domainModel: Trail): TrailEntity {
-    return TrailEntity(...)
-  }
+object PostExtensions {
+    // Convert from the network model to the domain model.
 
-  private fun entityToDomain(entityModel: TrailEntity): Trail {
-    return Trail(...)
-  }
+    fun PostNetworkModel.asPost(): Post {
+        return Post(
+            id = this.id,
+            creatorId = this.creatorId,
+            caption = this.caption,
+            createdAt = this.createdAt,
+            likesCount = this.likesCount,
+            commentsCount = this.commentsCount,
+            sharesCount = this.sharesCount,
+            viewsCount = this.viewsCount,
+            isSponsored = this.isSponsored,
+            coverURL = this.coverUrl,
+            platform = this.platform.asPlatform(),
+            locationName = this.locationName,
+            isFavoritedByCurrentUser = this.isFavoritedByCurrentUser
+        )
+    }
 }
 ```
 
-```kotlin TrailsConverterFactory.kt
-object TrailsConverterFactory {
-  fun create(): Converter<TrailNetworkModel, Trail, TrailEntity> {
-    return Converter<TrailNetworkModel, Trail, TrailEntity>.Builder()
-    .fromNetworkToCommon(TrailsConverters::networkToDomain)
-    .fromCommonToSOT(TrailsConverters::domainToEntity)
-    .fromSOTToCommon(TrailsConverters::entityToDomain)
-    .build()
-  }
+```kotlin Local Database to Domain
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
+
+object PostExtensions {
+    // Convert from the local database model to the domain model.
+
+    fun PostEntity.asPost(): Post {
+        return Post(
+            id = this.id.toInt(),
+            creatorId = this.creator_id.toInt(),
+            caption = this.caption,
+            createdAt = LocalDateTime.parse(this.created_at),
+            likesCount = this.likes_count.toLong(),
+            commentsCount = this.comments_count.toLong(),
+            sharesCount = this.shares_count.toLong(),
+            viewsCount = this.views_count.toLong(),
+            isSponsored = this.is_sponsored == 1L,
+            coverURL = this.cover_url,
+            platform = this.platform,
+            locationName = this.location_name,
+            isFavoritedByCurrentUser = this.is_favorited_by_current_user == 1L
+        )
+    }
+}
+```
+
+```kotlin Domain to Local Database
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
+
+object PostExtensions {
+    // Convert from the domain model to the local database model.
+
+    fun Post.asPostEntity(): PostEntity {
+        return PostEntity(
+            id = this.id.toLong(),
+            creator_id = this.creatorId.toLong(),
+            caption = this.caption,
+            created_at = createdAt.toString(),
+            likes_count = this.likesCount,
+            comments_count = this.commentsCount,
+            shares_count = this.sharesCount,
+            views_count = this.viewsCount,
+            is_sponsored = if (this.isSponsored) 1 else 0,
+            cover_url = this.coverURL,
+            platform = this.platform,
+            location_name = this.locationName,
+            is_favorited_by_current_user = if (this.isFavoritedByCurrentUser) 1 else 0
+        )
+    }
+}
+```
+
+```kotlin Domain to Network
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
+
+object PostExtensions {
+    // Convert from the domain model to the network model.
+
+    fun Post.asNetworkModel(): PostNetworkModel {
+        return PostNetworkModel(
+            id = this.id,
+            creatorId = this.creatorId,
+            caption = this.caption,
+            createdAt = createdAt,
+            likesCount = this.likesCount,
+            commentsCount = this.commentsCount,
+            sharesCount = this.sharesCount,
+            viewsCount = this.viewsCount,
+            isSponsored = isSponsored,
+            coverUrl = this.coverURL,
+            platform = this.platform.asNetworkModel(),
+            locationName = this.locationName,
+            isFavoritedByCurrentUser = this.isFavoritedByCurrentUser
+        )
+    }
 }
 ```
 
@@ -149,73 +345,255 @@ object TrailsConverterFactory {
 
   </Step>
 
-     <Step title="Create the Fetcher">
+     <Step title="Set Up the Store Factory">
 
-Our Fetcher will interact with the network data source using the TrailsApi interface.
+We'll use a factory for creating a `PostStore` instance.
 
-```kotlin TrailsFetcherFactory.kt
-class TrailsFetcherFactory(api: TrailsApi) {
-  fun create(): Fetcher<String, TrailNetworkModel> {
-    return Fetcher.of { trailId: String ->
-      api.fetchTrail(trailId)
+<Info>
+About the `TODO()` Placeholders:
+
+The `TODO()` placeholders indicate where implementations will be provided in the subsequent steps.
+
+</Info>
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+typealias PostStore = Store<Int, Post>
+
+class PostStoreFactory(
+    private val client: PostOperations,
+    private val trailsDatabase: TrailsDatabase,
+) {
+
+    fun create(): PostStore {
+        TODO()
     }
-  }
+
+    private fun createFetcher(): Fetcher<Int, PostNetworkModel> {
+        TODO()
+    }
+
+    private fun createSourceOfTruth(): SourceOfTruth<Int, PostEntity, Post> {
+        TODO()
+    }
+
+    private fun createConverter(): Converter<PostNetworkModel, PostEntity, Post> {
+        TODO()
+    }
+
+    private fun createUpdater(): Updater<Int, Post, Boolean> {
+        TODO()
+    }
+
+    private fun createBookkeeper(): Bookkeeper<Int> {
+        TODO()
+    }
 }
+```
+
+</Step>
+
+<Step title="Implement the Fetcher">
+
+Our Fetcher will interact with the network data source using the `PostOperations` interface.
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+private fun createFetcher(): Fetcher<Int, PostNetworkModel> =
+  Fetcher.of { id ->
+      // Fetch post from the network
+      client.getPost(id) ?: throw IllegalArgumentException("Post with ID $id not found.")
+  }
 ```
 
   </Step>
 
-   <Step title="Create the Source of Truth">
+   <Step title="Implement the Source of Truth">
   Our Source of Truth will delegate to a local [SqlDelight](https://sqldelight.github.io/sqldelight) database.
 
-```kotlin TrailsSourceOfTruthFactory.kt
-class TrailsSourceOfTruthFactory(database: TrailsDatabase) {
-  private val queries = database.trailEntityQueries
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
-  fun create(): SourceOfTruth<String, TrailEntity, Trail> {
-    return SourceOfTruth.of<String, TrailEntity, Trail>(
-      reader = { trailId ->
-          queries.selectById(trailId).asFlow().mapToOneOrNull().map { entity ->
-              entity?.let { TrailConverters.entityToDomain(it) }
+private fun createSourceOfTruth(): SourceOfTruth<Int, PostEntity, Post> =
+  SourceOfTruth.of(
+      reader = { id ->
+          flow {
+              // Query the database for a post
+              emit(trailsDatabase.postQueries.selectPostById(id.toLong()))
           }
       },
-      writer = { _, trail ->
-          val entity = TrailConverters.domainToEntity(trail)
-          queries.insertTrail(...)
-      },
-      delete = { trailId ->
-          queries.deleteById(trailId)
-      },
-      deleteAll = {
-          queries.deleteAll()
+      writer = { _, postEntity ->
+          trailsDatabase.postQueries.insertPost(postEntity)
       }
-    )
-  }
-}
+  )
+```
+
+<Tip>
+Observing Database Changes Over Time:
+
+To ensure your `SourceOfTruth` observes changes in the database, use `asFlow()` and appropriate mapping functions.
+
+```kotlin
+trailsDatabase
+    .postQueries
+    .selectPostById(id.toLong())
+    .asFlow()
+    .mapToOneOrNull()
+```
+
+</Tip>
+
+  </Step>
+
+     <Step title="Implement the Converter">
+
+Our Converter will convert between our network model, local database model, and domain model using the `PostExtensions` object.
+
+<Note>
+Understanding the Converter's Role:
+
+The Converter bridges the gap between the network model, local database model, and domain model within the Store.
+
+While you have extension functions for conversions, the Converter integrates these into the Store's pipeline, ensuring data flows correctly through each layer.
+
+</Note>
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+private fun createConverter(): Converter<PostNetworkModel, PostEntity, Post> =
+  Converter.Builder<PostNetworkModel, PostEntity, Post>()
+      .fromOutputToLocal { post -> post.asPostEntity() }
+      .fromNetworkToLocal { postNetworkModel -> postNetworkModel.asPost() }
+      .build()
+```
+
+  </Step>
+
+     <Step title="Implement the Updater">
+
+Our Updater will make a network call to update the post.
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+private fun createUpdater(): Updater<Int, Post, Boolean> =
+  Updater.by(
+      post = { _, updatedPost ->
+          val networkModel = updatedPost.asNetworkModel()
+          val success = client.updatePost(networkModel)
+          if (success) {
+              UpdaterResult.Success.Typed(success)
+          } else {
+              UpdaterResult.Error.Message("Something went wrong.")
+          }
+      }
+  )
+```
+
+  </Step>
+
+       <Step title="Implement the Bookkeeper">
+
+Our Bookkeeper keeps track of failed syncs to enable eagerly resolving conflicts after local mutations.
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+private fun createBookkeeper(): Bookkeeper<Int> =
+  Bookkeeper.by(
+      getLastFailedSync = { id ->
+          trailsDatabase.postBookkeepingQueries
+              .selectMostRecentFailedSync(id).executeAsOneOrNull()?.let { failedSync ->
+                  timestampToEpochMilliseconds(timestamp = failedSync.timestamp)
+              }
+      },
+      setLastFailedSync = { id, timestamp ->
+          try {
+              trailsDatabase.postBookkeepingQueries.insertFailedSync(
+                  PostFailedSync(
+                      post_id = id,
+                      timestamp = epochMillisecondsToTimestamp(timestamp)
+                  )
+              )
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      },
+      clear = { id ->
+          try {
+              trailsDatabase.postBookkeepingQueries.clearByPostId(id)
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      },
+      clearAll = {
+          try {
+              trailsDatabase.postBookkeepingQueries.clearAll()
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      }
+  )
 ```
 
   </Step>
 
      <Step title="Build the Store">
 
-Provide the Fetcher, Source of Truth, and Converter implementations to the Store Builder.
+Provide the implementations to the Store Builder.
 
-```kotlin TrailsStoreFactory.kt
-class TrailsStoreFactory(
-  private val converterFactory: TrailsConverterFactory,
-  private val fetcherFactory: TrailsFetcherFactory,
-  private val sourceOfTruthFactory: TrailsSourceOfTruthFactory
+<Info>
+How Components Work Together:
+
+Each component of the Store has a specific role:
+
+- `Fetcher`: Retrieves data from the network.
+- `Source of Truth`: Manages local data storage.
+- `Converter`: Handles data transformations between models.
+- `Updater`: Syncs local changes back to the network.
+- `Bookkeeper`: Keeps track of failed updates for retry mechanisms.
+
+By integrating these components, the Store efficiently manages data flow between the network, local storage, and your app's UI.
+
+</Info>
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+class PostStoreFactory(
+    private val client: PostOperations,
+    private val trailsDatabase: TrailsDatabase,
 ) {
-  fun create(): Store<String, Trail> {
-    val fetcher = fetcherFactory.create()
-    val sourceOfTruth = sourceOfTruthFactory.create()
-    val converter = converterFactory.create()
 
-    return StoreBuilder
-      .from<String, Trail, TrailNetworkModel>(fetcher, sourceOfTruth)
-      .converter(converter)
-      .build()
-  }
+    fun create(): PostStore {
+        return MutableStoreBuilder.from(
+            fetcher = createFetcher(),
+            sourceOfTruth = createSourceOfTruth(),
+            converter = createConverter()
+        ).build(
+            updater = createUpdater(),
+            bookkeeper = createBookkeeper()
+        )
+    }
+
+    private fun createFetcher(): Fetcher<Int, PostNetworkModel> {...}
+
+    private fun createSourceOfTruth(): SourceOfTruth<Int, PostEntity, Post> {...}
+
+    private fun createConverter(): Converter<PostNetworkModel, PostEntity, Post> {...}
+
+    private fun createUpdater(): Updater<Int, Post, Boolean> {...}
+
+    private fun createBookkeeper(): Bookkeeper<Int> {...}
 }
 ```
 
@@ -225,40 +603,83 @@ class TrailsStoreFactory(
 
 ## Using the Store
 
-Now, let's use the Store to fetch and cache ski trail data.
+Now, let's use the Store to fetch and cache post data for the [Trails](https://github.com/MobileNativeFoundation/Trails) post detail screen.
 
 <Steps>
-  <Step title="Build a StateFlow Stream">
 
-We'll use [Molecule](https://github.com/cashapp/molecule) to build a StateFlow stream of Trail data.
+<Step title="Create a Post Repository">
+We'll create a `PostRepository` that uses the `PostStore` to fetch and cache post data. The primary reason for this extra layer is it enables us to extract `Store` from the domain layer as an implementation detail of the `PostRepository`. It also enables us to add additional methods and strategies to the `PostRepository` in the future.
+
+<Tip>
+  `PostRepository` is feature agnostic. We define the `PostRepository` under the
+  common `lib/market/post/api` namespace and implement it in the
+  `lib/market/post/impl` module to facilitate its reuse across features.
+  Consumers can depend on the `lib/market/post/api` module without being exposed
+  to the implementation details, such as the `PostStore`.
+</Tip>
+
+<Note>
+  A market is a composition of stores and systems enabling exchange between
+  consumers and providers.
+</Note>
 
 <CodeGroup>
-```kotlin TrailEvent.kt
-sealed interface TrailEvent {
-  data object Refresh: TrailEvent
+
+```kotlin API
+package org.mobilenativefoundation.trails.xplat.lib.market.post.api
+
+interface PostRepository {
+    suspend fun getPost(id: Int): Post?
+    suspend fun updatePost(
+        postId: Int,
+        likesCount: Long? = null,
+        commentsCount: Long? = null,
+        sharesCount: Long? = null,
+        viewsCount: Long? = null,
+        isFavoritedByCurrentUser: Boolean? = null
+    ): Post
 }
 ```
 
-```kotlin TrailState.kt
-data class TrailState(
-  val trail: Trail?,
-  val loading: Boolean,
-  val error: TrailError?
-)
-```
+```kotlin Implementation
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl
 
-```kotlin TrailPresenter.kt
-@Composable
-fun trailPresenter(
-  trailId: String,
-  events: Flow<TrailEvent>,
-  store: Store<String, Trail>
-): TrailState {
-  var trail by remember { mutableStateOf<Trail?>(null) }
-  var loading by remember { mutableStateOf(false) }
-  var error by remember { mutableStateOf<TrailError?>(null) }
+@Inject
+class RealPostRepository(
+    private val postStore: PostStore
+) : PostRepository {
+    override suspend fun getPost(id: Int): Post? {
+        return postStore.fresh<Int, Post, Boolean>(id)
+    }
 
-  return TrailState(trail, loading, error)
+    override suspend fun updatePost(
+        postId: Int,
+        likesCount: Long?,
+        commentsCount: Long?,
+        sharesCount: Long?,
+        viewsCount: Long?,
+        isFavoritedByCurrentUser: Boolean?
+    ): Post {
+        val prevPost = postStore.get<Int, Post, Boolean>(postId)
+
+        val nextPost = prevPost.copy(
+            likesCount = likesCount ?: prevPost.likesCount,
+            commentsCount = commentsCount ?: prevPost.commentsCount,
+            sharesCount = sharesCount ?: prevPost.sharesCount,
+            viewsCount = viewsCount ?: prevPost.viewsCount,
+            isFavoritedByCurrentUser = isFavoritedByCurrentUser ?: prevPost.isFavoritedByCurrentUser
+        )
+
+        val writeRequest = StoreWriteRequest.of<Int, Post, Boolean>(
+            key = postId,
+            value = nextPost
+        )
+
+        return when (postStore.write(writeRequest)) {
+            is StoreWriteResponse.Error -> prevPost
+            is StoreWriteResponse.Success -> nextPost
+        }
+    }
 }
 ```
 
@@ -266,67 +687,118 @@ fun trailPresenter(
 
 </Step>
 
- <Step title="Support Observing Trail Data">
+<Step title="Define the Post Detail Screen">
 
-```kotlin TrailPresenter.kt
-@Composable
-fun trailPresenter(
-  trailId: String,
-  events: Flow<TrailEvent>,
-  store: Store<String, Trail>
-): TrailState {
+[Trails](https://github.com/MobileNativeFoundation/Trails) is built with a [Circuit](https://github.com/slackhq/circuit) architecture. Before we can interact with the `PostRepository`, we need to define the `Screen`, `State`, and `Event` classes.
 
-  // Set up states, as above
+```kotlin
+package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.api
 
-  LaunchedEffect(Unit) {
-    loading = true
-    store.stream(trailId).collect { storeReadResponse ->
-      val data = storeReadResponse.dataOrNull()
-      val error = storeReadResponse.errorOrNull()
-      val loading = data == null && error == null
-
-      this.trail = data
-      this.loading = loading
-      this.error = error.toDomainError()
-
+interface PostDetailScreen : Screen {
+    sealed interface State : CircuitUiState {
+        data class Loaded(
+          val post: Post,
+          val eventSink: (Event) -> Unit,
+        ) : State
+        data object Loading: State
     }
-  }
 
-  // Return a TrailState model, as above
+    sealed interface Event : CircuitUiEvent {
+        data object Favorite: Event
+        data object Unfavorite: Event
+    }
+
+    interface UI : CircuitUI<State>
+    interface Presenter : CircuitPresenter<State>
 }
 ```
 
- </Step>
+</Step>
 
-  <Step title="Support Force Refreshing Trail Data">
+<Step title="Implement the Post Detail Presenter">
 
-```kotlin TrailPresenter.kt
-@Composable
-fun trailPresenter(
-  trailId: String,
-  events: Flow<TrailEvent>,
-  store: Store<String, Trail>
-): TrailState {
+A [Circuit Presenter](https://slackhq.github.io/circuit/presenter/) is intended to be the business logic for a screen's UI and a translation layer in front of the data layer. Our `PostDetailScreenPresenter` will use the `PostRepository` to load the post data and update the UI in response to user actions.
 
-  // Set up states, as above
+```kotlin
+package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.impl
 
-  // Observe the trail, as above
+@Inject
+class PostDetailScreenPresenter(
+    private val postRepository: PostRepository,
+    @Assisted private val postId: Int
+) : PostDetailScreen.Presenter {
 
-  LaunchedEffect(Unit) {
-    events.collect { event ->
+    @Composable
+    override fun present(): PostDetailScreen.State {
+        var post: Post? by remember { mutableStateOf(null) }
+
+        LaunchedEffect(postId) {
+          post = postRepository.getPost(postId)
+        }
+
+        return if (post != null) {
+          PostDetailScreen.State.Loaded(post, eventSink = ::handleEvent)
+        } else {
+          PostDetailScreen.State.Loading
+        }
+    }
+
+    private fun handleEvent(prevState: PostDetailScreen.State, event: PostDetailScreen.Event) {
       when (event) {
-        is TrailEvent.Refresh -> {
-          store.refresh(trailId)
+        is PostDetailScreen.Event.Favorite -> handleFavorite(prevState)
+        is PostDetailScreen.Event.Unfavorite -> handleUnfavorite(prevState)
+      }
+    }
+
+    private fun handleFavorite(prevState: PostDetailScreen.State) {
+      val nextPost = postRepository.updatePost(
+        postId = postId,
+        isFavoritedByCurrentUser = true,
+        likesCount = prevState.post.likesCount + 1
+      )
+      post = nextPost
+    }
+
+    private fun handleUnfavorite(prevState: PostDetailScreen.State) {
+      val nextPost = postRepository.updatePost(
+        postId = postId,
+        isFavoritedByCurrentUser = false,
+        likesCount = prevState.post.likesCount - 1
+      )
+      post = nextPost
+    }
+}
+```
+
+</Step>
+
+<Step title="Display the Post Detail Screen">
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.impl
+
+@Inject
+class PostDetailScreenUI : PostDetailScreen.UI {
+    @Composable
+    override fun Content(state: PostDetailScreen.State, modifier: Modifier) {
+      when (state) {
+        is PostDetailScreen.State.Loading -> {
+          LoadingView()
+        }
+
+        is PostDetailScreen.State.Loaded -> {
+          PostDetailView(
+            post = state.post,
+            onFavorite = { state.eventSink(PostDetailScreen.Event.Favorite) },
+            onUnfavorite = { state.eventSink(PostDetailScreen.Event.Unfavorite) }
+          )
         }
       }
     }
-  }
-
-  // Return a TrailState model, as above
 }
 ```
 
- </Step>
+</Step>
 
 </Steps>
 
