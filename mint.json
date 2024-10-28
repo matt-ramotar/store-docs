@@ -9,8 +9,9 @@
     "og:site_name": "Store Docs",
     "og:title": "Meet Store",
     "og:description": "Store is our solution for working with data in Kotlin. Whether you're building alone or with a team of thousands, Store can help.",
-    "og:image": "/images/hero-light.svg",
-    "og:logo": "/logo/light.svg"
+    "og:image": "/images/hero-dark.png",
+    "og:logo": "/logo/light.svg",
+    "og:image:width"
   },
   "favicon": "/favicon.svg",
   "versions": ["5"],
