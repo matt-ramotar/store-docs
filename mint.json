@@ -5,6 +5,13 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
+  "metadata": {
+    "og:site_name": "Store Docs",
+    "og:title": "Meet Store",
+    "og:description": "Store is our solution for working with data in Kotlin. Whether you're building alone or with a team of thousands, Store can help.",
+    "og:image": "/images/hero-light.svg",
+    "og:logo": "/logo/light.svg"
+  },
   "favicon": "/favicon.svg",
   "versions": ["5"],
   "colors": {
