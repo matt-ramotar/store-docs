@@ -85,7 +85,7 @@ If new data is fetched, it's stored in the [Memory Cache](https://github.com/Mob
 You can create a [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) using the `Validator.by` factory method:
 
 ```kotlin
-val validator = Validator.by { item: Output ->
+val validator = Validator.by { item ->
     // Your custom validation logic here
 }
 ```
