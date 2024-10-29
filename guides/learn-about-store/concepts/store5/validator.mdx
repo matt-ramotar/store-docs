@@ -1,4 +1,129 @@
 ---
 title: "Validator"
-description: "Coming soon"
+description: Allows you to define custom logic to determine whether your local data is still valid or if it needs to be refreshed from the remote source using the Fetcher.
 ---
+
+<Info>
+  The
+  [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)
+  is optional. If you don't provide one, the
+  [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt)
+  defaults to considering the cached data valid.
+</Info>
+
+## **Purpose of the Validator**
+
+- **Data Freshness**: Ensures the data served to your application is up-to-date and meets your application's specific validity criteria.
+- **Optimizing Network Usage**: Prevents unnecessary network calls by using valid cached data when appropriate.
+- **Consistency Control**: Gives you fine-grained control over when to refresh data, enhancing consistency between the client and server.
+
+## **APIs**
+
+### **Validator**
+
+[Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) has the following structure:
+
+```kotlin
+interface Validator<Output : Any> {
+    suspend fun isValid(item: Output): Boolean
+}
+```
+
+<ParamField path="Output" type="Any" required>
+  The type representing your domain data model. For example,
+  if you have a `Store<Int, Post>`, the `Output` is `Post`.
+</ParamField>
+
+<ParamField query="isValid(item: Output)" type="Boolean">
+  A suspending function that determines whether the given item is still valid.
+</ParamField>
+
+## **Data Flow**
+
+<Steps>
+<Step stepNumber="1">
+**Data Retrieval Request**
+
+When your application requests cached data from the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt), it first checks the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) to see if the data is available.
+
+<Note>
+  The
+  [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)
+  only operates on data from the [Source of
+  Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt)
+  and does not validate data coming directly from the network.
+</Note>
+
+</Step>
+
+<Step stepNumber="2">
+**Validation Check**
+
+The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)'s `isValid` method is called with the cached data as the parameter.
+
+</Step>
+
+<Step stepNumber="3">
+**Validity Determination**
+
+- If `isValid` returns `true`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) considers the cached data valid and servies it to the application.
+- If `isValid` returns `false`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) deems the cached data invalid and proceeds to fetch fresh data from the remote source using the [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt).
+
+</Step>
+
+<Step stepNumber="4">
+**Data Update**
+
+If new data is fetched, it's stored in the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) for future requests.
+
+</Step>
+
+</Steps>
+
+## **Implementing a Validator**
+
+You can create a [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) using the `Validator.by` factory method:
+
+```kotlin
+val validator = Validator.by { item: Output ->
+    // Your custom validation logic here
+}
+```
+
+### **Examples**
+
+#### **Time-Based Validation**
+
+If your application has data that should be refreshed every 24 hours:
+
+```kotlin
+val validator = Validator.by { item ->
+    Clock.System.now() < item.expiresAt
+}
+```
+
+#### **Versioning**
+
+If your application data model changes and you need to invalidate old cached data:
+
+```kotlin
+val validator = Validator.by { item ->
+    item.version == CURRENT_VERSION
+}
+```
+
+#### **User Authentication**
+
+In cases where authentication tokens expire:
+
+```kotlin
+val validator = Validator.by { item ->
+    !item.token.isExpired()
+}
+```
+
+## **Best Practices**
+
+- **Keep Validation Logic Lightweight**: The `isValid` function should execute quickly to avoid slowing down data retrieval. Complex computations or I/O operations should be avoided.
+- **No Side Effects**: The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) should not modify the data or state. It should only assess the validity of the provided item.
+- **Decide on Validity Criteria**: Clearly define what makes data valid or invalid in your application's context. This could be based on timestamps, data content, user preferences, or other domain-specific factors.
