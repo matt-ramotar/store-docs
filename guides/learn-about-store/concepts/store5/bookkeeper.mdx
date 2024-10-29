@@ -1,4 +1,180 @@
 ---
 title: "Bookkeeper"
-description: "Coming soon"
+description: "Designed to track local data changes that haven't been successfully synchronized with the remote data source. It plays a crucial role in conflict resolution, especially in applications that support offline operations or have intermittent network connectivity."
 ---
+
+## **Relevant Context**
+
+<Tip>
+  Check out Google's [Offline
+  First](https://developer.android.com/training/data-storage/offline-first)
+  guide for more information on conflict resolution strategies.
+</Tip>
+
+Conflict resolution is critical when your app makes local changes while offline or when there are discrepancies between the client and server data. The [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) helps by:
+
+- **Versioning**: Recording timestamps of failed syncs allows you to determine when changes occurred, which is essential for resolving conflicts.
+- **Strategies**: Depending on your application's needs, you might implement different conflict resolution strategies. A common approach in mobile apps is "last write wins," where the most recent change overwrites previous ones.
+
+## **Purpose of the Bookkeeper**
+
+- **Tracking Failed Synchronizations**: The [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) records instances when local updates fail to sync with the remote source.
+- **Conflict Resolution**: By keeping a record of failed syncs, the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) enables the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) to identify and resolve conflicts between local and remote data upon the next synchronization attempt.
+- **Data Consistency**: Helps maintain consistency between the client's local data and the server's data by ensuring that unsynced changes are not forgotten and are eventually synchronized.
+
+## **APIs**
+
+### **Bookkeeper**
+
+[Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) has the following structure:
+
+```kotlin
+interface Bookkeeper<Key : Any> {
+    suspend fun getLastFailedSync(key: Key): Long?
+
+    suspend fun setLastFailedSync(
+        key: Key,
+        timestamp: Long = now(),
+    ): Boolean
+
+    suspend fun clear(key: Key): Boolean
+
+    suspend fun clearAll(): Boolean
+}
+```
+
+<ParamField path="Key" type="Any" required>
+  The type representing the key used to identify the data item.
+</ParamField>
+
+<ParamField query="getLastFailedSync(key: Key)" type="Long?">
+  Returns the timestamp of the last failed sync attempt for the given key.
+</ParamField>
+
+<ParamField
+  query="setLastFailedSync(key: Key, timestamp: Long = now())"
+  type="Boolean"
+>
+  Records a failed sync attempt with the provided timestamp.
+</ParamField>
+
+<ParamField query="clear(key: Key)" type="Boolean">
+  Clears the record of failed syncs for the given key.
+</ParamField>
+
+<ParamField query="clearAll()" type="Boolean">
+  Clears all records of failed syncs.
+</ParamField>
+
+## **Data Flow**
+
+<Steps>
+
+<Step title="Local Changes Made" stepNumber="1">
+  The application makes a local change that needs to be synced with the remote
+  source.
+</Step>
+
+<Step title="Sync Attempt" stepNumber="2">
+  The Store attempts to update the remote source using the
+  [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt).
+</Step>
+
+<Step title="Write Response Handling" stepNumber="3">
+  - **On Success**: If the sync succeeds, the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) clears any records of failed syncs for that key.
+  - **On Failure**: If the sync fails, the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) records the failure along with a timestamp.
+
+  </Step>
+
+<Step title="Conflict Resolution on Read" stepNumber="4">
+
+- Before serving data, the
+  [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt)
+  checks with the
+  [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt)
+  to see if there are any unsynced local changes.
+
+- If there are failed syncs, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) attempts to resolve them before returning data.
+
+</Step>
+
+</Steps>
+
+## **Implementing a Bookkeeper**
+
+You can create a [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) using the `Bookkeeper.by` factory method:
+
+```kotlin
+val bookkeeper = Bookkeeper.by(
+    getLastFailedSync = { key ->
+        // Retrieve timestamp from storage
+    },
+    setLastFailedSync = { key, timestamp ->
+        // Save timestamp to storage
+        true
+    },
+    clear = { key ->
+        // Remove entry from storage
+        true
+    },
+    clearAll = {
+        // Clear all entries from storage
+        true
+    }
+)
+```
+
+### **Example**
+
+From the [Trails](https://github.com/MobileNativeFoundation/Trails) app:
+
+```kotlin
+package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
+
+private fun createBookkeeper(): Bookkeeper<Int> =
+  Bookkeeper.by(
+      getLastFailedSync = { id ->
+          trailsDatabase.postBookkeepingQueries
+              .selectMostRecentFailedSync(id).executeAsOneOrNull()?.let { failedSync ->
+                  timestampToEpochMilliseconds(timestamp = failedSync.timestamp)
+              }
+      },
+      setLastFailedSync = { id, timestamp ->
+          try {
+              trailsDatabase.postBookkeepingQueries.insertFailedSync(
+                  PostFailedSync(
+                      post_id = id,
+                      timestamp = epochMillisecondsToTimestamp(timestamp)
+                  )
+              )
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      },
+      clear = { id ->
+          try {
+              trailsDatabase.postBookkeepingQueries.clearByPostId(id)
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      },
+      clearAll = {
+          try {
+              trailsDatabase.postBookkeepingQueries.clearAll()
+              true
+          } catch (e: SQLException) {
+              // Handle the exception
+              false
+          }
+      }
+  )
+```
+
+## **Best Practices**
+
+- **Persistent Storage**: Use persistent storage (e.g., a local database) for the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) to ensure that failed sync records are not lost between app sessions.
+- **Error Handling**: Ensure that exceptions are properly caught and handled when performing sync operations.

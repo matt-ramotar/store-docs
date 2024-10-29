@@ -41,8 +41,7 @@ interface Validator<Output : Any> {
 ## **Data Flow**
 
 <Steps>
-<Step stepNumber="1">
-**Data Retrieval Request**
+<Step title="Data Retrieval Request" stepNumber="1">
 
 When your application requests cached data from the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt), it first checks the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) to see if the data is available.
 
@@ -56,23 +55,20 @@ When your application requests cached data from the [Store](https://github.com/M
 
 </Step>
 
-<Step stepNumber="2">
-**Validation Check**
+<Step title="Validation Check" stepNumber="2">
 
 The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)'s `isValid` method is called with the cached data as the parameter.
 
 </Step>
 
-<Step stepNumber="3">
-**Validity Determination**
+<Step title="Validity Determination" stepNumber="3">
 
 - If `isValid` returns `true`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) considers the cached data valid and servies it to the application.
 - If `isValid` returns `false`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) deems the cached data invalid and proceeds to fetch fresh data from the remote source using the [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt).
 
 </Step>
 
-<Step stepNumber="4">
-**Data Update**
+<Step title="Data Update" stepNumber="4">
 
 If new data is fetched, it's stored in the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) for future requests.
 
