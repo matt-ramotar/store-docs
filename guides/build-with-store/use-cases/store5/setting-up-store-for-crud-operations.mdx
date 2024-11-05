@@ -1,0 +1,364 @@
+---
+title: "Setting up Store for CRUD operations"
+description: "Learn how to build a Store supporting queries and mutations."
+version: "5"
+---
+
+## Introduction
+
+In this two-part guide, we'll build a Store to handle CRUD (Create, Read, Update, Delete) operations for the [Trails](https://github.com/MobileNativeFoundation/Trails) app. This first part focuses on defining a flexible data model and the operations required to accommodate complex queries and mutations.
+
+<Info> 
+Prerequisites:
+
+- Complete the [Quickstart](/guides/get-started/quickstart).
+- Have an understanding of the core Store [concepts](/guides/learn-about-store/concepts/store5/overview).
+
+</Info>
+
+<Note>
+  The code for this example is available in the
+  [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
+</Note>
+
+## Defining the Data Model
+
+### Creating a Generalized `Model` Interface
+
+To create a flexible and reusable `Store`, we'll start by defining a generalized `Model` interface. This interface represents any data type we wish to store and forms the foundation of our data model.
+
+```kotlin
+interface Model<out K : Model.Key, out P : Model.Properties, out E : Model.Edges> {
+
+    /** Represents a unique identifier for the model. */
+    interface Key
+
+    /** Holds the core properties of the model. */
+    interface Properties
+
+    /** Defines relationships to other models. */
+    interface Edges
+
+    /** A minimal representation of the model. */
+    interface Node<out K : Key, out P : Properties, out E : Edges> : Model<K, P, E> {
+        val key: K
+        val properties: P
+    }
+
+    /** A complete representation including relationships. */
+    interface Composite<K : Key, P : Properties, E : Edges> : Model<K, P, E> {
+        val node: Node<K, P, E>
+        val edges: E
+    }
+}
+```
+
+The `Model` interfaces uses type parameters `K`, `P`, and `E` to represent the `Key`, `Properties`, and `Edges` of the model, respectively. This design allows us to define models with varying structures while maintaining type safety.
+
+### Implementing the `Model` Interface in `Post`
+
+With the `Model` interface in place, we can now refactor our `Post` class to implement this interface. This enables us to define operations on different aspects of a `Post`, such as its key, properties, and edges.
+
+<Note>
+Implementing the `Model` interface in `Post` allows us to define operations on various `Post` models. For instance:
+
+    - When creating a new `Post`, we have only the `Properties` (no `Key` or `Edges`).
+    - When updating a `Post`, we have both the `Key` and the `Properties`.
+    - When fetching a feed of `Post`s, we have a list of `Post.Node`.
+    - When fetching a single `Post`, we have a `Post.Composite`.
+
+</Note>
+
+```kotlin
+@Serializable
+sealed interface Post : Model<Post.Key, Post.Properties, Post.Edges> {
+    @Serializable
+    data class Key(val id: Int) : Model.Key
+
+    @Serializable
+    data class Properties(
+        val creatorId: Int,
+        val caption: String?,
+        val createdAt: LocalDateTime,
+        val likesCount: Long,
+        val commentsCount: Long,
+        val sharesCount: Long,
+        val viewsCount: Long,
+        val isSponsored: Boolean,
+        val coverURL: String,
+        val platform: Platform,
+        val locationName: String?
+    ) : Model.Properties, Post
+
+    @Serializable
+    data class Edges(
+        val creator: Creator.Node,
+        val hashtags: List<Hashtag.Node>,
+        val mentions: List<Mention.Node>,
+        val media: List<Media.Node>
+    ) : Model.Edges
+
+    @Serializable
+    data class Node(
+        override val key: Key,
+        override val properties: Properties
+    ) : Model.Node<Key, Properties, Edges>, Post {
+        val id: Int = this.key.id
+        val caption: String = this.properties.caption.orEmpty()
+    }
+
+    @Serializable
+    data class Composite(
+        override val node: Node,
+        override val edges: Edges
+    ) : Model.Composite<Key, Properties, Edges>, Post
+}
+```
+
+This refactored `Post` class now aligns with the `Model` interface, allowing us to leverage the type hierarchy for different operations.
+
+## Defining Operations
+
+### Creating the `Operation` Sealed Class
+
+To represent different types of operations (queries and mutations), we'll define a generalized `Operation` sealed class. This class serves as the base for all specific operation types in our `Store`.
+
+```kotlin
+sealed class Operation<
+    out K : Model.Key,
+    out P : Model.Properties,
+    out E : Model.Edges,
+    out N : Model.Node<K, P, E>> {
+
+    sealed class Query<
+        out K : Model.Key,
+        out P : Model.Properties,
+        out E : Model.Edges,
+        out N : Model.Node<K, P, E>> : Operation<K, P, E, N>()
+
+    sealed class Mutation<
+        out K : Model.Key,
+        out P : Model.Properties,
+        out E : Model.Edges,
+        out N : Model.Node<K, P, E>> : Operation<K, P, E, N>()
+}
+```
+
+The `Operation` class is parameterized with the types `K`, `P`, `E`, and `N`, corresponding to the `Model` components. The `Operation` class has two subclasses, `Query` and `Mutation`. `Query` represents read operations, while `Mutation` represents write operations.
+
+### Defining `Create` Operations
+
+Under the `Mutation` class, we can define the `Create` operations that allow us to insert new data into the `Store`.
+
+```kotlin {7-16}
+sealed class Mutation<
+    out K : Model.Key,
+    out P : Model.Properties,
+    out E : Model.Edges,
+    out N : Model.Node<K, P, E>> : Operation<K, P, E, N>() {
+
+    sealed class Create<K : Model.Key, P : Model.Properties, E : Model.Edges> : Mutation<K, P, E, Nothing>() {
+
+        data class InsertOne<P: Model.Properties>(
+            val properties: P
+        ) : Create<Nothing, P, Nothing>()
+
+        data class InsertMany<P: Model.Properties>(
+            val properties: List<P>
+        ) : Create<Nothing, P, Nothing>()
+    }
+}
+```
+
+In the `Create` operations, we have `InsertOne` and `InsertMany`, which accept `Properties` or a list of `Properties` as input. Notice that we use `Nothing` for types we don't have yet, such as the `Key` for new entries.
+
+### Defining `Read` Operations
+
+Let's define a `DataSources` sealed class to represent the different sources of data we may want to query.
+
+```kotlin
+data class DataSources(val memory: Boolean, val disk: Boolean, val remote: Boolean) {
+    companion object {
+        val all = DataSources(memory = true, disk = true, remote = true)
+        val localOnly = DataSources(memory = true, disk = true, remote = false)
+        val remoteOnly = DataSources(memory = false, disk = false, remote = true)
+    }
+}
+```
+
+The `DataSources` class allows us to specify whether to fetch data from memory, disk, or remote sources.
+
+<Tip>
+  Providing a companion object with common configurations improves readability
+  and reduces the likelihood of errors.
+</Tip>
+
+Next, we can define the `Query` operations within the `Operation` class. Each query
+operation specifies the `DataSources` to use.
+
+```kotlin {7-24}
+sealed class Query<
+        out K : Model.Key,
+        out P : Model.Properties,
+        out E : Model.Edges,
+        out N : Model.Node<K, P, E>> : Operation<K, P, E, N>() {
+
+    abstract val dataSources: DataSources
+
+    data class FindOne<K : Model.Key>(val key: K, override val dataSources: DataSources) :
+            Query<K, Nothing, Nothing, Nothing>()
+
+    data class FindMany<K : Model.Key>(val keys: List<K>, override val dataSources: DataSources) :
+            Query<K, Nothing, Nothing, Nothing>()
+
+    data class FindAll(override val dataSources: DataSources) :
+            Query<Nothing, Nothing, Nothing, Nothing>()
+
+    data class ObserveOne<K : Model.Key>(val key: K, override val dataSources: DataSources) :
+            Query<K, Nothing, Nothing, Nothing>()
+
+    data class ObserveMany<K : Model.Key>(
+            val keys: List<K>,
+            override val dataSources: DataSources
+    ) : Query<K, Nothing, Nothing, Nothing>()
+}
+```
+
+The `Query` operations include:
+
+- `FindOne` and `FindMany` for fetching specific items by key(s).
+- `FindAll` for fetching all items.
+- `ObserveOne` and `ObserveMany` for observing changes to specific items.
+
+### Defining `Update` Operations
+
+Under the `Mutation` class, we can define the `Update` operations for modifying existing data.
+
+```kotlin {12-40}
+sealed class Mutation<
+    out K : Model.Key,
+    out P : Model.Properties,
+    out E : Model.Edges,
+    out N : Model.Node<K, P, E>> : Operation<K, P, E, N>() {
+
+    sealed class Create<
+        K : Model.Key,
+        P : Model.Properties,
+        E : Model.Edges> : Mutation<K, P, E, Nothing>() {...}
+
+    sealed class Update<
+        K : Model.Key,
+        P : Model.Properties,
+        E : Model.Edges> : Mutation<K, P, E, Nothing>() {
+
+        data class UpdateOne<
+            K : Model.Key,
+            P : Model.Properties,
+            E : Model.Edges,
+            N : Model.Node<K, P, E>>(
+            val node: N
+        ) : Update<K, P, E, N>()
+
+        data class UpdateMany<
+            K : Model.Key,
+            P : Model.Properties,
+            E : Model.Edges,
+            N : Model.Node<K, P, E>>(
+            val nodes: List<N>
+        ) : Update<K, P, E, N>()
+
+         data class UpsertOne<P : Model.Properties>(
+            val properties: P
+        ) : Update<Nothing, P, Nothing>()
+
+        data class UpsertMany<P : Model.Properties>(
+            val properties: List<P>
+        ) : Update<Nothing, P, Nothing>()
+    }
+}
+```
+
+The `Update` operations include:
+
+- `UpdateOne` and `UpdateMany` for updating existing items.
+- `UpsertOne` and `UpsertMany` for inserting or updating an item.
+
+### Defining `Delete` Operations
+
+Finally, we can define `Delete` operations under the `Mutation` class.
+
+```kotlin {16-28}
+sealed class Mutation<
+    out K : Model.Key,
+    out P : Model.Properties,
+    out E : Model.Edges,
+    out N : Model.Node<K, P, E>> : Operation<K, P, E, N>() {
+
+    sealed class Create<
+        K : Model.Key,
+        P : Model.Properties,
+        E : Model.Edges> : Mutation<K, P, E, Nothing>() {...}
+
+    sealed class Update<
+        K : Model.Key,
+        P : Model.Properties,
+        E : Model.Edges> : Mutation<K, P, E, Nothing>() {...}
+
+    sealed class Delete<K : Model.Key> : Mutation<K, Nothing, Nothing, Nothing>() {
+
+        data class DeleteOne<K : Model.Key>(
+            val key: K
+        ) : Delete<K>()
+
+        data class DeleteMany<K : Model.Key>(
+            val keys: List<K>
+        ) : Delete<K>()
+
+        data object DeleteAll : Delete<Nothing>()
+    }
+}
+```
+
+The `Delete` operations include:
+
+- `DeleteOne` and `DeleteMany` for deleting specific items by key(s).
+- `DeleteAll` for deleting all items.
+
+These operations require the `Key` of the items to be deleted.
+
+## Defining Output Types
+
+Because our operations can return either a single `Model` or a collection of `Model`s, we need to define an output type that can represent both cases.
+
+We'll define an `Output` sealed class to represent the results of our operations.
+
+```kotlin
+sealed class Output<out T: Model> {
+    data class Single<T: Model>(val item: T) : Output<T>()
+    data class Collection<T: Model>(val items: List<T>) : Output<T>()
+}
+```
+
+The `Output` class has two subclasses:
+
+- `Single`, which wraps a single `Model` item.
+- `Collection`, which wraps a list of `Model` items.
+
+This design allows our `Store` to handle both single-item and multiple-item results in a type-safe manner.
+
+## Conclusion
+
+With all the components in place, we can now redefine our `PostStore` to use the new `Operation` and `Output` types.
+
+```kotlin
+typealias PostOperation = Operation<Post.Key, Post.Properties, Post.Edges, Post.Node>
+typealias Output = Output<Post>
+typealias PostStore = MutableStore<PostOperation, Output>
+```
+
+<Tip>
+  Creating type aliases for `PostOperation`, `Output`, and `PostStore`
+  simplifies our code and improves readability.
+</Tip>
+
+By defining flexible data model and operation classes, we've established a foundation for handling complex query and mutation operations. In the [next part of this guide](/guides/build-with-store/use-cases/store5/implementing-store-for-crud-operations), we'll modify our implementations of `Fetcher`, `SourceOfTruth`, `Updater`, and `Bookkeeper` to support these operations.

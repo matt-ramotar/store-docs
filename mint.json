@@ -116,6 +116,15 @@
           "version": "5",
           "pages": [
             "guides/build-with-store/use-cases/store5/overview",
+
+            {
+              "group": "Handling CRUD operations",
+              "version": "5",
+              "pages": [
+                "guides/build-with-store/use-cases/store5/setting-up-store-for-crud-operations",
+                "guides/build-with-store/use-cases/store5/implementing-store-for-crud-operations"
+              ]
+            },
             "guides/build-with-store/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
             "guides/build-with-store/use-cases/store5/data-synchronization-and-conflict-resolution",
             "guides/build-with-store/use-cases/store5/error-handling-and-retry-strategies",
@@ -124,7 +133,6 @@
             "guides/build-with-store/use-cases/store5/handling-complex-data-relationships",
             "guides/build-with-store/use-cases/store5/advanced-caching-strategies",
             "guides/build-with-store/use-cases/store5/testing-store-and-its-components",
-            "guides/build-with-store/use-cases/store5/multiplatform-integration",
             "guides/build-with-store/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
             "guides/build-with-store/use-cases/store5/migrating-from-existing-data-layers",
             "guides/build-with-store/use-cases/store5/security-and-data-encryption",
