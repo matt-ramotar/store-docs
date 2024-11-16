@@ -1,4 +1,280 @@
 ---
 title: "Store"
-description: "Coming soon"
+description: "The core component of the Store library, managing data flow between network, memory cache, and local storage in your app."
 ---
+
+## **Purpose of Store**
+
+The `Store` serves as a mediator for your application's data flow. It provides efficient and consistent data management. Its primary purposes are:
+
+- **Data Orchestration**: Manages the flow of data between the network, memory cache, and local storage ([SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth)).
+- **Efficient Caching**: Handles in-memory and disk caching strategies to optimize data retrieval, reduce latency, and minimize unnecessary network requests.
+- **Data Consistency**: Guarantees consistency across all local data sources by synchronizing updates and, if a [Validator](/guides/learn-about-store/concepts/store5/validator) is provided, ensuring that stale or invalid data is not served to consumers.
+- **Flexible Validation**: Provides configurable validation mechanisms to ensure data integrity and freshness according to your app's specific needs.
+
+## **APIs**
+
+### **Store**
+
+[Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) has the following structure:
+
+```kotlin
+interface Store<Key : Any, Output : Any> {
+  fun stream(request: StoreReadRequest<Key>): Flow<StoreReadResponse<Output>>
+  suspend fun clear(key: Key)
+  suspend fun clearAll()
+}
+```
+
+<ParamField path="Key" type="Any" required>
+  The type representing the key used to identify the data item.
+</ParamField>
+
+<ParamField path="Output" type="Any" required>
+  The type representing the domain data model representation of the item being
+  retrieved.
+</ParamField>
+
+#### `stream`
+
+A function that returns a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) of [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
+
+<ParamField path="request" type="StoreReadRequest<Key>" required>
+  The request configuration for the data retrieval.
+</ParamField>
+
+#### `clear`
+
+A function that clears the data item identified by the given key.
+
+<Note>
+  This method only removes data from the memory cache and source of truth. It
+  will not update the remote data source.
+</Note>
+
+<ParamField path="key" type="Key" required>
+  The key identifying the data item to be cleared.
+</ParamField>
+
+#### `clearAll`
+
+A function that clears all data items.
+
+<Note>
+  This method only removes data from the memory cache and source of truth. It
+  will not update the remote data source.
+</Note>
+
+## **Key Components**
+
+The [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt) is the default implementation of the Store interface. It's composed of the following components:
+
+1. **[FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt)**: Responsible for efficient network operations.
+
+   - Prevents duplicate network calls for the same data.
+   - Shares responses among multiple requesters.
+   - Manages network request lifecycles.
+
+2. **[SourceOfTruthWithBarrier](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/SourceOfTruthWithBarrier.kt)**: Wraps the [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth).
+
+   - Synchronizes read and write operations.
+   - Provides persistent data storage.
+   - Maintains data consistency.
+
+3. **Memory Cache**: Fast, temporary storage.
+
+   - Provides quick data retrieval without hitting disk or network.
+   - Reduces latency.
+   - Automatically manages memory usage.
+
+4. **[Converter](/guides/learn-about-store/concepts/store5/converter)**: Transforms data between network, local database, and domain data model types.
+
+   - Facilitates data compatibility between different layers of the Store.
+
+5. **[Validator](/guides/learn-about-store/concepts/store5/validator)**: Validates cached data to ensure it's still valid.
+
+   - Prevents serving stale or invalid data to consumers.
+
+## **Data Flow**
+
+Here's how Store manages data flow through your app:
+
+### **Reading Data**
+
+<Steps>
+
+<Step stepNumber="1" title="Memory Cache Check">
+
+Checks if the requested data is present and valid in the in-memory cache.
+
+```kotlin
+val cachedToEmit = if (request.shouldSkipCache(CacheType.MEMORY)) {
+    null
+} else {
+    val output: Output? = memCache?.getIfPresent(request.key)
+    val isInvalid = output != null && validator?.isValid(output) == false
+    when {
+        output == null || isInvalid -> null
+        else -> output
+    }
+}
+```
+
+<Steps>
+
+<Step stepNumber="A" title="Validation">
+  If data is found, it's validating using the
+  [Validator](/guides/learn-about-store/concepts/store5/validator). If a
+  [Validator](/guides/learn-about-store/concepts/store5/validator) is not
+  provided, the data is considered valid.
+</Step>
+
+<Step stepNumber="B" title="Emission">
+  Valid data is emitted immediately to the consumer.
+</Step>
+
+</Steps>
+
+```kotlin
+cachedToEmit?.let { it: Output ->
+  emit(StoreReadResponse.Data(value = it, origin = StoreReadResponseOrigin.Cache))
+}
+```
+
+</Step>
+
+<Step stepNumber="2" title="Decide Data Source">
+
+Determines whether to read from the [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth), fetch from the network, or both. Emits `NoNewData` if neither [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth) nor network fetch is requested.
+
+```kotlin
+if (sourceOfTruth == null && !request.fetch) {
+  emit(StoreReadResponse.NoNewData(origin = StoreReadResponseOrigin.Cache))
+  return@flow
+}
+```
+
+</Step>
+
+<Step stepNumber="3" title="Source of Truth Read">
+
+If a [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth) is configured and not skipped, attempts to read data from it.
+
+```kotlin
+if (request.fetch) {
+  diskNetworkCombined(request, sourceOfTruth)
+} else {
+  sourceOfTruth.reader(request.key, diskLock).transform { response -> ... }
+}
+```
+
+<Steps>
+
+<Step stepNumber="A" title="Validation">
+  If data is found, it's validating using the
+  [Validator](/guides/learn-about-store/concepts/store5/validator). If a
+  [Validator](/guides/learn-about-store/concepts/store5/validator) is not
+  provided, the data is considered valid.
+</Step>
+
+<Step stepNumber="B" title="Emission">
+  Valid data is emitted to the consumer.
+</Step>
+
+<Step stepNumber="C" title="Network Fetch Decision">
+  If data is not found or invalid, decides whether to fetch from the network.
+</Step>
+
+</Steps>
+
+</Step>
+
+<Step stepNumber="4" title="Network Fetch">
+
+If a network fetch is required, fetches data from the network.
+
+```kotlin
+val networkFlow = createNetworkFlow(request, networkLock)
+```
+
+<Note>
+  The
+  [FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt)
+  ensures only one network call per key.
+</Note>
+
+<Steps>
+<Step stepNumber="A" title="Data Handling">
+  Fetched data is written to the
+  [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth) and
+  memory cache.
+</Step>
+
+</Steps>
+</Step>
+
+<Step stepNumber="5" title="Combine and Emit Data">
+
+Combines the flows from the network and the source of truth to emit data in the correct order and origin to the subscribers.
+
+```kotlin
+emitAll(
+  stream.transform { output: StoreReadResponse<Output> ->
+    emit(output)
+    // Update memory cache if needed
+  },
+)
+```
+
+</Step>
+
+</Steps>
+
+### Writing Data
+
+While the Store primarily focuses on reading data, it provides an internal write method for updating data in the cache and [SourceOfTruth](/guides/learn-about-store/concepts/store5/source-of-truth).
+
+<Steps>
+
+<Step stepNumber="1" title="Update Memory Cache">
+
+Updates the in-memory cache with the new data.
+
+```kotlin
+memCache?.put(key, value)
+```
+
+</Step>
+
+<Step stepNumber="2" title="Update Source of Truth">
+
+Writes the new data to the local storage (source of truth).
+
+```kotlin
+sourceOfTruth?.write(key, converter.fromOutputToLocal(value))
+```
+
+</Step>
+
+<Step stepNumber="3" title="Error Handling">
+
+Catches any exceptions during the write operation and returns the appropriate result.
+
+```kotlin
+catch (error: Throwable) {
+  StoreDelegateWriteResult.Error.Exception(error)
+}
+```
+
+</Step>
+
+</Steps>
+
+## **Best Practices**
+
+- **Configure Memory Usage**: Set appropriate memory cache sizes based on device capabilities and data volume. Implement cache eviction policies that align with your app's data freshness requirements.
+- **Implement Error Handling**: Define clear error recovery paths for network failures, cache misses, and data corruption. Use the [Fetcher](/guides/learn-about-store/concepts/store5/fetcher) retry mechanisms for transient network failures.
+- **Ensure Data Consistency**: Set up the [Source Of Truth](/guides/learn-about-store/concepts/store5/source-of-truth) as the single source of truth for critical data. Implement validation rules that catch data inconsistencies early.
+- **Optimize Network Usage**: Batch related requests where possible. Configure appropriate cache TTLs to minimize unnecessary network calls.
+- **Monitor Performance**: Track cache hit rates, network request frequencies, and data refresh patterns. Adjust caching strategies based on real-world usage patterns.
+- **Structure Keys Effectively**: Design cache keys that are both unique and logical, avoiding collisions while maintaining readability. Consider namespacing keys for different data types.
