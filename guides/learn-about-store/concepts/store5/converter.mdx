@@ -1,4 +1,53 @@
 ---
 title: "Converter"
-description: "Coming soon"
+description: "Handles the transformation of data between network, local storage, and domain models."
 ---
+
+## **Purpose of the Converter**
+
+The [Converter](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt) serves as a bridge between different data representations. The Store uses the [Converter](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt) to convert data between the network, local database, and domain models.
+
+## **APIs**
+
+### **Converter**
+
+The [Converter](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt) interface has the following structure:
+
+```kotlin
+interface Converter<Network : Any, Local : Any, Output : Any> {
+    fun fromNetworkToLocal(network: Network): Local
+    fun fromOutputToLocal(output: Output): Local
+}
+```
+
+<ParamField path="Network" type="Any" required>
+  The type representing the data fetched from the remote source. For example, if
+  fetching a list of posts, this could be `List<Post>` representing the list
+  of posts.
+</ParamField>
+
+<ParamField path="Local" type="Any" required>
+  The type representing the local database model representation of the item
+  being retrieved.
+</ParamField>
+
+<ParamField path="Output" type="Any" required>
+  The type representing the domain data model representation of the item being
+  retrieved.
+</ParamField>
+
+#### `fromNetworkToLocal`
+
+Converts a network data model into a local data model suitable for storage.
+
+<ParamField path="network" type="Network" required>
+  The network data model to be converted.
+</ParamField>
+
+#### `fromOutputToLocal`
+
+Converts a domain data model into a local data model suitable for storage.
+
+<ParamField path="output" type="Output" required>
+  The network data model to be converted.
+</ParamField>
