@@ -65,8 +65,8 @@ Writes data to the local data source for a given key.
   This method is used by
   [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt)
   to write data fetched from the network into local storage. It's also used by
-  the [MutableStore](/guides/learn-about-store/concepts/store5/mutable-store) to
-  optimistically update the local data source when a write request is received.
+  the [MutableStore](/docs/concepts/store5/mutable-store) to optimistically
+  update the local data source when a write request is received.
 </Note>
 
 #### `delete`
@@ -83,11 +83,11 @@ Deletes all data items from the local data source.
 
 ## **Data Flow**
 
-### **Writing Data from [Fetcher](/guides/learn-about-store/concepts/store5/fetcher) to Source of Truth**
+### **Writing Data from [Fetcher](/docs/concepts/store5/fetcher) to Source of Truth**
 
 <Steps>
 <Step title="Network Fetch" stepNumber="1">
-The Store fetches data from the network using the [Fetcher](/guides/learn-about-store/concepts/store5/fetcher).
+The Store fetches data from the network using the [Fetcher](/docs/concepts/store5/fetcher).
 
 ```kotlin
 val networkData = fetcher.fetch(key)

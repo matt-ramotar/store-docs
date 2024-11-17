@@ -4,7 +4,7 @@ description: "Designed to handle not only data retrieval but also data mutations
 ---
 
 <Tip>
-Check out *[Handling CRUD Operations](/guides/build-with-store/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
+Check out *[Handling CRUD Operations](/docs/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
 
 - **Create**: Insert One, Insert Many
 - **Read**: Find One, Find Many, Find All, Observe One, Observe Many
@@ -17,7 +17,7 @@ Check out *[Handling CRUD Operations](/guides/build-with-store/use-cases/store5/
 
 - **Data Mutations**: Supports creating, updating, and deleting data, in addition to reading.
 - **Synchronization**: Manages syncing local changes with remote data sources, handling network failures and retries.
-- **Conflict Resolution**: Works with the [Bookkeeper](/guides/learn-about-store/concepts/store5/bookkeeper) and [Updater](/guides/learn-about-store/concepts/store5/updater) to resolve conflicts that arise from concrruent modifications or offline changes.
+- **Conflict Resolution**: Works with the [Bookkeeper](/docs/concepts/store5/bookkeeper) and [Updater](/docs/concepts/store5/updater) to resolve conflicts that arise from concrruent modifications or offline changes.
 - **Offline Support**: Allows for local data modifications while offline, ensuring changes are eventually synchronized when connectivity is restored.
 
 ## **APIs**
@@ -82,8 +82,8 @@ A function that clears the data item identified by the given key.
 
 <Note>
   This method only removes data from the delegate
-  [Store](/guides/learn-about-store/concepts/store5/store). It will not update
-  the remote data source.
+  [Store](/docs/concepts/store5/store). It will not update the remote data
+  source.
 </Note>
 
 <ParamField path="key" type="Key" required>
@@ -96,19 +96,19 @@ A function that clears all data items.
 
 <Note>
   This method only removes data from the delegate
-  [Store](/guides/learn-about-store/concepts/store5/store). It will not update
-  the remote data source.
+  [Store](/docs/concepts/store5/store). It will not update the remote data
+  source.
 </Note>
 
 ## **Key Components**
 
-The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) is the default implementation of the [MutableStore](/guides/learn-about-store/concepts/store5/mutable-store) interface. It's composed of the following components:
+The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) is the default implementation of the [MutableStore](/docs/concepts/store5/mutable-store) interface. It's composed of the following components:
 
-1. **[Delegate Store](/guides/learn-about-store/concepts/store5/store)**: Read operations are delegated to an instance of [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt). This delegation allows [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) to leverage the efficient caching and data retrieval mechanisms already implemented in [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
+1. **[Delegate Store](/docs/concepts/store5/store)**: Read operations are delegated to an instance of [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt). This delegation allows [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) to leverage the efficient caching and data retrieval mechanisms already implemented in [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
 
-2. **[Updater](/guides/learn-about-store/concepts/store5/updater)**: Handles applying local changes to the remote data source. It defines the logic for how data mutations are synchronized with the server.
+2. **[Updater](/docs/concepts/store5/updater)**: Handles applying local changes to the remote data source. It defines the logic for how data mutations are synchronized with the server.
 
-3. **[Bookkeeper](/guides/learn-about-store/concepts/store5/bookkeeper)**: Rracks failed synchronization attempts. It ensures that any local changes that could not be synced due to network issues or other failures are retried, maintaining data consistency.
+3. **[Bookkeeper](/docs/concepts/store5/bookkeeper)**: Rracks failed synchronization attempts. It ensures that any local changes that could not be synced due to network issues or other failures are retried, maintaining data consistency.
 
 4. **Write Request Queue**: For each key, [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) maintains a write request queue (`WriteRequestQueue<Key, Output, *>`). This queue holds pending write operations that need to be synchronized with the remote data source. New write requests are added to the queue. Upon successful synchronization, processed requests are removed.
 
@@ -122,7 +122,7 @@ The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f907
 
 6. **Conflict Resolution Logic**: Conflict resolution is integral to [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt). At a high level:
 
-   - Checks for conflicts using the [Bookkeeper](/guides/learn-about-store/concepts/store5/bookkeeper) and pending write requests.
+   - Checks for conflicts using the [Bookkeeper](/docs/concepts/store5/bookkeeper) and pending write requests.
    - Attempts to synchronize with the remote source to resolve conflicts.
    - Updates the local state based on the outcome.
 
@@ -197,7 +197,7 @@ delegate.write(writeRequest.key, writeRequest.value)
 
 <Step stepNumber="3" title="Server Synchronization Attempt">
 
-Attempts to update the remote data source using the [Updater](/guides/learn-about-store/concepts/store5/updater).
+Attempts to update the remote data source using the [Updater](/docs/concepts/store5/updater).
 
 ```kotlin
 val updaterResult = tryUpdateServer(writeRequest)
@@ -212,7 +212,7 @@ val updaterResult = tryUpdateServer(writeRequest)
 <Step stepNumber="A" title="Success">
 
 - Updates the write request queue, removing processed requests.
-- Clears any failed sync records from the [Bookkeeper](/guides/learn-about-store/concepts/store5/bookkeeper).
+- Clears any failed sync records from the [Bookkeeper](/docs/concepts/store5/bookkeeper).
 
 ```kotlin
 updateWriteRequestQueue<Response>(
@@ -228,7 +228,7 @@ bookkeeper?.clear(request.key)
 
 <Step stepNumber="B" title="Failure">
 
-- Records the failed attempt using the [Bookkeeper](/guides/learn-about-store/concepts/store5/bookkeeper).
+- Records the failed attempt using the [Bookkeeper](/docs/concepts/store5/bookkeeper).
 
 ```kotlin
 bookkeeper?.setLastFailedSync(request.key)

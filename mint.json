@@ -64,11 +64,7 @@
   "navigation": [
     {
       "group": "Get started",
-      "pages": [
-        "guides/get-started/meet-store",
-        "guides/get-started/intro",
-        "guides/get-started/quickstart"
-      ]
+      "pages": ["docs/meet-store", "docs/intro", "docs/quickstart"]
     },
 
     {
@@ -76,33 +72,33 @@
       "pages": [
         {
           "group": "Motivations",
-          "pages": ["guides/learn-about-store/challenges-at-scale"]
+          "pages": ["docs/challenges-at-scale"]
         },
 
         {
           "group": "Concepts",
           "pages": [
-            "guides/learn-about-store/concepts/store5/overview",
-            "guides/learn-about-store/concepts/store5/store",
-            "guides/learn-about-store/concepts/store5/mutable-store",
-            "guides/learn-about-store/concepts/store5/source-of-truth",
-            "guides/learn-about-store/concepts/store5/fetcher",
-            "guides/learn-about-store/concepts/store5/updater",
-            "guides/learn-about-store/concepts/store5/bookkeeper",
-            "guides/learn-about-store/concepts/store5/validator",
-            "guides/learn-about-store/concepts/store5/converter"
+            "docs/concepts/store5/overview",
+            "docs/concepts/store5/store",
+            "docs/concepts/store5/mutable-store",
+            "docs/concepts/store5/source-of-truth",
+            "docs/concepts/store5/fetcher",
+            "docs/concepts/store5/updater",
+            "docs/concepts/store5/bookkeeper",
+            "docs/concepts/store5/validator",
+            "docs/concepts/store5/converter"
           ]
         },
 
         {
           "group": "Community resources",
           "pages": [
-            "guides/community-resources/overview",
-            "guides/community-resources/store-4-kotlin-conf-2019",
-            "guides/community-resources/store-5-droidcon-sf-2023",
-            "guides/community-resources/store-5-talking-kotlin-2023",
-            "guides/community-resources/storex-paging-droidcon-sf-2024",
-            "guides/community-resources/storex-paging-droidcon-nyc-2024"
+            "docs/community/overview",
+            "docs/community/store-4-kotlin-conf-2019",
+            "docs/community/store-5-droidcon-sf-2023",
+            "docs/community/store-5-talking-kotlin-2023",
+            "docs/community/storex-paging-droidcon-sf-2024",
+            "docs/community/storex-paging-droidcon-nyc-2024"
           ]
         }
       ]
@@ -115,32 +111,32 @@
           "group": "Use cases",
           "version": "5",
           "pages": [
-            "guides/build-with-store/use-cases/store5/overview",
+            "docs/use-cases/store5/overview",
 
             {
               "group": "Handling CRUD operations",
               "version": "5",
               "pages": [
-                "guides/build-with-store/use-cases/store5/setting-up-store-for-crud-operations",
-                "guides/build-with-store/use-cases/store5/implementing-store-for-crud-operations"
+                "docs/use-cases/store5/setting-up-store-for-crud-operations",
+                "docs/use-cases/store5/implementing-crud-operations-in-store"
               ]
             },
-            "guides/build-with-store/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
-            "guides/build-with-store/use-cases/store5/data-synchronization-and-conflict-resolution",
-            "guides/build-with-store/use-cases/store5/error-handling-and-retry-strategies",
-            "guides/build-with-store/use-cases/store5/authentication-and-secure-data-access",
-            "guides/build-with-store/use-cases/store5/real-time-data-updates",
-            "guides/build-with-store/use-cases/store5/handling-complex-data-relationships",
-            "guides/build-with-store/use-cases/store5/advanced-caching-strategies",
-            "guides/build-with-store/use-cases/store5/testing-store-and-its-components",
-            "guides/build-with-store/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
-            "guides/build-with-store/use-cases/store5/migrating-from-existing-data-layers",
-            "guides/build-with-store/use-cases/store5/security-and-data-encryption",
-            "guides/build-with-store/use-cases/store5/working-with-non-paginated-lists",
-            "guides/build-with-store/use-cases/store5/ensuring-data-integrity-and-freshness",
-            "guides/build-with-store/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
-            "guides/build-with-store/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
-            "guides/build-with-store/use-cases/store5/pagination-and-infinite-scrolling"
+            "docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
+            "docs/use-cases/store5/data-synchronization-and-conflict-resolution",
+            "docs/use-cases/store5/error-handling-and-retry-strategies",
+            "docs/use-cases/store5/authentication-and-secure-data-access",
+            "docs/use-cases/store5/real-time-data-updates",
+            "docs/use-cases/store5/handling-complex-data-relationships",
+            "docs/use-cases/store5/advanced-caching-strategies",
+            "docs/use-cases/store5/testing-store-and-its-components",
+            "docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
+            "docs/use-cases/store5/migrating-from-existing-data-layers",
+            "docs/use-cases/store5/security-and-data-encryption",
+            "docs/use-cases/store5/working-with-non-paginated-lists",
+            "docs/use-cases/store5/ensuring-data-integrity-and-freshness",
+            "docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
+            "docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
+            "docs/use-cases/store5/pagination-and-infinite-scrolling"
           ]
         }
       ]

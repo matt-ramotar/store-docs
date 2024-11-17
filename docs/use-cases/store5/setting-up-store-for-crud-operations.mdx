@@ -1,5 +1,5 @@
 ---
-title: "Setting up Store for CRUD operations"
+title: "Setting Up Store for CRUD operations"
 description: "Learn how to build a Store supporting queries and mutations."
 version: "5"
 ---
@@ -11,8 +11,8 @@ In this two-part guide, we'll build a Store to handle CRUD (Create, Read, Update
 <Info> 
 Prerequisites:
 
-- Complete the [Quickstart](/guides/get-started/quickstart).
-- Have an understanding of the core Store [concepts](/guides/learn-about-store/concepts/store5/overview).
+- Complete the [Quickstart](/docs/quickstart).
+- Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
 
 </Info>
 
@@ -361,4 +361,4 @@ typealias PostStore = MutableStore<PostOperation, Output>
   simplifies our code and improves readability.
 </Tip>
 
-By defining flexible data model and operation classes, we've established a foundation for handling complex query and mutation operations. In the [next part of this guide](/guides/build-with-store/use-cases/store5/implementing-store-for-crud-operations), we'll modify our implementations of `Fetcher`, `SourceOfTruth`, `Updater`, and `Bookkeeper` to support these operations.
+By defining flexible data model and operation classes, we've established a foundation for handling complex query and mutation operations. In the [next part of this guide](/docs/use-cases/store5/implementing-crud-operations-in-store), we'll modify our implementations of `Fetcher`, `SourceOfTruth`, `Updater`, and `Bookkeeper` to support these operations.
