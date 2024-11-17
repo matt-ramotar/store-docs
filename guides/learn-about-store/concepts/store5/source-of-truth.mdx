@@ -1,4 +1,153 @@
 ---
 title: "Source of Truth"
-description: "Coming soon"
+description: "Single authoritative local data source, ensuring data consistency and enabling offline support."
 ---
+
+## **Purpose of the Source of Truth**
+
+The Source of Truth serves as the definitive local data source for your app. It provides:
+
+- **Data Consistency**: Ensures that all parts of your application refer to a single, consistent data source.
+- **Offline Support**: Enables your app to function without network connectivity by relying on locally persisted data.
+- **Synchronization**: Bridges the gap between network data and local storage, ensuring that updates from the network are reflected in the local data source.
+- **Observability**: Enables the Store to observe changes in the local data source and update consumers accordingly.
+
+## **APIs**
+
+### **SourceOfTruth**
+
+[SourceOfTruth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) has the following structure:
+
+```kotlin
+interface SourceOfTruth<Key : Any, Local : Any, Output : Any> {
+    fun reader(key: Key): Flow<Output?>
+    suspend fun write(key: Key, value: Local)
+    suspend fun delete(key: Key)
+    suspend fun deleteAll()
+}
+```
+
+<ParamField path="Key" type="Any" required>
+  The type representing the key used to identify the data item.
+</ParamField>
+
+<ParamField path="Local" type="Any" required>
+  The type representing the local database model representation of the item
+  being retrieved.
+</ParamField>
+
+<ParamField path="Output" type="Any" required>
+  The type representing the domain data model representation of the item being
+  retrieved.
+</ParamField>
+
+#### `reader`
+
+Reads data from the local data source for a given key. Returns a cold [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) emitting the domain data model associated with the key.
+
+<ParamField path="key" type="Key" required>
+  The unique key identifying the data item to be retrieved.
+</ParamField>
+
+#### `write`
+
+Writes data to the local data source for a given key.
+
+<ParamField path="key" type="Key" required>
+  The unique key identifying the data item.
+</ParamField>
+
+<ParamField path="value" type="Local" required>
+  The data to be written, in the local data source format.
+</ParamField>
+
+<Note>
+  This method is used by
+  [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt)
+  to write data fetched from the network into local storage. It's also used by
+  the [MutableStore](/guides/learn-about-store/concepts/store5/mutable-store) to
+  optimistically update the local data source when a write request is received.
+</Note>
+
+#### `delete`
+
+Deletes a specific data item from the local data source.
+
+<ParamField path="key" type="Key" required>
+  The unique key identifying the data item to be deleted.
+</ParamField>
+
+#### `deleteAll`
+
+Deletes all data items from the local data source.
+
+## **Data Flow**
+
+### **Writing Data from [Fetcher](/guides/learn-about-store/concepts/store5/fetcher) to Source of Truth**
+
+<Steps>
+<Step title="Network Fetch" stepNumber="1">
+The Store fetches data from the network using the [Fetcher](/guides/learn-about-store/concepts/store5/fetcher).
+
+```kotlin
+val networkData = fetcher.fetch(key)
+```
+
+</Step>
+
+<Step title="Write to Source of Truth" stepNumber="2">
+  The fetched data is written to the Source of Truth using the `write` method.
+
+```kotlin
+sourceOfTruth.write(key, networkData)
+```
+
+</Step>
+
+<Step title="Notify Readers" stepNumber="3" >
+  Any active reader observing the key is notified of the new data.
+</Step>
+</Steps>
+
+### **Reading Data from Source of Truth**
+
+<Steps>
+  <Step title="Initiate Read" stepNumber="1">
+    The consumer requests data from the Store.
+
+    ```kotlin
+    val request = StoreReadRequest.cached(key, refresh)
+    val flow = store.stream(request)
+    ```
+
+  </Step>
+
+  <Step title="Source of Truth Reader" stepNumber="2">
+    The Store invokes the `reader` method of the Source of Truth.
+
+    ```kotlin
+    val localDataFlow = sourceOfTruth.reader(key)
+    ```
+
+  </Step>
+
+<Step title="Data Emission" stepNumber="3">
+  The Source of Truth emits data through the
+  [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)
+  returned by the `reader` method, which the Store passes to the consumer.
+</Step>
+</Steps>
+
+## **Handling Write and Read Synchronization**
+
+The Store uses a [SourceOfTruthWithBarrier](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/SourceOfTruthWithBarrier.kt) to synchronize read and write operations. This prevents race conditions and ensures data consistency.
+
+- **Barriers**: Implemented using [MutableStateFlow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-mutable-state-flow/) to block reads while a write is in progress.
+- **Versioning**: Each read and write operation carries a version to coordinate updates accurately.
+
+## **Best Practices**
+
+- **Use Observable Storage When Possible**: Implement the `reader` method to return a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) for real-time data updates.
+- **Handle Exceptions Gracefully**: Ensure that exceptions are handled appropriately in both the `write` and `reader` methods.
+
+- **Convert Between Data Types**: Ensure proper conversion between network, local, and domain data types.
