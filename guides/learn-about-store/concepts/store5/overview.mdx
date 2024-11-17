@@ -6,13 +6,20 @@ version: "5"
 
 <CardGroup cols={2}>
   <Card title="Store" icon="store-lock" iconType="duotone" href="/guides/learn-about-store/concepts/store5/store">
-    Typed repository that returns a flow of `Data`/`Loading`/`Error` from local and network data sources.
+    Typed repository that mediates data flow between network, memory cache, and local storage in your app.
   </Card>
 
-    <Card title="Mutable Store" icon="store" iconType="duotone" href="/guides/learn-about-store/concepts/store5/mutable-store">
-    Mutable repository implementation that allows create (C), read (R), update (U) and delete (D) operations for local and network resources.
+{" "}
 
-  </Card>
+<Card
+  title="Mutable Store"
+  icon="store"
+  iconType="duotone"
+  href="/guides/learn-about-store/concepts/store5/mutable-store"
+>
+  Mutable implementation of a typed repository that supports create (C), read
+  (R), update (U) and delete (D) operations for local and network resources.
+</Card>
 
 <Card
   title="Source of Truth"
@@ -20,7 +27,8 @@ version: "5"
   iconType="duotone"
   href="/guides/learn-about-store/concepts/store5/source-of-truth"
 >
-  Persists items.
+  Single authoritative local data source, ensuring data consistency and enabling
+  offline support.
 </Card>
 
 <Card
@@ -56,7 +64,9 @@ version: "5"
   iconType="duotone"
   href="/guides/learn-about-store/concepts/store5/validator"
 >
-  Returns whether an item is valid.
+  Allows you to define custom logic to determine whether local data is still
+  valid or if it needs to be refreshed from the remote data source using the
+  Fetcher.
 </Card>
 
 <Card
@@ -65,7 +75,8 @@ version: "5"
   iconType="duotone"
   href="/guides/learn-about-store/concepts/store5/converter"
 >
-  Converts items between `Network`/`Local`/`Domain` representations.
+  Converts items between network, local database, and domain data
+  representations.
 </Card>
 
 </CardGroup>
