@@ -2,100 +2,130 @@
 title: Why Store?
 ---
 
-## Efficient data caching and retrieval
+Store is designed to simplify data management in modern applications. It provides an architecture for handling data flow between network, memory cache, and local storage, ensuring consistency, efficiency, and scalability.
 
-Optimize your app's performance and responsiveness with Store's powerful caching and data retrieval capabilities.
+## Unified and Efficient Data Management
 
-<CardGroup cols={3}>
+Store acts as a single source of truth for your application's data, streamlining how you fetch, cache, and update data across different layers.
+
+<CardGroup cols={2}>
   <Card
-    title="In-Memory Caching for Quick Data Access"
-    icon="head-side-brain"
-    iconType="duotone"
-    
-  >
-    Store provides in-memory caching backed by Guava, enabling efficient caching with minimal configuration.
-  </Card>
-  <Card
-    title="Disk Caching for Offline Functionality"
-    icon="floppy-disk"
-    iconType="duotone"
-  >
-    Integrate effortlessly with databases like Room, SQLDelight, or Realm to persist data locally and provide a robust offline-first experience.
-  </Card>
-
-    <Card
-    title="Customizable Caching Strategies"
-    icon="gear"
-    iconType="duotone"
-    >
-    Tailor your in-memory caching with configurable policies for TTL and maximum size. This ensures rapid data retrieval without unnecessary network calls.
-
-  </Card>
-
-</CardGroup>
-
-## Reactive and reliable data streams
-
-Build robust and responsive applications with Store's reactive data streaming and advanced error handling capabilities.
-
-<CardGroup cols={3}>
-  <Card
-    title="Reactive Data Streams with Kotlin Flow"
+    title="Unified Data Flow"
     icon="wave"
-    iconType="duotone"
-    
-  >
-    Leverage Kotlin's Flow for a reactive API that emits streams of data, loading states, and errors. React to data changes in real-time from memory cache, disk cache, or network sources, keeping your UI consistently up-to-date.
-  </Card>
-  
-  <Card
-    title="Structured Error Handling Without Exceptions"
-    icon="shield-halved"
-    iconType="duotone"
-  >
-    Store wraps errors instead of throwing exceptions, keeping your data streams alive. Continue receiving updates even after encountering errors, promoting a more resilient and fault-tolerant application architecture.
+    iconType="duotone">
+    Coordinate data seamlessly between network, memory cache, and local storage through a single interface. Store automatically manages data synchronization and caching strategies, improving performance and reducing development effort.
   </Card>
 
-    <Card
-    title="Support for Observable Queries"
-    icon="eyes"
-    iconType="duotone"
-    >
-    Integrate with databases like Room to support observable queries. Store emits new data whenever the underlying database changes, even if the changes occur outside of Store.
+<Card title="Smart Caching" icon="brain-circuit" iconType="duotone">
+  Leverage intelligent caching with automatic memory management and persistent
+  storage. Store optimizes data access by serving data from memory when
+  possible, falling back to disk, and fetching from the network only when
+  necessary, enhancing performance and reducing latency.
+</Card>
 
-  </Card>
+<Card title="Full CRUD Support" icon="pen-to-square" iconType="duotone">
+  Handle all data operations with MutableStore's complete CRUD support. Create,
+  read, update, and delete data with automatic synchronization between local and
+  remote sources, simplifying data management and reducing boilerplate code.
+</Card>
+
+<Card title="Flexible Data Conversion" icon="arrow-right-arrow-left" iconType="duotone">
+  Transform data seamlessly between network, local storage, and domain models
+  using Store's Converter. Maintain a clean separation between data layers while
+  ensuring type safety, enhancing code maintainability and readability.
+</Card>
+</CardGroup>
+
+## Powerful Data Synchronization
+
+Keep your local and remote data in sync with Store's comprehensive synchronization capabilities.
+
+<CardGroup cols={2}>
+
+<Card title="Offline-First Architecture" icon="wifi-slash" iconType="duotone">
+  Build reliable offline-first applications with automatic conflict resolution
+  and synchronization. Store tracks local changes and can ensure they're
+  properly synchronized when connectivity is restored.
+</Card>
+
+<Card title="Request Deduplication" icon="filter" iconType="duotone">
+  Optimize network usage with automatic request deduplication. Store prevents
+  redundant network calls by sharing responses among multiple requesters and
+  managing request lifecycles efficiently, reducing bandwidth usage and
+  improving performance.
+</Card>
+
+<Card title="Conflict Resolution" icon="code-merge" iconType="duotone">
+  Handle data conflicts gracefully with built-in conflict resolution strategies.
+  Store's Bookkeeper tracks failed synchronizations and enables smart resolution
+  of concurrent modifications, maintaining data integrity and consistency.
+</Card>
+
+<Card title="Flexible Data Validation" icon="shield-check" iconType="duotone">
+  Define custom validation rules to ensure data freshness and integrity. Store's
+  Validator component lets you implement domain-specific validation logic to
+  determine when data needs refreshing, ensuring users always see up-to-date
+  information.
+</Card>
 
 </CardGroup>
 
-## Advanced features for modern development
+## Reactive and Responsive Applications
 
-Enhance your app with Store's advanced capabilities designed to optimize network usage and streamline data management.
+Build responsive applications with Store's reactive architecture and robust error handling.
 
-<CardGroup cols={3}>
+<CardGroup cols={2}>
+  <Card title="Real-Time Updates" icon="bolt" iconType="duotone" >
+    Receive real-time updates when data changes, whether from the network, cache, or local storage. Store leverages Kotlin Flow to automatically manage data streams and keep your UI in sync, enhancing user engagement and interactivity.
+  </Card>
+
+<Card title="Thread-Safe Operations" icon="layer-group" iconType="duotone">
+  Perform concurrent operations safely with Store's built-in thread safety
+  mechanisms. Handle multiple readers and writers without worrying about race
+  conditions or data corruption, ensuring data integrity and stability.
+</Card>
+
+<Card title="Loading State Management" icon="spinner" iconType="duotone">
+  Track loading states automatically with Store's built-in loading indicators.
+  Know exactly when data is being fetched, cached, or synchronized, allowing you
+  to provide immediate feedback to users and enhance the user experience.
+</Card>
+
+<Card title="Graceful Error Handling" icon="shield-halved" iconType="duotone">
+  Handle errors gracefully with Store's comprehensive error management. Network
+  failures, data conversion issues, and validation errors are handled
+  predictably without crashing your application, improving reliability and user
+  trust.
+</Card>
+</CardGroup>
+
+## Scalable and Extensible Architecture
+
+Store is designed to handle the complexities of modern application development at any scale.
+
+<CardGroup cols={2}>
+  <Card title="Modular Architecture" icon="cubes" iconType="duotone">
+    Build and customize your data layer with Store's modular components. Mix and
+    match Fetchers, Updaters, Validators, and other components to create
+    solutions tailored to your needs, providing flexibility and extensibility.
+  </Card>
+  <Card title="Integration-Friendly" icon="puzzle-piece" iconType="duotone">
+    Easily integrate Store with popular libraries and frameworks like Retrofit,
+    Room, SQLDelight, and more, enhancing compatibility and simplifying
+    implementation in your existing architecture.
+  </Card>
   <Card
-    title="Throttling and Inflight Request Deduplication"
-    icon="traffic-light-stop"
-    iconType="duotone"
-    
-  >
-    Prevent redundant network calls by throttling API requests when multiple parallel requests are made for the same resource. The inflight debouncer ensures identical requests receive the same response, optimizing network usage and improving performance.
-  </Card>
-  
-  <Card
-    title="Full CRUD Operations with MutableStore"
-    icon="pencil"
+    title="Kotlin Multiplatform Support"
+    icon="laptop-mobile"
     iconType="duotone"
   >
-    Extend Store's capabilities with MutableStore to support create, read, update, and delete operations. Manage both local and network data comprehensively, simplifying data handling and synchronization.
+    Utilize Store across different platforms (Android, iOS, JVM, JS) with shared
+    business logic, reducing development time and effort, and ensuring
+    consistent behavior across platforms.
   </Card>
-
-    <Card
-    title="Built for Multiplatform Projects"
-    icon="rocket"
-    iconType="duotone"
-    >
-    Designed with multiplatform support, Store is suitable for common, JVM, Native, and JS projects. use Store across various platforms with consistent behavior, making it a versatile choice for diverse development environments.
-
+  <Card title="Community and Support" icon="users" iconType="duotone">
+    Backed by a vibrant community, supported by the Kotlin Foundation, and
+    maintained by the Mobile Native Foundation, ensuring ongoing development,
+    support, and a wealth of shared knowledge.
   </Card>
-
 </CardGroup>
