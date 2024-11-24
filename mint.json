@@ -138,6 +138,14 @@
             "docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
             "docs/use-cases/store5/pagination-and-infinite-scrolling"
           ]
+        },
+        {
+          "group": "Best practices",
+          "version": "5",
+          "pages": [
+            "docs/best-practices/store5/overview",
+            "docs/best-practices/store5/single-or-multiple-stores"
+          ]
         }
       ]
     },
