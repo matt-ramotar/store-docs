@@ -1,0 +1,49 @@
+{
+  "name": "store-docs",
+  "version": "1.0.0",
+  "description": "Store documentation site built with Next.js App Router, headless Fumadocs, and HeroUI v3",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3111",
+    "build": "next build",
+    "start": "next start -p 3222",
+    "postinstall": "fumadocs-mdx"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "heroui-pro",
+      "@heroui-pro/react",
+      "@zowe/secrets-for-zowe-sdk"
+    ]
+  },
+  "packageManager": "pnpm@10.30.3",
+  "dependencies": {
+    "@heroui-pro/react": "1.0.0-beta.8",
+    "@heroui/react": "^3.2.4",
+    "@heroui/styles": "^3.2.4",
+    "@iconify/react": "^6.0.2",
+    "@orama/core": "^1.2.19",
+    "cheerio": "^1.2.0",
+    "fumadocs-core": "16.12.1",
+    "fumadocs-mdx": "15.2.0",
+    "next": "^16.3.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-resizable-panels": "^4.12.2",
+    "recharts": "^3.10.1",
+    "shiki": "^4.4.2",
+    "turndown": "^7.2.4"
+  },
+  "devDependencies": {
+    "@iconify-json/gravity-ui": "^1.2.14",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2"
+  }
+}

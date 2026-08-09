@@ -1,0 +1,10 @@
+/* CSS import order: Tailwind CSS v4, HeroUI base styles, then HeroUI Pro styles. */
+@import "tailwindcss";
+@import "@heroui/styles";
+@import "@heroui-pro/react/css";
+
+/* STORE-21 TOKENS START */
+/* Add the site token sheet between these markers.
+   Rules: `@theme inline` only (plain `@theme` freezes light-mode values);
+   no color-mix-derived -soft values; #6D28D9 only for Origin.MEMORY. */
+/* STORE-21 TOKENS END */
