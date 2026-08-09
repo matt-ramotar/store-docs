@@ -8,25 +8,25 @@ export const metadata = {
 const origins = [
   {
     label: "Memory",
-    chipClass: "bg-store-origin-memory-soft text-store-origin-memory",
+    chipClass: "bg-store-origin-memory-soft text-foreground",
     dotClass: "bg-store-origin-memory",
     onDarkClass: "text-store-origin-memory-on-dark",
   },
   {
     label: "Source of truth",
-    chipClass: "bg-store-origin-sot-soft text-store-origin-sot",
+    chipClass: "bg-store-origin-sot-soft text-foreground",
     dotClass: "bg-store-origin-sot",
     onDarkClass: "text-store-origin-sot-on-dark",
   },
   {
     label: "Fetcher",
-    chipClass: "bg-store-origin-fetcher-soft text-store-origin-fetcher",
+    chipClass: "bg-store-origin-fetcher-soft text-foreground",
     dotClass: "bg-store-origin-fetcher",
     onDarkClass: "text-store-origin-fetcher-on-dark",
   },
   {
     label: "Overlay",
-    chipClass: "bg-store-origin-overlay-soft text-store-origin-overlay",
+    chipClass: "bg-store-origin-overlay-soft text-foreground",
     dotClass: "bg-store-origin-overlay",
     onDarkClass: "text-store-origin-overlay-on-dark",
   },
@@ -58,7 +58,7 @@ export default function TokensDemoPage() {
               Origin legend
             </h2>
             <p className="mt-1 text-sm text-muted">
-              Each label uses its origin color over the matching soft surface.
+              Each dot uses its origin color over the matching soft surface.
             </p>
           </div>
           <ul className="flex list-none flex-wrap gap-3 p-0" role="list">
