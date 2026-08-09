@@ -4,7 +4,56 @@
 @import "@heroui-pro/react/css";
 
 /* STORE-21 TOKENS START */
-/* Add the site token sheet between these markers.
-   Rules: `@theme inline` only (plain `@theme` freezes light-mode values);
-   no color-mix-derived -soft values; #6D28D9 only for Origin.MEMORY. */
+:root {
+  --background: oklch(0.968077 0.007383 80.721); /* #F7F4EF */
+  --surface: oklch(1 0 0); /* #FFF */
+  --surface-secondary: oklch(0.947272 0.010288 81.795); /* #F1EDE6 */
+  --surface-tertiary: oklch(0.924125 0.013722 78.26); /* #EBE5DC */
+  --foreground: oklch(0.237353 0.015407 256.809); /* #1A1F26 */
+  --foreground-secondary: oklch(0.439662 0.02582 259.174); /* #4A5361 */
+  --muted: oklch(0.567323 0.026997 262.024); /* #6E7787 */
+  --separator: oklch(0.905886 0.013789 78.258); /* #E5DFD6 */
+  --border: oklch(0.86632 0.016844 79.343); /* #D9D2C7 */
+  --default: oklch(0.935713 0.011995 79.783); /* #EEE9E1 */
+  --default-foreground: oklch(0.338252 0.02382 258.364); /* #303844 */
+  --overlay: oklch(0.992258 0.006185 75.408); /* #FFFCF8 */
+  --segment: oklch(0.983539 0.009021 78.282); /* #FDF9F3 */
+  --scrollbar: oklch(0.761033 0.020919 77.276); /* #B9B0A3 */
+  --accent: oklch(0.55453 0.096901 181.915); /* #0D8577 */
+  --accent-strong: oklch(0.447135 0.076448 183.758); /* #0A6259 */
+  --accent-foreground: oklch(1 0 0); /* #FFF */
+  --success: oklch(0.527299 0.137103 150.069); /* #15803D */
+  --warning: oklch(0.555283 0.145505 48.998); /* #B45309 */
+  --danger: oklch(0.506824 0.177871 11.7); /* #B3244A */
+  --link: var(--accent-strong); /* #0A6259 */
+
+  --accent-soft: oklch(0.936672 0.021133 178.349); /* #DCEFEA */
+  --accent-soft-hover: oklch(0.901128 0.028647 180.21); /* #CBE5DF */
+  --success-soft: oklch(0.945651 0.019125 152.812); /* #E4F1E7 */
+  --success-soft-hover: oklch(0.910294 0.031728 154.128); /* #D2E8D8 */
+  --warning-soft: oklch(0.940594 0.027255 72.806); /* #F7E9D8 */
+  --warning-soft-hover: oklch(0.899774 0.046144 73.566); /* #F1DABD */
+  --danger-soft: oklch(0.931943 0.024946 2.095); /* #F8E2E7 */
+  --danger-soft-hover: oklch(0.884687 0.042379 359.403); /* #F2CED8 */
+}
+
+@theme inline {
+  --color-store-origin-memory: oklch(0.490666 0.241232 292.581); /* #6D28D9 */
+  --color-store-origin-sot: oklch(0.527299 0.137103 150.069); /* #15803D */
+  --color-store-origin-fetcher: oklch(0.555283 0.145505 48.998); /* #B45309 */
+  --color-store-origin-overlay: oklch(0.556156 0.174826 2.675); /* #C0396A */
+
+  --color-store-origin-memory-soft: oklch(0.940119 0.027995 303.919); /* #EFE7FB, PROVISIONAL */
+  --color-store-origin-sot-soft: oklch(0.941905 0.019914 154.892); /* #E2F0E6, PROVISIONAL */
+  --color-store-origin-fetcher-soft: oklch(0.942794 0.026631 74.757); /* #F7EAD9, PROVISIONAL */
+  --color-store-origin-overlay-soft: oklch(0.938003 0.025153 352.484); /* #F9E4EC, PROVISIONAL */
+
+  --color-store-origin-memory-on-dark: oklch(0.786296 0.125788 298.631); /* #C4A7FF, PROVISIONAL */
+  --color-store-origin-sot-on-dark: oklch(0.792125 0.127637 153.19); /* #75D394, PROVISIONAL */
+  --color-store-origin-fetcher-on-dark: oklch(0.821203 0.113868 73.527); /* #F1B96D, PROVISIONAL */
+  --color-store-origin-overlay-on-dark: oklch(0.751552 0.129275 359.325); /* #F08AAC, PROVISIONAL */
+
+  --color-code-surface: oklch(0.188201 0.019602 252.183); /* #0D141C */
+  --color-code-foreground: oklch(0.898202 0.015641 257.2); /* #D7DEE8 */
+}
 /* STORE-21 TOKENS END */
