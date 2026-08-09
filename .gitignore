@@ -2,3 +2,4 @@ node_modules/
 .next/
 .source/
 *.tsbuildinfo
+next-env.d.ts
