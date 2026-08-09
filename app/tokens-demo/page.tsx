@@ -37,7 +37,7 @@ export default function TokensDemoPage() {
     <main className="min-h-screen bg-background px-6 py-12 text-foreground sm:px-10 lg:px-16">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10">
         <header className="max-w-2xl">
-          <p className="mb-3 text-sm font-semibold tracking-[0.16em] text-accent uppercase">
+          <p className="mb-3 text-sm font-semibold tracking-[0.16em] text-accent-strong uppercase">
             Store token architecture
           </p>
           <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -81,7 +81,7 @@ export default function TokensDemoPage() {
             <h2 id="status-heading" className="text-xl font-semibold">
               Semantic status
             </h2>
-            <p className="mt-1 text-sm text-muted">
+            <p className="mt-1 text-sm text-foreground-secondary">
               Status chips use HeroUI semantic colors, independent of the origin palette.
             </p>
           </div>
@@ -97,11 +97,14 @@ export default function TokensDemoPage() {
           </div>
         </section>
 
-        <section aria-labelledby="on-dark-heading" className="rounded-2xl bg-code-surface p-6 sm:p-8">
-          <h2 id="on-dark-heading" className="text-xl font-semibold text-code-foreground">
+        <section
+          aria-labelledby="on-dark-heading"
+          className="rounded-2xl bg-store-code-surface p-6 sm:p-8"
+        >
+          <h2 id="on-dark-heading" className="text-xl font-semibold text-store-code-foreground">
             Origins on dark
           </h2>
-          <p className="mt-1 text-sm text-code-foreground/75">
+          <p className="mt-1 text-sm text-store-code-foreground/75">
             Bright origin values retain readable contrast on the code surface.
           </p>
           <ul className="mt-6 grid list-none gap-4 p-0 sm:grid-cols-2 lg:grid-cols-4" role="list">
