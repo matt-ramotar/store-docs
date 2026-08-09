@@ -1,34 +1,10 @@
-import type * as PageTree from "fumadocs-core/page-tree";
-import Link from "next/link";
+import type { TOCItemType } from "fumadocs-core/toc";
+import { Separator } from "@heroui/react";
 import { notFound } from "next/navigation";
 
+import { AppShell } from "@/components/shell/AppShell";
 import { getMDXComponents } from "@/mdx-components";
 import { source } from "@/lib/source";
-
-function TreeNodes({ nodes }: { nodes: PageTree.Node[] }) {
-  return (
-    <ul style={{ listStyle: "none", paddingLeft: "1rem", margin: 0 }}>
-      {nodes.map((node, i) => {
-        if (node.type === "page") {
-          return (
-            <li key={node.url}>
-              <Link href={node.url}>{node.name}</Link>
-            </li>
-          );
-        }
-        if (node.type === "folder") {
-          return (
-            <li key={i}>
-              <span>{node.name}</span>
-              <TreeNodes nodes={node.children} />
-            </li>
-          );
-        }
-        return <li key={i}>{node.name}</li>;
-      })}
-    </ul>
-  );
-}
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -38,17 +14,30 @@ export default async function Page(props: {
   if (!page) notFound();
 
   const MDX = page.data.body;
+  const toc: TOCItemType[] =
+    page.data.toc.length > 0
+      ? page.data.toc
+      : [{ depth: 2, title: page.data.title, url: "#page-title" }];
 
   return (
-    <div style={{ display: "flex", gap: "2rem", padding: "2rem" }}>
-      <nav aria-label="Docs" style={{ minWidth: "14rem" }}>
-        <TreeNodes nodes={source.pageTree.children} />
-      </nav>
-      <article style={{ maxWidth: "48rem" }}>
-        <h1>{page.data.title}</h1>
-        <MDX components={getMDXComponents()} />
+    <AppShell currentPath={page.url} pageTree={source.pageTree} toc={toc}>
+      <article className="mx-auto max-w-3xl">
+        <header className="space-y-4">
+          <h1 id="page-title" className="text-4xl font-semibold tracking-tight">
+            {page.data.title}
+          </h1>
+          {page.data.description ? (
+            <p className="text-foreground-secondary max-w-2xl text-lg leading-8">
+              {page.data.description}
+            </p>
+          ) : null}
+          <Separator />
+        </header>
+        <div className="mt-8 leading-7">
+          <MDX components={getMDXComponents()} />
+        </div>
       </article>
-    </div>
+    </AppShell>
   );
 }
 
