@@ -136,6 +136,49 @@ test("the trace launches the refreshing fetch before presenting its Data result"
   );
 });
 
+test("the public error is neutral while the fetch request keeps its origin color", () => {
+  const diagram = source("components/hero/KeyEngineTrace.tsx");
+  const errorStart = diagram.indexOf('<g aria-label={ERROR_EMISSION}');
+  const fetchStart = diagram.indexOf('aria-label="Fetcher request with etag null"');
+  assert.notEqual(errorStart, -1);
+  assert.notEqual(fetchStart, -1);
+  const errorGroup = diagram.slice(errorStart, diagram.indexOf("</g>", errorStart));
+  const fetchGroup = diagram.slice(fetchStart, diagram.indexOf("</g>", fetchStart));
+
+  assert.doesNotMatch(errorGroup, /store-origin-/);
+  assert.match(errorGroup, /stroke-store-code-foreground/);
+  assert.equal((errorGroup.match(/fill-store-code-foreground/g) ?? []).length, 3);
+  assert.match(fetchGroup, /stroke-store-origin-fetcher-on-dark/);
+  assert.match(fetchGroup, /fill-store-origin-fetcher-on-dark/);
+});
+
+test("the trace has a labelled keyboard-focusable horizontal overflow region", () => {
+  const diagram = source("components/hero/KeyEngineTrace.tsx");
+
+  assert.match(diagram, /aria-label="KeyEngine trace"/);
+  assert.match(diagram, /role="region"/);
+  assert.match(diagram, /tabIndex={0}/);
+  assert.match(diagram, /overflow-x-auto/);
+  assert.match(diagram, /focus-visible:outline-store-code-foreground/);
+  assert.match(diagram, /<svg[\s\S]*?className="[^"]*min-w-\[42rem\][^"]*"/);
+});
+
+test("the labelled SVG description contains both exact public results", () => {
+  const diagram = source("components/hero/KeyEngineTrace.tsx");
+  const description = diagram.match(
+    /<desc id="key-engine-trace-description">([\s\S]*?)<\/desc>/,
+  )?.[1];
+
+  assert.ok(description);
+  assert.match(description, /{DATA_EMISSION}/);
+  assert.match(description, /{ERROR_EMISSION}/);
+});
+
+test("the internal docs CTA has no external-link affordance", () => {
+  const thesis = source("components/hero/HeroThesis.tsx");
+  assert.doesNotMatch(thesis, /<Link\.Icon\b/);
+});
+
 test("every Store code-surface text token clears 4.5:1", () => {
   const css = source("app/globals.css");
   const background = extractHexComment(css, "color-store-code-surface");
@@ -162,19 +205,46 @@ test("the generated root preserves native semantics and the traced labels", () =
   const $ = load(readFileSync(artifact, "utf8"));
   const main = $("main");
   const diagram = main.find('svg[role="img"]');
+  const traceRegion = main.find(
+    'div[role="region"][aria-label="KeyEngine trace"][tabindex="0"]',
+  );
+  const docsLink = main.find('a[href="/docs/store6/overview"]');
 
   assert.equal(main.length, 1);
   assert.equal(main.find("h1").text().trim(), "Offline is just another origin.");
-  assert.equal(main.find('a[href="/docs/store6/overview"]').length, 1);
+  assert.equal(docsLink.length, 1);
   assert.equal(main.find("a").length, 1);
+  assert.equal(docsLink.find("svg").length, 0);
+  assert.equal(traceRegion.length, 1);
+  assert.match(traceRegion.attr("class") ?? "", /(?:^|\s)overflow-x-auto(?:\s|$)/);
+  assert.match(
+    traceRegion.attr("class") ?? "",
+    /(?:^|\s)focus-visible:outline-store-code-foreground(?:\s|$)/,
+  );
+  assert.equal(traceRegion.children('svg[role="img"]').length, 1);
   assert.equal(diagram.length, 1);
+  assert.match(diagram.attr("class") ?? "", /(?:^|\s)min-w-\[42rem\](?:\s|$)/);
   assert.equal(diagram.find("title").length, 1);
   assert.equal(diagram.find("desc").length, 1);
   const labelledBy = diagram.attr("aria-labelledby")?.split(/\s+/) ?? [];
   assert.equal(labelledBy.length, 2);
   for (const id of labelledBy) assert.equal(diagram.find(`[id="${id}"]`).length, 1, id);
-  assert.equal(diagram.find(`[aria-label="${EXACT_DATA}"]`).length, 1);
-  assert.equal(diagram.find(`[aria-label="${EXACT_ERROR}"]`).length, 1);
+  const labelledDescriptions = labelledBy
+    .map((id) => diagram.find(`[id="${id}"]`))
+    .filter((element) => element.is("desc"));
+  assert.equal(labelledDescriptions.length, 1);
+  const descriptionText = labelledDescriptions[0].text().replace(/\s+/g, " ").trim();
+  assert.ok(descriptionText.includes(EXACT_DATA));
+  assert.ok(descriptionText.includes(EXACT_ERROR));
+  const dataNode = diagram.find(`[aria-label="${EXACT_DATA}"]`);
+  const errorNode = diagram.find(`[aria-label="${EXACT_ERROR}"]`);
+  const fetchNode = diagram.find('[aria-label="Fetcher request with etag null"]');
+  assert.equal(dataNode.length, 1);
+  assert.equal(errorNode.length, 1);
+  assert.equal(fetchNode.length, 1);
+  assert.equal(errorNode.find("[class*='store-origin-']").length, 0);
+  assert.ok(errorNode.find("[class*='store-code-foreground']").length >= 4);
+  assert.ok(fetchNode.find("[class*='store-origin-fetcher-on-dark']").length >= 3);
   assert.equal(main.find("img, picture, video, canvas").length, 0);
   assert.equal(main.find("[data-motion], [data-animate]").length, 0);
   assert.equal(main.find("[class*='card']").length, 0);

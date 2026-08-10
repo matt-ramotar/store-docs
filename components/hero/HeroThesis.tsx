@@ -23,7 +23,6 @@ export function HeroThesis() {
         href="/docs/store6/overview"
       >
         Read the docs
-        <Link.Icon />
       </Link>
     </header>
   );
