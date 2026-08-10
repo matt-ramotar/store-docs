@@ -7,8 +7,10 @@ import { oramaStaticClient } from "fumadocs-core/search/client/orama-static";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
-  normalizeSearchResult,
-  type NormalizedSearchResult,
+  createTrackedSearchClient,
+  getSearchTriggerAria,
+  SearchResultTracker,
+  type SearchView,
 } from "@/lib/search-results";
 
 const SEARCH_DIALOG_ID = "documentation-command-search";
@@ -16,29 +18,33 @@ const localSearchClient = oramaStaticClient({ from: "/api/search" });
 
 export function CommandSearch() {
   const [isOpen, setIsOpen] = useState(false);
-  const { search, setSearch, query } = useDocsSearch({
-    client: localSearchClient,
-    delayMs: 100,
-  });
-  const results = useMemo(
-    () =>
-      Array.isArray(query.data)
-        ? query.data
-            .map(normalizeSearchResult)
-            .filter((result): result is NormalizedSearchResult => result !== null)
-        : [],
-    [query.data],
+  const [resultTracker] = useState(() => new SearchResultTracker());
+  const trackedSearchClient = useMemo(
+    () => createTrackedSearchClient(localSearchClient, resultTracker),
+    [resultTracker],
   );
+  const { search, setSearch, query } = useDocsSearch({
+    client: trackedSearchClient,
+    delayMs: 0,
+  });
+  const updateSearch = useCallback(
+    (nextSearch: string) => {
+      resultTracker.updateInput(nextSearch);
+      setSearch(nextSearch);
+    },
+    [resultTracker, setSearch],
+  );
+  const searchView = resultTracker.resolve(query);
 
   const setOpen = useCallback(
     (nextOpen: boolean) => {
       setIsOpen(nextOpen);
-      if (!nextOpen) setSearch("");
+      if (!nextOpen) updateSearch("");
     },
-    [setSearch],
+    [updateSearch],
   );
   const exposeKeyboardShortcut = useCallback((node: HTMLButtonElement | null) => {
-    // The Button primitive filters this global ARIA attribute before it reaches the DOM.
+    // Installed Button source omits this global ARIA attribute from its forwarded props.
     node?.setAttribute("aria-keyshortcuts", "Meta+K Control+K");
   }, []);
 
@@ -64,10 +70,10 @@ export function CommandSearch() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [setOpen]);
 
-  const status = getSearchStatus(search, query.isLoading, query.error, results.length);
+  const status = getSearchStatus(searchView.state, searchView.results.length);
 
   function openResult(key: React.Key) {
-    const result = results.find((candidate) => candidate.id === String(key));
+    const result = resultTracker.getActionableResult(query, String(key));
     if (!result) return;
 
     setOpen(false);
@@ -77,9 +83,7 @@ export function CommandSearch() {
   return (
     <>
       <Button
-        aria-controls={SEARCH_DIALOG_ID}
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
+        {...getSearchTriggerAria(isOpen, SEARCH_DIALOG_ID)}
         aria-keyshortcuts="Meta+K Control+K"
         aria-label="Search documentation"
         onPress={() => setOpen(true)}
@@ -101,7 +105,7 @@ export function CommandSearch() {
               filter={() => true}
               id={SEARCH_DIALOG_ID}
               inputValue={search}
-              onInputChange={setSearch}
+              onInputChange={updateSearch}
             >
               <Command.InputGroup autoFocus>
                 <Command.InputGroup.Input
@@ -116,12 +120,12 @@ export function CommandSearch() {
                 </Command.InputGroup.Suffix>
               </Command.InputGroup>
 
-              <SearchStatus error={query.error} message={status} />
+              <SearchStatus message={status} state={searchView.state} />
 
               <Command.List aria-label="Documentation search results" onAction={openResult}>
-                {results.length > 0 ? (
+                {searchView.results.length > 0 ? (
                   <Command.Group heading="Documentation">
-                    {results.map((result) => (
+                    {searchView.results.map((result) => (
                       <Command.Item
                         id={result.id}
                         key={result.id}
@@ -156,11 +160,13 @@ export function CommandSearch() {
   );
 }
 
-function SearchStatus({ error, message }: { error?: Error; message: string }) {
+function SearchStatus({ message, state }: { message: string; state: SearchView["state"] }) {
+  const isError = state === "error";
+
   return (
     <div
-      className={`px-3 py-2 text-xs ${error ? "text-danger" : "text-muted"}`}
-      role={error ? "alert" : "status"}
+      className={`px-3 py-2 text-xs ${isError ? "text-danger" : "text-muted"}`}
+      role={isError ? "alert" : "status"}
     >
       {message}
     </div>
@@ -168,16 +174,21 @@ function SearchStatus({ error, message }: { error?: Error; message: string }) {
 }
 
 function getSearchStatus(
-  search: string,
-  isLoading: boolean,
-  error: Error | undefined,
+  state: SearchView["state"],
   resultCount: number,
 ): string {
-  if (error) return "Search is unavailable.";
-  if (isLoading) return "Searching documentation…";
-  if (!search.trim()) return "Type a term to search both documentation trees.";
-  if (resultCount === 0) return "No results found.";
-  return `${resultCount} ${resultCount === 1 ? "result" : "results"}.`;
+  switch (state) {
+    case "idle":
+      return "Type a term to search both documentation trees.";
+    case "pending":
+      return "Searching documentation…";
+    case "error":
+      return "Search is unavailable.";
+    case "empty":
+      return "No results found.";
+    case "ready":
+      return `${resultCount} ${resultCount === 1 ? "result" : "results"}.`;
+  }
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {

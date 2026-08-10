@@ -54,17 +54,15 @@ test("the palette follows the verified Command compound and accessibility contra
     /filter=\{\(\) => true\}/,
     /onPress=/,
     /aria-label=["']Search documentation["']/,
-    /aria-haspopup=["']dialog["']/,
-    /aria-expanded=\{isOpen\}/,
-    /aria-controls=\{SEARCH_DIALOG_ID\}/,
+    /getSearchTriggerAria\(isOpen, SEARCH_DIALOG_ID\)/,
     /aria-keyshortcuts=["']Meta\+K Control\+K["']/,
     /setAttribute\(["']aria-keyshortcuts["'], ["']Meta\+K Control\+K["']\)/,
     /ref=\{exposeKeyboardShortcut\}/,
     /addEventListener\(["']keydown["']/,
     /removeEventListener\(["']keydown["']/,
     /isEditableTarget/,
-    /query\.isLoading/,
-    /query\.error/,
+    /searchView\.results/,
+    /getActionableResult\(query, String\(key\)\)/,
     /No results found/,
     /Chip\.Label>\{result\.version\}<\/Chip\.Label>/,
   ]) {
@@ -76,7 +74,7 @@ test("the palette follows the verified Command compound and accessibility contra
   assert.doesNotMatch(palette, /https?:\/\//);
 });
 
-test("result normalization strips highlights and rejects non-docs URLs", async () => {
+test("result normalization uses stable source identity and rejects non-docs URLs", async () => {
   const { normalizeSearchResult } = await import("../lib/search-results.ts");
   const valid = normalizeSearchResult(
     {
@@ -86,16 +84,40 @@ test("result normalization strips highlights and rejects non-docs URLs", async (
       content: "<mark>Fetcher</mark> setup",
       breadcrumbs: ["Store 6", "<mark>Quickstart</mark>"],
     },
-    4,
   );
 
-  assert.deepEqual(valid, {
-    id: "search-result-4",
+  assert.deepEqual(valid && { ...valid, id: undefined }, {
+    id: undefined,
     url: "/docs/store6/quickstart#fetcher",
     title: "Fetcher setup",
     context: "Store 6 / Quickstart",
     version: "store6",
   });
+  assert.match(valid.id, /^search-result-/);
+  assert.notEqual(valid.id, valid.url);
+
+  const reordered = normalizeSearchResult({
+    id: "page-1",
+    type: "page",
+    url: "/docs/store6/quickstart#fetcher",
+    content: "Fetcher setup",
+  });
+  const differentSource = normalizeSearchResult({
+    id: "page-2",
+    type: "page",
+    url: "/docs/store6/quickstart#fetcher",
+    content: "Fetcher setup",
+  });
+  assert.equal(reordered.id, valid.id);
+  assert.notEqual(differentSource.id, valid.id);
+
+  for (const id of ["", " leading-space", "control\u0000id"]) {
+    assert.equal(
+      normalizeSearchResult({ id, type: "page", url: "/docs/intro", content: "Unsafe" }),
+      null,
+      JSON.stringify(id),
+    );
+  }
 
   for (const url of [
     "https://store.mobilenativefoundation.org/docs/intro",
@@ -107,11 +129,204 @@ test("result normalization strips highlights and rejects non-docs URLs", async (
     "javascript:alert(1)",
   ]) {
     assert.equal(
-      normalizeSearchResult({ id: url, type: "page", url, content: "Unsafe" }, 0),
+      normalizeSearchResult({ id: `result:${url}`, type: "page", url, content: "Unsafe" }),
       null,
       url,
     );
   }
+});
+
+test("version classification uses the parsed normalized pathname", async () => {
+  const { normalizeSearchResult } = await import("../lib/search-results.ts");
+
+  for (const url of ["/docs/store6?source=palette", "/docs/store6#overview"]) {
+    assert.equal(
+      normalizeSearchResult({ id: `id:${url}`, type: "page", url, content: "Store 6" })
+        ?.version,
+      "store6",
+      url,
+    );
+  }
+
+  assert.equal(
+    normalizeSearchResult({
+      id: "store60",
+      type: "page",
+      url: "/docs/store60?source=palette#overview",
+      content: "Store 5",
+    })?.version,
+    "store5",
+  );
+});
+
+test("search labels normalize Markdown to readable plain text", async () => {
+  const { hasSearchMarkdownArtifacts, stripSearchMarkup } = await import(
+    "../lib/search-results.ts"
+  );
+  const fixtures = [
+    ["<mark>**Fetcher**</mark> and *emphasis* with `Store`", "Fetcher and emphasis with Store"],
+    ["[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)", "Quickstart and Store diagram"],
+    [String.raw`\*literal\* \[brackets\] and \# hash`, "*literal* [brackets] and # hash"],
+    ["# Heading\n- first item\n1. second item\n> quoted note", "Heading first item second item quoted note"],
+    ["__Strong__ and _emphasis_ with ~~obsolete~~ text", "Strong and emphasis with obsolete text"],
+    ["```kotlin\nstore.stream()\n```", "store.stream()"],
+    ["<mark>Use</mark> <strong>safe text</strong> &amp; entities", "Use safe text & entities"],
+  ];
+
+  for (const [markdown, expected] of fixtures) {
+    const plainText = stripSearchMarkup(markdown);
+    assert.equal(plainText, expected, markdown);
+    assert.equal(hasSearchMarkdownArtifacts(plainText), false, plainText);
+  }
+});
+
+test("canonical destinations dedupe deterministically with reorder-stable identities", async () => {
+  const { normalizeSearchResults } = await import("../lib/search-results.ts");
+  const rows = [
+    {
+      id: "text-result",
+      type: "text",
+      url: "/docs/store6/guide#topic",
+      content: "A longer **topic** explanation.",
+    },
+    {
+      id: "heading-result",
+      type: "heading",
+      url: "/docs/store6/section/../guide#topic",
+      content: "`Topic`",
+    },
+    {
+      id: "other-result",
+      type: "heading",
+      url: "/docs/quickstart#topic",
+      content: "Topic",
+    },
+  ];
+
+  const forward = normalizeSearchResults(rows);
+  const reversed = normalizeSearchResults([...rows].reverse());
+  const byUrl = (results) =>
+    Object.fromEntries(
+      results
+        .map((result) => [result.url, result])
+        .sort(([left], [right]) => left.localeCompare(right)),
+    );
+
+  assert.deepEqual(byUrl(forward), byUrl(reversed));
+  assert.equal(forward.length, 2);
+  assert.equal(new Set(forward.map((result) => result.url)).size, forward.length);
+  assert.equal(new Set(forward.map((result) => result.id)).size, forward.length);
+  assert.equal(byUrl(forward)["/docs/store6/guide#topic"].title, "Topic");
+  assert.match(byUrl(forward)["/docs/store6/guide#topic"].id, /^search-result-/);
+  assert.notEqual(
+    byUrl(forward)["/docs/store6/guide#topic"].id,
+    "/docs/store6/guide#topic",
+  );
+});
+
+test("search generations hide and disarm blank, changed, pending, failed, and late data", async () => {
+  const stateModule = await import("../lib/search-results.ts").catch(() => ({}));
+  assert.equal(typeof stateModule.SearchResultTracker, "function");
+  assert.equal(typeof stateModule.createTrackedSearchClient, "function");
+
+  const { SearchResultTracker, createTrackedSearchClient } = stateModule;
+  const requests = [];
+  const tracker = new SearchResultTracker();
+  const client = createTrackedSearchClient(
+    {
+      deps: ["fixture"],
+      search(query) {
+        return new Promise((resolveRequest, rejectRequest) => {
+          requests.push({ query, reject: rejectRequest, resolve: resolveRequest });
+        });
+      },
+    },
+    tracker,
+  );
+  const result = {
+    id: "fetcher-heading",
+    type: "heading",
+    url: "/docs/store6/quickstart#fetcher",
+    content: "<mark>Fetcher</mark>",
+  };
+
+  tracker.updateInput("fetcher");
+  const oldRequest = client.search("fetcher");
+  tracker.updateInput("adapter");
+  assert.deepEqual(tracker.resolve({ data: undefined, error: undefined, isLoading: false }), {
+    results: [],
+    state: "pending",
+  });
+
+  tracker.updateInput("");
+  assert.deepEqual(tracker.resolve({ data: [result], error: undefined, isLoading: false }), {
+    results: [],
+    state: "idle",
+  });
+
+  tracker.updateInput("fetcher");
+  requests[0].resolve([result]);
+  const lateResults = await oldRequest;
+  assert.deepEqual(tracker.resolve({ data: lateResults, error: undefined, isLoading: false }), {
+    results: [],
+    state: "pending",
+  });
+  assert.equal(
+    tracker.getActionableResult(
+      { data: lateResults, error: undefined, isLoading: false },
+      "search-result-fetcher-heading",
+    ),
+    null,
+  );
+
+  const currentRequest = client.search("fetcher");
+  requests[1].resolve([result]);
+  const currentResults = await currentRequest;
+  const ready = tracker.resolve({ data: currentResults, error: undefined, isLoading: false });
+  assert.equal(ready.state, "ready");
+  assert.equal(ready.results.length, 1);
+  assert.equal(
+    tracker.getActionableResult(
+      { data: currentResults, error: undefined, isLoading: false },
+      ready.results[0].id,
+    )?.url,
+    "/docs/store6/quickstart#fetcher",
+  );
+  assert.deepEqual(
+    tracker.resolve({ data: currentResults, error: undefined, isLoading: true }),
+    { results: [], state: "pending" },
+  );
+
+  tracker.updateInput("broken");
+  const failure = new Error("fixture failure");
+  const failedRequest = client.search("broken");
+  requests[2].reject(failure);
+  await assert.rejects(failedRequest, failure);
+  assert.deepEqual(tracker.resolve({ data: currentResults, error: failure, isLoading: false }), {
+    results: [],
+    state: "error",
+  });
+
+  tracker.updateInput("new query");
+  assert.deepEqual(tracker.resolve({ data: currentResults, error: failure, isLoading: false }), {
+    results: [],
+    state: "pending",
+  });
+});
+
+test("search trigger relationship exists only while its dialog target is open", async () => {
+  const stateModule = await import("../lib/search-results.ts").catch(() => ({}));
+  assert.equal(typeof stateModule.getSearchTriggerAria, "function");
+
+  assert.deepEqual(stateModule.getSearchTriggerAria(false, "search-dialog"), {
+    "aria-expanded": false,
+    "aria-haspopup": "dialog",
+  });
+  assert.deepEqual(stateModule.getSearchTriggerAria(true, "search-dialog"), {
+    "aria-controls": "search-dialog",
+    "aria-expanded": true,
+    "aria-haspopup": "dialog",
+  });
 });
 
 test("the built-index verifier uses the public local static client", () => {
@@ -119,6 +334,10 @@ test("the built-index verifier uses the public local static client", () => {
   assert.match(verifier, /fumadocs-core\/search\/client\/orama-static/);
   assert.match(verifier, /client\.search\(["']fetcher["']\)/);
   assert.match(verifier, /api\/search\.body/);
+  assert.match(verifier, /normalizeSearchResults/);
+  assert.match(verifier, /rawResults\.length, 54/);
+  assert.match(verifier, /quickstart\.html/);
+  assert.match(verifier, /aria-controls/);
   assert.doesNotMatch(verifier, /@orama\/orama/);
   assert.doesNotMatch(verifier, /https?:\/\//);
 });
