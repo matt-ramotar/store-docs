@@ -163,6 +163,21 @@ test("the trace has a labelled keyboard-focusable horizontal overflow region", (
   assert.match(diagram, /<svg[\s\S]*?className="[^"]*min-w-\[42rem\][^"]*"/);
 });
 
+test("the wide trace is contained by a shrinkable figure and overflow region", () => {
+  const diagram = source("components/hero/KeyEngineTrace.tsx");
+  const figureClass = diagram.match(/<figure className="([^"]+)"/)?.[1];
+  const regionClass = diagram.match(
+    /<div\s+aria-label="KeyEngine trace"\s+className="([^"]+)"/,
+  )?.[1];
+
+  assert.ok(figureClass);
+  assert.ok(regionClass);
+  assert.match(figureClass, /(?:^|\s)min-w-0(?:\s|$)/);
+  for (const token of ["min-w-0", "w-full", "max-w-full", "overflow-x-auto"]) {
+    assert.match(regionClass, new RegExp(`(?:^|\\s)${token}(?:\\s|$)`), token);
+  }
+});
+
 test("the labelled SVG description contains both exact public results", () => {
   const diagram = source("components/hero/KeyEngineTrace.tsx");
   const description = diagram.match(
@@ -204,6 +219,7 @@ test("the generated root preserves native semantics and the traced labels", () =
   assert.equal(existsSync(artifact), true, artifact);
   const $ = load(readFileSync(artifact, "utf8"));
   const main = $("main");
+  const figure = main.find("figure");
   const diagram = main.find('svg[role="img"]');
   const traceRegion = main.find(
     'div[role="region"][aria-label="KeyEngine trace"][tabindex="0"]',
@@ -215,8 +231,15 @@ test("the generated root preserves native semantics and the traced labels", () =
   assert.equal(docsLink.length, 1);
   assert.equal(main.find("a").length, 1);
   assert.equal(docsLink.find("svg").length, 0);
+  assert.match(figure.attr("class") ?? "", /(?:^|\s)min-w-0(?:\s|$)/);
   assert.equal(traceRegion.length, 1);
-  assert.match(traceRegion.attr("class") ?? "", /(?:^|\s)overflow-x-auto(?:\s|$)/);
+  for (const token of ["min-w-0", "w-full", "max-w-full", "overflow-x-auto"]) {
+    assert.match(
+      traceRegion.attr("class") ?? "",
+      new RegExp(`(?:^|\\s)${token}(?:\\s|$)`),
+      token,
+    );
+  }
   assert.match(
     traceRegion.attr("class") ?? "",
     /(?:^|\s)focus-visible:outline-store-code-foreground(?:\s|$)/,

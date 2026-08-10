@@ -3,10 +3,10 @@ const ERROR_EMISSION = "Error(StoreError.Fetch, servedStale=true)";
 
 export function KeyEngineTrace() {
   return (
-    <figure className="rounded-[1.75rem] border border-store-code-foreground/15 bg-store-code-surface p-5 text-store-code-foreground shadow-surface sm:p-7">
+    <figure className="min-w-0 rounded-[1.75rem] border border-store-code-foreground/15 bg-store-code-surface p-5 text-store-code-foreground shadow-surface sm:p-7">
       <div
         aria-label="KeyEngine trace"
-        className="overflow-x-auto rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-store-code-foreground"
+        className="min-w-0 w-full max-w-full overflow-x-auto rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-store-code-foreground"
         role="region"
         tabIndex={0}
       >
