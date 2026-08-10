@@ -12,7 +12,7 @@ export function KeyEngineTrace() {
       >
         <svg
           aria-labelledby="key-engine-trace-title key-engine-trace-description"
-          className="block h-auto min-w-[42rem] w-full"
+          className="block h-auto min-w-[42rem] w-full xl:min-w-0"
           role="img"
           viewBox="0 0 780 548"
           xmlns="http://www.w3.org/2000/svg"

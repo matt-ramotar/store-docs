@@ -178,6 +178,18 @@ test("the wide trace is contained by a shrinkable figure and overflow region", (
   }
 });
 
+test("the trace releases its minimum width at the xl desktop breakpoint", () => {
+  const diagram = source("components/hero/KeyEngineTrace.tsx");
+  const svgClass = diagram.match(/<svg[\s\S]*?className="([^"]+)"/)?.[1];
+
+  assert.ok(svgClass);
+  for (const token of ["min-w-[42rem]", "w-full", "xl:min-w-0"]) {
+    const escapedToken = token.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    assert.match(svgClass, new RegExp(`(?:^|\\s)${escapedToken}(?:\\s|$)`), token);
+  }
+  assert.doesNotMatch(svgClass, /(?:^|\s)lg:min-w-0(?:\s|$)/);
+});
+
 test("the labelled SVG description contains both exact public results", () => {
   const diagram = source("components/hero/KeyEngineTrace.tsx");
   const description = diagram.match(
@@ -247,6 +259,8 @@ test("the generated root preserves native semantics and the traced labels", () =
   assert.equal(traceRegion.children('svg[role="img"]').length, 1);
   assert.equal(diagram.length, 1);
   assert.match(diagram.attr("class") ?? "", /(?:^|\s)min-w-\[42rem\](?:\s|$)/);
+  assert.match(diagram.attr("class") ?? "", /(?:^|\s)xl:min-w-0(?:\s|$)/);
+  assert.doesNotMatch(diagram.attr("class") ?? "", /(?:^|\s)lg:min-w-0(?:\s|$)/);
   assert.equal(diagram.find("title").length, 1);
   assert.equal(diagram.find("desc").length, 1);
   const labelledBy = diagram.attr("aria-labelledby")?.split(/\s+/) ?? [];
