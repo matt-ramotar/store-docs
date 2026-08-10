@@ -28,100 +28,93 @@ const pages = [
 
 const expectedFiles = pages.map(({ file }) => path.relative(referenceRoot, file)).sort();
 const foundFiles = [];
-const allowedSelectors = new Set([
-  ":root",
-  "*",
-  "html",
-  "body",
-  "a",
-  "a:hover",
-  "a:focus-visible",
-  ".skip-link",
-  ".skip-link:hover",
-  ".skip-link:focus-visible",
-  ".skip-link:focus",
-  "header",
-  "header > div",
-  "main",
-  "footer > div",
-  ".brand",
-  "nav ul",
-  ".eyebrow",
-  "h1",
-  "h2",
-  ".lede",
-  ".notice",
-  ".contracts",
-  ".notice p:last-child",
-  ".contracts p:last-child",
-  ".contract-grid",
-  "dl",
-  "dt",
-  "dd",
-  "code",
-  ".module-links",
-  '[aria-current="page"]',
-  "footer",
-]);
-const allowedVisualDeclarations = new Set([
-  "html|background",
-  "html|color",
-  "a|color",
-  "a:hover|color",
-  ".skip-link|background",
-  ".skip-link|color",
-  ".skip-link:hover|color",
-  ".skip-link:focus-visible|color",
-  "header|background",
-  ".brand|color",
-  ".eyebrow|color",
-  ".lede|color",
-  ".notice|background",
-  ".contracts|background",
-  "dt|color",
-  "code|background",
-  "code|color",
-  '[aria-current="page"]|color',
-  "footer|color",
-]);
-const linkSelectors = new Set([
-  "a",
-  "a:hover",
-  "a:focus-visible",
-  ".skip-link",
-  ".skip-link:hover",
-  ".skip-link:focus-visible",
-  ".skip-link:focus",
-  ".brand",
-  '[aria-current="page"]',
-]);
-const allowedLinkDeclarations = new Set([
-  "a|color",
-  "a|font-weight",
-  "a|text-underline-offset",
-  "a:hover|color",
-  "a:focus-visible|border-radius",
-  "a:focus-visible|outline",
-  "a:focus-visible|outline-offset",
-  ".skip-link|background",
-  ".skip-link|color",
-  ".skip-link|left",
-  ".skip-link|padding",
-  ".skip-link|position",
-  ".skip-link|top",
-  ".skip-link|transform",
-  ".skip-link|z-index",
-  ".skip-link:hover|color",
-  ".skip-link:focus-visible|color",
-  ".skip-link:focus|transform",
-  ".brand|color",
-  ".brand|font-weight",
-  ".brand|letter-spacing",
-  ".brand|text-decoration",
-  '[aria-current="page"]|color',
-  '[aria-current="page"]|text-decoration-thickness',
-]);
-const visualProperties = new Set(["background", "background-color", "background-image", "color"]);
+const expectedStylesheetManifest = [
+  ':root{color-scheme:light;--paper:#f7f4ef;--surface:#ffffff;--slate:#1a1f26;--muted:#4a5361;--border:#d9d2c7;--accent:#0d8577;--accent-strong:#0a6259;--code-surface:#0d141c;--code-foreground:#d7dee8}',
+  "*{box-sizing:border-box}",
+  'html{background:var(--paper);color:var(--slate);font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;line-height:1.6}',
+  "body{margin:0}",
+  "a{color:var(--accent-strong);font-weight:650;text-underline-offset:0.2em}",
+  "a:hover{color:var(--accent-strong)}",
+  "a:focus-visible{border-radius:0.2rem;outline:3px solid var(--accent);outline-offset:3px}",
+  ".skip-link{background:var(--slate);color:var(--surface);left:1rem;padding:0.65rem 0.9rem;position:fixed;top:1rem;transform:translateY(-200%);z-index:2}",
+  ".skip-link:hover{color:var(--surface)}",
+  ".skip-link:focus-visible{color:var(--surface)}",
+  ".skip-link:focus{transform:translateY(0)}",
+  "header{background:var(--surface);border-bottom:1px solid var(--border)}",
+  "header > div,main,footer > div{margin:0 auto;max-width:68rem;padding-left:clamp(1.25rem, 4vw, 3rem);padding-right:clamp(1.25rem, 4vw, 3rem)}",
+  "header > div{align-items:center;display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;min-height:4.5rem;padding-bottom:0.75rem;padding-top:0.75rem}",
+  ".brand{color:var(--slate);font-weight:800;letter-spacing:-0.015em;text-decoration:none}",
+  "nav ul{display:flex;flex-wrap:wrap;gap:0.6rem 1.25rem;list-style:none;margin:0;padding:0}",
+  "main{padding-bottom:5rem;padding-top:clamp(3.5rem, 8vw, 6.5rem)}",
+  ".eyebrow{color:var(--accent-strong);font-size:0.75rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase}",
+  "h1,h2{letter-spacing:-0.035em;line-height:1.1;text-wrap:balance}",
+  "h1{font-size:clamp(2.5rem, 7vw, 5rem);margin:0.75rem 0 1.5rem;max-width:14ch}",
+  "h2{font-size:clamp(1.5rem, 3vw, 2rem);margin:0}",
+  ".lede{color:var(--muted);font-size:clamp(1.05rem, 2vw, 1.25rem);max-width:46rem}",
+  ".notice,.contracts{background:var(--surface);border:1px solid var(--border);margin-top:2.5rem;padding:clamp(1.25rem, 4vw, 2rem)}",
+  ".notice{border-left:0.3rem solid var(--accent)}",
+  ".notice p:last-child,.contracts p:last-child{margin-bottom:0}",
+  ".contract-grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit, minmax(min(100%, 19rem), 1fr));margin-top:1.5rem}",
+  "dl{border-top:1px solid var(--border);margin:0;padding-top:1rem}",
+  "dt{color:var(--muted);font-size:0.75rem;font-weight:800;letter-spacing:0.08em;margin-top:0.85rem;text-transform:uppercase}",
+  "dd{margin:0.2rem 0 0}",
+  "code{background:var(--code-surface);border-radius:0.25rem;color:var(--code-foreground);display:inline-block;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;font-size:0.84em;max-width:100%;overflow-wrap:anywhere;padding:0.15rem 0.35rem}",
+  ".module-links{border-top:1px solid var(--border);margin-top:2.5rem;padding-top:1.5rem}",
+  '[aria-current="page"]{color:var(--slate);text-decoration-thickness:0.2rem}',
+  "footer{border-top:1px solid var(--border);color:var(--muted)}",
+  "footer > div{padding-bottom:2rem;padding-top:2rem}",
+];
+const anchorPaths = {
+  brand:
+    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(1)",
+  core:
+    "html:nth-of-type(1) > body:nth-of-type(1) > main:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  docsHome:
+    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
+  mutations:
+    "html:nth-of-type(1) > body:nth-of-type(1) > main:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  overview:
+    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
+  skip: "html:nth-of-type(1) > body:nth-of-type(1) > a:nth-of-type(1)",
+};
+
+function expectedAnchorManifest(currentHref) {
+  const attributesFor = (href) =>
+    href === currentHref ? { "aria-current": "page", href } : { href };
+
+  return [
+    {
+      attributes: { class: "skip-link", href: "#main-content" },
+      path: anchorPaths.skip,
+      text: "Skip to main content",
+    },
+    {
+      attributes: { class: "brand", href: "/docs" },
+      path: anchorPaths.brand,
+      text: "Store Documentation",
+    },
+    {
+      attributes: { href: "/docs" },
+      path: anchorPaths.docsHome,
+      text: "Docs home",
+    },
+    {
+      attributes: { href: "/docs/store6/overview" },
+      path: anchorPaths.overview,
+      text: "Store 6 overview",
+    },
+    {
+      attributes: attributesFor("/reference/store6-core/index.html"),
+      path: anchorPaths.core,
+      text: "Core module",
+    },
+    {
+      attributes: attributesFor("/reference/store6-mutations/index.html"),
+      path: anchorPaths.mutations,
+      text: "Mutations module",
+    },
+  ];
+}
 
 async function isDirectory(target) {
   try {
@@ -185,52 +178,51 @@ function parseStyleRules(css) {
   return rules;
 }
 
-function assertBoundedStylesheet(rules) {
-  const linkDeclarations = new Map();
-  const visualDeclarations = new Map();
+function elementPath(element) {
+  const segments = [];
+  let current = element;
 
-  for (const rule of rules) {
-    for (const selector of rule.selectors) {
-      assert.equal(allowedSelectors.has(selector), true, `unmodeled CSS selector: ${selector}`);
-
-      for (const property of rule.declarations.keys()) {
-        if (property.startsWith("--")) {
-          assert.equal(selector, ":root", `custom property outside :root: ${selector}|${property}`);
-          continue;
-        }
-        if (linkSelectors.has(selector)) {
-          const key = `${selector}|${property}`;
-          assert.equal(allowedLinkDeclarations.has(key), true, `unmodeled link declaration: ${key}`);
-          assert.equal(
-            linkDeclarations.has(key),
-            false,
-            `conflicting link declaration: ${key} at source orders ${linkDeclarations.get(key)} and ${rule.order}`,
-          );
-          linkDeclarations.set(key, rule.order);
-        }
-        if (!visualProperties.has(property)) continue;
-
-        const key = `${selector}|${property}`;
-        assert.equal(allowedVisualDeclarations.has(key), true, `unmodeled visual declaration: ${key}`);
-        assert.equal(
-          visualDeclarations.has(key),
-          false,
-          `conflicting visual declaration: ${key} at source orders ${visualDeclarations.get(key)} and ${rule.order}`,
-        );
-        visualDeclarations.set(key, rule.order);
-      }
+  while (current && current.type !== "root") {
+    if (current.type === "tag") {
+      const siblings = (current.parent?.children ?? []).filter(
+        (candidate) => candidate.type === "tag" && candidate.name === current.name,
+      );
+      segments.push(`${current.name}:nth-of-type(${siblings.indexOf(current) + 1})`);
     }
+    current = current.parent;
   }
 
-  assert.deepEqual(
-    new Set(linkDeclarations.keys()),
-    allowedLinkDeclarations,
-    "modeled link declaration set changed",
+  return segments.reverse().join(" > ");
+}
+
+function anchorManifest($) {
+  return $("a")
+    .toArray()
+    .map((element) => ({
+      attributes: Object.fromEntries(
+        Object.entries(element.attribs).sort(([left], [right]) =>
+          left < right ? -1 : left > right ? 1 : 0,
+        ),
+      ),
+      path: elementPath(element),
+      text: $(element).text().replace(/\s+/g, " ").trim(),
+    }));
+}
+
+function stylesheetManifest(rules) {
+  return rules.map(
+    ({ declarations, selectors }) =>
+      `${selectors.join(",")}{${[...declarations]
+        .map(([property, value]) => `${property}:${value}`)
+        .join(";")}}`,
   );
+}
+
+function assertFrozenStylesheet(rules) {
   assert.deepEqual(
-    new Set(visualDeclarations.keys()),
-    allowedVisualDeclarations,
-    "modeled visual declaration set changed",
+    stylesheetManifest(rules),
+    expectedStylesheetManifest,
+    "stylesheet manifest changed; re-audit the complete contrast contract",
   );
 }
 
@@ -278,33 +270,25 @@ function contrastRatio(foreground, background) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-function assertLinkContrast(html) {
+function assertLinkContrast(html, currentHref) {
   const $ = load(html);
   assert.equal($("style").length, 1, "reference page must have exactly one bounded stylesheet");
+  assert.deepEqual(
+    Object.entries($("style").get(0).attribs),
+    [],
+    "embedded style element attributes changed",
+  );
   assert.equal($("style[media], style[disabled]").length, 0, "conditional stylesheets are not modeled");
   assert.equal($("link[rel~='stylesheet']").length, 0, "external stylesheets are not modeled");
   assert.equal($("[style], [color], [bgcolor]").length, 0, "inline presentation is not modeled");
-  assert.equal($("a").length, 6, "reference page anchor set changed");
-  assert.equal($("a.skip-link").length, 1, "reference page must have one skip link");
-  assert.equal($("header a.brand").length, 1, "reference page must have one brand link");
-  assert.equal($("header nav a").length, 2, "header documentation link set changed");
-  assert.equal($("main nav.module-links a").length, 2, "module link set changed");
-  assert.equal($("header nav a[class], header nav a[aria-current]").length, 0);
-  assert.equal($("main nav.module-links a[class]").length, 0);
-  assert.equal($("main nav.module-links a[aria-current='page']").length, 1);
-
-  const anchorLocations = ["a.skip-link", "header a.brand", "header nav a", "main nav.module-links a"];
-  for (const anchor of $("a").toArray()) {
-    const matches = anchorLocations.filter((selector) => $(anchor).is(selector));
-    assert.equal(
-      matches.length,
-      1,
-      `unmodeled anchor location: ${$.html(anchor).replace(/\s+/g, " ")}`,
-    );
-  }
+  assert.deepEqual(
+    anchorManifest($),
+    expectedAnchorManifest(currentHref),
+    "anchor manifest changed; re-audit the complete contrast contract",
+  );
 
   const rules = parseStyleRules($("style").text());
-  assertBoundedStylesheet(rules);
+  assertFrozenStylesheet(rules);
   const rootRules = rules.filter((rule) => rule.selectors.includes(":root"));
   assert.equal(rootRules.length, 1, "reference page must have exactly one :root rule");
   const variables = new Map(
@@ -369,6 +353,12 @@ function injectStyleRule(html, rule) {
   return fixture;
 }
 
+function replaceFixture(html, from, to) {
+  const fixture = html.replace(from, to);
+  assert.notEqual(fixture, html, "HTML fixture replacement must succeed");
+  return fixture;
+}
+
 assert.equal(await isDirectory(referenceRoot), true, "public/reference must exist");
 await walk(referenceRoot);
 assert.deepEqual(foundFiles.sort(), expectedFiles, "reference output must contain exactly two module pages");
@@ -379,29 +369,64 @@ assert.throws(
   () =>
     assertLinkContrast(
       injectStyleRule(cascadeFixtureSource, "main a:hover { color: var(--accent); }"),
+      pages[0].currentHref,
     ),
-  /unmodeled CSS selector: main a:hover/,
+  /stylesheet manifest changed/,
   "a later, more-specific link rule must be rejected",
 );
 assert.throws(
   () =>
     assertLinkContrast(
       injectStyleRule(cascadeFixtureSource, "main a:hover, a:hover { color: var(--accent); }"),
+      pages[0].currentHref,
     ),
-  /unmodeled CSS selector: main a:hover/,
+  /stylesheet manifest changed/,
   "an unmodeled selector in a grouped rule must be rejected",
 );
 assert.throws(
   () =>
-    assertLinkContrast(injectStyleRule(cascadeFixtureSource, "a:hover { color: var(--accent); }")),
-  /conflicting link declaration: a:hover\|color at source orders/,
+    assertLinkContrast(
+      injectStyleRule(cascadeFixtureSource, "a:hover { color: var(--accent); }"),
+      pages[0].currentHref,
+    ),
+  /stylesheet manifest changed/,
   "a later duplicate link rule must be rejected",
 );
 assert.throws(
   () =>
-    assertLinkContrast(injectStyleRule(cascadeFixtureSource, "main { background: var(--surface); }")),
-  /unmodeled visual declaration: main\|background/,
+    assertLinkContrast(
+      injectStyleRule(cascadeFixtureSource, "main { background: var(--surface); }"),
+      pages[0].currentHref,
+    ),
+  /stylesheet manifest changed/,
   "an unmodeled link-background override must be rejected",
+);
+assert.throws(
+  () =>
+    assertLinkContrast(
+      replaceFixture(cascadeFixtureSource, 'class="skip-link"', 'class="skip-link contracts"'),
+      pages[0].currentHref,
+    ),
+  /anchor manifest changed/,
+  "a skip link with an additional contracts class must be rejected",
+);
+assert.throws(
+  () =>
+    assertLinkContrast(
+      replaceFixture(cascadeFixtureSource, 'class="skip-link"', 'class="skip-link brand"'),
+      pages[0].currentHref,
+    ),
+  /anchor manifest changed/,
+  "a skip link with an additional brand class must be rejected",
+);
+assert.throws(
+  () =>
+    assertLinkContrast(
+      injectStyleRule(cascadeFixtureSource, "header { opacity: .05; }"),
+      pages[0].currentHref,
+    ),
+  /stylesheet manifest changed/,
+  "an unmodeled opacity declaration must be rejected",
 );
 
 for (const page of pages) {
@@ -424,7 +449,7 @@ for (const page of pages) {
   assert.equal($("nav[aria-label]").length >= 1, true);
   assert.equal($("a[href='#main-content']").length, 1);
   assert.equal($("script").length, 0, "placeholder pages must not execute scripts");
-  assertLinkContrast(html);
+  assertLinkContrast(html, page.currentHref);
 
   assert.match(bodyText, /This page is not generated API documentation\./);
   assert.match(bodyText, /Generated API documentation is currently unavailable\./);
@@ -465,4 +490,10 @@ for (const forbiddenPath of [
 const nextConfig = await readFile(path.join(repoRoot, "next.config.mjs"), "utf8");
 assert.equal(/redirects\s*\(/.test(nextConfig), false, "reference integration must not add a redirect");
 
-console.log(JSON.stringify({ referenceFiles: foundFiles.length, pagesChecked: pages.length }));
+console.log(
+  JSON.stringify({
+    adversarialFixtures: 7,
+    pagesChecked: pages.length,
+    referenceFiles: foundFiles.length,
+  }),
+);

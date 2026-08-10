@@ -80,7 +80,7 @@ After implementation, this command exited `0`:
 ```
 
 ```text
-{"referenceFiles":2,"pagesChecked":2}
+{"adversarialFixtures":7,"pagesChecked":2,"referenceFiles":2}
 ```
 
 The test asserts exact file and directory ownership, regular-file and
@@ -110,14 +110,20 @@ Light-surface hover text now uses `--accent-strong` (`#0a6259`), which measures
 focus-visible states, which measures `16.563:1`. The same contract test then
 exited `0` for both pages.
 
-The contrast validator is intentionally bounded to these self-contained
-placeholder styles and does not claim to implement a general browser CSS
-cascade. It requires one embedded style element, rejects external stylesheets
-and inline presentation attributes, parses grouped selectors in source order,
-and accepts only the current explicit selector, link declaration, and visual
-declaration sets. Custom properties may occur only in `:root`. A duplicate
-link or visual declaration is rejected rather than resolved by source order.
-Every anchor must also match exactly one modeled document location.
+The contrast validator uses a frozen artifact contract for these two
+self-contained placeholders. It does not claim to implement or approximate a
+general browser CSS cascade. It parses the one embedded style element into an
+audited 34-rule manifest containing every selector group, complete declaration
+list, and source position. Both pages must match that complete normalized
+manifest. Any stylesheet drift fails until the expected manifest and contrast
+states are re-audited. External stylesheets, conditional style blocks, and
+inline presentation attributes remain forbidden.
+
+Each page also has a frozen six-anchor manifest. Every descriptor includes the
+anchor's full ancestor path, exact text, and complete attribute map. This
+freezes each `href`, exact `class` string, `aria-current` presence, and the
+absence of additional role, ARIA, style, class, or navigation attributes. The
+15-state contrast matrix runs only after both frozen manifests pass.
 
 A later injected `main a:hover { color: var(--accent); }` rule initially made
 the test exit `1` because the old validator missed the override:
@@ -126,13 +132,24 @@ the test exit `1` because the old validator missed the override:
 AssertionError [ERR_ASSERTION]: Missing expected exception: a later, more-specific link rule must be rejected
 ```
 
-After the validator correction, that fixture is rejected as an unmodeled
-selector. Additional fixtures verify rejection of an unmodeled selector inside
-a grouped rule, a duplicate `a:hover` color declaration at a later source
-position, and a `main` background override. Header, main, and skip-link matrix
-backgrounds are derived from the parsed `header`, `html`, and `.skip-link`
-declarations. Any unmodeled selector or relevant background declaration now
-fails the bounded contract before ratio calculation.
+The frozen manifest now rejects that rule, an override inside a grouped rule,
+a duplicate `a:hover` rule, a `main` background, and `header { opacity: .05; }`
+before ratio calculation. Header, main, and skip-link matrix backgrounds remain
+derived from the parsed `header`, `html`, and `.skip-link` declarations.
+
+Three final fixtures were added before the anchor and stylesheet manifests.
+The first red run exited `1` because the previous validator accepted
+`class="skip-link contracts"`:
+
+```text
+AssertionError [ERR_ASSERTION]: Missing expected exception: a skip link with an additional contracts class must be rejected
+```
+
+The same red test also contained `class="skip-link brand"` and
+`header { opacity: .05; }` fixtures. With the frozen contracts, both extra
+classes are rejected by the anchor manifest and the opacity rule is rejected by
+the stylesheet manifest. The unmodified pages and all seven adversarial
+fixtures then completed with exit `0`.
 
 ## Unresolved-link check
 
@@ -176,7 +193,7 @@ The three owned implementation files have these SHA-256 values:
 | --- | --- |
 | `public/reference/store6-core/index.html` | `7fdcb639f3ee84ba9a4fbd2051c4c3244a6b65833bd5fba4c881cb8db46f2780` |
 | `public/reference/store6-mutations/index.html` | `82f66a63f196edb96df92f25b5c8bcba5d42074dafb85d5405b81053f2013290` |
-| `scripts/test-t6b-reference.mjs` | `248baa43272d38e3a7cead7717931be23943fbce4faa73cf70d2d678978d635f` |
+| `scripts/test-t6b-reference.mjs` | `638580a9963c52203882b2b88288d4b86225940d70b23aade414c022ddd9ba75` |
 
 `git diff --check` exited `0`. T6b did not start a server, open a browser,
 capture a screenshot, mutate Store6, use Figma, write to Linear, push, deploy,
