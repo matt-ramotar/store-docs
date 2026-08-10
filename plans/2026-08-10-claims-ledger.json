@@ -1,0 +1,2630 @@
+{
+ "store6Revision": "a6a156e99db29cebf7da238263b007802bff2bfb",
+ "generated": "2026-08-10",
+ "claims": [
+  {
+   "page": "/",
+   "claim": "Under the default policy Freshness.CachedOrFetch, an invalidated locally available value is served as stale while one background revalidation runs, and a fetch happens only when no local value exists.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:13",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/",
+   "claim": "StoreResult.Data carries value, origin, age, isStale, and refreshing on every frame.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:19",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/",
+   "claim": "Error.servedStale is true exactly when an invalidated resident value was served and its refresh failed under CachedOrFetch or StaleIfError.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:62",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/",
+   "claim": "Origin.SOT identifies a value read from the store's persistent source of truth.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Origin.kt:9",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/",
+   "claim": "Fetch failures are emitted to stream as StoreResult.Error values, and only a MustBeFresh initial-cycle failure completes the flow; every other failure leaves the stream live.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:21",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/",
+   "claim": "The hero's exact result strings 'Data(origin=Origin.SOT, isStale=true, refreshing=true)' and 'Error(StoreError.Fetch, servedStale=true)' are byte-pinned by the T7 harness, which also asserts the built main contains exactly one anchor element \u2014 so adding the quickstart CTA requires updating that harness in the same change.",
+   "anchor": "store-docs/scripts/t7-static-hero.test.mjs:14",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "store5.* and store6.* coordinates live side by side for the whole 6.x major; you can depend on both in one build and migrate a screen at a time, with no flag day.",
+   "anchor": "STABILITY.md:106",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "store6-store5-interop is supported for all of 6.x, and the 5-to-6 and 4-to-6 migration guides are launch gates for 6.0.0 that block GA.",
+   "anchor": "STABILITY.md:109",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "Store 6 is in development targeting 6.0.0-alpha01 and nothing is published yet.",
+   "anchor": "README.md:15",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "store6-core is stable-track but its API is not frozen until the beta01 freeze candidate.",
+   "anchor": "STABILITY.md:47",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "store6-mutations is an experimental separate artifact in which every public symbol is @ExperimentalStoreApi.",
+   "anchor": "STABILITY.md:52",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs",
+   "claim": "/docs is the Store5 entry of the version switcher, so the revised page must keep serving Store 5 readers as the store5 tree root.",
+   "anchor": "store-docs/lib/nav.ts:30",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/meet-store",
+   "claim": "The page's Get started section links to /docs/intro, /docs/quickstart, and the external Cookbook at store.mobilenativefoundation.org.",
+   "anchor": "store-docs/content/docs/meet-store.mdx:10",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/meet-store",
+   "claim": "The page carries Backed by sections for the Kotlin Foundation and the Mobile Native Foundation with their logos.",
+   "anchor": "store-docs/content/docs/meet-store.mdx:26",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/meet-store",
+   "claim": "The file's bytes are owned by the port-page:generate ledger, so hand edits are detected and block the generator's reconciliation.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:76",
+   "verdict": "REFUTED",
+   "note": "Ownership half is true: line 76-77 lists content/docs/meet-store.mdx under owners['port-page:generate'] with a pinned sha256. But the enforcement half is wrong: reconcileOwnedOutputs (store-docs/scripts/generated-output-transaction.mjs:45-58) never compares the current on-disk bytes of a CONTINUING owned output against its ledger hash \u2014 it stages and overwrites them unconditionally. Byte-mismatch blocking exists only for stale entries leaving the output set (OWNED_STALE_MODIFIED, line 55-57) and for newly claimed paths that already exist (OWNED_TARGET_UNCLAIMED, line 47-49); neither applies to meet-store.mdx, which stays in the inventory-derived output set. The byte-verifying verifyOwnedOutputs (line 201-219) is wired only to the sync-store6-docs owner via sync-store6-docs.mjs --check; port-page.mjs supports only --acquire | --generate (port-page.mjs:1349-1350), and neither package.json nor t8-verification.mjs hash-checks port-page:generate outputs against disk. So a hand edit to meet-store.mdx is silently overwritten on the next generate run, not detected-and-blocked \u2014 the practical conclusion for planning (do not hand-edit; edits will not survive) still holds, but via silent overwrite, not a blocking check.",
+   "correction": "Hand edits to port-page-owned files are silently overwritten by reconcileOwnedOutputs on the next generate run, not detected-and-blocked; no byte-verifying --check is wired to the port-page:generate owner."
+  },
+  {
+   "page": "/docs/meet-store",
+   "claim": "The route's live URL is inventoried and must keep returning HTTP 200 without a redirect.",
+   "anchor": "store-docs/evidence/live-url-inventory.txt:16",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/intro",
+   "claim": "The primary-nav Start item currently targets /docs/intro; the IA re-points it to /docs/store6/overview in lib/nav.ts while this route keeps serving 200.",
+   "anchor": "store-docs/lib/nav.ts:15",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/intro",
+   "claim": "The page teaches Store 5 vocabulary, including MutableStore's complete CRUD support.",
+   "anchor": "store-docs/content/docs/intro.mdx:21",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/intro",
+   "claim": "The page presents freshness as a user-supplied Validator component, which is Store 5-specific.",
+   "anchor": "store-docs/content/docs/intro.mdx:45",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/intro",
+   "claim": "In Store 6, freshness is a native per-call sealed policy planned by the engine, not a user-supplied validation hook.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:12",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/intro",
+   "claim": "The file's bytes are owned by the port-page:generate ledger.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:72",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/quickstart",
+   "claim": "The walkthrough installs Store 5 coordinates org.mobilenativefoundation.store:store5 at version 5.1.0.",
+   "anchor": "store-docs/content/docs/quickstart.mdx:36",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/quickstart",
+   "claim": "The final assembly step builds a MutableStore via MutableStoreBuilder.from(fetcher, sourceOfTruth, converter).build(updater, bookkeeper).",
+   "anchor": "store-docs/content/docs/quickstart.mdx:634",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/quickstart",
+   "claim": "The search verifier inspects this page's built HTML and requires the closed search trigger to carry aria-expanded=\"false\" and no aria-controls attribute.",
+   "anchor": "store-docs/scripts/verify-search-index.mjs:76",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/quickstart",
+   "claim": "The search verifier pins the built index at exactly 54 raw results for the query 'fetcher', a count this page's content contributes to.",
+   "anchor": "store-docs/scripts/verify-search-index.mjs:42",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/quickstart",
+   "claim": "The file's bytes are owned by the port-page:generate ledger.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:80",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/challenges-at-scale",
+   "claim": "The page is frontmatter-only with description 'Coming soon' and a completely empty body.",
+   "anchor": "store-docs/content/docs/challenges-at-scale.mdx:3",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/challenges-at-scale",
+   "claim": "The route is a live link target from the frozen Store 5 quickstart's Next Steps section ('Deep Dive into Store'), so removing it would create a dead end inside frozen content.",
+   "anchor": "store-docs/content/docs/quickstart.mdx:878",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/challenges-at-scale",
+   "claim": "The route's live URL is inventoried and must keep returning HTTP 200 without a redirect.",
+   "anchor": "store-docs/evidence/live-url-inventory.txt:4",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/challenges-at-scale",
+   "claim": "The file's bytes are owned by the port-page:generate ledger.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:28",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/community/overview",
+   "claim": "The page lists five external talks/podcasts with venues spanning 2019-2024: KotlinConf 2019, Droidcon SF 2023, Talking Kotlin #128 (2023), Droidcon SF 2024, and Droidcon NYC 2024 \u2014 content covering multiple Store generations, which is why both tracks keep linking to it.",
+   "anchor": "store-docs/content/docs/community/overview.mdx:7",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/community/overview",
+   "claim": "The page is the current 'Project' primary-nav destination.",
+   "anchor": "store-docs/lib/nav.ts:26",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/community/overview",
+   "claim": "The file's bytes are owned by the port-page:generate ledger.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:32",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/community/overview",
+   "claim": "The route's live URL is inventoried and must keep returning HTTP 200 without a redirect.",
+   "anchor": "store-docs/evidence/live-url-inventory.txt:5",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/developer-newsletter/overview",
+   "claim": "The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.",
+   "anchor": "store-docs/app/developer-newsletter/overview/page.tsx:8",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/developer-newsletter/overview",
+   "claim": "The page entrypoint is owned by the port-page:generate ledger, so it is regenerable only through the port pipeline.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:12",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/developer-newsletter/overview",
+   "claim": "The route's live URL is inventoried and must keep returning HTTP 200 without a redirect.",
+   "anchor": "store-docs/evidence/live-url-inventory.txt:1",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/release-notes/overview",
+   "claim": "The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.",
+   "anchor": "store-docs/app/release-notes/overview/page.tsx:8",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/release-notes/overview",
+   "claim": "Store 6 release policy: each alpha closes at least one community issue with a link to the named conformance test that resolves it \u2014 a test, not a changelog line \u2014 which shapes any future release-note content at this path.",
+   "anchor": "STABILITY.md:98",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/release-notes/overview",
+   "claim": "The conformance suite under store6-core/src/commonTest is public documentation of what is guaranteed; release notes link the named tests.",
+   "anchor": "STABILITY.md:129",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/release-notes/overview",
+   "claim": "The page entrypoint is owned by the port-page:generate ledger.",
+   "anchor": "store-docs/evidence/T4-owned-targets.json:16",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/release-notes/overview",
+   "claim": "The route's live URL is inventoried and must keep returning HTTP 200 without a redirect.",
+   "anchor": "store-docs/evidence/live-url-inventory.txt:37",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/tokens-demo",
+   "claim": "The page's four origin chips \u2014 Memory, Source of truth, Fetcher, Overlay \u2014 map one-to-one onto the library's Origin enum values MEMORY, SOT, FETCHER, OVERLAY.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Origin.kt:4",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/tokens-demo",
+   "claim": "The page renders the origin token set (soft-surface chips, dots, and on-dark variants) plus Supported/Experimental semantic status chips as separate palettes.",
+   "anchor": "store-docs/app/tokens-demo/page.tsx:8",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/tokens-demo",
+   "claim": "The on-dark origin text tokens shown on this page are held to a 4.5:1 minimum contrast ratio against the store code surface by the hero test harness.",
+   "anchor": "store-docs/scripts/t7-static-hero.test.mjs:209",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/tokens-demo",
+   "claim": "/tokens-demo is one of the six fixed extra routes in the contract-locked route census.",
+   "anchor": "store-docs/scripts/t8-verification.mjs:36",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/tokens-demo",
+   "claim": "The page appears nowhere in the site's navigation definition (no primaryNavItems or docsVersions entry).",
+   "anchor": "store-docs/lib/nav.ts:14",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "A fetcher is the only required builder input; store<K, V> { } with no fetcher configured throws IllegalArgumentException at build time.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:29",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "Every Data frame names one of exactly four origins: MEMORY, SOT, FETCHER, OVERLAY.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Origin.kt:4",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "The default freshness policy on both stream and get is Freshness.CachedOrFetch, as a defaulted per-call parameter.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:43",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "Data carries origin, age, isStale, and refreshing as independent fields, so provenance and lifecycle state are read separately.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:19",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "store6-core is stable-track but its API is not frozen until the beta01 freeze candidate.",
+   "anchor": "STABILITY.md:47",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "store6-mutations is a separate artifact in which every public symbol is @ExperimentalStoreApi.",
+   "anchor": "STABILITY.md:52",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "Store.get is never projected by a configured overlay; overlays apply only to stream.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:54",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/overview",
+   "claim": "Store 6 is in development targeting 6.0.0-alpha01 and nothing is published yet.",
+   "anchor": "README.md:15",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "The quickstart store block registers only a fetcher and is verbatim from the runnable store6-quickstart module.",
+   "anchor": "store6-quickstart/src/main/kotlin/org/mobilenativefoundation/store6/quickstart/Main.kt:49",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "CI compiles and executes the exact quickstart program on every pull request via ./gradlew :store6-quickstart:run.",
+   "anchor": ".github/workflows/store6.yml:62",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "stream yields exactly four StoreResult kinds \u2014 Loading, Data, Revalidated, Error \u2014 and the example handles all four exhaustively.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:10",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "stream is an unbounded flow that remains active until its collector is cancelled or the store is closed; take(2) is what ends the example program.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:24",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "A pending optimistic write surfaces as origin == OVERLAY; isStale is never set on an overlay frame, which is stamped age = Duration.ZERO and isStale = false unconditionally.",
+   "anchor": "STABILITY.md:189",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "runtime() returns null on a mutation store by design, withholding the raw write handle so every consumer write stays journalled.",
+   "anchor": "docs/store6/quickstart.md:174",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "The alpha's two-step durable acknowledgement path means a crash inside the ack window can re-send the same push, so server endpoints must be idempotent or keyed by mutation identity.",
+   "anchor": "STABILITY.md:166",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/quickstart",
+   "claim": "The quickstart deliberately does not promise convergence for a collector already active across an acknowledgement; only a stream opened after the acknowledgement is promised to see the echo.",
+   "anchor": "docs/store6/quickstart.md:170",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "The default freshness is CachedOrFetch: an absent key fetches and a resident fresh value is served without a second fetch.",
+   "anchor": "docs/store6/important-defaults.md:18",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "The engine performs zero retries and zero backoff at zero configuration; one demand cycle invokes the fetcher exactly once and retries belong in the user's fetcher.",
+   "anchor": "docs/store6/important-defaults.md:37",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "Idle residency defaults to 128 quiescent engines in an LRU idle set; engines with active collectors, in-flight work, or an in-flight fetch are never evicted.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:116",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "50 concurrent getters plus 50 collectors demanding one key produce exactly one fetch, and all 100 observe its outcome.",
+   "anchor": "docs/store6/important-defaults.md:68",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "A NotModified response surfaces as exactly one Revalidated(age) and clears staleness, not as a redundant Data frame.",
+   "anchor": "docs/store6/important-defaults.md:91",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "Zero configuration and explicit expert configuration are byte-identical in behavior, with the equivalence asserted over persistence, bookkeeper, freshness validator, and idle cap \u2014 not telemetry or overlay.",
+   "anchor": "docs/store6/important-defaults.md:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "LocalOnly never fetches; when nothing is resident it fails Missing without a Loading frame and without calling the fetcher.",
+   "anchor": "docs/store6/important-defaults.md:24",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/important-defaults",
+   "claim": "The source-of-truth reader self-heal delay and the reader-grace window are internal constants that are not contractual, and the page deliberately does not pin their values.",
+   "anchor": "docs/store6/important-defaults.md:43",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "stream emits fetcher and source-of-truth failures as StoreResult.Error values and never throws them to the collector",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:21",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "get returns the resolved value or throws StoreException and never emits partial states",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:59",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "StoreResult has exactly four kinds: Loading, Data, Revalidated, and Error \u2014 there is no fifth",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "Only a MustBeFresh initial-cycle fetch or revalidation failure emits one Error and completes the flow; every other failure leaves the stream live",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:23",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "Error.servedStale is true exactly when an invalidated resident was served and its refresh failed under CachedOrFetch or StaleIfError",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt:66",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "isStale is never set on an OVERLAY frame \u2014 overlay frames are stamped age = Duration.ZERO and isStale = false unconditionally, and Store.get is unprojected",
+   "anchor": "STABILITY.md:189",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "Conflation is per result kind: newer Data supersedes queued Data, but Loading, Error, and Revalidated lifecycle signals are never displaced by another kind",
+   "anchor": "docs/store6/important-defaults.md:87",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/read-contract",
+   "claim": "After close(), every operation fails with IllegalStateException and the exact message 'Store is closed.', and close is idempotent",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:170",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "Freshness is a per-call sealed interface with exactly five variants: CachedOrFetch, MaxAge, MustBeFresh, StaleIfError, LocalOnly",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "CachedOrFetch is the default: invalidated values and rows without freshness metadata are served as stale while one background revalidation runs; fetch only when no local value exists",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:14",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "Concurrent requests for one key share a single in-flight fetch even when their policies differ",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "LocalOnly never invokes the fetcher, probes the configured source of truth once on a memory miss, and reports StoreError.Missing when nothing is local \u2014 yet the builder still requires a fetcher",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:47",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "A resident value with null meta is treated as conservatively stale by read planning",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt:13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "StoreMeta (writtenAtEpochMillis + optional etag) is typed and no untyped metadata channel exists anywhere in Store",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreMeta.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "FetchPlan has three outcomes (Skip, Fetch, Conditional) and Skip with no resident value yields StoreError.Missing",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt:48",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/freshness",
+   "claim": "The engine performs zero retries and zero backoff; a failed refresh schedules nothing and a later call is new demand",
+   "anchor": "docs/store6/important-defaults.md:37",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "A key's namespace and canonicalId() together form its stable identity, and implementations should return the same identity components for the lifetime of the key",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreKey.kt:6",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "canonicalId is the deduplication lever: two keys with the same namespace and canonical id share one in-flight fetch, one resident value, one stale mark",
+   "anchor": "docs/store6/key-design.md:20",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "namespace is the unit of bulk operations, and the durable watermark it carries covers keys the store has never seen",
+   "anchor": "docs/store6/key-design.md:26",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "The canonical id must not contain request-varying noise (timestamps, request ids, nonces) or secrets, because it is a cache key written to the source of truth",
+   "anchor": "docs/store6/key-design.md:75",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "Invalidating a namespace before a key has ever been fetched still makes that key's first read honest, because namespace and global watermarks are durable",
+   "anchor": "docs/store6/key-design.md:123",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/key-design",
+   "claim": "The site copy is machine-generated from Repo A docs/store6/key-design.md via the sha256-pinned sync lock; content edits happen upstream only",
+   "anchor": "store-docs/evidence/T4-store6-source-lock.json:21",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "invalidate marks the value stale without removing it; on return, active streams have been signaled and will observe refetched data while the resident value keeps serving as stale",
+   "anchor": "docs/store6/invalidate-vs-clear.md:14",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "The stale mark is durable and survives process restart until a later successful fetch or revalidation clears it",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:77",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "An in-flight fetch that started before a clear can no longer commit; its waiters observe StoreError.Missing",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:117",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "A post-clear stream never replays pre-clear data; it starts absent or loading",
+   "anchor": "docs/store6/invalidate-vs-clear.md:74",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "After invalidate, the refresh produces exactly one terminal outcome: one fresh Data, or one served-stale Error, or one Revalidated \u2014 never two",
+   "anchor": "docs/store6/invalidate-vs-clear.md:147",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/invalidate-vs-clear",
+   "claim": "The site copy is machine-generated from Repo A docs/store6/invalidate-vs-clear.md via the sha256-pinned sync lock; content edits happen upstream only",
+   "anchor": "store-docs/evidence/T4-store6-source-lock.json:16",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "The StoreError variant set is frozen for the 6.x major, which lets the hierarchy bridge to an exhaustive Swift enum",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt:6",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "StoreError has exactly six variants: Fetch, Persistence, Conversion, FreshnessUnsatisfiable, Conflict(serverMeta), and Missing(key)",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "Value-returning operations throw StoreException, a RuntimeException exposing the structured .error and using the error's message",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreException.kt:8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "Every StoreError message states what was attempted, for which key or namespace, and the likely fix",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt:8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "FetcherResult.Deleted destructively clears the resident value, streams and waiters receive StoreError.Missing, and the deletion does not trigger an automatic refetch",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:16",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "One demand cycle invokes the fetcher exactly once, a failure schedules no background retry, and a later call is new demand \u2014 retries belong in the user's fetcher",
+   "anchor": "docs/store6/important-defaults.md:37",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "StoreResults (seam, @ExperimentalStoreApi) is the sanctioned construction door for StoreResult/StoreError/StoreException in extensions, fakes, and tests; the internal constructors stay internal",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/StoreResults.kt:13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/errors",
+   "claim": "A closed store fails with IllegalStateException ('Store is closed.'), not a StoreError",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:170",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "Engines whose key has active collectors, in-flight work, or an in-flight fetch are always resident and never evicted",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:109",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "maxIdleKeys bounds the LRU idle set of quiescent engines, defaults to 128, requires count >= 0, and 0 destroys every engine at quiescence",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:116",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "Eviction discards only derived in-memory state \u2014 durable rows, freshness metadata, stale marks, and watermarks live in the source of truth and bookkeeper \u2014 so a later read of an evicted key is semantically identical to one never evicted",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:112",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "An in-memory source of truth and in-memory bookkeeper are the defaults; nothing is written to disk until persistence is installed",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:180",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "50 getters and 50 collectors demanding the same key produce exactly one fetch, all 100 observe its outcome, and cancelling a waiter does not cancel the shared fetch",
+   "anchor": "docs/store6/important-defaults.md:68",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "Reader grace resumes the existing pipeline on a quick re-subscribe instead of a fresh Loading frame, and the window's millisecond value is an internal, non-contractual constant deliberately unpinned by the docs",
+   "anchor": "docs/store6/important-defaults.md:101",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/memory-and-lifecycle",
+   "claim": "close() cancels collectors and value requests waiting on in-flight work, subsequent operations fail with IllegalStateException 'Store is closed.', and calling close more than once has no additional effect",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:169",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "All three opt-in markers (@ExperimentalStoreApi, @DelicateStoreApi, @InternalStoreApi) are RequiresOptIn.Level.ERROR, so none can be used by accident",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Annotations.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "@ExperimentalStoreApi marks API that may change or be removed in any release, and experimental API ships in separate artifacts wherever possible",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Annotations.kt:4",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "Store carries @SubclassOptInRequired(DelicateStoreApi::class), so implementing the interface directly is a deliberate act",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:16",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "@InternalStoreApi may change even in patch releases and must never be used outside org.mobilenativefoundation.store artifacts",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Annotations.kt:47",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "SemVer is scoped to the stable tier: a breaking change to an @ExperimentalStoreApi surface in a minor release is not a SemVer violation",
+   "anchor": "STABILITY.md:36",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "The seam package (13 files) is a freeze candidate, not frozen; Overlay and StoreWriteHandle freeze only once the ack-path atomicity work and its test matrix are green, else they ship experimental outside the frozen tier at beta01, and CI enforces the 13-file list on every PR",
+   "anchor": "STABILITY.md:57",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "In StoreBuilder, the lambda fetcher, fetcherOfResult, and maxIdleKeys are stable, while fetcher(Fetcher), persistence, telemetry, overlay, bookkeeper, wallClock, and freshnessValidator are @ExperimentalStoreApi installs",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:134",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/concepts/api-tiers",
+   "claim": "FetcherResult carries no experimental marker because the stable fetcherOfResult builder member needs it \u2014 the one seam type reachable without opt-in",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:22",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "store<K, V> { } fails at build time with IllegalArgumentException naming all three fetcher install points when no fetcher is configured",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:176-179",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "The last fetcher registration wins across fetcher(lambda), fetcherOfResult, and fetcher(Fetcher); registrations replace rather than compose",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:70-71",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "FetcherResult has exactly four kinds \u2014 Success(value, etag), NotModified(etag), Error(cause), Deleted \u2014 and Error is equivalent to throwing its cause from the fetcher",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:22-45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "A seam Fetcher receives a non-null etag if and only if the engine selected a conditional fetch plan; lambda fetchers ignore ETags because their signatures cannot accept them",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Fetcher.kt:11-13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "NotModified refreshes resident metadata and emits StoreResult.Revalidated; without a resident value it produces StoreError.Missing",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:12-14",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "Deleted destructively clears the resident value and forgets its freshness; streams and waiters receive StoreError.Missing and no automatic refetch follows",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:16-18",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "The engine performs zero retries and zero backoff: one demand cycle invokes the fetcher exactly once and a later call is new demand",
+   "anchor": "docs/store6/important-defaults.md:37-42",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/fetchers",
+   "claim": "Fetcher implementations must cooperate with cancellation and must not write Store residence, persistence, or bookkeeping directly",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Fetcher.kt:10-11",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "Every reader collection first emits the current row or null, emits every subsequent change made through the instance (including equal-value rewrites and deletes as null), and never completes normally",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:14-20",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "Source-of-truth mutations are exception-atomic for every Throwable including CancellationException, and provide read-your-writes on normal return",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:21-31",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "TransactionalSourceOfTruth is an optional capability detected via 'sot is TransactionalSourceOfTruth'; the engine never assumes it and there is deliberately no silent non-atomic default",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/TransactionalSourceOfTruth.kt:8-10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "Nothing is written to disk until persistence(sot) is installed; the builder falls back to an internal in-memory source of truth",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:180",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "The SQLDelight adapter executes every user-row mutation and its matching metadata mutation in one Transacter transaction, while Room commits value and freshness metadata as two non-atomic durable steps with conservative age-unknown/stale rehydration after a crash between them",
+   "anchor": "store6-sqldelight/src/commonMain/kotlin/org/mobilenativefoundation/store6/sqldelight/SqlDelightSourceOfTruth.kt:35-38",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "Room ships 8 of core's 12 targets (no js, wasmJs, mingwX64, iosX64); SQLDelight compiles all 12 but JS/Wasm are compile-only because the adapter requires synchronous drivers",
+   "anchor": "store6-room/README.md:184-198",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "SourceOfTruthContractKit and BookkeeperContractKit are abstract test classes whose inherited @Test members execute on every compiled target; together they cover 15 source-of-truth and 6 bookkeeping contracts",
+   "anchor": "store6-room/README.md:173-174",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/persistence",
+   "claim": "clearCache is deliberately absent from the SourceOfTruth interface because cache clearing is not a persistence mutation",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:38",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "Adding the adapter to an existing Room 3 database is a three-declaration diff: two sidecar entities (Store6BookkeepingEntity, Store6WatermarkEntity) plus one DAO accessor, with no changes to user tables",
+   "anchor": "store6-room/README.md:52-74",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "Store6RoomSchema.createTables creates store6_bookkeeping and store6_watermarks via CREATE TABLE IF NOT EXISTS from a one-version migration, and does not alter user tables",
+   "anchor": "store6-room/src/commonMain/kotlin/org/mobilenativefoundation/store6/room/Store6RoomSchema.kt:14-36",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "The walkthrough sample verifies four observable behaviors and exits nonzero on failure, including a rebuilt store serving the row fresh without refetch because freshness metadata is durable",
+   "anchor": "store6-room/README.md:127-147",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "Room reader semantics use a generation-gated echo so equal-value rewrites through the instance re-emit exactly once and writes to other rows in the same table do not re-emit an unchanged value",
+   "anchor": "store6-room/src/commonMain/kotlin/org/mobilenativefoundation/store6/room/RoomSourceOfTruth.kt:171-183",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "Room commits the user value and freshness metadata as two non-atomic durable steps; a crash between them leaves a persisted value that rehydrates as age-unknown/stale",
+   "anchor": "store6-room/src/commonMain/kotlin/org/mobilenativefoundation/store6/room/RoomBookkeeper.kt:29-32",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "store6-room targets Room 3.0.0 with Kotlin 2.3.20 and androidx.sqlite 2.7.0, ships 8 of core's 12 targets, and never supported Room 2.x",
+   "anchor": "store6-room/README.md:177-210",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/room",
+   "claim": "store6-room/README.md is not currently an entry in the site's sync source lock, so this route requires a new lock entry and ledger row",
+   "anchor": "store-docs/evidence/T4-store6-source-lock.json:4-56",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "The adapter leaves the generated schema unchanged and idempotently creates four sidecar tables (store6_meta_schema, store6_meta_sequence, store6_meta, store6_meta_watermark) at construction",
+   "anchor": "store6-sqldelight/README.md:3-59",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "Three boundary rules govern the integration: round trip (readQuery returns the written value), one driver (all queries, callbacks, and the bookkeeper share one SqlDriver), and synchronous transactions (a genuinely suspending withTransaction block throws IllegalStateException and rolls back)",
+   "anchor": "store6-sqldelight/README.md:81-85",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "Reader signals are instance-scoped: direct SQL inside withTransaction and commits through another adapter instance do not wake an already-active reader; a new collection reads external changes from the database",
+   "anchor": "store6-sqldelight/README.md:87",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "The run-twice demonstration shows the second process serving from SQLDelight with fetches=0 because durable metadata survived the restart",
+   "anchor": "store6-sqldelight/README.md:100-104",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "JS and Wasm are compile-only for this adapter because it currently requires synchronous SQLDelight drivers",
+   "anchor": "store6-sqldelight/README.md:110-117",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "The measured walkthrough total was 62.72 s on the documented machine, with method and environment stated",
+   "anchor": "store6-sqldelight/README.md:119-131",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/sqldelight",
+   "claim": "The page is already sync-owned: the lock maps store6-sqldelight/README.md to content/docs/store6/sqldelight.mdx",
+   "anchor": "store-docs/evidence/T4-store6-source-lock.json:45-49",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "collectAsState starts at Loading and restarts collection only on structural identity change (namespace, canonicalId, freshness), on all targets",
+   "anchor": "store6-compose/README.md:8-9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "Recomposition skipping compares Data structurally on value/origin/isStale/refreshing with age excluded because age advances every emission; Loading/Revalidated/Error always pass and kinds are never merged",
+   "anchor": "store6-compose/README.md:17-27",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "The shipped stability configuration is exactly two wildcard lines covering org.mobilenativefoundation.store6.core.* and org.mobilenativefoundation.store6.core.seam.*",
+   "anchor": "store6-compose/stability/store6-stability.conf:8-9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "CI verifies the exact stability-conf snippet against a tiered probe of core public types on every PR; with it every probed core type resolves stable",
+   "anchor": "store6-compose/README.md:47-50",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "composeCompiler.stabilityConfigurationFiles is not a declared Gradle task input and stability reports are undeclared outputs; the module's build scripts compensate and consumers running report-based checks should do the same",
+   "anchor": "store6-compose/README.md:52-56",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/compose",
+   "claim": "Lifecycle-gated variants require a LifecycleOwner; on targets with no UI host populating LocalLifecycleOwner one must be passed explicitly",
+   "anchor": "store6-compose/README.md:11-13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "FakeStore records Freshness values but never interprets them; engine policy is tested by composing the seam fakes into a real store { }",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/FakeStore.kt:24-27",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "Every FakeStore history frame is followed by yield, deliberately providing stronger delivery than the engine so StateFlow/stateIn consumers can assert each lifecycle frame without conflation",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/FakeStore.kt:28-30",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "FakeStore.runtime() returns null by design, and it produces no KeyEvents and performs no overlay projection",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/FakeStore.kt:56-57",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "FakeFetcher records each invocation including the etag the engine passed when it planned a conditional fetch",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/FakeFetcher.kt:11-14",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "FakeBookkeeper honors the durable-staleness algebra \u2014 durablyStale when max(perKeyMark, namespaceWatermark, globalWatermark) exceeds (lastSuccessSequence ?: 0) \u2014 and sharing one instance across store instances simulates process restart",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/FakeBookkeeper.kt:13-19",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "SourceOfTruthContractKit is extended with createSourceOfTruth plus key/value hooks, and every inherited @Test member executes on every target compiled",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/SourceOfTruthContractKit.kt:21-36",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "TestStoreResults delegates to the seam's sanctioned construction door because StoreResult, StoreError, and StoreException constructors are internal",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/TestStoreResults.kt:13-20",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/testing",
+   "claim": "The repository ships a complete ViewModel sample test driving Loading, Ready(refreshing), and Failed states from FakeStore scripting",
+   "anchor": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/UserViewModelSampleTest.kt:25-59",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "Installing the logger is one builder line \u2014 telemetry(StoreTelemetryLogger()) \u2014 and a logger plus monitor install together via storeTelemetryOf",
+   "anchor": "store6-devtools/README.md:22-44",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "The v0 vocabulary has six event kinds with fixed field order, and seq is the canonical ordering key because callback delivery is not serialized",
+   "anchor": "store6-devtools/EVENTS.md:14-44",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "Logger lines never include stored values or StoreError message/cause, but the in-memory monitor projection retains the structured StoreError",
+   "anchor": "store6-devtools/EVENTS.md:7-10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "FRESH in the monitor projection means only that no invalidation, clear, or failure has been observed since the latest success; MaxAge expiry emits no event and can never change the projection",
+   "anchor": "store6-devtools/README.md:67-70",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "Monitor capacity defaults to 500 retained events; overflow drops the oldest and increments droppedEvents, and clearLog preserves key summaries and the sequence high-water mark",
+   "anchor": "store6-devtools/src/commonMain/kotlin/org/mobilenativefoundation/store6/devtools/StoreDevtoolsMonitor.kt:32-37",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "The inspector is in-process with zero transport \u2014 no sockets, host tools, or web panel \u2014 and publishes an 8-target subset narrower than devtools' 12 targets",
+   "anchor": "store6-devtools-inspector/README.md:53-72",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "Leaving telemetry unset preserves the engine's null fast path, while installed telemetry has stated nonzero cost per event",
+   "anchor": "store6-devtools/README.md:72-78",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/devtools",
+   "claim": "v0 is versioned but experimental: a later alpha may revise it, cross-alpha parser compatibility is not guaranteed, and it is not the Store 6.1 wire format",
+   "anchor": "store6-devtools/EVENTS.md:88-90",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "A delegating decorator implements Store by delegation and exposes its own affordances; runtime() returns null for non-engine stores, fakes, and decorators",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/StoreRuntime.kt:31-39",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "The KeyEvents hierarchy is deliberately open rather than sealed, so consumers must retain an else branch; constructors are internal because only the engine produces events",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/KeyEvents.kt:10-12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "KeyEvents delivery is best-effort: replay 0, bounded buffer of 64 dropping the oldest, and the flow never completes including after Store.close",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/KeyEvents.kt:14-17",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "writeHandle.apply commits to the source of truth under the engine write lock with Data(origin = SOT) attribution, never fetches, and records no bookkeeping success \u2014 callers pair it with confirmFresh when the value is known fresh",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/StoreWriteHandle.kt:18-29",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "markStale has semantics identical to Store.invalidate, and confirmFresh clears durable staleness like a 304 without fetching and is not an observation mechanism",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/StoreWriteHandle.kt:36-54",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "The probe's LoggingStore is the canonical decorator shape: Store by delegate overriding only stream to log the four result kinds",
+   "anchor": "store6-extension-probe/src/commonMain/kotlin/org/mobilenativefoundation/store6/extensionprobe/LoggingStore.kt:11-31",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "The transactional-ack case study coalesces retirement signals until the confirmed echo is adopted via apply and confirmFresh, then restarts active collections whose contractually immediate first row recaptures authority; it is an unpublished buildability probe, not a general-purpose journal",
+   "anchor": "store6-extension-probe/src/commonMain/kotlin/org/mobilenativefoundation/store6/extensionprobe/CoordinatedTransactionalSourceOfTruth.kt:27-41",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/extending",
+   "claim": "Consuming the open hierarchy with a mandatory else is demonstrated by the probe's describeKeyEvent function",
+   "anchor": "store6-extension-probe/src/commonMain/kotlin/org/mobilenativefoundation/store6/extensionprobe/KeyEventDescriptions.kt:12-18",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "store6-benchmarks is an unpublished JVM harness \u2014 neither a published artifact nor a public API",
+   "anchor": "store6-benchmarks/README.md:3-7",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "The storeStream/rawSotFlow ratio is an end-to-end timed invocation including collector launch, attachment, readiness, the write schedule, and final observation \u2014 not pure per-emission latency",
+   "anchor": "store6-benchmarks/README.md:71-77",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "collectors=1 is the engine-overhead headline; collectors=8 is fan-out/topology data and does not isolate engine overhead",
+   "anchor": "store6-benchmarks/README.md:81-86",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "Hosted CI is smoke-grade: no hosted number may support a performance target, and only a local quiet-machine calibrate result may support a target proposal",
+   "anchor": "store6-benchmarks/README.md:96-98",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "No numeric CI gate exists; workflows validate execution and result schema only",
+   "anchor": "store6-benchmarks/README.md:99-101",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "The telemetry-off zero-overhead claim is structural plus measured: the none-vs-noop comparison estimates incremental configured-noop overhead and does not prove literal zero cost",
+   "anchor": "store6-benchmarks/README.md:88-95",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/performance",
+   "claim": "The published JMH unset-vs-configured-no-op table resolved no positive configured-no-op overhead, and its negative point estimates do not prove the no-op sink is faster",
+   "anchor": "store6-devtools/README.md:80-93",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "SKIE bridges StoreError to an exhaustive six-case Swift enum (conflict, conversion, fetch, freshnessUnsatisfiable, missing, persistence) via onEnum(of:)",
+   "anchor": "store6-core/api/swift/skie/Store6CoreSkie.swift:2769-2794",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "StoreResult bridges to exactly four Swift cases (data, error, loading, revalidated) and Freshness to five",
+   "anchor": "store6-core/api/swift/skie/Store6CoreSkie.swift:2817-2836",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "The StoreError variant set is frozen for the 6.x major, so exhaustive switching in Swift is safe; new failure kinds map into the existing categories via structured detail payloads",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt:5-8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "The ObjC export bridges suspend Store operations to completion-handler forms, e.g. get(key:freshness:completionHandler:), invalidate(key:completionHandler:), clear(key:completionHandler:)",
+   "anchor": "store6-core/api/swift/objc/Store6Core.h:252-289",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "kotlin.time.Duration flattens to raw int64_t in the ObjC export, including Freshness.MaxAge.notOlderThan and the age properties on results",
+   "anchor": "store6-core/api/swift/objc/Store6Core.h:179-180",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "Generated-Swift dumps (ObjC export and SKIE) are diffed on every pull request, with committed dumps under store6-core/api/swift; the commitment is to the mechanism rather than a fixed lane list",
+   "anchor": "STABILITY.md:123-126",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/guides/swift",
+   "claim": "Target coverage differs per module: store6-room ships 8 of core's 12 targets with no iosX64 variant because Room 3 publishes none",
+   "anchor": "store6-room/README.md:184-198",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "MutationStore implements Store by delegation and deliberately withholds the raw engine write handle; runtime() on it returns null, so every consumer write stays journalled.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:46",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "store6-mutations is an experimental separate artifact in which every public symbol is @ExperimentalStoreApi, listed in the alpha01 line of the stability policy's artifact table.",
+   "anchor": "STABILITY.md:52",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "Graduation to stable is gated, not scheduled: first review at 6.1, target window roughly 6.3, requiring the API unchanged across two consecutive minors, green crash-matrix and soak lanes, and at least three external production adopters.",
+   "anchor": "STABILITY.md:144",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "The non-transactional acknowledgement path adopts the server echo first and retires the journal row last, so a crash inside the ack window can re-send the same push; server endpoints must be idempotent or keyed by mutation identity, and closing the window is beta01 work.",
+   "anchor": "STABILITY.md:155",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "mutate appends one typed intent to the journal and returns an opaque mutation id correlating it with pending, pendingWrites, deadLetters, and intent events; a ref from a foreign registry throws IllegalArgumentException.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:246",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "The engine-owned overlay projects confirmed residence through pending intents, and Store stamps a changed projection with OVERLAY origin, zero age, and no staleness.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:265",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations",
+   "claim": "get on a MutationStore is never projected by the overlay; overlays apply only to stream.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:200",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "mutationStore takes exactly five required factory inputs \u2014 registry, server, keyResolver, valueCodecVersion, valueCodec \u2014 plus a configure lambda; optional Store configuration never moves onto the factory parameters.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:492",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "valueCodecVersion must be positive; the factory rejects non-positive versions with IllegalArgumentException before construction.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:500",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "The configure lambda must install a fetcher { }, fetcherOfResult { }, or fetcher(Fetcher) door; omitting all three fails with a message saying so.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:182",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "MutationStoreBuilder deliberately exposes no overlay door: the mutation engine's overlay is a mutation store's sole projection layer and is installed by the factory.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:24",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "For keys reconstructible from the identity pair, the required key resolver is one line building K from identity.canonicalId.",
+   "anchor": "docs/store6/quickstart.md:152",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "Unset persistence and bookkeeper doors install one mutations-owned in-memory default each, forwarded identically to both the delegated core Store and the mutation engine; core's inaccessible internal defaults are never silently substituted.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:186",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/quickstart",
+   "claim": "After mutate, stream emits the optimistic value with origin OVERLAY; after a drained acknowledgement the server echo becomes the committed value attributed SOT or MEMORY, and a stream opened after the acknowledgement sees the echo \u2014 convergence for a collector already active across the acknowledgement is not yet promised.",
+   "anchor": "docs/store6/quickstart.md:166",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "update registrations decline when the confirmed base is Absent; the projector transforms an existing value only.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:166",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "delete accepts neither a version nor a codec: Store 6 owns a fixed version-1 Unit codec whose encoding is exactly zero bytes, and durable delete rows with another version or non-empty bytes are a CODEC failure.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:202",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "upsert receives the explicit confirmed presence and must return a presence \u2014 it cannot decline.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:215",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "Returning null from a projector means exactly 'decline this intent'; deletion is MutationPresence.Absent, never null; and a declined head remains pending, blocking only its same-effective-key suffix.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:118",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "A projector must be a pure, deterministic, non-blocking function of (base, args) that never calls back into Store; a thrown failure is contained, reported through MutationStore.poisoned, and parks the row with a normalized PROJECTION failure.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:113",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "A MutatorRef belonging to a different registry instance fails mutate with IllegalArgumentException \u2014 refs are ownership-validated by registry identity, not id-matched.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:640",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "Codec decode receives the persisted version, which may be older than the currently registered one; format changes append a version, and old decoders remain until the corresponding rows are retired and pruned.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:82",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/mutators",
+   "claim": "stales must be pure (equal inputs produce structurally equal StaleSets); its result is copied, normalized to identity pairs, deduplicated, and sorted into immutable durable effect records before the intent's first push.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:122",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "A pending-write affordance keys on origin == OVERLAY and a stale-cache affordance keys on isStale \u2014 two distinct affordances that must not be swapped.",
+   "anchor": "STABILITY.md:186",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "isStale is never set on an OVERLAY frame: overlay frames are stamped age = Duration.ZERO and isStale = false unconditionally, with only refreshing live, so an isStale-driven spinner will never fire for a pending write.",
+   "anchor": "STABILITY.md:189",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "Store.get is unprojected \u2014 overlays apply only to stream \u2014 so observing your own optimistic write requires collecting stream.",
+   "anchor": "STABILITY.md:195",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "The overlay projection table defines optimistic create and delete: a non-null result over a null base emits overlay data, and a null result over a non-null base exposes the normal absent/loading transition.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Overlay.kt:19",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "pending(key) returns the current pending intents for the key's terminal canonical identity in durable client-sequence FIFO order, providing durable data for richer saving affordances.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:301",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/pending-write-ui",
+   "claim": "The events flow is read-only, in-process, and advisory: replay 0, extra buffer capacity 64, DROP_OLDEST overflow \u2014 suitable for transient UI but never for settlement logic.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:333",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "Retries of one MutationPush.idempotencyKey must be idempotent: a duplicate success must return the same authoritative presence, value, etag, and canonical target.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:257",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "A precondition conflict is signalled only by throwing StoreResults.exception(StoreResults.conflict(serverMeta, message), cause) \u2014 the sanctioned public core door.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:243",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "A CancellationException thrown out of push is rethrown and leaves the INFLIGHT generation intact; the next explicit drain or restart sends the exact same immutable generation.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:178",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "Only MutationPresentAck can carry a canonicalKey (an optional same-namespace redirect), and a retry of one generation's idempotency key must return the same canonical target or the intent parks as a protocol violation.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:299",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "MutationAbsentAck deliberately has no canonical key, making rekey-on-deletion unrepresentable, and certifies the deletion-coherence obligation: every fetch begun after an Absent acknowledgement returns FetcherResult.Deleted \u2014 tombstones stop journal replay but do not mask a violating backend.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:319",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "Retirement confirmation must be monotonic and cannot exceed the requested prefix; the library validates both properties and treats a violation as a protocol failure, and cancellation during retire leaves the confirmed prefix unchanged and prunes nothing.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:274",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "A crash inside the ack window re-sends the same push after restart because the alpha adopts the echo first and retires the journal row last \u2014 design endpoints to be idempotent or keyed by mutation identity.",
+   "anchor": "STABILITY.md:166",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/server",
+   "claim": "baseMeta == null never means an unconditional write: the frozen base itself is always an existence/value precondition.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:185",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "Without a registered merge policy, server-wins is the non-removable conflict terminal; there is deliberately no terminal setter.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:148",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "The precondition selector runs once per newly prepared semantic generation and never on a transport retry.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:224",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "Returning null from the precondition selector deliberately selects an existence/value precondition without metadata and never removes the base precondition; without a selector, the candidate's captured metadata is selected.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:220",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "MutationConflictResolution.Retry persists generation g+1 before transmission \u2014 with a new idempotency key, since idempotency keys are generation-stable \u2014 while ServerWins retires the intent without another push.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:414",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "On the third consecutive conflict receipt carrying identical server metadata, the intent parks with a normalized CONFLICT failure instead of preparing another generation, and a merge that throws parks the intent as well.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:242",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "Within one conflicts block, each policy (precondition, merge) registers at most once; a second registration fails.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:230",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/conflicts",
+   "claim": "A durable invalidation effect skipped by conflict server-wins reaches the terminal SKIPPED disposition and is reported by the advisory MutationEffectSkipped event.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEvents.kt:164",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "drain(key) is one idempotent, scheduler-agnostic foreground pass that pushes the pending FIFO prefix once with no retry or backoff, and the pass never fetches.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:258",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "Global drain enumerates every durable identity from the journal and reconstructs it through the required resolver; an identity that fails to resolve parks its affected pre-ack head without blocking others, and processing is deterministic by durable client sequence within an effective identity with no cross-key order promise.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:276",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "Once transport becomes possible or uncertain, that durable execution owns its client namespace until it parks or retires: a keyed drain for another key in the same namespace returns without transport while different namespaces remain eligible to progress.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:263",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "Durable key identity is exactly (namespace.value, canonicalId()); hashes, object identity, and key class are never durable identity.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "Every resolver result is validated verbatim against the requested pair before any transport or adoption work; null and identity mismatch are rejected with descriptive failures.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:394",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "The internal exponential backoff between scheduled retries uses base 1,000 ms capped at 300,000 ms, and no public policy door exists \u2014 explicit drain passes are the override.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:57",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/drain-and-restart",
+   "claim": "Hydration rebuilds every process cache from one coherent durable snapshot, runs codec work only after the storage transaction returns, and never emits an overlay or alias revision.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:293",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "Leaving the journalStorage door unset installs InMemoryMutationJournalStorage \u2014 the journal stays in memory, and restart hydration requires reopening a store over the same durable instance.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStoreBuilder.kt:162",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "InMemoryMutationJournalStorage is intentionally non-durable across process death: a transaction operates on a private snapshot under one mutex, normal return replaces the committed snapshot, and any throw discards it.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/InMemoryMutationJournalStorage.kt:17",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "SqlDelightMutationJournalStorage requires the driver and transacter to address the same connection/database (a pairing the library cannot verify), supports synchronous drivers only (async web drivers unsupported), and requires dedicating the driver or externally serializing other access.",
+   "anchor": "store6-mutations-sqldelight/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/sqldelight/SqlDelightMutationJournalStorage.kt:40",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "The SqlDelight adapter's internal sidecar owns the store6_mutation_* schema with its own version row (current schema version 2, migrating version 1) and leaves SQLite user_version user-owned.",
+   "anchor": "store6-mutations-sqldelight/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/sqldelight/internal/MutationJournalSidecar.kt:8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "MutationJournalStorage and MutationJournalTransaction carry @SubclassOptInRequired(DelicateStoreApi::class), so implementing storage is a deliberate act.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt:26",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "The single transaction door is exception-atomic with a deliberately non-suspending callback: normal return commits every operation, any thrown Throwable including cancellation commits none, and codec/resolver/transport/policy work cannot run while the transaction is held.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt:15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "The storage package freezes nine logical records, and implementations must persist enum names never ordinals, store times as Unix epoch milliseconds, and copy every byte array on entry and delivery.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/journal-storage",
+   "claim": "Ordinary prune removes eligible records only at or below the persisted server-confirmed retirement prefix, and alias redirects plus active or pending tombstone generations are never removed by it.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt:164",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "pending(key) follows aliases as durable identity pairs only: it never reconstructs a K, never consults the resolver, and therefore cannot fail on an unresolvable canonical key.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:296",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "Dead letters contain only PARKED entries; parking is legal only before a successful acknowledgement is durably recorded, and a parked sequence never re-enters the executable FIFO.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt:182",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "The five public pending states (PENDING, INFLIGHT, REFRESHING, ADOPTING, APPLYING_EFFECTS) are the total public mapping of the six nonterminal durable execution phases; parked executions appear only in dead letters and retired ones in neither inspection API.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt:17",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "MutationFailureKind is a broad, append-only classification with exactly nine classes: IDENTITY, CODEC, PROJECTION, PROTOCOL, CONFLICT, TRANSPORT, ADOPTION, EFFECT, PERSISTENCE.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt:32",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "A raw StoreError or Throwable is never persisted in a MutationFailure; detail is at most 128 and message at most 1,024 UTF-8 bytes, each truncated at a code-point boundary after control-character and stack-trace sanitization.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt:64",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "The events flow delivers best-effort advisory telemetry \u2014 replay 0, extra buffer capacity 64, oldest dropped on overflow, tryEmit-only \u2014 and is never a drain, acknowledgement, retry, or settlement protocol; no event carries a raw Throwable or StoreError.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEvents.kt:15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/inspection",
+   "claim": "The poisoned flow replays 16 entries with DROP_OLDEST and carries the exact projection Throwable in-process only; the same throw parks the row with a normalized durable PROJECTION failure.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:169",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "MutationJournalStorageContractKit is extended with createStorage() and reopenStorage(previous); reopenStorage is the restart boundary \u2014 an in-memory implementation returns the same instance while a persistent one returns a new adapter over the same durable store.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutationJournalStorageContractKit.kt:41",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "The kit enforces named phase rules rather than a false total ordering: INFLIGHT -> READY is legal after a transport failure, REFRESH_REQUIRED may advance to a new immutable generation before returning to READY, RETIRED and PARKED are terminal, and ACKED/EFFECTS_PENDING never regress to a pre-ack phase.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutationJournalStorageContractKit.kt:45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "The contract kit inherits the deterministic kill-point crash scenarios, so extending it runs them automatically.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutationJournalStorageContractKit.kt:55",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "KillPointJournalStorage is a one-shot deterministic crash decorator with five semantic boundaries around retirement finalization and prune; arm rejects a second armed point, the armed point clears before its crash is raised, and classification never depends on transaction ordinals or scheduler timing.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/KillPointJournalStorage.kt:18",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "The purity kit's double-application test compares two independent two-step replay traces and does not require idempotence, which would incorrectly reject lawful append and increment mutators.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutatorPurityContractKit.kt:131",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "snapshotValue must return detached structural data suitable for equality checks because MutationPresence.Present deliberately does not define structural equality.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutatorPurityContractKit.kt:76",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/mutations/testing",
+   "claim": "mutatorPuritySubject requires at least one base/args sample and at least one named ambient-state probe, with unique names for each.",
+   "anchor": "store6-mutations-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/testing/MutatorPurityContractKit.kt:92",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "store5.* and store6.* coordinates live side by side for the whole 6.x major; you can depend on both in one build and migrate a screen at a time with no flag day.",
+   "anchor": "STABILITY.md:106-107",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "Store 5 is not end-of-life: it moves to fixes-only maintenance only at GA, with a dated end-of-life published at GA.",
+   "anchor": "ROADMAP.md:73",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "Store 6 stream emits fetcher and source-of-truth failures as StoreResult.Error values rather than throwing; only a MustBeFresh initial-cycle fetch or revalidation failure emits one error and completes the flow.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:21-24",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "store<K, V> { } without a fetcher registration fails at build time with IllegalArgumentException; installing a source of truth does not substitute for a fetcher.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:176-179",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "Freshness is a per-call sealed policy with exactly five variants; LocalOnly never invokes the fetcher, probes the source of truth once on a memory miss, and reports StoreError.Missing when nothing is local.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:12-51",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "The engine performs zero retries and zero backoff at zero configuration; one demand cycle invokes the fetcher exactly once and retries belong in the user's fetcher.",
+   "anchor": "docs/store6/important-defaults.md:37-42",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "MutationStore implements Store by delegation while withholding the raw engine write handle: runtime() on it returns null so every consumer write stays journalled.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:42-67",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store5",
+   "claim": "isStale is never set on an OVERLAY frame (overlay frames are stamped age = Duration.ZERO and isStale = false unconditionally), and Store.get is unprojected \u2014 overlays apply only to stream.",
+   "anchor": "STABILITY.md:186-198",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "The Store 6 seam is the package for plugging in a fetcher, source of truth, bookkeeper, clock, telemetry, or overlay \u2014 there is no converter role among the seam files.",
+   "anchor": "STABILITY.md:57-58",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "Store 5's Converter bridges network, local, and output model types via fromNetworkToLocal and fromOutputToLocal; Store 6 has no such interface and types the store on a single value type.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt:12-15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "In Store 6 the value-to-row mapping lives in adapter callbacks: SqlDelightSourceOfTruth's constructor takes readQuery, writeRow, deleteRow, deleteNamespaceRows, and deleteAllRows lambdas over generated queries.",
+   "anchor": "store6-sqldelight/src/commonMain/kotlin/org/mobilenativefoundation/store6/sqldelight/SqlDelightSourceOfTruth.kt:68-77",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "Store 6's FetcherResult vocabulary is Success(value, etag), NotModified(etag), Error(cause), and Deleted \u2014 adding conditional-fetch and server-deletion variants over Store 5's Data/Error set, with Deleted clearing residence and triggering no automatic refetch.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt:22-45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "Store 5's Validator exposes a per-item suspend isValid(item) hook; Store 6's seam FreshnessValidator is instead a pure read planner whose plan(context) returns a FetchPlan (Skip, Fetch, or Conditional).",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt:36-63",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "MutationServer, the app-owned transport replacing Updater.post, has exactly two methods \u2014 push(request): MutationAck and retire(request): MutationRetirementAck \u2014 and retries of one idempotency key must be idempotent.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt:253-281",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "MutatorRegistryBuilder offers update, create, delete, and upsert registration shapes returning typed refs; update declines on an Absent base, delete always applies MutationPresence.Absent, and upsert cannot decline.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutatorRegistry.kt:161-221",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/component-map",
+   "claim": "Store 6's seam Bookkeeper is durable freshness bookkeeping, not failed-sync tracking: one store-local monotone sequence shared by successes, stale marks, and watermarks, with a key durably stale exactly when max(mark/ns/global) > (success ?: 0).",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Bookkeeper.kt:9-19",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "The 5\u21926 and 4\u21926 migration guides are launch gates for 6.0.0 \u2014 they block GA and are not follow-ups.",
+   "anchor": "STABILITY.md:109-110",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "The roadmap's GA milestone names a \"Store 4 \u2192 6 in an afternoon\" migration guide as a deliverable that blocks GA.",
+   "anchor": "ROADMAP.md:73",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "Store 5's stable release was additive over Store 4 with no breaking changes, adding MutableStore, Validator, fallback mechanisms, KMP support, conflict resolution for writes, and NoNewData.",
+   "anchor": "CHANGELOG.md:110-117",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "Store 5 kept concepts and usage unchanged from Store 4 (stated in the 5.0.0-alpha03 release notes), so the 5\u21926 component map applies from a Store 4 starting point.",
+   "anchor": "CHANGELOG.md:157-158",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "Store 4's com.dropbox.android.external.store4 package name survives verbatim in a Store 5 KDoc reference, documenting the coordinate lineage a Store 4 holdout migrates from.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadRequest.kt:23",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "The Store 4-era fresh(key) idiom maps to get(key, Freshness.MustBeFresh): MustBeFresh never serves a cached value and blocks until a fresh fetch succeeds.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:30-34",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/migration/from-store4",
+   "claim": "The only promised interop artifact is store6-store5-interop (tracking to 6.0.0); no Store 4 interop artifact is promised.",
+   "anchor": "STABILITY.md:70-71",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "All three opt-in markers (@ExperimentalStoreApi, @DelicateStoreApi, @InternalStoreApi) are RequiresOptIn.Level.ERROR, and Store additionally carries @SubclassOptInRequired(DelicateStoreApi::class) so implementing the interface is a deliberate act.",
+   "anchor": "STABILITY.md:28",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "store6-core is stable-track but its API is not frozen until the beta01 freeze candidate; the seam package (13 files, CI-enforced list on every PR) is a freeze candidate, not frozen, and Overlay/StoreWriteHandle freeze only once the ack-path atomicity work and its test matrix are green.",
+   "anchor": "STABILITY.md:47",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "Stable-tier deprecation runs three stages: WARNING with ReplaceWith, then ERROR no earlier than two minor releases later, then HIDDEN at the next major with binary compatibility preserved until then.",
+   "anchor": "STABILITY.md:80",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "store5.* and store6.* coordinates live side by side for the whole 6.x major, store6-store5-interop is supported for all of 6.x, and the 5-to-6 and 4-to-6 migration guides block GA.",
+   "anchor": "STABILITY.md:106",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "The non-transactional mutations ack path adopts the server echo first and retires the journal row last, so a crash inside the ack window can re-send the same push; server endpoints must be idempotent or keyed by mutation identity, and making the ack path atomic is beta01 work.",
+   "anchor": "STABILITY.md:159",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "isStale is never set on an OVERLAY frame: overlay frames are stamped age = Duration.ZERO and isStale = false unconditionally, with only refreshing live, so pending-write UI must key on origin == OVERLAY, not isStale.",
+   "anchor": "STABILITY.md:189",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "Store.get is unprojected: overlays apply only to stream, so an optimistic mutation is invisible to get by documented contract.",
+   "anchor": "STABILITY.md:195",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/stability",
+   "claim": "The Kotlin floor is 2.3, raised only in minor releases with notice; every published store6-core variant declares kotlin-stdlib 2.3.20 with no apiVersion/languageVersion pin lowering it.",
+   "anchor": "STABILITY.md:201",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "The governing release rule is cut scope, never cadence: a slip threatens a release's contents, never its date.",
+   "anchor": "ROADMAP.md:13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "Mutations are explicitly not an extension for the read-core-never-waits rule; store6-mutations lives in a separate artifact as a packaging decision (experimental API), not a dependency one, and sits in the alpha01 floor.",
+   "anchor": "ROADMAP.md:16",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "The alpha01 floor is store6-core + store6-testing, store6-mutations, the stability policy + roadmap, and Quickstart + Important Defaults; the SQLDelight, Room, and Compose adapters, the devtools MVP, and remaining documentation pages may slip one alpha with their target alpha named in release notes.",
+   "anchor": "ROADMAP.md:44",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "beta01 is the core API freeze candidate: from beta01 forward, no source-breaking core change ships without an RC reset.",
+   "anchor": "ROADMAP.md:57",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "6.0.0 GA targets Q3 2027 with a confidence range of Q3-Q4 2027; both migration guides block GA, and Store 5 moves to fixes-only maintenance with a dated end-of-life published at GA.",
+   "anchor": "ROADMAP.md:68",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "Mutations graduation is gated, never date-driven: API unchanged across two consecutive minors, crash-matrix and soak lanes green in production-representative apps, and at least three external production adopters reporting; otherwise the review repeats at the next minor.",
+   "anchor": "ROADMAP.md:92",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "Cadence is monthly alphas from 6.0.0-alpha01, each release naming the next release's target month and closing at least one community issue with a link to the named conformance test that resolves it.",
+   "anchor": "ROADMAP.md:82",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/roadmap",
+   "claim": "The conformance suite under store6-core/src/commonTest is the specification: describing an expected behavior plus a test that would have caught it is a complete contribution before any implementation.",
+   "anchor": "ROADMAP.md:102",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/contributing",
+   "claim": "The contribution workflow starts by forking the repository linked in Getting Started (currently https://github.com/MobileNativeFoundation/Store) and cloning the fork; correcting this link happens in Repo A followed by a lock re-pin, never by patching the site copy.",
+   "anchor": "CONTRIBUTING.md:5",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/contributing",
+   "claim": "Issue policy: search existing issues before filing, and new issues need a clear title and a detailed description.",
+   "anchor": "CONTRIBUTING.md:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/contributing",
+   "claim": "PR conventions: branch in the fork, clear concise commit messages, tests written for new features or bug fixes, existing tests run before submitting, and a PR description referencing relevant issue numbers.",
+   "anchor": "CONTRIBUTING.md:13",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/contributing",
+   "claim": "Community guidance links the Code of Conduct at https://github.com/MobileNativeFoundation/Store/blob/main/CODE_OF_CONDUCT.md and directs help requests to the Kotlin Slack channel.",
+   "anchor": "CONTRIBUTING.md:25",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/store6/contributing",
+   "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision a6a156e9 with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
+   "anchor": "store-docs/evidence/T4-store6-source-lock.json:36",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "store6-core's public API surface spans exactly two packages, org.mobilenativefoundation.store6.core and org.mobilenativefoundation.store6.core.seam; the core.internal package contains no public declarations and does not appear in the committed klib dump",
+   "anchor": "store6-core/api/store6-core.klib.api",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "The org.mobilenativefoundation.store6.core.seam package is exactly 13 files, all @ExperimentalStoreApi, and is a freeze candidate, not frozen; store6-core itself is stable-track with its API not frozen until the beta01 freeze candidate",
+   "anchor": "STABILITY.md:57",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "store { } fails at build time with IllegalArgumentException when no fetcher is configured, and that contract is documented as @throws KDoc that generated reference output will render",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:30",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "Store.stream emits fetcher and source-of-truth failures as StoreResult.Error values rather than throwing to the collector; only a MustBeFresh initial-cycle fetch or revalidation failure emits one error and completes the flow",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:41",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "All three opt-in markers (ExperimentalStoreApi, DelicateStoreApi, InternalStoreApi) are declared @MustBeDocumented with RequiresOptIn.Level.ERROR, so Dokka-generated reference pages show the tier marker on every annotated declaration without hand-authored badges",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Annotations.kt:21",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "Implementing Store directly requires the DelicateStoreApi opt-in via @SubclassOptInRequired on the interface",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:16",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "The :store6-core:dokkaHtml task pinned by the placeholder's replacement contract exists on Repo A main: the store6.multiplatform convention plugin applies org.jetbrains.dokka and, unconditionally, com.android.library \u2014 which is why the Dokka task graph requires a valid Android SDK location exactly as the placeholder's build-status section states",
+   "anchor": "tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/Store6Conventions.kt:33",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-core/index.html",
+   "claim": "Each module commits JVM .api and .klib.api dumps checked on every pull request, so the public surface the generated reference documents is independently diffable from the repository",
+   "anchor": "STABILITY.md:119",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "Every public symbol in store6-mutations carries @ExperimentalStoreApi \u2014 the artifact-tier table states it is experimental in its own separate artifact",
+   "anchor": "STABILITY.md:52",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "The module's public surface spans exactly two packages, org.mobilenativefoundation.store6.mutations and org.mobilenativefoundation.store6.mutations.storage, per the committed klib dump",
+   "anchor": "store6-mutations/api/store6-mutations.klib.api",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "mutationStore throws IllegalArgumentException when valueCodecVersion is not positive (require(valueCodecVersion >= 1)) or when the configure lambda installs no fetcher door, and its KDoc documents both conditions",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:492",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "MutationStore deliberately withholds the raw engine write handle: calling runtime() on the facade returns null, as stated in the class KDoc the generated reference will render",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:46",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "MutationJournalStorage and MutationJournalTransaction carry @SubclassOptInRequired(DelicateStoreApi::class), so implementing journal storage is a deliberate opt-in visible in the generated signatures",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt:26",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "The non-transactional acknowledgement path adopts the server echo first and retires the journal row last, so a crash inside the ack window can re-send the same push; server endpoints must be idempotent or keyed by mutation identity, and making the ack path atomic is beta01 work",
+   "anchor": "STABILITY.md:154",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/reference/store6-mutations/index.html",
+   "claim": "Mutations graduation is criteria-gated, never date-driven: first review at 6.1, target window roughly 6.3, requiring the API unchanged across two consecutive minors, green crash-matrix and soak lanes, and at least three external production adopters",
+   "anchor": "STABILITY.md:145",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/overview",
+   "claim": "The page indexes exactly eight Store 5 components (Store, Mutable Store, Source of Truth, Fetcher, Updater, Bookkeeper, Validator, Converter), each as a linked H2 with a one-line definition.",
+   "anchor": "store-docs/content/docs/concepts/store5/overview.mdx:5",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/overview",
+   "claim": "Store 5's Store is described as a typed repository mediating data flow between network, memory cache, and local storage.",
+   "anchor": "store-docs/content/docs/concepts/store5/overview.mdx:7",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/overview",
+   "claim": "The Validator is described as custom logic deciding whether local data is still valid or needs refresh from the remote source via the Fetcher.",
+   "anchor": "store-docs/content/docs/concepts/store5/overview.mdx:31",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/overview",
+   "claim": "store5.* and store6.* coordinates live side by side for the whole 6.x major, so this index remains live reference for supported Store 5 users.",
+   "anchor": "STABILITY.md:106",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/store",
+   "claim": "The page presents Store as stream(request)/clear(key)/clearAll(); in Store 5 source the interface is composed from Read.Stream, Clear.Key, and Clear.All.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt:34",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/store",
+   "claim": "clear and clearAll remove data only from the memory cache and source of truth, never the remote data source.",
+   "anchor": "store-docs/content/docs/concepts/store5/store.mdx:66",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/store",
+   "claim": "RealStore is documented as composed of FetcherController, SourceOfTruthWithBarrier, a memory cache, Converter, and Validator.",
+   "anchor": "store-docs/content/docs/concepts/store5/store.mdx:92",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/store",
+   "claim": "FetcherController ensures only one network call per key, sharing responses among requesters.",
+   "anchor": "store-docs/content/docs/concepts/store5/store.mdx:228",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/store",
+   "claim": "The internal write path converts through converter.fromOutputToLocal(value) before writing to the source of truth.",
+   "anchor": "store-docs/content/docs/concepts/store5/store.mdx:288",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/mutable-store",
+   "claim": "MutableStore adds a typed write door \u2014 suspend write(request: StoreWriteRequest<Key, Output, Response>): StoreWriteResponse \u2014 alongside stream/clear/clearAll.",
+   "anchor": "store-docs/content/docs/concepts/store5/mutable-store.mdx:31",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/mutable-store",
+   "claim": "In Store 5 source, MutableStore is annotated @ExperimentalStoreApi and composes Read.StreamWithConflictResolution, Write, Write.Stream, and Clear interfaces.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MutableStore.kt:5",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/mutable-store",
+   "claim": "RealMutableStore maintains a per-key write request queue; processed requests are removed after successful synchronization.",
+   "anchor": "store-docs/content/docs/concepts/store5/mutable-store.mdx:138",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/mutable-store",
+   "claim": "Reads begin with eager conflict resolution (tryEagerlyResolveConflicts) before delegating to RealStore.",
+   "anchor": "store-docs/content/docs/concepts/store5/mutable-store.mdx:175",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/mutable-store",
+   "claim": "On write failure the Bookkeeper records the failed attempt via setLastFailedSync.",
+   "anchor": "store-docs/content/docs/concepts/store5/mutable-store.mdx:259",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/source-of-truth",
+   "claim": "Store 5's SourceOfTruth carries three type parameters (Key, Local, Output) and exposes reader(key): Flow<Output?>, write, delete, and deleteAll.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt:49",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/source-of-truth",
+   "claim": "write is used both by RealStore to persist fetched network data and by MutableStore to optimistically update local data on a write request.",
+   "anchor": "store-docs/content/docs/concepts/store5/source-of-truth.mdx:90",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/source-of-truth",
+   "claim": "Read/write synchronization is handled by SourceOfTruthWithBarrier, using MutableStateFlow-based barriers and versioned operations.",
+   "anchor": "store-docs/content/docs/concepts/store5/source-of-truth.mdx:183",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/source-of-truth",
+   "claim": "Store 6's successor persistence contract is the seam SourceOfTruth interface, @ExperimentalStoreApi and gated by @SubclassOptInRequired(DelicateStoreApi).",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/fetcher",
+   "claim": "Store 5's Fetcher exposes name, an optional fallback Fetcher, and operator invoke(key) returning Flow<FetcherResult<Network>>, supporting multi-emission sources.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt:25",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/fetcher",
+   "claim": "FetcherResult.Error has exactly three variants: Exception(Throwable), Message(String), and Custom<E>.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/FetcherResult.kt:6",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/fetcher",
+   "claim": "Fresh-data requests bypass the memory cache, source of truth, and validator and invoke the Fetcher immediately.",
+   "anchor": "store-docs/content/docs/concepts/store5/fetcher.mdx:243",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/fetcher",
+   "claim": "Store 6's successor is a different contract: a seam Fetcher with suspend fetch(key, etag) where conditional fetch is engine-driven.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Fetcher.kt:20",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/updater",
+   "claim": "Updater's surface is suspend post(key, value): UpdaterResult plus an optional onCompletion callback.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt:9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/updater",
+   "claim": "On success the write queue is pruned, Bookkeeper failed-sync records are cleared, and onCompletion is executed if provided.",
+   "anchor": "store-docs/content/docs/concepts/store5/updater.mdx:132",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/updater",
+   "claim": "On failure the write request remains in the per-key queue for future retries.",
+   "anchor": "store-docs/content/docs/concepts/store5/updater.mdx:148",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/updater",
+   "claim": "Store 6's outbound-sync successor uses a different ack ordering: the non-transactional path adopts the server echo first and retires the journal row last, so server endpoints must be idempotent.",
+   "anchor": "STABILITY.md:156",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/bookkeeper",
+   "claim": "Store 5's Bookkeeper tracks failed syncs via getLastFailedSync(key): Long?, setLastFailedSync(key, timestamp), clear(key), and clearAll().",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt:12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/bookkeeper",
+   "claim": "Before serving data, the Store checks the Bookkeeper for unsynced local changes and attempts to resolve failed syncs before returning data.",
+   "anchor": "store-docs/content/docs/concepts/store5/bookkeeper.mdx:107",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/bookkeeper",
+   "claim": "Bookkeeper.by is the factory method; the page's worked example persists failed-sync records in a SQLDelight database.",
+   "anchor": "store-docs/content/docs/concepts/store5/bookkeeper.mdx:121",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/bookkeeper",
+   "claim": "Store 6 also has a Bookkeeper, but it is the engine-owned durable freshness bookkeeping seam (monotone sequence, stale marks, watermarks) \u2014 a different job than Store 5's failed-sync ledger.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Bookkeeper.kt:35",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/bookkeeper",
+   "claim": "Store 6's failed-write tracking lives in the mutations journal behind the mutationStore facade.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:492",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/validator",
+   "claim": "Validator is a single-member interface: suspend isValid(item: Output): Boolean.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt:15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/validator",
+   "claim": "The Validator is optional; without one the Store defaults to considering cached data valid.",
+   "anchor": "store-docs/content/docs/concepts/store5/validator.mdx:8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/validator",
+   "claim": "The Validator operates only on Source of Truth data and does not validate data coming directly from the network.",
+   "anchor": "store-docs/content/docs/concepts/store5/validator.mdx:55",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/validator",
+   "claim": "Store 6 absorbs this hook into native per-call freshness: a sealed Freshness policy set planned per read.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/converter",
+   "claim": "Converter bridges three representations with fromNetworkToLocal(network): Local and fromOutputToLocal(output): Local over type parameters Network/Local/Output.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt:12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/converter",
+   "claim": "A Converter.Builder exists in Store 5 source for constructing converters from lambdas.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Converter.kt:21",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/converter",
+   "claim": "The page is the shortest concept page: purpose plus API reference only, with no data-flow or best-practices sections.",
+   "anchor": "store-docs/content/docs/concepts/store5/converter.mdx:6",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/concepts/store5/converter",
+   "claim": "Store 6 has no converter seam; type mapping lives inside the user's fetcher and persistence (seam SourceOfTruth) implementations.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/overview",
+   "claim": "The index lists 17 linked guide entries plus one non-linked Multiplatform Implementation entry whose destination is rendered as unavailable with status 404.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:46",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/overview",
+   "claim": "The Advanced Caching Strategies destination is a never-authored stub whose entire content is frontmatter with description 'Coming soon'.",
+   "anchor": "store-docs/content/docs/use-cases/store5/advanced-caching-strategies.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/overview",
+   "claim": "The Non-Paginated Lists entry describes StoreMultiCache as caching collections while decomposing them into individually cached items.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:66",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/overview",
+   "claim": "StoreMultiCache is a real Store 5 API in the legacy cache module.",
+   "anchor": "cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/StoreMultiCache.kt:15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+   "claim": "The guide defines a generalized Model interface with nested Key, Properties, Edges, Node, and Composite members.",
+   "anchor": "store-docs/content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx:32",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+   "claim": "Operation is a sealed class split into Query and Mutation subtrees parameterized over the Model components.",
+   "anchor": "store-docs/content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx:129",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+   "claim": "Query operations carry a DataSources(memory, disk, remote) value with presets all, localOnly, and remoteOnly.",
+   "anchor": "store-docs/content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx:182",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+   "claim": "Output is a sealed class with Single and Collection variants so operations can return one item or many.",
+   "anchor": "store-docs/content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx:338",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+   "claim": "The resulting PostStore is a typealias for MutableStore<PostOperation, Output> \u2014 operations serve as the store key type.",
+   "anchor": "store-docs/content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx:358",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "The Fetcher factory handles only Query operations, enforced by require(operation is Operation.Query), because the Fetcher runs only on reads.",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx:44",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "The Source of Truth reader emits null rather than an empty list so the Store does not consider the operation fulfilled and triggers a network fetch.",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx:204",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "The Updater is invoked on reads when conflicts might exist, so it must handle query operations by pushing the latest local value before pulling.",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx:413",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "The Bookkeeper checks failed syncs only on reads and sets them only on writes.",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx:496",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "Final assembly wires four hand-built components through MutableStoreBuilder.from(fetcher, sourceOfTruth, converter).build(updater, bookkeeper).",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx:730",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+   "claim": "Store 6 replaces this assembly with the single mutationStore(...) factory entry point.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:492",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/advanced-caching-strategies",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/advanced-caching-strategies.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/advanced-caching-strategies",
+   "claim": "Store 6 bounds quiescent-engine residency via maxIdleKeys (default 128); keys with active collectors or in-flight work are never evicted, and eviction discards only derived in-memory state.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreBuilder.kt:116",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/advanced-caching-strategies",
+   "claim": "Store 6's zero-config caching behavior is specified line by line, including that N concurrent callers for one key share exactly one fetch.",
+   "anchor": "docs/store6/important-defaults.md:68",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/authentication-and-secure-data-access",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/authentication-and-secure-data-access.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/authentication-and-secure-data-access",
+   "claim": "The use-cases index promised auth flows, token refresh, and secure data access for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:24",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/authentication-and-secure-data-access",
+   "claim": "The closest auth-adjacent Store 5 material that exists is the Validator page's token-expiry validation example.",
+   "anchor": "store-docs/content/docs/concepts/store5/validator.mdx:126",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/data-synchronization-and-conflict-resolution",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/data-synchronization-and-conflict-resolution.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/data-synchronization-and-conflict-resolution",
+   "claim": "Store 6's non-transactional write path adopts the server echo first and retires the journal row last; a crash in the window can re-send a push, so server endpoints must be idempotent.",
+   "anchor": "STABILITY.md:156",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/data-synchronization-and-conflict-resolution",
+   "claim": "Pending writes surface on stream with origin OVERLAY; isStale is never set on an OVERLAY frame, so pending-write UI keys on origin, not staleness.",
+   "anchor": "STABILITY.md:189",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/ensuring-data-integrity-and-freshness",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/ensuring-data-integrity-and-freshness.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/ensuring-data-integrity-and-freshness",
+   "claim": "Store 6 makes freshness a per-call policy: reads are planned by a sealed Freshness interface rather than a user-supplied validity hook.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt:12",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/ensuring-data-integrity-and-freshness",
+   "claim": "In Store 6, invalidate marks a value stale while it keeps serving and refreshes; clear removes it \u2014 the deliberate-staleness half of this stub's territory.",
+   "anchor": "docs/store6/invalidate-vs-clear.md:9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/error-handling-and-retry-strategies",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/error-handling-and-retry-strategies.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/error-handling-and-retry-strategies",
+   "claim": "Store 6's failures are a sealed StoreError hierarchy whose messages state what was attempted, for which key or namespace, and the likely fix.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt:10",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/error-handling-and-retry-strategies",
+   "claim": "The Store 6 engine performs zero retries: one demand cycle invokes the fetcher exactly once and a failure schedules no background retry \u2014 retry policy belongs in the user's fetcher.",
+   "anchor": "docs/store6/important-defaults.md:38",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/handling-complex-data-relationships",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/handling-complex-data-relationships.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/handling-complex-data-relationships",
+   "claim": "The use-cases index promised guidance on nested data and associations such as comments, ratings, and user profiles.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:32",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/handling-complex-data-relationships",
+   "claim": "Store 6's adjacent published guidance is key design: a StoreKey does two jobs \u2014 canonicalId() is identity and namespace is the bulk-operation unit.",
+   "anchor": "docs/store6/key-design.md:9",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
+   "claim": "Fallback is a real Store 5 Fetcher capability: the interface carries an optional fallback Fetcher used when the primary fails.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt:28",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
+   "claim": "The use-cases index promised primary/secondary fetcher chains for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:78",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
+   "claim": "Store 6's reactive-consumption surface is the stream door of the Store interface, which any state container can collect.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:17",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
+   "claim": "The one shipped framework integration is Compose: collectAsState over Store.stream with a CachedOrFetch default.",
+   "anchor": "store6-compose/src/commonMain/kotlin/org/mobilenativefoundation/store6/compose/CollectAsState.kt:33",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
+   "claim": "The use-cases index promised driving Compose and SwiftUI interfaces from Store data streams.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:54",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
+   "claim": "The Compose half exists in Store 6 today as Store<K,V>.collectAsState(key, freshness = Freshness.CachedOrFetch).",
+   "anchor": "store6-compose/src/commonMain/kotlin/org/mobilenativefoundation/store6/compose/CollectAsState.kt:33",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/migrating-from-existing-data-layers",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/migrating-from-existing-data-layers.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/migrating-from-existing-data-layers",
+   "claim": "store5.* and store6.* coordinates live side by side for the whole 6.x major; migration happens a screen at a time with no flag day.",
+   "anchor": "STABILITY.md:106",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/migrating-from-existing-data-layers",
+   "claim": "store6-store5-interop is supported for all of 6.x, and the 5-to-6 and 4-to-6 migration guides are launch gates for 6.0.0 that block GA.",
+   "anchor": "STABILITY.md:109",
+   "verdict": "CONFIRMED"
+  },
+  {
+   "page": "/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
+   "claim": "The Store 6 SQLDelight adapter README delivers the promised walkthrough as a 15-minute existing-schema integration.",
+   "anchor": "store6-sqldelight/README.md:7",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
+   "claim": "The durable-writes half of offline-first is Store 6's journalled write path, created via the mutationStore(...) factory.",
+   "anchor": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt:492",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/pagination-and-infinite-scrolling",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/pagination-and-infinite-scrolling.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/pagination-and-infinite-scrolling",
+   "claim": "A Store 6 paging artifact (store6-paging-androidx) is promised but not in the alpha01 line, tracking to 6.0.0.",
+   "anchor": "STABILITY.md:70",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/pagination-and-infinite-scrolling",
+   "claim": "The use-cases index promised pagination and infinite scrolling for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:82",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/real-time-data-updates",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/real-time-data-updates.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/real-time-data-updates",
+   "claim": "Store 5's Fetcher supports multi-emission sources: invoke(key) returns Flow<FetcherResult<Network>>.",
+   "anchor": "store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt:33",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/real-time-data-updates",
+   "claim": "The use-cases index promised WebSocket/SSE-driven real-time data for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:28",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/security-and-data-encryption",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/security-and-data-encryption.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/security-and-data-encryption",
+   "claim": "The use-cases index promised local-data encryption and security-compliance practices for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:62",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/security-and-data-encryption",
+   "claim": "In Store 6, persistence is a user-implemented seam contract, so encryption is a property of the SourceOfTruth implementation the user brings.",
+   "anchor": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/SourceOfTruth.kt:45",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/testing-store-and-its-components",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/testing-store-and-its-components.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/testing-store-and-its-components",
+   "claim": "store6-testing is a real artifact in the alpha01 line, Experimental with every public declaration carrying @ExperimentalStoreApi.",
+   "anchor": "STABILITY.md:48",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/testing-store-and-its-components",
+   "claim": "Custom SourceOfTruth implementations are certified by extending the SourceOfTruthContractKit abstract test class.",
+   "anchor": "store6-testing/src/commonMain/kotlin/org/mobilenativefoundation/store6/testing/SourceOfTruthContractKit.kt:36",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/working-with-non-paginated-lists",
+   "claim": "The page body is empty: frontmatter title plus description 'Coming soon' only.",
+   "anchor": "store-docs/content/docs/use-cases/store5/working-with-non-paginated-lists.mdx:3",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/working-with-non-paginated-lists",
+   "claim": "StoreMultiCache is a real Store 5 API in the legacy cache module (cache5 package).",
+   "anchor": "cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/StoreMultiCache.kt:15",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/use-cases/store5/working-with-non-paginated-lists",
+   "claim": "The use-cases index promised collection/single decomposition via StoreMultiCache for this destination.",
+   "anchor": "store-docs/content/docs/use-cases/store5/overview.mdx:66",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/overview",
+   "claim": "The page carries frontmatter title 'Best practices' and indexes exactly one guide.",
+   "anchor": "store-docs/content/docs/best-practices/store5/overview.mdx:2",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/overview",
+   "claim": "The single indexed entry links to the Single or Multiple Stores guide with a one-line description.",
+   "anchor": "store-docs/content/docs/best-practices/store5/overview.mdx:5",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/overview",
+   "claim": "The linked guide exists and is substantive: an architectural decision guide framed around a specific use case and requirements.",
+   "anchor": "store-docs/content/docs/best-practices/store5/single-or-multiple-stores.mdx:8",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/single-or-multiple-stores",
+   "claim": "The guide weighs five named decision factors: data coupling, caching strategies, error handling, complexity of data merging, and scalability/extensibility.",
+   "anchor": "store-docs/content/docs/best-practices/store5/single-or-multiple-stores.mdx:37",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/single-or-multiple-stores",
+   "claim": "The worked example combines three Trails endpoints (trail, trail status, weather) into a single TrailDetail domain model.",
+   "anchor": "store-docs/content/docs/best-practices/store5/single-or-multiple-stores.mdx:25",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/single-or-multiple-stores",
+   "claim": "The decision flowchart is an external image hosted on mintcdn.com.",
+   "anchor": "store-docs/content/docs/best-practices/store5/single-or-multiple-stores.mdx:122",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/single-or-multiple-stores",
+   "claim": "The Trails app chose multiple Stores for Trail Detail, citing independent update frequencies, differing caching needs, the value of partial functionality, straightforward merging, and likely expansion.",
+   "anchor": "store-docs/content/docs/best-practices/store5/single-or-multiple-stores.mdx:126",
+   "verdict": "UNSAMPLED"
+  },
+  {
+   "page": "/docs/best-practices/store5/single-or-multiple-stores",
+   "claim": "Store 6 restates the partitioning question in namespace terms: one namespace per record type by default, split for smaller invalidation blast radius.",
+   "anchor": "docs/store6/key-design.md:82",
+   "verdict": "UNSAMPLED"
+  }
+ ]
+}
