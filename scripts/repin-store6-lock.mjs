@@ -18,22 +18,10 @@ const REVERIFICATION_SCRIPTS = ["scripts/check-claims.mjs", "scripts/check-snipp
 
 const TRANSFORM_BOUNDARIES = [
   {
-    end: 136,
-    expected: ["blockquote-blank", "blockquote", "blockquote", "blank"],
-    path: "docs/store6/quickstart.md",
-    start: 133,
-  },
-  {
     end: 126,
     expected: ["paragraph", "list", "paragraph", "list"],
     path: "STABILITY.md",
     start: 123,
-  },
-  {
-    end: 163,
-    expected: ["blank", "paragraph", "paragraph", "blank"],
-    path: "STABILITY.md",
-    start: 162,
   },
   {
     end: 179,

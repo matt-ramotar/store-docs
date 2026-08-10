@@ -14,6 +14,24 @@ const LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
 const OWNED_TARGETS_PATH = "evidence/T4-owned-targets.json";
 const OUTPUT_OWNER = "sync-store6-docs";
 const GITHUB_ROOT = "https://github.com/matt-ramotar/Store6";
+const LEGACY_QUICKSTART_MUTATIONS_BLOCK = [
+  "> **The spelling below is the ratified surface.** The mutations API review ran and ruled the",
+  "> factory signature, presence algebra, and drain spelling (twenty rulings, 2026-08-01). The",
+  "> module is still experimental — shapes can change in any release — but the snippet below now",
+  "> matches the landed artifact.",
+].join("\n");
+const CURRENT_QUICKSTART_MUTATIONS_BLOCK = [
+  "> **The spelling below is the current API surface.** The module is still experimental — shapes",
+  "> can change in any release — but the snippet below matches the implementation.",
+].join("\n");
+const LEGACY_STABILITY_CRASH_WINDOW_BLOCK = [
+  "This is the same conservative crash-window stance already ratified for reads: prefer doing work",
+  "twice over losing it.",
+].join("\n");
+const CURRENT_STABILITY_CRASH_WINDOW_BLOCK = [
+  "This is the same conservative crash-window stance used for reads: prefer doing work twice over",
+  "losing it.",
+].join("\n");
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   await run(parseArguments(process.argv.slice(2)));
@@ -138,14 +156,26 @@ export function rewriteRepoUrl(rawTarget, sourcePath, sourceRootValue, routes) {
   return `${GITHUB_ROOT}/${kind}/main/${repositoryPath}${suffix}`;
 }
 
-function applyLockedPublicationTransforms(source, sourceRelative) {
-  const lines = source.split("\n");
+export function applyLockedPublicationTransforms(source, sourceRelative) {
   if (sourceRelative === "docs/store6/quickstart.md") {
-    replaceLineRange(lines, 133, 136, [
-      "> **The spelling below is the current API surface.** The module is still experimental — shapes",
-      "> can change in any release — but the snippet below matches the implementation.",
-    ]);
-  } else if (sourceRelative === "STABILITY.md") {
+    return applyExactPublicationBlock(
+      source,
+      sourceRelative,
+      LEGACY_QUICKSTART_MUTATIONS_BLOCK,
+      CURRENT_QUICKSTART_MUTATIONS_BLOCK,
+    );
+  }
+  if (sourceRelative === "STABILITY.md") {
+    source = applyExactPublicationBlock(
+      source,
+      sourceRelative,
+      LEGACY_STABILITY_CRASH_WINDOW_BLOCK,
+      CURRENT_STABILITY_CRASH_WINDOW_BLOCK,
+    );
+  }
+
+  const lines = source.split("\n");
+  if (sourceRelative === "STABILITY.md") {
     replaceLineRange(lines, 206, 206, ["compatibility pin that would lower it."]);
     replaceLineRange(lines, 172, 179, [
       "### (c) The current surface stays experimental",
@@ -155,10 +185,6 @@ function applyLockedPublicationTransforms(source, sourceRelative) {
       "presence algebra, and the persistence a caller installs is retained for the transactional ack-path",
       "decorator. The module remains experimental — shapes can change in any release, and this document",
       "still deliberately freezes no mutations signature into policy prose.",
-    ]);
-    replaceLineRange(lines, 162, 163, [
-      "This is the same conservative crash-window stance used for reads: prefer doing work twice over",
-      "losing it.",
     ]);
     replaceLineRange(lines, 123, 126, [
       "- **Generated-Swift dumps diffed on every pull request** across the supported bridges — Obj-C export",
@@ -187,6 +213,14 @@ function applyLockedPublicationTransforms(source, sourceRelative) {
     ]);
   }
   return lines.join("\n");
+}
+
+function applyExactPublicationBlock(source, sourceRelative, legacyBlock, currentBlock) {
+  const legacyCount = source.split(legacyBlock).length - 1;
+  const currentCount = source.split(currentBlock).length - 1;
+  if (legacyCount === 1 && currentCount === 0) return source.replace(legacyBlock, currentBlock);
+  if (legacyCount === 0 && currentCount === 1) return source;
+  throw new Error(`${sourceRelative}: publication transform boundary drift`);
 }
 
 function replaceLineRange(lines, start, end, replacement) {

@@ -121,6 +121,10 @@ One detail worth naming so it does not read as magic: **`take(2)` is what ends t
 first two frames — `Loading`, then `Data` — and stops. In an app you collect for the lifetime of the
 screen instead, and `close()` the store when you are done with it.
 
+Continue with [the read contract](/docs/store6/concepts/read-contract) for result and failure
+semantics, then [freshness policies](/docs/store6/concepts/freshness) for choosing how each read
+uses resident and fetched data.
+
 ## Write path (experimental)
 
 > **Experimental.** `store6-mutations` is a separate artifact and every public symbol is
@@ -179,4 +183,4 @@ push possibly being re-sent. That tradeoff is stated in full in
 
 ---
 
-*Last verified: 2026-07-26 · `main` @ `c4fbaf4`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*

@@ -1,15 +1,15 @@
 {
   "schemaVersion": 1,
-  "revision": "a6a156e99db29cebf7da238263b007802bff2bfb",
+  "revision": "333a54d4d97eb7a37b45481e0cc4524f91c44476",
   "sources": [
     {
       "path": "docs/store6/quickstart.md",
-      "sha256": "f02625d024c8aab5dcd64da25792f37d30f0935b0035a771061acda3ddc480af",
+      "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
       "target": "content/docs/store6/quickstart.mdx"
     },
     {
       "path": "docs/store6/important-defaults.md",
-      "sha256": "c4751f27063e37d58c37cdf6a0183bf9a32b97a3b6eba0078ac8bf3f9744c597",
+      "sha256": "f798e5cfff6fceb26abb6b6ea47edc072ff214f48fe4485d5b44ef8f22e311f6",
       "target": "content/docs/store6/important-defaults.mdx"
     },
     {
@@ -19,7 +19,7 @@
     },
     {
       "path": "docs/store6/key-design.md",
-      "sha256": "a1b620e5f5ce1cc750740a37350b4fc401200afc70cd756585441301398cb222",
+      "sha256": "a76685013f143b8d7d9648cdb7b7a7442c92472c0f7dc385aa3ecdf2eb5f99e5",
       "target": "content/docs/store6/key-design.mdx"
     },
     {
