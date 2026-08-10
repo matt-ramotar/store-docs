@@ -1,6 +1,7 @@
 import { Separator } from "@heroui/react";
 import { AppLayout, Navbar } from "@heroui-pro/react";
 
+import { CommandSearch } from "@/components/shell/CommandSearch";
 import { VersionSwitcher } from "@/components/shell/VersionSwitcher";
 import { primaryNavItems, type DocsVersion } from "@/lib/nav";
 
@@ -28,6 +29,7 @@ export function TopNav({ currentPath, version }: TopNavProps) {
         </Navbar.Content>
         <Navbar.Spacer />
         <Navbar.Content>
+          <CommandSearch />
           <Separator className="hidden h-6 sm:block" orientation="vertical" />
           <VersionSwitcher version={version} />
         </Navbar.Content>
