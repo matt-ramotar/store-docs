@@ -300,6 +300,283 @@ test("search labels normalize Markdown to readable plain text", async (t) => {
   });
 });
 
+test("search label normalization fails closed without overflowing on resource limits", async () => {
+  const {
+    normalizeSearchLabel,
+    normalizeSearchResult,
+    normalizeSearchResults,
+    SearchResultTracker,
+  } = await import("../lib/search-results.ts");
+  const excessiveDepth = `${"> ".repeat(2000)}visible`;
+  const badResult = {
+    id: "too-deep",
+    type: "text",
+    url: "/docs/store6/too-deep",
+    content: excessiveDepth,
+  };
+  const goodResult = {
+    id: "safe-result",
+    type: "page",
+    url: "/docs/store6/safe",
+    content: "Safe result",
+  };
+
+  const invalidLabels = [
+    ["depth", excessiveDepth],
+    ["nodes", "x\n\n".repeat(5000)],
+    ["size", "x".repeat(40_000)],
+  ];
+  for (const [name, label] of invalidLabels) {
+    let diagnostic;
+    assert.doesNotThrow(() => {
+      diagnostic = normalizeSearchLabel(label);
+    }, name);
+    assert.equal(diagnostic.text, "", name);
+    assert.ok(diagnostic.residualKinds.includes("invalid"), name);
+    assert.equal(
+      normalizeSearchResult({
+        id: `invalid-${name}`,
+        type: "text",
+        url: `/docs/store6/invalid-${name}`,
+        content: label,
+      }),
+      null,
+      name,
+    );
+  }
+  assert.deepEqual(normalizeSearchResults([badResult, goodResult]), [
+    {
+      id: "search-result-safe-result",
+      url: "/docs/store6/safe",
+      title: "Safe result",
+      context: "",
+      version: "store6",
+    },
+  ]);
+
+  const tracker = new SearchResultTracker();
+  tracker.updateInput("safe");
+  const generation = tracker.beginRequest("safe");
+  assert.doesNotThrow(() => tracker.recordResults([badResult, goodResult], generation));
+  assert.deepEqual(tracker.resolve({ data: [badResult, goodResult], isLoading: false }), {
+    results: [],
+    state: "pending",
+  });
+
+  const trackedResults = [badResult, goodResult];
+  tracker.recordResults(trackedResults, generation);
+  const ready = tracker.resolve({ data: trackedResults, isLoading: false });
+  assert.equal(ready.state, "ready");
+  assert.deepEqual(ready.results.map((result) => result.title), ["Safe result"]);
+});
+
+test("block HTML and MDX preserve safe body text while excluding unsafe raw text", async () => {
+  const { normalizeSearchLabel } = await import("../lib/search-results.ts");
+  const fixtures = [
+    {
+      source: "<div>\nVisible **text**\n</div>",
+      text: "Visible text",
+      consumedKinds: ["emphasis", "html"],
+    },
+    {
+      source: '<Callout title="a > b">\nVisible `code`\n</Callout>',
+      text: "Visible code",
+      consumedKinds: ["code", "html"],
+    },
+    {
+      source: "<Callout title='a > b'>Single quote</Callout>",
+      text: "Single quote",
+      consumedKinds: ["html"],
+    },
+    {
+      source: "<Callout title={`a } > b`}>Visible</Callout>",
+      text: "Visible",
+      consumedKinds: ["html"],
+    },
+    {
+      source: '<div title="a > b"><span>Nested **text**</span></div>',
+      text: "Nested text",
+      consumedKinds: ["emphasis", "html"],
+    },
+    {
+      source:
+        "<div>Safe<script>hidden **script**</script><style>.hidden { display: block; }</style>body</div>",
+      text: "Safe body",
+      consumedKinds: ["html"],
+    },
+    {
+      source: "Before<!-- hidden **comment** -->After",
+      text: "Before After",
+      consumedKinds: ["html"],
+    },
+    {
+      source: "`<span>code</span>`",
+      text: "<span>code</span>",
+      consumedKinds: ["code"],
+    },
+    {
+      source: "```html\n<script>literal</script>\n```",
+      text: "<script>literal</script>",
+      consumedKinds: ["code"],
+    },
+    {
+      source: "`<!-- code comment -->`",
+      text: "<!-- code comment -->",
+      consumedKinds: ["code"],
+    },
+    {
+      source: String.raw`\<span>literal\</span>`,
+      text: "<span>literal</span>",
+      consumedKinds: [],
+    },
+    {
+      source: String.raw`\<!--literal-->`,
+      text: "<!--literal-->",
+      consumedKinds: [],
+    },
+    {
+      source: "<https://example.test>",
+      text: "https://example.test",
+      consumedKinds: ["link"],
+    },
+    {
+      source: "<urn:isbn:0451450523>",
+      text: "urn:isbn:0451450523",
+      consumedKinds: ["link"],
+    },
+    {
+      source: "<>Fragment **text**</>",
+      text: "Fragment text",
+      consumedKinds: ["emphasis", "html"],
+    },
+    {
+      source: "Before {/* hidden **comment** */} after",
+      text: "Before after",
+      consumedKinds: ["html"],
+    },
+    {
+      source: "&lt;div&gt;safe **body**&lt;/div&gt;",
+      text: "safe body",
+      consumedKinds: ["emphasis", "entity", "html"],
+    },
+    {
+      source: "before &lt;script&gt;bad **bold**&lt;/script&gt; after",
+      text: "before after",
+      consumedKinds: ["emphasis", "entity", "html"],
+    },
+  ];
+
+  for (const fixture of fixtures) {
+    assert.deepEqual(normalizeSearchLabel(fixture.source), {
+      text: fixture.text,
+      consumedKinds: fixture.consumedKinds,
+      residualKinds: [],
+    });
+  }
+});
+
+test("normalization reports pass exhaustion and rejects non-convergent labels", async () => {
+  const { normalizeSearchLabel, normalizeSearchResult, stripSearchMarkup } = await import(
+    "../lib/search-results.ts"
+  );
+  const nestEntity = (depth) => {
+    let value = "&#x2A;*visible**";
+    for (let index = 0; index < depth; index += 1) value = value.replaceAll("&", "&amp;");
+    return value;
+  };
+
+  for (const depth of [32, 33]) {
+    const source = nestEntity(depth);
+    const diagnostic = normalizeSearchLabel(source);
+    assert.ok(diagnostic.residualKinds.includes("non-convergent"), `depth ${depth}`);
+    assert.equal(stripSearchMarkup(source), "", `depth ${depth} must fail closed`);
+    assert.equal(
+      normalizeSearchResult({
+        id: `nested-${depth}`,
+        type: "text",
+        url: `/docs/store6/nested-${depth}`,
+        content: source,
+      }),
+      null,
+    );
+  }
+
+  assert.equal(
+    normalizeSearchResult({
+      id: "nested-breadcrumb",
+      type: "page",
+      url: "/docs/store6/nested-breadcrumb",
+      content: "Safe title",
+      breadcrumbs: [nestEntity(32)],
+    }),
+    null,
+  );
+});
+
+test("the tracker caches normalized arrays by raw result identity and generation", async () => {
+  const { SearchResultTracker } = await import("../lib/search-results.ts");
+  let contentReads = 0;
+  const makeRawResults = (id, title) => [
+    {
+      id,
+      type: "page",
+      url: `/docs/store6/${id}`,
+      get content() {
+        contentReads += 1;
+        return title;
+      },
+    },
+  ];
+  const tracker = new SearchResultTracker();
+  tracker.updateInput("fetcher");
+  const firstGeneration = tracker.beginRequest("fetcher");
+  const firstRaw = makeRawResults("first", "First");
+  tracker.recordResults(firstRaw, firstGeneration);
+  const firstView = tracker.resolve({ data: firstRaw, isLoading: false });
+  const repeatedView = tracker.resolve({ data: firstRaw, isLoading: false });
+  const action = tracker.getActionableResult(
+    { data: firstRaw, isLoading: false },
+    firstView.results[0]?.id ?? "",
+  );
+
+  assert.deepEqual(
+    {
+      actionUsesCachedObject: action === firstView.results[0],
+      contentReads,
+      sameArray: firstView.results === repeatedView.results,
+    },
+    { actionUsesCachedObject: true, contentReads: 1, sameArray: true },
+  );
+
+  const replacementRaw = makeRawResults("replacement", "Replacement");
+  tracker.recordResults(replacementRaw, firstGeneration);
+  const replacementView = tracker.resolve({ data: replacementRaw, isLoading: false });
+  assert.notStrictEqual(replacementView.results, firstView.results);
+  assert.equal(contentReads, 2, "each new raw array is normalized exactly once");
+
+  tracker.updateInput("adapter");
+  assert.equal(
+    tracker.resolve({ data: firstRaw, isLoading: false }).state,
+    "pending",
+    "a prior generation must not reuse its cached results",
+  );
+  const secondGeneration = tracker.beginRequest("adapter");
+  const secondRaw = makeRawResults("second", "Second");
+  tracker.recordResults(secondRaw, secondGeneration);
+  const secondView = tracker.resolve({ data: secondRaw, isLoading: false });
+  assert.notStrictEqual(secondView.results, firstView.results);
+  assert.equal(contentReads, 3);
+
+  tracker.updateInput("third");
+  const thirdGeneration = tracker.beginRequest("third");
+  secondRaw[0] = makeRawResults("third", "Third")[0];
+  tracker.recordResults(secondRaw, thirdGeneration);
+  const thirdView = tracker.resolve({ data: secondRaw, isLoading: false });
+  assert.notStrictEqual(thirdView.results, secondView.results);
+  assert.deepEqual(thirdView.results.map((result) => result.title), ["Third"]);
+  assert.equal(contentReads, 4, "a reused raw array is refreshed for a new generation");
+});
+
 test("canonical destinations dedupe deterministically with reorder-stable identities", async () => {
   const { normalizeSearchResults } = await import("../lib/search-results.ts");
   const rows = [

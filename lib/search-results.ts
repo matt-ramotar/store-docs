@@ -34,10 +34,12 @@ export type SearchMarkupKind =
   | "table"
   | "thematic-break";
 
+export type SearchResidualKind = SearchMarkupKind | "invalid" | "non-convergent";
+
 export type SearchLabelNormalization = {
   text: string;
   consumedKinds: SearchMarkupKind[];
-  residualKinds: SearchMarkupKind[];
+  residualKinds: SearchResidualKind[];
 };
 
 type SearchGeneration = {
@@ -85,9 +87,19 @@ const RESULT_TYPE_PRIORITY: Record<SortedResult["type"], number> = {
   text: 2,
 };
 
+const MAX_SEARCH_AST_DEPTH = 256;
+const MAX_SEARCH_AST_NODES = 4096;
+const MAX_SEARCH_LABEL_LENGTH = 32_768;
+const MAX_SEARCH_NORMALIZATION_PASSES = 32;
+const SEARCH_RAW_TEXT_ELEMENTS = new Set(["script", "style"]);
+
 export class SearchResultTracker {
   readonly #errorGenerations = new Map<unknown, SearchGeneration>();
   readonly #generationByQuery = new Map<string, number>([["", 0]]);
+  readonly #normalizedResults = new WeakMap<
+    SortedResult[],
+    { generation: SearchGeneration; results: NormalizedSearchResult[] }
+  >();
   readonly #resultGenerations = new WeakMap<SortedResult[], SearchGeneration>();
   #current: SearchGeneration = { generation: 0, normalizedQuery: "" };
   #nextGeneration = 0;
@@ -111,6 +123,18 @@ export class SearchResultTracker {
 
   recordResults(results: SortedResult[], generation: SearchGeneration): void {
     this.#resultGenerations.set(results, generation);
+    const cached = this.#normalizedResults.get(results);
+    if (
+      this.#isCurrent(generation) &&
+      (!cached ||
+        cached.generation.generation !== generation.generation ||
+        cached.generation.normalizedQuery !== generation.normalizedQuery)
+    ) {
+      this.#normalizedResults.set(results, {
+        generation,
+        results: normalizeSearchResults(results),
+      });
+    }
   }
 
   recordError(error: unknown, generation: SearchGeneration): void {
@@ -126,8 +150,14 @@ export class SearchResultTracker {
     }
 
     if (Array.isArray(data) && this.#isCurrent(this.#resultGenerations.get(data))) {
-      const results = normalizeSearchResults(data);
-      return { results, state: results.length > 0 ? "ready" : "empty" };
+      const cached = this.#normalizedResults.get(data);
+      if (!cached || !this.#isCurrent(cached.generation)) {
+        return { results: [], state: "pending" };
+      }
+      return {
+        results: cached.results,
+        state: cached.results.length > 0 ? "ready" : "empty",
+      };
     }
 
     return { results: [], state: "pending" };
@@ -225,37 +255,59 @@ export function normalizeSearchResults(
 
 export function normalizeSearchLabel(value: string): SearchLabelNormalization {
   const consumed = new Set<SearchMarkupKind>();
-  const literals = createSearchLiteralRegistry(value);
-  const initialTree = parseSearchMarkdown(value);
-  let current = protectEscapedPunctuation(value, findOpaqueSourceRanges(initialTree), literals);
-  let residualKinds: SearchMarkupKind[] = [];
 
-  for (let pass = 0; pass < 32; pass += 1) {
-    const tree = parseSearchMarkdown(current);
-    recordDecodedEntities(tree, current, consumed);
-    const collected = collectSearchMarkdown(tree, consumed, literals);
-    const next = collapseSearchLabel(collected);
+  try {
+    if (value.length > MAX_SEARCH_LABEL_LENGTH) return invalidSearchLabel(consumed);
 
-    if (next === current) {
-      residualKinds = [];
-      break;
+    const sourceTree = parseSearchMarkdown(value);
+    if (!sourceTree) return invalidSearchLabel(consumed);
+
+    const html = stripSearchHtml(value, findHtmlScannerOpaqueRanges(sourceTree, value));
+    if (html.consumed) consumed.add("html");
+
+    const literals = createSearchLiteralRegistry(value);
+    const initialTree = parseSearchMarkdown(html.source);
+    if (!initialTree) return invalidSearchLabel(consumed);
+
+    let current = protectEscapedPunctuation(
+      html.source,
+      findOpaqueSourceRanges(initialTree),
+      literals,
+    );
+
+    for (let pass = 0; pass < MAX_SEARCH_NORMALIZATION_PASSES; pass += 1) {
+      let tree = parseSearchMarkdown(current);
+      if (!tree) return invalidSearchLabel(consumed);
+
+      recordDecodedEntities(tree, current, consumed);
+      const htmlPass = stripSearchHtml(current, findHtmlScannerOpaqueRanges(tree, current));
+      if (htmlPass.consumed) {
+        consumed.add("html");
+        current = htmlPass.source;
+        tree = parseSearchMarkdown(current);
+        if (!tree) return invalidSearchLabel(consumed);
+      }
+
+      const collected = collectSearchMarkdown(tree, consumed, literals);
+      if (collected === null) return invalidSearchLabel(consumed);
+
+      const next = collapseSearchLabel(collected);
+      if (next === current) {
+        return completeSearchLabel(literals.restore(current), consumed, []);
+      }
+
+      current = next;
     }
 
-    current = next;
-    if (pass === 31) residualKinds = collectSearchMarkupKinds(parseSearchMarkdown(current));
+    return completeSearchLabel(literals.restore(current), consumed, ["non-convergent"]);
+  } catch {
+    return invalidSearchLabel(consumed);
   }
-
-  const text = collapseSearchLabel(literals.restore(current));
-
-  return {
-    text,
-    consumedKinds: [...consumed].toSorted(),
-    residualKinds,
-  };
 }
 
 export function stripSearchMarkup(value: string): string {
-  return normalizeSearchLabel(value).text;
+  const normalized = normalizeSearchLabel(value);
+  return normalized.residualKinds.length === 0 ? normalized.text : "";
 }
 
 export function hasSearchMarkdownArtifacts(value: string): boolean {
@@ -268,11 +320,216 @@ type SearchLiteralRegistry = {
   restore: (value: string) => string;
 };
 
-function parseSearchMarkdown(value: string): MarkdownNode {
-  return fromMarkdown(value, {
-    extensions: [gfm()],
-    mdastExtensions: [gfmFromMarkdown()],
-  }) as MarkdownNode;
+type SearchHtmlTag = {
+  closing: boolean;
+  end: number;
+  name: string;
+  selfClosing: boolean;
+};
+
+function completeSearchLabel(
+  text: string,
+  consumed: Set<SearchMarkupKind>,
+  residualKinds: SearchResidualKind[],
+): SearchLabelNormalization {
+  return {
+    text: collapseSearchLabel(text),
+    consumedKinds: [...consumed].toSorted(),
+    residualKinds,
+  };
+}
+
+function invalidSearchLabel(consumed: Set<SearchMarkupKind>): SearchLabelNormalization {
+  return completeSearchLabel("", consumed, ["invalid"]);
+}
+
+function parseSearchMarkdown(value: string): MarkdownNode | null {
+  if (value.length > MAX_SEARCH_LABEL_LENGTH) return null;
+
+  try {
+    const tree = fromMarkdown(value, {
+      extensions: [gfm()],
+      mdastExtensions: [gfmFromMarkdown()],
+    }) as MarkdownNode;
+    return isSearchMarkdownTreeSafe(tree) ? tree : null;
+  } catch {
+    return null;
+  }
+}
+
+function isSearchMarkdownTreeSafe(tree: MarkdownNode): boolean {
+  const seen = new Set<MarkdownNode>();
+  const stack = [{ depth: 0, node: tree }];
+  let nodes = 0;
+
+  while (stack.length > 0) {
+    const entry = stack.pop();
+    if (!entry || seen.has(entry.node)) return false;
+    seen.add(entry.node);
+
+    nodes += 1;
+    if (nodes > MAX_SEARCH_AST_NODES || entry.depth > MAX_SEARCH_AST_DEPTH) return false;
+
+    const children = entry.node.children ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) {
+      stack.push({ depth: entry.depth + 1, node: children[index] });
+    }
+  }
+
+  return true;
+}
+
+function stripSearchHtml(
+  value: string,
+  opaqueRanges: readonly SourceRange[],
+): { consumed: boolean; source: string } {
+  const output: string[] = [];
+  let consumed = false;
+  let index = 0;
+  let rangeIndex = 0;
+
+  while (index < value.length) {
+    while (opaqueRanges[rangeIndex]?.end <= index) rangeIndex += 1;
+    const range = opaqueRanges[rangeIndex];
+    if (range && index >= range.start && index < range.end) {
+      output.push(value.slice(index, range.end));
+      index = range.end;
+      rangeIndex += 1;
+      continue;
+    }
+
+    if (value.startsWith("<!--", index) && !isEscapedSearchCharacter(value, index)) {
+      const commentEnd = value.indexOf("-->", index + 4);
+      output.push(" ");
+      consumed = true;
+      index = commentEnd === -1 ? value.length : commentEnd + 3;
+      continue;
+    }
+
+    if (value.startsWith("{/*", index) && !isEscapedSearchCharacter(value, index)) {
+      const commentEnd = value.indexOf("*/}", index + 3);
+      output.push(" ");
+      consumed = true;
+      index = commentEnd === -1 ? value.length : commentEnd + 3;
+      continue;
+    }
+
+    if (value[index] === "<" && !isEscapedSearchCharacter(value, index)) {
+      const tag = scanSearchHtmlTag(value, index);
+      if (tag) {
+        output.push(" ");
+        consumed = true;
+        index = tag.end;
+
+        if (!tag.closing && !tag.selfClosing && SEARCH_RAW_TEXT_ELEMENTS.has(tag.name)) {
+          const closingTag = findSearchRawTextClosingTag(value, index, tag.name);
+          index = closingTag?.end ?? value.length;
+          output.push(" ");
+        }
+        continue;
+      }
+    }
+
+    output.push(value[index]);
+    index += 1;
+  }
+
+  return { consumed, source: output.join("") };
+}
+
+function scanSearchHtmlTag(value: string, start: number): SearchHtmlTag | null {
+  if (value.startsWith("<>", start)) {
+    return { closing: false, end: start + 2, name: "", selfClosing: false };
+  }
+  if (value.startsWith("</>", start)) {
+    return { closing: true, end: start + 3, name: "", selfClosing: false };
+  }
+
+  let cursor = start + 1;
+  let closing = false;
+
+  if (value[cursor] === "/") {
+    closing = true;
+    cursor += 1;
+  }
+
+  const nameStart = cursor;
+  while (cursor < value.length && /[A-Za-z0-9._:-]/u.test(value[cursor])) cursor += 1;
+  if (cursor === nameStart || !/[A-Za-z]/u.test(value[nameStart])) return null;
+  if (cursor >= value.length || !/[\s/>]/u.test(value[cursor])) return null;
+  if (value[cursor] === "/" && value[cursor + 1] !== ">") return null;
+
+  const name = value.slice(nameStart, cursor).toLocaleLowerCase("en-US");
+  let braceDepth = 0;
+  let quote: "\"" | "'" | "`" | null = null;
+
+  while (cursor < value.length) {
+    const character = value[cursor];
+    if (quote) {
+      if (character === "\\") cursor += 2;
+      else {
+        if (character === quote) quote = null;
+        cursor += 1;
+      }
+      continue;
+    }
+
+    if (character === "\"" || character === "'" || character === "`") {
+      quote = character;
+      cursor += 1;
+      continue;
+    }
+    if (character === "{") {
+      braceDepth += 1;
+      cursor += 1;
+      continue;
+    }
+    if (character === "}" && braceDepth > 0) {
+      braceDepth -= 1;
+      cursor += 1;
+      continue;
+    }
+    if (character === ">" && braceDepth === 0) {
+      let tail = cursor - 1;
+      while (tail > start && /\s/u.test(value[tail])) tail -= 1;
+      return {
+        closing,
+        end: cursor + 1,
+        name,
+        selfClosing: !closing && value[tail] === "/",
+      };
+    }
+    cursor += 1;
+  }
+
+  return { closing, end: value.length, name, selfClosing: false };
+}
+
+function isEscapedSearchCharacter(value: string, index: number): boolean {
+  let backslashes = 0;
+  for (let cursor = index - 1; cursor >= 0 && value[cursor] === "\\"; cursor -= 1) {
+    backslashes += 1;
+  }
+  return backslashes % 2 === 1;
+}
+
+function findSearchRawTextClosingTag(
+  value: string,
+  start: number,
+  name: string,
+): SearchHtmlTag | null {
+  let cursor = start;
+
+  while (cursor < value.length) {
+    const tagStart = value.indexOf("<", cursor);
+    if (tagStart === -1) return null;
+
+    const tag = scanSearchHtmlTag(value, tagStart);
+    if (tag?.closing && tag.name === name) return tag;
+    cursor = tag?.end ?? tagStart + 1;
+  }
+
+  return null;
 }
 
 function createSearchLiteralRegistry(source: string): SearchLiteralRegistry {
@@ -302,20 +559,62 @@ function createSearchLiteralRegistry(source: string): SearchLiteralRegistry {
 }
 
 function findOpaqueSourceRanges(tree: MarkdownNode): SourceRange[] {
-  const ranges: SourceRange[] = [];
+  return findSearchSourceRanges(tree, true);
+}
 
-  function visit(node: MarkdownNode): void {
-    if (node.type === "code" || node.type === "inlineCode" || node.type === "html") {
+function findHtmlScannerOpaqueRanges(tree: MarkdownNode, source: string): SourceRange[] {
+  const ranges: SourceRange[] = [];
+  const stack = [tree];
+
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (!node) continue;
+
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    const isCode = node.type === "code" || node.type === "inlineCode";
+    const isAutolink =
+      node.type === "link" &&
+      typeof start === "number" &&
+      typeof end === "number" &&
+      source[start] === "<" &&
+      source[end - 1] === ">";
+
+    if ((isCode || isAutolink) && typeof start === "number" && typeof end === "number") {
+      ranges.push({ start, end });
+      continue;
+    }
+
+    const children = node.children ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) stack.push(children[index]);
+  }
+
+  return ranges.toSorted((left, right) => left.start - right.start || left.end - right.end);
+}
+
+function findSearchSourceRanges(tree: MarkdownNode, includeHtml: boolean): SourceRange[] {
+  const ranges: SourceRange[] = [];
+  const stack = [tree];
+
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (!node) continue;
+
+    if (
+      node.type === "code" ||
+      node.type === "inlineCode" ||
+      (includeHtml && node.type === "html")
+    ) {
       const start = node.position?.start.offset;
       const end = node.position?.end.offset;
       if (typeof start === "number" && typeof end === "number") ranges.push({ start, end });
-      return;
+      continue;
     }
 
-    for (const child of node.children ?? []) visit(child);
+    const children = node.children ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) stack.push(children[index]);
   }
 
-  visit(tree);
   return ranges.toSorted((left, right) => left.start - right.start || left.end - right.end);
 }
 
@@ -355,11 +654,39 @@ function collectSearchMarkdown(
   node: MarkdownNode,
   consumed: Set<SearchMarkupKind>,
   literals: SearchLiteralRegistry,
+): string | null {
+  const collected = new Map<MarkdownNode, string>();
+  const stack = [{ node, visited: false }];
+
+  while (stack.length > 0) {
+    const entry = stack.pop();
+    if (!entry) continue;
+
+    if (!entry.visited) {
+      stack.push({ node: entry.node, visited: true });
+      const children = entry.node.children ?? [];
+      for (let index = children.length - 1; index >= 0; index -= 1) {
+        stack.push({ node: children[index], visited: false });
+      }
+      continue;
+    }
+
+    const children = (entry.node.children ?? []).map((child) => collected.get(child) ?? "");
+    const value = collectSearchMarkdownNode(entry.node, children, consumed, literals);
+    if (value.length > MAX_SEARCH_LABEL_LENGTH * 2) return null;
+    collected.set(entry.node, value);
+  }
+
+  return collected.get(node) ?? "";
+}
+
+function collectSearchMarkdownNode(
+  node: MarkdownNode,
+  children: string[],
+  consumed: Set<SearchMarkupKind>,
+  literals: SearchLiteralRegistry,
 ): string {
-  const collectChildren = (separator: string) =>
-    (node.children ?? [])
-      .map((child) => collectSearchMarkdown(child, consumed, literals))
-      .join(separator);
+  const collectChildren = (separator: string) => children.join(separator);
 
   switch (node.type) {
     case "text":
@@ -428,71 +755,31 @@ function recordDecodedEntities(
   source: string,
   consumed: Set<SearchMarkupKind>,
 ): void {
-  if (node.type === "code" || node.type === "inlineCode" || node.type === "html") return;
+  const stack = [node];
 
-  if (node.type === "text" || node.type === "image" || node.type === "imageReference") {
-    const start = node.position?.start.offset;
-    const end = node.position?.end.offset;
-    const rendered = node.type === "text" ? (node.value ?? "") : (node.alt ?? "");
-    if (typeof start === "number" && typeof end === "number") {
-      const references = source
-        .slice(start, end)
-        .match(/&(?:#x[\dA-F]+|#\d+|[A-Za-z][A-Za-z\d]+);/giu);
-      if (references?.some((reference) => !rendered.includes(reference))) consumed.add("entity");
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (!current) continue;
+    if (current.type === "code" || current.type === "inlineCode" || current.type === "html") {
+      continue;
     }
-  }
 
-  for (const child of node.children ?? []) recordDecodedEntities(child, source, consumed);
-}
+    if (current.type === "text" || current.type === "image" || current.type === "imageReference") {
+      const start = current.position?.start.offset;
+      const end = current.position?.end.offset;
+      const rendered = current.type === "text" ? (current.value ?? "") : (current.alt ?? "");
+      if (typeof start === "number" && typeof end === "number") {
+        const references = source
+          .slice(start, end)
+          .match(/&(?:#x[\dA-F]+|#\d+|[A-Za-z][A-Za-z\d]+);/giu);
+        if (references?.some((reference) => !rendered.includes(reference))) {
+          consumed.add("entity");
+        }
+      }
+    }
 
-function collectSearchMarkupKinds(tree: MarkdownNode): SearchMarkupKind[] {
-  const kinds = new Set<SearchMarkupKind>();
-
-  function visit(node: MarkdownNode): void {
-    const kind = searchMarkupKindForNode(node.type);
-    if (kind) kinds.add(kind);
-    for (const child of node.children ?? []) visit(child);
-  }
-
-  visit(tree);
-  return [...kinds].toSorted();
-}
-
-function searchMarkupKindForNode(type: string): SearchMarkupKind | null {
-  switch (type) {
-    case "inlineCode":
-    case "code":
-      return "code";
-    case "html":
-      return "html";
-    case "image":
-    case "imageReference":
-      return "image";
-    case "link":
-    case "linkReference":
-    case "footnoteReference":
-      return "link";
-    case "definition":
-    case "footnoteDefinition":
-      return "reference-definition";
-    case "emphasis":
-    case "strong":
-      return "emphasis";
-    case "delete":
-      return "strikethrough";
-    case "heading":
-      return "heading";
-    case "list":
-    case "listItem":
-      return "list";
-    case "blockquote":
-      return "blockquote";
-    case "thematicBreak":
-      return "thematic-break";
-    case "table":
-      return "table";
-    default:
-      return null;
+    const children = current.children ?? [];
+    for (let index = children.length - 1; index >= 0; index -= 1) stack.push(children[index]);
   }
 }
 
@@ -516,16 +803,19 @@ function normalizeCandidate(result: SortedResult): NormalizedCandidate | null {
   const destination = allowDocsUrl(result.url);
   if (!sourceId || !destination) return null;
 
-  const title = stripSearchMarkup(result.content);
-  if (!title) return null;
+  const title = normalizeSearchLabel(result.content);
+  if (!title.text || title.residualKinds.length > 0) return null;
+
+  const breadcrumbs = (result.breadcrumbs ?? []).map(normalizeSearchLabel);
+  if (breadcrumbs.some((breadcrumb) => breadcrumb.residualKinds.length > 0)) return null;
 
   return {
     id: `search-result-${encodeURIComponent(sourceId)}`,
     sourceId,
     type: result.type,
     url: destination.url,
-    title,
-    context: (result.breadcrumbs ?? []).map(stripSearchMarkup).filter(Boolean).join(" / "),
+    title: title.text,
+    context: breadcrumbs.map((breadcrumb) => breadcrumb.text).filter(Boolean).join(" / "),
     version:
       destination.pathname === "/docs/store6" ||
       destination.pathname.startsWith("/docs/store6/")
