@@ -163,14 +163,12 @@ function renderNodes(
       return renderPage(node, currentPath, id);
     }
 
-    const isCurrent = containsCurrentPage(node, currentPath);
-
     return (
       <Sidebar.MenuItem
         key={id}
         href={node.index?.url}
         id={id}
-        isCurrent={isCurrent}
+        isCurrent={node.index?.url === currentPath}
         rel={node.index?.external ? "noopener noreferrer" : undefined}
         target={node.index?.external ? "_blank" : undefined}
         textValue={toText(node.name, node.index?.url ?? id)}

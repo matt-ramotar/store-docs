@@ -3,10 +3,12 @@
 import type { TOCItemType } from "fumadocs-core/toc";
 import { Link } from "@heroui/react";
 import { FloatingToc } from "@heroui-pro/react";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
   const [activeUrl, setActiveUrl] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const contentId = useId();
 
   useEffect(() => {
     const sections = items.flatMap((item) => {
@@ -57,8 +59,17 @@ export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
   }, [items]);
 
   return (
-    <FloatingToc placement="right" triggerMode="press">
-      <FloatingToc.Trigger aria-label="Open table of contents">
+    <FloatingToc
+      open={open}
+      onOpenChange={setOpen}
+      placement="right"
+      triggerMode="press"
+    >
+      <FloatingToc.Trigger
+        aria-controls={contentId}
+        aria-expanded={open}
+        aria-label={open ? "Close table of contents" : "Open table of contents"}
+      >
         {items.map((item) => (
           <FloatingToc.Bar
             key={item.url}
@@ -67,23 +78,25 @@ export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
           />
         ))}
       </FloatingToc.Trigger>
-      <FloatingToc.Content className="flex w-64 flex-col gap-1 p-2">
-        {items.map((item) => {
-          const isActive = activeUrl === item.url;
+      <FloatingToc.Content className="w-64 p-2">
+        <div id={contentId} className="flex flex-col gap-1">
+          {items.map((item) => {
+            const isActive = activeUrl === item.url;
 
-          return (
-            <Link
-              key={item.url}
-              aria-current={isActive ? "location" : undefined}
-              className={`hover:bg-default block rounded-xl px-3 py-2 text-sm no-underline ${
-                isActive ? "bg-default text-accent" : "text-foreground"
-              }`}
-              href={item.url}
-            >
-              {item.title}
-            </Link>
-          );
-        })}
+            return (
+              <Link
+                key={item.url}
+                aria-current={isActive ? "location" : undefined}
+                className={`hover:bg-default block rounded-xl px-3 py-2 text-sm no-underline ${
+                  isActive ? "bg-default text-accent" : "text-foreground"
+                }`}
+                href={item.url}
+              >
+                {item.title}
+              </Link>
+            );
+          })}
+        </div>
       </FloatingToc.Content>
     </FloatingToc>
   );

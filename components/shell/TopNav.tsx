@@ -13,10 +13,7 @@ export function TopNav({ currentPath, version }: TopNavProps) {
   return (
     <Navbar aria-label="Primary" maxWidth="full" position="static">
       <Navbar.Header className="gap-2 px-4 lg:px-6">
-        <AppLayout.MenuToggle
-          aria-label="Open documentation navigation"
-          tooltip="Open documentation navigation"
-        />
+        <AppLayout.MenuToggle aria-label="Open documentation navigation" />
         <Navbar.Content className="hidden gap-0 lg:flex">
           {primaryNavItems.map((item) => (
             <Navbar.Item
