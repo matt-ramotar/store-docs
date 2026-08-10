@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "overview",
+    "quickstart",
+    "important-defaults",
+    "key-design",
+    "invalidate-vs-clear",
+    "concepts",
+    "compose",
+    "sqldelight",
+    "stability",
+    "roadmap",
+    "contributing"
+  ]
+}

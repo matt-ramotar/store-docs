@@ -39,7 +39,7 @@ try {
   const hasStore6 = normalizedResults.some((result) => result.version === "store6");
   const hasStore5 = normalizedResults.some((result) => result.version === "store5");
 
-  assert.equal(rawResults.length, 54, "the built fetcher query result count changed");
+  assert.equal(rawResults.length, 60, "the built fetcher query result count changed");
   assert.ok(normalizedResults.length > 0, "the built fetcher query must normalize results");
   assert.equal(
     new Set(normalizedResults.map((result) => result.url)).size,

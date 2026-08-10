@@ -735,7 +735,7 @@ test("the built-index verifier uses the public local static client", () => {
   assert.match(verifier, /normalizeSearchLabel/);
   assert.match(verifier, /rawResults\.flatMap/);
   assert.match(verifier, /residualKinds/);
-  assert.match(verifier, /rawResults\.length, 54/);
+  assert.match(verifier, /rawResults\.length, 60/);
   assert.match(verifier, /quickstart\.html/);
   assert.match(verifier, /aria-controls/);
   assert.doesNotMatch(verifier, /hasSearchMarkdownArtifacts\(result\.(?:title|context)\)/);

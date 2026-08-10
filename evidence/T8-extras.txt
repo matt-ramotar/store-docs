@@ -1,6 +1,11 @@
 /
 /docs
 /docs/store6/compose
+/docs/store6/concepts/api-tiers
+/docs/store6/concepts/errors
+/docs/store6/concepts/freshness
+/docs/store6/concepts/memory-and-lifecycle
+/docs/store6/concepts/read-contract
 /docs/store6/contributing
 /docs/store6/important-defaults
 /docs/store6/invalidate-vs-clear

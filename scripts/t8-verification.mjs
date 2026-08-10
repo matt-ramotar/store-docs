@@ -26,6 +26,26 @@ const FIXED_EXTRA_SOURCES = Object.freeze([
   { path: "/docs", source: "content/docs/index.mdx" },
   { path: "/docs/store6/overview", source: "content/docs/store6/overview.mdx" },
   {
+    path: "/docs/store6/concepts/api-tiers",
+    source: "content/docs/store6/concepts/api-tiers.mdx",
+  },
+  {
+    path: "/docs/store6/concepts/errors",
+    source: "content/docs/store6/concepts/errors.mdx",
+  },
+  {
+    path: "/docs/store6/concepts/freshness",
+    source: "content/docs/store6/concepts/freshness.mdx",
+  },
+  {
+    path: "/docs/store6/concepts/memory-and-lifecycle",
+    source: "content/docs/store6/concepts/memory-and-lifecycle.mdx",
+  },
+  {
+    path: "/docs/store6/concepts/read-contract",
+    source: "content/docs/store6/concepts/read-contract.mdx",
+  },
+  {
     path: "/reference/store6-core/index.html",
     source: "public/reference/store6-core/index.html",
   },
