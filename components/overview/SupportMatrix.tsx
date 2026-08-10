@@ -60,11 +60,13 @@ export function SupportMatrix() {
   return (
     <Table className="my-6" variant="secondary">
       <Table.ScrollContainer>
-        <Table.Content aria-label="Store 6 modules and targets" className="min-w-[720px]">
+        <Table.Content aria-label="Store 6 modules and targets" className="min-w-[640px]">
           <Table.Header>
-            <Table.Column isRowHeader>Module</Table.Column>
-            <Table.Column>API tier</Table.Column>
-            <Table.Column>Targets</Table.Column>
+            <Table.Column className="text-foreground-secondary" isRowHeader>
+              Module
+            </Table.Column>
+            <Table.Column className="text-foreground-secondary">API tier</Table.Column>
+            <Table.Column className="text-foreground-secondary">Targets</Table.Column>
           </Table.Header>
           <Table.Body>
             {modules.map((entry) => (

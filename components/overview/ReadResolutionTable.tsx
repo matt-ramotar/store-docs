@@ -10,8 +10,8 @@ const origins = [
   },
   {
     label: "Origin.SOT",
-    boundary: "Persistence",
-    meaning: "A hydrated or externally observed persisted row supplied the value.",
+    boundary: "Source of truth",
+    meaning: "A source-of-truth read or write supplied the confirmed value.",
     chipClass: "bg-store-origin-sot-soft text-foreground",
     dotClass: "bg-store-origin-sot",
   },
@@ -25,7 +25,7 @@ const origins = [
   {
     label: "Origin.OVERLAY",
     boundary: "Stream projection",
-    meaning: "An optimistic overlay projected the committed value for stream collectors.",
+    meaning: "An overlay projected over confirmed residence or confirmed absence for streams.",
     chipClass: "bg-store-origin-overlay-soft text-foreground",
     dotClass: "bg-store-origin-overlay",
   },
@@ -34,22 +34,28 @@ const origins = [
 export function ReadResolutionTable() {
   return (
     <>
-      <div aria-label="Origin legend" className="my-6 flex flex-wrap gap-2">
+      <ul aria-label="Origin legend" className="my-6 flex flex-wrap gap-2">
         {origins.map((origin) => (
-          <Chip key={origin.label} className={origin.chipClass} size="sm" variant="soft">
-            <span aria-hidden="true" className={`size-2 rounded-full ${origin.dotClass}`} />
-            <Chip.Label>{origin.label}</Chip.Label>
-          </Chip>
+          <li key={origin.label}>
+            <Chip className={origin.chipClass} size="sm" variant="soft">
+              <span aria-hidden="true" className={`size-2 rounded-full ${origin.dotClass}`} />
+              <Chip.Label>{origin.label}</Chip.Label>
+            </Chip>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <Table className="my-6" variant="secondary">
         <Table.ScrollContainer>
           <Table.Content aria-label="Store 6 read origins" className="min-w-[640px]">
             <Table.Header>
-              <Table.Column isRowHeader>Origin</Table.Column>
-              <Table.Column>Resolution boundary</Table.Column>
-              <Table.Column>Meaning</Table.Column>
+              <Table.Column className="text-foreground-secondary" isRowHeader>
+                Origin
+              </Table.Column>
+              <Table.Column className="text-foreground-secondary">
+                Resolution boundary
+              </Table.Column>
+              <Table.Column className="text-foreground-secondary">Meaning</Table.Column>
             </Table.Header>
             <Table.Body>
               {origins.map((origin) => (
@@ -71,25 +77,30 @@ export function ReadResolutionTable() {
         <Alert.Content>
           <Alert.Title>Important default</Alert.Title>
           <Alert.Description>
-            Wall-clock age alone never makes <code>Freshness.CachedOrFetch</code> fetch. A fetch is
-            planned when no resident value exists, freshness metadata is missing, the resident is
-            invalidated, or durable status marks it stale. Use <code>Freshness.MaxAge</code> when
-            elapsed age should participate in the decision.
+            With Store 6&apos;s default freshness validator, wall-clock age alone never makes
+            <code> Freshness.CachedOrFetch</code> fetch. It fetches when no resident value exists,
+            freshness metadata is missing, the resident is invalidated, or durable status marks it
+            stale. Use <code>Freshness.MaxAge</code> when elapsed age should participate. A custom
+            <code> FreshnessValidator</code> may plan differently, and
+            <code> Freshness.MustBeFresh</code> follows different serving and failure rules.
           </Alert.Description>
         </Alert.Content>
       </Alert>
 
       <div className="my-6 space-y-3 text-sm leading-6 text-foreground-secondary">
         <p>
-          On the first cold stream after restart, a durably invalidated persisted row is served as
+          With Store 6&apos;s default freshness validator and
+          <code> Freshness.CachedOrFetch</code>, the first cold stream after restart serves a durably
+          invalidated persisted row as
           <code> Data(origin=Origin.SOT, isStale=true, refreshing=true)</code>. If its refresh fails,
-          the next lifecycle result is <code>Error(StoreError.Fetch, servedStale=true)</code>, with
-          no intervening <code>Loading</code>, and the stream stays live.
+          the stream emits <code>Error(StoreError.Fetch, servedStale=true)</code> without an
+          intervening <code>Loading</code>, and the stream stays live.
         </p>
         <p>
           <code>Bookkeeper.recordFailure</code> completes before that fetch error is emitted.
-          Hydration drops persisted ETags, so the first fetch sees <code>etag=null</code>. After the
-          first hydrated emission, a later resident emission may use <code>Origin.MEMORY</code>.
+          Hydrated resident metadata does not reuse the persisted ETag, so a fetch planned from that
+          state sees <code>etag=null</code>. After the first hydrated emission, a later resident
+          emission may use <code>Origin.MEMORY</code>.
         </p>
       </div>
     </>

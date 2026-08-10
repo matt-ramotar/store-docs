@@ -1,4 +1,4 @@
-import { ListView } from "@heroui-pro/react";
+import { Link } from "@heroui/react";
 
 const startHereItems = [
   {
@@ -29,17 +29,25 @@ const startHereItems = [
 
 export function StartHereList() {
   return (
-    <ListView aria-label="Start here" className="my-6" variant="secondary">
-      {startHereItems.map((item) => (
-        <ListView.Item key={item.id} href={item.href} id={item.id} textValue={item.title}>
-          <ListView.ItemContent>
-            <div className="flex min-w-0 flex-col">
-              <ListView.Title>{item.title}</ListView.Title>
-              <ListView.Description>{item.description}</ListView.Description>
-            </div>
-          </ListView.ItemContent>
-        </ListView.Item>
-      ))}
-    </ListView>
+    <nav aria-label="Start here" className="my-6">
+      <ul className="divide-y divide-separator border-y border-separator">
+        {startHereItems.map((item) => (
+          <li key={item.id}>
+            <Link
+              className="flex w-full items-start justify-between gap-4 px-1 py-4 no-underline hover:no-underline"
+              href={item.href}
+            >
+              <span className="flex min-w-0 flex-col gap-1">
+                <span className="font-semibold text-foreground">{item.title}</span>
+                <span className="text-sm leading-6 text-foreground-secondary">
+                  {item.description}
+                </span>
+              </span>
+              <Link.Icon className="mt-1 size-4 shrink-0" />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
