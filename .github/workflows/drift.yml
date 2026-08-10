@@ -1,0 +1,249 @@
+name: Store6 drift
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      store6_ref:
+        description: Store6 branch, tag, or commit SHA to re-pin
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: store6-docs-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the documentation site
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable the project package manager
+        run: |
+          corepack enable
+          corepack install
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check out the requested Store6 revision
+        env:
+          STORE6_REF: ${{ inputs.store6_ref || 'main' }}
+        shell: bash
+        run: |
+          git clone --no-checkout https://github.com/matt-ramotar/Store6 ../Store6
+          git -C ../Store6 fetch --force origin "$STORE6_REF"
+          git -C ../Store6 checkout --detach FETCH_HEAD
+
+      - name: Verify the mirrored source list
+        shell: bash
+        run: |
+          node <<'NODE'
+          const { readFileSync } = require("node:fs");
+          const lock = require("./evidence/T4-store6-source-lock.json");
+          const mirror = readFileSync("../Store6/.github/docs-sync-sources.txt", "utf8")
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .sort();
+          const sources = lock.sources.map(({ path }) => path).sort();
+          if (JSON.stringify(mirror) !== JSON.stringify(sources)) {
+            throw new Error(
+              "docs-sync-sources.txt and T4-store6-source-lock.json disagree; update the Repo A mirror list in the same change that edits the lock.",
+            );
+          }
+          NODE
+
+      - name: Detect Store6 drift
+        id: drift
+        shell: bash
+        run: |
+          locked="$(node -p "require('./evidence/T4-store6-source-lock.json').revision")"
+          head="$(git -C ../Store6 rev-parse HEAD)"
+          echo "locked=$locked" >> "$GITHUB_OUTPUT"
+          echo "head=$head" >> "$GITHUB_OUTPUT"
+          if [[ "$head" == "$locked" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "docs in sync with Store6 main @ $head"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Save the current source lock
+        if: steps.drift.outputs.changed == 'true'
+        run: cp evidence/T4-store6-source-lock.json "$RUNNER_TEMP/store6-lock-before.json"
+
+      - name: Re-pin Store6 sources
+        if: steps.drift.outputs.changed == 'true'
+        run: node scripts/repin-store6-lock.mjs --source-root ../Store6
+
+      - name: Verify synchronized Store6 output
+        if: steps.drift.outputs.changed == 'true'
+        run: node scripts/sync-store6-docs.mjs --source-root ../Store6 --check
+
+      - name: Build the site
+        if: steps.drift.outputs.changed == 'true'
+        run: pnpm build
+
+      - name: Run contract tests
+        if: steps.drift.outputs.changed == 'true'
+        run: node --test scripts/*.test.mjs
+
+      - name: Test the Store6 re-pin helper
+        if: steps.drift.outputs.changed == 'true'
+        run: node scripts/repin-store6-lock.mjs --self-test
+
+      - name: Verify Store6 claims
+        if: steps.drift.outputs.changed == 'true'
+        id: claims
+        shell: bash
+        run: |
+          set +e
+          node scripts/check-claims.mjs --source-root ../Store6 2>&1 | tee "$RUNNER_TEMP/store6-claims-report.txt"
+          status=${PIPESTATUS[0]}
+          set -e
+          classification="$(node scripts/repin-store6-lock.mjs --classify-reverification scripts/check-claims.mjs "$status" "$RUNNER_TEMP/store6-claims-report.txt")"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "classification=$classification" >> "$GITHUB_OUTPUT"
+          if [[ "$classification" == "hard" ]]; then
+            echo "Store6 claims verification failed with a hard integrity or operational error."
+            exit "$status"
+          fi
+          exit 0
+
+      - name: Verify Store6 snippets
+        if: steps.drift.outputs.changed == 'true'
+        id: snippets
+        shell: bash
+        run: |
+          set +e
+          node scripts/check-snippets.mjs --source-root ../Store6 2>&1 | tee "$RUNNER_TEMP/store6-snippets-report.txt"
+          status=${PIPESTATUS[0]}
+          set -e
+          classification="$(node scripts/repin-store6-lock.mjs --classify-reverification scripts/check-snippets.mjs "$status" "$RUNNER_TEMP/store6-snippets-report.txt")"
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          echo "classification=$classification" >> "$GITHUB_OUTPUT"
+          if [[ "$classification" == "hard" ]]; then
+            echo "Store6 snippets verification failed with a hard integrity or operational error."
+            exit "$status"
+          fi
+          exit 0
+
+      - name: Verify the built site
+        if: steps.drift.outputs.changed == 'true'
+        shell: bash
+        run: |
+          ./node_modules/.bin/next start -p 3222 > "$RUNNER_TEMP/store-docs-server.log" 2>&1 &
+          server_pid=$!
+          cleanup() {
+            kill "$server_pid" 2>/dev/null || true
+            wait "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:3222/ > /dev/null; then
+              break
+            fi
+            if [[ "$attempt" == "60" ]]; then
+              cat "$RUNNER_TEMP/store-docs-server.log"
+              exit 1
+            fi
+            sleep 1
+          done
+          node scripts/t8-verification.mjs --local
+
+      - name: Verify the search index
+        if: steps.drift.outputs.changed == 'true'
+        run: node scripts/verify-search-index.mjs
+
+      - name: Verify reference routes
+        if: steps.drift.outputs.changed == 'true'
+        run: node scripts/test-t6b-reference.mjs
+
+      - name: Prepare the rolling re-pin branch
+        if: steps.drift.outputs.changed == 'true'
+        id: prepare
+        shell: bash
+        run: |
+          source_changed="$(node - <<'NODE'
+          const { readFileSync } = require("node:fs");
+          const before = JSON.parse(readFileSync(process.env.RUNNER_TEMP + "/store6-lock-before.json", "utf8"));
+          const after = require("./evidence/T4-store6-source-lock.json");
+          const fingerprint = ({ path, sha256, markdownLinkCount }) => ({ path, sha256, markdownLinkCount });
+          process.stdout.write(
+            JSON.stringify(before.sources.map(fingerprint)) === JSON.stringify(after.sources.map(fingerprint))
+              ? "false"
+              : "true",
+          );
+          NODE
+          )"
+          echo "source_changed=$source_changed" >> "$GITHUB_OUTPUT"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin refs/heads/docs-sync/repin:refs/remotes/origin/docs-sync/repin || true
+          git switch -C docs-sync/repin
+          mapfile -t targets < <(node -e "for (const { target } of require('./evidence/T4-store6-source-lock.json').sources) console.log(target)")
+          git add evidence/T4-store6-source-lock.json evidence/T4-owned-targets.json evidence/store6-claims.json "${targets[@]}"
+          git commit -m "chore(docs): repin Store6 sources"
+          git push --force-with-lease origin HEAD:docs-sync/repin
+
+      - name: Create or refresh the rolling re-pin pull request
+        if: steps.drift.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LOCKED_REVISION: ${{ steps.drift.outputs.locked }}
+          SOURCE_CHANGED: ${{ steps.prepare.outputs.source_changed }}
+          STORE6_REVISION: ${{ steps.drift.outputs.head }}
+        shell: bash
+        run: |
+          body="$RUNNER_TEMP/store6-repin-body.md"
+          {
+            echo "Re-pins the documentation site from Store6 \`$LOCKED_REVISION\` to \`$STORE6_REVISION\`."
+            echo
+            if [[ "$SOURCE_CHANGED" == "false" ]]; then
+              echo "Only the revision moved; no locked source hash changed."
+              echo
+            fi
+            echo "## Claims re-verification"
+            echo
+            echo '```text'
+            cat "$RUNNER_TEMP/store6-claims-report.txt"
+            echo '```'
+            echo
+            echo "## Snippets re-verification"
+            echo
+            echo '```text'
+            cat "$RUNNER_TEMP/store6-snippets-report.txt"
+            echo '```'
+          } > "$body"
+          number="$(gh pr list --repo matt-ramotar/store-docs --head docs-sync/repin --state open --json number --jq '.[0].number')"
+          if [[ -n "$number" ]]; then
+            gh pr edit "$number" --repo matt-ramotar/store-docs --title "chore(docs): repin Store6 sources" --body-file "$body"
+          else
+            gh pr create --repo matt-ramotar/store-docs --base main --head docs-sync/repin --title "chore(docs): repin Store6 sources" --body-file "$body"
+          fi
+
+      - name: Fail when Store6 re-verification needs review
+        if: >-
+          steps.drift.outputs.changed == 'true' &&
+          (steps.claims.outputs.classification == 'review' ||
+          steps.snippets.outputs.classification == 'review')
+        run: |
+          echo "The rolling re-pin PR was created, but Store6 claims or snippets require human re-verification."
+          exit 1

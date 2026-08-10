@@ -1,0 +1,8 @@
+\bTD-\d+\b
+\bFS-\d+\b
+\bRISK-\d+\b
+\bRD-\d+\b
+\bD\d+\s*=\s*[A-Za-z]\b
+docs/v6/
+\bSTORE-\d+\b
+\bIssue 0\d\d\b

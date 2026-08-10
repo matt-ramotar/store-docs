@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { existsSync, lstatSync, readFileSync, readdirSync } from "node:fs";
-import { relative, resolve } from "node:path";
+import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import test from "node:test";
 
 import * as cheerio from "cheerio";
@@ -12,6 +13,7 @@ const MANIFEST_PATH = resolve(ROOT, "evidence/T4-manifest.md");
 const SNAPSHOT_PATH = resolve(ROOT, "evidence/T4-live-snapshot.json");
 const STORE6_LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
 const OWNED_TARGETS_PATH = resolve(ROOT, "evidence/T4-owned-targets.json");
+const BANNED_INTERNAL_TOKENS_PATH = resolve(ROOT, "evidence/banned-internal-tokens.txt");
 const LIVE_ORIGIN = "https://store.mobilenativefoundation.org";
 const SITEMAP_URL = `${LIVE_ORIGIN}/sitemap.xml`;
 const EXCLUDED_URL = `${LIVE_ORIGIN}/api/openapi.json`;
@@ -432,6 +434,26 @@ test("publishable tracked text excludes local paths and private publication voca
       );
     }
   }
+});
+
+test("published-surface scan reports the exact file, line, and curated pattern", () => {
+  const fixtureRoot = mkdtempSync(join(tmpdir(), "store-docs-published-surface-"));
+  const target = resolve(fixtureRoot, "content/docs/store6/fixture.mdx");
+  mkdirSync(dirname(target), { recursive: true });
+  writeFileSync(target, `Durable introduction.\n${["ST", "ORE-123"].join("")} must not ship.\n`);
+  try {
+    assert.deepEqual(findPublishedSurfaceViolations(fixtureRoot, [String.raw`\bSTORE-\d+\b`]), [
+      "internal process vocabulary found on a published surface: content/docs/store6/fixture.mdx:2 matched \\bSTORE-\\d+\\b; state the technical fact with durable attribution instead (AGENTS.md).",
+    ]);
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
+  }
+});
+
+test("published surfaces exclude curated internal process vocabulary", () => {
+  const patterns = readLines(BANNED_INTERNAL_TOKENS_PATH);
+  const violations = findPublishedSurfaceViolations(ROOT, patterns);
+  if (violations.length > 0) assert.fail(violations.join("\n"));
 });
 
 test("Store6 sync is portable and locked to exact revision and source hashes", () => {
@@ -1533,6 +1555,31 @@ function walkFiles(root) {
     else files.push(path);
   }
   return files;
+}
+
+function findPublishedSurfaceViolations(root, patterns) {
+  const files = [
+    ...walkFiles(resolve(root, "content/docs")).filter((file) => file.endsWith(".mdx")),
+    resolve(root, "public/llms.txt"),
+    ...walkFiles(resolve(root, "app")).filter((file) => file.endsWith(".tsx")),
+  ]
+    .filter((file) => existsSync(file))
+    .sort();
+  const violations = [];
+  for (const file of files) {
+    const source = readFileSync(file, "utf8");
+    const sourcePath = relative(root, file).split(sep).join("/");
+    for (const pattern of patterns) {
+      const expression = new RegExp(pattern, "g");
+      for (const match of source.matchAll(expression)) {
+        const line = source.slice(0, match.index).split("\n").length;
+        violations.push(
+          `internal process vocabulary found on a published surface: ${sourcePath}:${line} matched ${pattern}; state the technical fact with durable attribution instead (AGENTS.md).`,
+        );
+      }
+    }
+  }
+  return violations;
 }
 
 let lastLiveRequestStartedAt = 0;

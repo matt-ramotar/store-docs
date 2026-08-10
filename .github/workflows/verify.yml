@@ -1,0 +1,84 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the documentation site
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Enable the project package manager
+        run: |
+          corepack enable
+          corepack install
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check out the pinned Store6 revision
+        shell: bash
+        run: |
+          revision="$(node -p "require('./evidence/T4-store6-source-lock.json').revision")"
+          git clone --no-checkout https://github.com/matt-ramotar/Store6 ../Store6
+          git -C ../Store6 checkout --detach "$revision"
+
+      - name: Verify synchronized Store6 output
+        run: node scripts/sync-store6-docs.mjs --source-root ../Store6 --check
+
+      - name: Build the site
+        run: pnpm build
+
+      - name: Run contract tests
+        run: node --test scripts/*.test.mjs
+
+      - name: Test the Store6 re-pin helper
+        run: node scripts/repin-store6-lock.mjs --self-test
+
+      - name: Verify Store6 claims
+        run: node scripts/check-claims.mjs --source-root ../Store6
+
+      - name: Verify Store6 snippets
+        run: node scripts/check-snippets.mjs --source-root ../Store6
+
+      - name: Verify the built site
+        shell: bash
+        run: |
+          ./node_modules/.bin/next start -p 3222 > "$RUNNER_TEMP/store-docs-server.log" 2>&1 &
+          server_pid=$!
+          cleanup() {
+            kill "$server_pid" 2>/dev/null || true
+            wait "$server_pid" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+          for attempt in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:3222/ > /dev/null; then
+              break
+            fi
+            if [[ "$attempt" == "60" ]]; then
+              cat "$RUNNER_TEMP/store-docs-server.log"
+              exit 1
+            fi
+            sleep 1
+          done
+          node scripts/t8-verification.mjs --local
+
+      - name: Verify the search index
+        run: node scripts/verify-search-index.mjs
+
+      - name: Verify reference routes
+        run: node scripts/test-t6b-reference.mjs
