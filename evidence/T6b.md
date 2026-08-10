@@ -87,8 +87,28 @@ The test asserts exact file and directory ownership, regular-file and
 no-symlink boundaries, standalone document metadata, landmarks and headings,
 the placeholder disclosure, tasks and paths, both module cross-links, docs
 links, the existing nav destination, allowed URL forms, no scripts or inline
-event handlers, no tracker identifiers in durable HTML, no unresolved-link
-attribute, and absence of an index route, app route, or configured redirect.
+event handlers, normal-size link contrast, no tracker identifiers in durable
+HTML, no unresolved-link attribute, and absence of an index route, app route,
+or configured redirect.
+
+### Link contrast gate
+
+The contract test computes WCAG relative luminance and asserts a contrast ratio
+of at least `4.5:1` for 15 normal-size link state and background combinations on
+each page. The matrix covers default, hover, and focus states for header links,
+the header brand, main links, the current module link, and the skip link.
+
+Before the color correction, the expanded test exited `1` and reported:
+
+```text
+normal-size link contrast failures: main link hover #0d8577 on #f7f4ef = 4.127:1, current module hover #0d8577 on #f7f4ef = 4.127:1, skip link hover #0d8577 on #1a1f26 = 3.658:1
+```
+
+Light-surface hover text now uses `--accent-strong` (`#0a6259`), which measures
+`6.591:1` on Paper and `7.231:1` on white. The skip link keeps
+`--surface` (`#ffffff`) text on Slate (`#1a1f26`) for default, hover, and
+focus-visible states, which measures `16.563:1`. The same contract test then
+exited `0` for both pages.
 
 ## Unresolved-link check
 
@@ -130,9 +150,9 @@ The three owned implementation files have these SHA-256 values:
 
 | File | SHA-256 |
 | --- | --- |
-| `public/reference/store6-core/index.html` | `a8402f382f2a71cddf040f370e84b36dffa503f683f613f96fd051a645a14752` |
-| `public/reference/store6-mutations/index.html` | `363119acdac3991a260e7fb52465af8e3adccf2775ba95689de6a1f87f325ff1` |
-| `scripts/test-t6b-reference.mjs` | `8cd0a8111b650eabcca7b1e3e6e4f9112c2e04356d8441da1601de9b562e5e69` |
+| `public/reference/store6-core/index.html` | `7fdcb639f3ee84ba9a4fbd2051c4c3244a6b65833bd5fba4c881cb8db46f2780` |
+| `public/reference/store6-mutations/index.html` | `82f66a63f196edb96df92f25b5c8bcba5d42074dafb85d5405b81053f2013290` |
+| `scripts/test-t6b-reference.mjs` | `1a53d88fefcece2e4eca8e200d3cdbd2377ce5967a6b4c17a13e6c9e34a2a275` |
 
 `git diff --check` exited `0`. T6b did not start a server, open a browser,
 capture a screenshot, mutate Store6, use Figma, write to Linear, push, deploy,

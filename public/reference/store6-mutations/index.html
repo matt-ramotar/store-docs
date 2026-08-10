@@ -27,7 +27,7 @@
       }
       body { margin: 0; }
       a { color: var(--accent-strong); font-weight: 650; text-underline-offset: 0.2em; }
-      a:hover { color: var(--accent); }
+      a:hover { color: var(--accent-strong); }
       a:focus-visible { border-radius: 0.2rem; outline: 3px solid var(--accent); outline-offset: 3px; }
       .skip-link {
         background: var(--slate);
@@ -39,6 +39,8 @@
         transform: translateY(-200%);
         z-index: 2;
       }
+      .skip-link:hover { color: var(--surface); }
+      .skip-link:focus-visible { color: var(--surface); }
       .skip-link:focus { transform: translateY(0); }
       header { background: var(--surface); border-bottom: 1px solid var(--border); }
       header > div, main, footer > div {
