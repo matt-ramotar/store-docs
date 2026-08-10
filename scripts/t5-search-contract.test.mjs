@@ -159,25 +159,145 @@ test("version classification uses the parsed normalized pathname", async () => {
   );
 });
 
-test("search labels normalize Markdown to readable plain text", async () => {
-  const { hasSearchMarkdownArtifacts, stripSearchMarkup } = await import(
+test("search label normalization uses the pinned Markdown and GFM AST parser", () => {
+  const packageJson = JSON.parse(source("package.json"));
+  const normalizer = source("lib/search-results.ts");
+
+  assert.equal(packageJson.dependencies["mdast-util-from-markdown"], "2.0.3");
+  assert.equal(packageJson.dependencies["mdast-util-gfm"], "3.1.0");
+  assert.equal(packageJson.dependencies["micromark-extension-gfm"], "3.0.0");
+  assert.match(normalizer, /from ["']mdast-util-from-markdown["']/);
+  assert.match(normalizer, /from ["']mdast-util-gfm["']/);
+  assert.match(normalizer, /from ["']micromark-extension-gfm["']/);
+  assert.match(normalizer, /fromMarkdown\(/);
+});
+
+test("search labels normalize Markdown to readable plain text", async (t) => {
+  const { hasSearchMarkdownArtifacts, normalizeSearchLabel, stripSearchMarkup } = await import(
     "../lib/search-results.ts"
   );
   const fixtures = [
-    ["<mark>**Fetcher**</mark> and *emphasis* with `Store`", "Fetcher and emphasis with Store"],
-    ["[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)", "Quickstart and Store diagram"],
-    [String.raw`\*literal\* \[brackets\] and \# hash`, "*literal* [brackets] and # hash"],
-    ["# Heading\n- first item\n1. second item\n> quoted note", "Heading first item second item quoted note"],
-    ["__Strong__ and _emphasis_ with ~~obsolete~~ text", "Strong and emphasis with obsolete text"],
-    ["```kotlin\nstore.stream()\n```", "store.stream()"],
-    ["<mark>Use</mark> <strong>safe text</strong> &amp; entities", "Use safe text & entities"],
+    {
+      markdown: "<mark>**Fetcher**</mark> and *emphasis* with `Store`",
+      expected: "Fetcher and emphasis with Store",
+      consumedKinds: ["code", "emphasis", "html"],
+    },
+    {
+      markdown: "[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)",
+      expected: "Quickstart and Store diagram",
+      consumedKinds: ["image", "link"],
+    },
+    {
+      markdown: "[label](https://example.test/a_(b)) and [outer [inner]](/docs/store6)",
+      expected: "label and outer [inner]",
+      consumedKinds: ["link"],
+    },
+    {
+      markdown: "# Heading\n- first item\n1. second item\n> quoted note",
+      expected: "Heading first item second item quoted note",
+      consumedKinds: ["blockquote", "heading", "list"],
+    },
+    {
+      markdown: "__Strong__ and _emphasis_ with ~~obsolete~~ text",
+      expected: "Strong and emphasis with obsolete text",
+      consumedKinds: ["emphasis", "strikethrough"],
+    },
+    {
+      markdown: "*single asterisk* and _single underscore_",
+      expected: "single asterisk and single underscore",
+      consumedKinds: ["emphasis"],
+    },
+    {
+      markdown: "```kotlin\nstore.stream()\n```",
+      expected: "store.stream()",
+      consumedKinds: ["code"],
+    },
+    {
+      markdown: "<mark>Use</mark> <strong>safe text</strong> &amp; entities",
+      expected: "Use safe text & entities",
+      consumedKinds: ["entity", "html"],
+    },
+    {
+      markdown: '<span title="a > b">quoted attribute</span>',
+      expected: "quoted attribute",
+      consumedKinds: ["html"],
+    },
+    {
+      markdown: "[Quickstart][guide]\n\n[guide]: /docs/store6 \"Store 6\"",
+      expected: "Quickstart",
+      consumedKinds: ["link", "reference-definition"],
+    },
+    {
+      markdown: "[guide]: /docs/store6",
+      expected: "",
+      consumedKinds: ["reference-definition"],
+    },
+    {
+      markdown: "![Store diagram][image]\n\n[image]: /store.svg",
+      expected: "Store diagram",
+      consumedKinds: ["image", "reference-definition"],
+    },
+    {
+      markdown: "&#x2A;*hex** and &#42;*decimal** and &ast;*named**",
+      expected: "hex and decimal and named",
+      consumedKinds: ["emphasis", "entity"],
+    },
+    {
+      markdown: "&#96;numeric code&#96; and &grave;named code&grave;",
+      expected: "numeric code and named code",
+      consumedKinds: ["code", "entity"],
+    },
+    {
+      markdown: "&#xE000;0&#xE001;",
+      expected: "\uE0000\uE001",
+      consumedKinds: ["entity"],
+    },
+    {
+      markdown: "***[Use `Store`][guide]***\n\n[guide]: /docs/store6",
+      expected: "Use Store",
+      consumedKinds: ["code", "emphasis", "link", "reference-definition"],
+    },
   ];
 
-  for (const [markdown, expected] of fixtures) {
-    const plainText = stripSearchMarkup(markdown);
-    assert.equal(plainText, expected, markdown);
-    assert.equal(hasSearchMarkdownArtifacts(plainText), false, plainText);
+  for (const { consumedKinds, expected, markdown } of fixtures) {
+    await t.test(JSON.stringify(markdown), () => {
+      assert.equal(hasSearchMarkdownArtifacts(markdown), true, markdown);
+      assert.deepEqual(normalizeSearchLabel(markdown), {
+        text: expected,
+        consumedKinds,
+        residualKinds: [],
+      });
+      assert.equal(stripSearchMarkup(markdown), expected, markdown);
+    });
   }
+
+  await t.test("escaped literal markers remain literal", () => {
+    const escapedLiterals = String.raw`\*literal\* \_underscores\_ \[brackets\] and \# hash`;
+    assert.deepEqual(normalizeSearchLabel(escapedLiterals), {
+      text: "*literal* _underscores_ [brackets] and # hash",
+      consumedKinds: [],
+      residualKinds: [],
+    });
+    assert.equal(hasSearchMarkdownArtifacts(escapedLiterals), false);
+    const plainControls = "2 * 3 and snake_case";
+    assert.deepEqual(normalizeSearchLabel(plainControls), {
+      text: plainControls,
+      consumedKinds: [],
+      residualKinds: [],
+    });
+    assert.equal(hasSearchMarkdownArtifacts(plainControls), false);
+  });
+
+  await t.test("code spans keep nested escapes opaque without leaking sentinels", () => {
+    const nested = "`\\*code literal\\*`";
+    const normalized = normalizeSearchLabel(nested);
+    assert.deepEqual(normalized, {
+      text: String.raw`\*code literal\*`,
+      consumedKinds: ["code"],
+      residualKinds: [],
+    });
+    assert.doesNotMatch(normalized.text, /[\uD800-\uDFFF]/u);
+  });
 });
 
 test("canonical destinations dedupe deterministically with reorder-stable identities", async () => {
@@ -335,9 +455,13 @@ test("the built-index verifier uses the public local static client", () => {
   assert.match(verifier, /client\.search\(["']fetcher["']\)/);
   assert.match(verifier, /api\/search\.body/);
   assert.match(verifier, /normalizeSearchResults/);
+  assert.match(verifier, /normalizeSearchLabel/);
+  assert.match(verifier, /rawResults\.flatMap/);
+  assert.match(verifier, /residualKinds/);
   assert.match(verifier, /rawResults\.length, 54/);
   assert.match(verifier, /quickstart\.html/);
   assert.match(verifier, /aria-controls/);
+  assert.doesNotMatch(verifier, /hasSearchMarkdownArtifacts\(result\.(?:title|context)\)/);
   assert.doesNotMatch(verifier, /@orama\/orama/);
   assert.doesNotMatch(verifier, /https?:\/\//);
 });

@@ -1,5 +1,8 @@
 import type { SortedResult } from "fumadocs-core/search";
 import type { SearchClient } from "fumadocs-core/search/client";
+import { fromMarkdown } from "mdast-util-from-markdown";
+import { gfmFromMarkdown } from "mdast-util-gfm";
+import { gfm } from "micromark-extension-gfm";
 
 export type SearchDocsVersion = "store5" | "store6";
 
@@ -14,6 +17,27 @@ export type NormalizedSearchResult = {
 export type SearchView = {
   results: NormalizedSearchResult[];
   state: "idle" | "pending" | "error" | "empty" | "ready";
+};
+
+export type SearchMarkupKind =
+  | "blockquote"
+  | "code"
+  | "emphasis"
+  | "entity"
+  | "heading"
+  | "html"
+  | "image"
+  | "link"
+  | "list"
+  | "reference-definition"
+  | "strikethrough"
+  | "table"
+  | "thematic-break";
+
+export type SearchLabelNormalization = {
+  text: string;
+  consumedKinds: SearchMarkupKind[];
+  residualKinds: SearchMarkupKind[];
 };
 
 type SearchGeneration = {
@@ -35,6 +59,24 @@ type AllowedDocsUrl = {
 type NormalizedCandidate = NormalizedSearchResult & {
   sourceId: string;
   type: SortedResult["type"];
+};
+
+type MarkdownNode = {
+  alt?: string | null;
+  children?: MarkdownNode[];
+  identifier?: string;
+  label?: string | null;
+  position?: {
+    start: { offset?: number };
+    end: { offset?: number };
+  };
+  type: string;
+  value?: string;
+};
+
+type SourceRange = {
+  end: number;
+  start: number;
 };
 
 const RESULT_TYPE_PRIORITY: Record<SortedResult["type"], number> = {
@@ -181,57 +223,291 @@ export function normalizeSearchResults(
   });
 }
 
-export function stripSearchMarkup(value: string): string {
-  const protectedSegments: string[] = [];
-  const protect = (segment: string) => {
-    const token = `\uE000${protectedSegments.length}\uE001`;
-    protectedSegments.push(segment);
-    return token;
+export function normalizeSearchLabel(value: string): SearchLabelNormalization {
+  const consumed = new Set<SearchMarkupKind>();
+  const literals = createSearchLiteralRegistry(value);
+  const initialTree = parseSearchMarkdown(value);
+  let current = protectEscapedPunctuation(value, findOpaqueSourceRanges(initialTree), literals);
+  let residualKinds: SearchMarkupKind[] = [];
+
+  for (let pass = 0; pass < 32; pass += 1) {
+    const tree = parseSearchMarkdown(current);
+    recordDecodedEntities(tree, current, consumed);
+    const collected = collectSearchMarkdown(tree, consumed, literals);
+    const next = collapseSearchLabel(collected);
+
+    if (next === current) {
+      residualKinds = [];
+      break;
+    }
+
+    current = next;
+    if (pass === 31) residualKinds = collectSearchMarkupKinds(parseSearchMarkdown(current));
+  }
+
+  const text = collapseSearchLabel(literals.restore(current));
+
+  return {
+    text,
+    consumedKinds: [...consumed].toSorted(),
+    residualKinds,
   };
+}
 
-  let plainText = value
-    .replace(/\\([\\`*_[\]{}()#+.!>|~-])/gu, (_match, escaped: string) => protect(escaped))
-    .replace(/```[^\r\n]*\r?\n([\s\S]*?)```/gu, (_match, code: string) => protect(code))
-    .replace(/~~~[^\r\n]*\r?\n([\s\S]*?)~~~/gu, (_match, code: string) => protect(code))
-    .replace(/(`+)([\s\S]*?)\1/gu, (_match, _ticks: string, code: string) => protect(code))
-    .replace(/<!--([\s\S]*?)-->/gu, " ")
-    .replace(/<((?:https?:\/\/|mailto:)[^>\s]+)>/giu, "$1")
-    .replace(/!\[([^\]]*)\]\((?:\\.|[^\\)])*\)/gu, "$1")
-    .replace(/\[([^\]]+)\]\((?:\\.|[^\\)])*\)/gu, "$1")
-    .replace(/!\[([^\]]*)\]\[[^\]]*\]/gu, "$1")
-    .replace(/\[([^\]]+)\]\[[^\]]*\]/gu, "$1")
-    .replace(/^\s{0,3}(?:([-*_])(?:\s*\1){2,})\s*$/gmu, " ")
-    .replace(/^\s{0,3}#{1,6}\s+/gmu, "")
-    .replace(/\s+#+\s*$/gmu, "")
-    .replace(/^(.+)\r?\n\s{0,3}(?:={2,}|-{2,})\s*$/gmu, "$1")
-    .replace(/^\s{0,3}(?:[-+*]|\d+[.)])\s+(?:\[[ xX]\]\s+)?/gmu, "")
-    .replace(/^\s{0,3}>\s?/gmu, "")
-    .replace(/\*\*([^*]+)\*\*/gu, "$1")
-    .replace(/__([^_]+)__/gu, "$1")
-    .replace(/~~([^~]+)~~/gu, "$1")
-    .replace(/\*([^*\r\n]+)\*/gu, "$1")
-    .replace(/(^|[^\p{L}\p{N}])_([^_\r\n]+)_(?![\p{L}\p{N}])/gu, "$1$2")
-    .replace(/<\/?[A-Za-z][^>]*>/gu, "")
-    .replace(/&#x([\dA-F]+);/giu, (_match, codePoint: string) => decodeCodePoint(codePoint, 16))
-    .replace(/&#(\d+);/gu, (_match, codePoint: string) => decodeCodePoint(codePoint, 10))
-    .replace(/&(amp|apos|gt|lt|nbsp|quot);/giu, (_match, entity: string) =>
-      decodeNamedEntity(entity),
-    );
-
-  plainText = plainText.replace(/\uE000(\d+)\uE001/gu, (_match, index: string) => {
-    return protectedSegments[Number(index)] ?? "";
-  });
-
-  return plainText.replace(/\s+/gu, " ").trim();
+export function stripSearchMarkup(value: string): string {
+  return normalizeSearchLabel(value).text;
 }
 
 export function hasSearchMarkdownArtifacts(value: string): boolean {
+  const diagnostic = normalizeSearchLabel(value);
+  return diagnostic.consumedKinds.length > 0 || diagnostic.residualKinds.length > 0;
+}
+
+type SearchLiteralRegistry = {
+  protect: (value: string) => string;
+  restore: (value: string) => string;
+};
+
+function parseSearchMarkdown(value: string): MarkdownNode {
+  return fromMarkdown(value, {
+    extensions: [gfm()],
+    mdastExtensions: [gfmFromMarkdown()],
+  }) as MarkdownNode;
+}
+
+function createSearchLiteralRegistry(source: string): SearchLiteralRegistry {
+  let opener = "\uD800";
+  while (source.includes(opener)) opener += "\uD800";
+  const closer = `${opener}\uD801`;
+  const tokens: string[] = [];
+  const values: string[] = [];
+
+  function restore(value: string): string {
+    let restored = value;
+    for (let index = 0; index < tokens.length; index += 1) {
+      restored = restored.split(tokens[index]).join(values[index]);
+    }
+    return restored;
+  }
+
+  return {
+    protect(value) {
+      const token = `${opener}${tokens.length.toString(36)}${closer}`;
+      tokens.push(token);
+      values.push(restore(value));
+      return token;
+    },
+    restore,
+  };
+}
+
+function findOpaqueSourceRanges(tree: MarkdownNode): SourceRange[] {
+  const ranges: SourceRange[] = [];
+
+  function visit(node: MarkdownNode): void {
+    if (node.type === "code" || node.type === "inlineCode" || node.type === "html") {
+      const start = node.position?.start.offset;
+      const end = node.position?.end.offset;
+      if (typeof start === "number" && typeof end === "number") ranges.push({ start, end });
+      return;
+    }
+
+    for (const child of node.children ?? []) visit(child);
+  }
+
+  visit(tree);
+  return ranges.toSorted((left, right) => left.start - right.start || left.end - right.end);
+}
+
+function protectEscapedPunctuation(
+  value: string,
+  opaqueRanges: readonly SourceRange[],
+  literals: SearchLiteralRegistry,
+): string {
+  let output = "";
+  let index = 0;
+  let rangeIndex = 0;
+
+  while (index < value.length) {
+    const range = opaqueRanges[rangeIndex];
+    if (range && index >= range.start) {
+      output += value.slice(index, range.end);
+      index = range.end;
+      rangeIndex += 1;
+      continue;
+    }
+
+    const next = value[index + 1];
+    if (value[index] === "\\" && next && isEscapablePunctuation(next)) {
+      output += literals.protect(next);
+      index += 2;
+      continue;
+    }
+
+    output += value[index];
+    index += 1;
+  }
+
+  return output;
+}
+
+function collectSearchMarkdown(
+  node: MarkdownNode,
+  consumed: Set<SearchMarkupKind>,
+  literals: SearchLiteralRegistry,
+): string {
+  const collectChildren = (separator: string) =>
+    (node.children ?? [])
+      .map((child) => collectSearchMarkdown(child, consumed, literals))
+      .join(separator);
+
+  switch (node.type) {
+    case "text":
+      return node.value ?? "";
+    case "inlineCode":
+    case "code":
+      consumed.add("code");
+      return literals.protect(node.value ?? "");
+    case "html":
+      consumed.add("html");
+      return "";
+    case "image":
+    case "imageReference":
+      consumed.add("image");
+      return node.alt ?? "";
+    case "link":
+    case "linkReference":
+      consumed.add("link");
+      return collectChildren("");
+    case "definition":
+    case "footnoteDefinition":
+      consumed.add("reference-definition");
+      return "";
+    case "footnoteReference":
+      consumed.add("link");
+      return node.label ?? node.identifier ?? "";
+    case "emphasis":
+    case "strong":
+      consumed.add("emphasis");
+      return collectChildren("");
+    case "delete":
+      consumed.add("strikethrough");
+      return collectChildren("");
+    case "heading":
+      consumed.add("heading");
+      return collectChildren("");
+    case "list":
+    case "listItem":
+      consumed.add("list");
+      return collectChildren(" ");
+    case "blockquote":
+      consumed.add("blockquote");
+      return collectChildren(" ");
+    case "thematicBreak":
+      consumed.add("thematic-break");
+      return "";
+    case "table":
+      consumed.add("table");
+      return collectChildren(" ");
+    case "tableRow":
+      return collectChildren(" ");
+    case "tableCell":
+    case "paragraph":
+      return collectChildren("");
+    case "root":
+      return collectChildren(" ");
+    case "break":
+      return " ";
+    default:
+      return node.children ? collectChildren("") : "";
+  }
+}
+
+function recordDecodedEntities(
+  node: MarkdownNode,
+  source: string,
+  consumed: Set<SearchMarkupKind>,
+): void {
+  if (node.type === "code" || node.type === "inlineCode" || node.type === "html") return;
+
+  if (node.type === "text" || node.type === "image" || node.type === "imageReference") {
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    const rendered = node.type === "text" ? (node.value ?? "") : (node.alt ?? "");
+    if (typeof start === "number" && typeof end === "number") {
+      const references = source
+        .slice(start, end)
+        .match(/&(?:#x[\dA-F]+|#\d+|[A-Za-z][A-Za-z\d]+);/giu);
+      if (references?.some((reference) => !rendered.includes(reference))) consumed.add("entity");
+    }
+  }
+
+  for (const child of node.children ?? []) recordDecodedEntities(child, source, consumed);
+}
+
+function collectSearchMarkupKinds(tree: MarkdownNode): SearchMarkupKind[] {
+  const kinds = new Set<SearchMarkupKind>();
+
+  function visit(node: MarkdownNode): void {
+    const kind = searchMarkupKindForNode(node.type);
+    if (kind) kinds.add(kind);
+    for (const child of node.children ?? []) visit(child);
+  }
+
+  visit(tree);
+  return [...kinds].toSorted();
+}
+
+function searchMarkupKindForNode(type: string): SearchMarkupKind | null {
+  switch (type) {
+    case "inlineCode":
+    case "code":
+      return "code";
+    case "html":
+      return "html";
+    case "image":
+    case "imageReference":
+      return "image";
+    case "link":
+    case "linkReference":
+    case "footnoteReference":
+      return "link";
+    case "definition":
+    case "footnoteDefinition":
+      return "reference-definition";
+    case "emphasis":
+    case "strong":
+      return "emphasis";
+    case "delete":
+      return "strikethrough";
+    case "heading":
+      return "heading";
+    case "list":
+    case "listItem":
+      return "list";
+    case "blockquote":
+      return "blockquote";
+    case "thematicBreak":
+      return "thematic-break";
+    case "table":
+      return "table";
+    default:
+      return null;
+  }
+}
+
+function collapseSearchLabel(value: string): string {
+  return value.replace(/\s+/gu, " ").trim();
+}
+
+function isEscapablePunctuation(value: string): boolean {
+  const codePoint = value.codePointAt(0);
   return (
-    /<\/?(?:a|code|em|img|mark|strong)\b[^>]*>/iu.test(value) ||
-    /`|\*\*|__|~~/u.test(value) ||
-    /!?\[[^\]]*\]\([^)]*\)/u.test(value) ||
-    /\\[\\`*_[\]{}()#+.!>|~-]/u.test(value) ||
-    /(^|\n)\s{0,3}(?:#{1,6}\s|>\s?|[-+*]\s|\d+[.)]\s)/u.test(value)
+    codePoint !== undefined &&
+    ((codePoint >= 0x21 && codePoint <= 0x2f) ||
+      (codePoint >= 0x3a && codePoint <= 0x40) ||
+      (codePoint >= 0x5b && codePoint <= 0x60) ||
+      (codePoint >= 0x7b && codePoint <= 0x7e))
   );
 }
 
@@ -325,28 +601,4 @@ function allowDocsUrl(value: string): AllowedDocsUrl | null {
     pathname: parsed.pathname,
     url: `${parsed.pathname}${parsed.search}${parsed.hash}`,
   };
-}
-
-function decodeCodePoint(value: string, radix: number): string {
-  const codePoint = Number.parseInt(value, radix);
-  if (!Number.isSafeInteger(codePoint) || codePoint < 0 || codePoint > 0x10ffff) return "";
-
-  try {
-    return String.fromCodePoint(codePoint);
-  } catch {
-    return "";
-  }
-}
-
-function decodeNamedEntity(value: string): string {
-  const entities: Record<string, string> = {
-    amp: "&",
-    apos: "'",
-    gt: ">",
-    lt: "<",
-    nbsp: " ",
-    quot: '"',
-  };
-
-  return entities[value.toLowerCase()] ?? "";
 }
