@@ -1,12 +1,14 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
+  chmodSync,
   lstatSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
   readdirSync,
   rmSync,
+  statSync,
   symlinkSync,
   writeFileSync,
 } from "node:fs";
@@ -84,6 +86,31 @@ for (const implementation of [
     });
   });
 
+  test(`${implementation.owner} preserves existing modes and defaults new generated files to 0644`, async () => {
+    const transaction = await loadTransaction(implementation);
+    await withTemporaryRoot(async (root) => {
+      const ledger = ledgerFor(implementation.owner, {
+        "owned/keep.txt": "old keep",
+      });
+      writeFixture(root, "owned/keep.txt", "old keep");
+      writeFixture(root, "evidence/ledger.json", `${JSON.stringify(ledger, null, 2)}\n`);
+      chmodSync(resolve(root, "owned/keep.txt"), 0o640);
+      chmodSync(resolve(root, "evidence/ledger.json"), 0o660);
+
+      await transaction(
+        new Map([
+          ["owned/keep.txt", "new keep"],
+          ["owned/new.txt", "new file"],
+        ]),
+        { ledgerRelativePath: "evidence/ledger.json", root },
+      );
+
+      assert.equal(fileMode(root, "owned/keep.txt"), 0o640);
+      assert.equal(fileMode(root, "owned/new.txt"), 0o644);
+      assert.equal(fileMode(root, "evidence/ledger.json"), 0o660);
+    });
+  });
+
   test(`${implementation.owner} refuses to remove a stale file changed after its census`, async () => {
     const transaction = await loadTransaction(implementation);
     await withTemporaryRoot(async (root) => {
@@ -114,6 +141,38 @@ for (const implementation of [
     });
   });
 
+  test(`${implementation.owner} refuses to overwrite a pre-existing unclaimed target`, async () => {
+    const transaction = await loadTransaction(implementation);
+    await withTemporaryRoot(async (root) => {
+      const oldLedger = ledgerFor(implementation.owner, {
+        "owned/keep.txt": "old keep",
+      });
+      const oldLedgerText = `${JSON.stringify(oldLedger, null, 2)}\n`;
+      writeFixture(root, "owned/keep.txt", "old keep");
+      writeFixture(root, "owned/unclaimed.txt", "unrelated content");
+      writeFixture(root, "owned/unrelated.txt", "sentinel");
+      writeFixture(root, "evidence/ledger.json", oldLedgerText);
+      const before = walk(root);
+
+      await assert.rejects(
+        transaction(
+          new Map([
+            ["owned/keep.txt", "new keep"],
+            ["owned/unclaimed.txt", "generated replacement"],
+          ]),
+          { ledgerRelativePath: "evidence/ledger.json", root },
+        ),
+        /OWNED_TARGET_UNCLAIMED/,
+      );
+
+      assert.equal(readFixture(root, "owned/keep.txt"), "old keep");
+      assert.equal(readFixture(root, "owned/unclaimed.txt"), "unrelated content");
+      assert.equal(readFixture(root, "owned/unrelated.txt"), "sentinel");
+      assert.equal(readFixture(root, "evidence/ledger.json"), oldLedgerText);
+      assert.deepEqual(walk(root), before);
+    });
+  });
+
   test(`${implementation.owner} rolls a stale removal back when ledger installation fails`, async () => {
     const transaction = await loadTransaction(implementation);
     await withTemporaryRoot(async (root) => {
@@ -126,6 +185,9 @@ for (const implementation of [
       writeFixture(root, "owned/stale.txt", "old stale");
       writeFixture(root, "owned/unrelated.txt", "sentinel");
       writeFixture(root, "evidence/ledger.json", oldLedgerText);
+      chmodSync(resolve(root, "owned/keep.txt"), 0o640);
+      chmodSync(resolve(root, "owned/stale.txt"), 0o604);
+      chmodSync(resolve(root, "evidence/ledger.json"), 0o660);
 
       await assert.rejects(
         transaction(new Map([["owned/keep.txt", "new keep"]]), {
@@ -144,7 +206,109 @@ for (const implementation of [
       assert.equal(readFixture(root, "owned/stale.txt"), "old stale");
       assert.equal(readFixture(root, "owned/unrelated.txt"), "sentinel");
       assert.equal(readFixture(root, "evidence/ledger.json"), oldLedgerText);
+      assert.equal(fileMode(root, "owned/keep.txt"), 0o640);
+      assert.equal(fileMode(root, "owned/stale.txt"), 0o604);
+      assert.equal(fileMode(root, "evidence/ledger.json"), 0o660);
       assert.deepEqual(findTransactionArtifacts(root), []);
+    });
+  });
+
+  test(`${implementation.owner} keeps committed outputs when backup cleanup fails after one removal`, async () => {
+    const transaction = await loadTransaction(implementation);
+    await withTemporaryRoot(async (root) => {
+      const oldLedger = ledgerFor(implementation.owner, {
+        "owned/keep.txt": "old keep",
+        "owned/stale.txt": "old stale",
+      });
+      writeFixture(root, "owned/keep.txt", "old keep");
+      writeFixture(root, "owned/stale.txt", "old stale");
+      writeFixture(root, "owned/unrelated.txt", "sentinel");
+      writeFixture(root, "evidence/ledger.json", `${JSON.stringify(oldLedger, null, 2)}\n`);
+
+      let cleanupError;
+      await assert.rejects(
+        transaction(new Map([["owned/keep.txt", "new keep"]]), {
+          ledgerRelativePath: "evidence/ledger.json",
+          root,
+          testHooks: {
+            afterLedgerInstall() {
+              const transactionDirectory = walk(root).find((path) => /^\.t4-transaction-[^/]+$/.test(path));
+              assert.ok(transactionDirectory, "transaction directory must exist before cleanup");
+              rmSync(resolve(root, transactionDirectory, "backup-1"));
+              mkdirSync(resolve(root, transactionDirectory, "backup-1"));
+            },
+          },
+        }),
+        (error) => {
+          cleanupError = error;
+          return true;
+        },
+      );
+
+      assert.ok(cleanupError instanceof AggregateError);
+      assert.match(cleanupError.message, /OWNED_OUTPUT_COMMITTED_CLEANUP_FAILED/);
+      assert.match(cleanupError.message, /if that path still exists/);
+      assert.equal(cleanupError.errors.some((error) => error?.code === "ENOENT"), false);
+      assert.equal(readFixture(root, "owned/keep.txt"), "new keep");
+      assert.equal(exists(root, "owned/stale.txt"), false);
+      assert.equal(readFixture(root, "owned/unrelated.txt"), "sentinel");
+      assert.deepEqual(
+        JSON.parse(readFixture(root, "evidence/ledger.json")).owners[implementation.owner],
+        [{ path: "owned/keep.txt", sha256: sha256("new keep") }],
+      );
+      const transactionArtifacts = findTransactionArtifacts(root);
+      assert.equal(transactionArtifacts.length, 2);
+      assert.equal(transactionArtifacts[1], `${transactionArtifacts[0]}/backup-1`);
+    });
+  });
+
+  test(`${implementation.owner} keeps committed outputs when transaction-directory cleanup fails`, async () => {
+    const transaction = await loadTransaction(implementation);
+    await withTemporaryRoot(async (root) => {
+      const oldLedger = ledgerFor(implementation.owner, {
+        "owned/keep.txt": "old keep",
+        "owned/stale.txt": "old stale",
+      });
+      writeFixture(root, "owned/keep.txt", "old keep");
+      writeFixture(root, "owned/stale.txt", "old stale");
+      writeFixture(root, "owned/unrelated.txt", "sentinel");
+      writeFixture(root, "evidence/ledger.json", `${JSON.stringify(oldLedger, null, 2)}\n`);
+
+      let transactionDirectory;
+      let cleanupError;
+      await assert.rejects(
+        transaction(new Map([["owned/keep.txt", "new keep"]]), {
+          ledgerRelativePath: "evidence/ledger.json",
+          root,
+          testHooks: {
+            afterLedgerInstall() {
+              transactionDirectory = walk(root).find((path) => /^\.t4-transaction-[^/]+$/.test(path));
+              assert.ok(transactionDirectory, "transaction directory must exist before cleanup");
+              writeFixture(root, `${transactionDirectory}/cleanup-blocker`, "block cleanup");
+            },
+          },
+        }),
+        (error) => {
+          cleanupError = error;
+          return true;
+        },
+      );
+
+      assert.ok(cleanupError instanceof AggregateError);
+      assert.match(cleanupError.message, /OWNED_OUTPUT_COMMITTED_CLEANUP_FAILED/);
+      assert.match(cleanupError.message, /if that path still exists/);
+      assert.equal(cleanupError.errors.some((error) => error?.code === "ENOENT"), false);
+      assert.equal(readFixture(root, "owned/keep.txt"), "new keep");
+      assert.equal(exists(root, "owned/stale.txt"), false);
+      assert.equal(readFixture(root, "owned/unrelated.txt"), "sentinel");
+      assert.deepEqual(
+        JSON.parse(readFixture(root, "evidence/ledger.json")).owners[implementation.owner],
+        [{ path: "owned/keep.txt", sha256: sha256("new keep") }],
+      );
+      assert.deepEqual(findTransactionArtifacts(root), [
+        transactionDirectory,
+        `${transactionDirectory}/cleanup-blocker`,
+      ]);
     });
   });
 
@@ -207,6 +371,10 @@ function writeFixture(root, path, content) {
 
 function readFixture(root, path) {
   return readFileSync(resolve(root, path), "utf8");
+}
+
+function fileMode(root, path) {
+  return statSync(resolve(root, path)).mode & 0o777;
 }
 
 function exists(root, path) {

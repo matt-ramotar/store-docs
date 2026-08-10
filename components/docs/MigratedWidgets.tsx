@@ -63,9 +63,9 @@ export function TabPanel({
       data-language={language}
       className="min-w-0 border-t border-separator pt-4 first:border-t-0 first:pt-0"
     >
-      <h3 id={labelId} className="typography typography--h3 mb-3 text-base font-semibold text-foreground">
-        {label}
-      </h3>
+      <p id={labelId} data-tab-panel-label="" className="mb-3 text-base text-foreground">
+        <strong>{label}</strong>
+      </p>
       {children}
     </section>
   );

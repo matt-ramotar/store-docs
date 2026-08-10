@@ -211,39 +211,66 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
 
     $("#content [data-step-group]").each((_, group) => {
       const parentItem = $(group).parent().closest("[data-step-item]");
-        actual.stepGroups.push({
-          nested: parentItem.length > 0,
-          page: pathname,
-          items: $(group)
-            .children("[data-step-item]")
-            .map((__, item) => ({
-              body: compiledDirectWidgetBody($, item),
-              label: $(item).attr("data-step-label"),
-              title: normalizeText($(item).children("[data-step-title]").find("strong").text()),
-            }))
-            .get(),
-        });
-        $(group).children("[data-step-item]").each((__, item) => {
-          assert.equal($(item).children("[data-step-body]").length, 1, `${pathname}: step body containment`);
-        });
+      assert.equal(group.tagName, "ol", `${pathname}: step group element`);
+      assert.equal(
+        $(group).children().length,
+        $(group).children("li[data-step-item]").length,
+        `${pathname}: step group direct children`,
+      );
+      if (parentItem.length > 0) {
+        assert.equal($(group).parent().is("[data-step-body]"), true, `${pathname}: nested step body containment`);
+        assert.equal(
+          $(group).parent().parent().is("li[data-step-item]"),
+          true,
+          `${pathname}: nested step item containment`,
+        );
+      }
+      actual.stepGroups.push({
+        nested: parentItem.length > 0,
+        page: pathname,
+        items: $(group)
+          .children("[data-step-item]")
+          .map((__, item) => ({
+            body: compiledDirectWidgetBody($, item),
+            label: $(item).attr("data-step-label"),
+            title: normalizeText($(item).children("[data-step-title]").find("strong").text()),
+          }))
+          .get(),
       });
+      $(group).children("[data-step-item]").each((__, item) => {
+        assert.equal(item.tagName, "li", `${pathname}: step item element`);
+        assert.equal($(item).children("[data-step-title]").length, 1, `${pathname}: step title containment`);
+        assert.equal($(item).children("[data-step-body]").length, 1, `${pathname}: step body containment`);
+      });
+    });
     $("#content [data-tab-group]").each((_, group) => {
       const panels = $(group).children("[data-tab-panel]");
+      assert.equal(group.tagName, "section", `${pathname}: tab group element`);
+      assert.equal($(group).attr("role"), "group", `${pathname}: tab group role`);
+      assert.equal($(group).children().length, panels.length, `${pathname}: tab group direct children`);
+      panels.each((__, panel) => {
+        assert.equal(panel.tagName, "section", `${pathname}: tab panel element`);
+        const labelledBy = $(panel).attr("aria-labelledby");
+        assert.ok(labelledBy, `${pathname}: tab panel accessible name`);
+        assert.equal($(`[id="${labelledBy}"]`).length, 1, `${pathname}: tab panel label resolution`);
+      });
       actual.tabGroups.push({
         label: $(group).attr("aria-label"),
         page: pathname,
         panels: panels
           .map((__, panel) => ({
-                labelledBy: $(panel).attr("aria-labelledby"),
-                label: normalizeText($(panel).children("h3").first().text()),
-                labelId: $(panel).children("h3").first().attr("id"),
-                code: normalizeCode($(panel).find("pre").first().text()),
-                language: $(panel).attr("data-language"),
-              }))
+            labelledBy: $(panel).attr("aria-labelledby"),
+            label: normalizeText($(panel).children("[data-tab-panel-label]").first().text()),
+            labelId: $(panel).children("[data-tab-panel-label]").first().attr("id"),
+            labelTag: $(panel).children("[data-tab-panel-label]").first().prop("tagName")?.toLowerCase(),
+            code: normalizeCode($(panel).find("pre").first().text()),
+            language: $(panel).attr("data-language"),
+          }))
           .get(),
       });
     });
     $("#content aside[role=note][data-callout-type]").each((_, callout) => {
+      assert.equal(callout.tagName, "aside", `${pathname}: callout element`);
       actual.callouts.push({
         body: normalizeWidgetBody($(callout).children("[data-callout-body]").text()),
         page: pathname,
@@ -251,9 +278,19 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
       });
     });
     $("#content dl[data-param-list]").each((_, list) => {
+      assert.equal(list.tagName, "dl", `${pathname}: parameter list element`);
       const fields = $(list).children("[data-param-field]");
       actual.paramListSizes.push({ page: pathname, size: fields.length });
       fields.each((__, field) => {
+        assert.equal(field.tagName, "div", `${pathname}: parameter field group element`);
+        assert.deepEqual(
+          $(field).children().map((___, child) => child.tagName).get(),
+          ["dt", "dd", "dt", "dd", "dt", "dd", "dt", "dd"],
+          `${pathname}: parameter definition shape`,
+        );
+        $(field).children("dt,dd").each((___, definition) => {
+          assert.ok(normalizeText($(definition).text()).length > 0, `${pathname}: empty parameter definition`);
+        });
         const definitions = new Map();
         $(field).children("dt").each((___, term) => {
           definitions.set(normalizeText($(term).text()), normalizeText($(term).next("dd").text()));
@@ -269,6 +306,17 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
     });
   }
 
+  for (const group of actual.tabGroups) {
+    assert.ok(group.label);
+    for (const panel of group.panels) {
+      assert.equal(panel.labelledBy, panel.labelId);
+      assert.equal(panel.labelTag, "p");
+      delete panel.labelTag;
+    }
+  }
+  const tabLabelIds = actual.tabGroups.flatMap((group) => group.panels.map((panel) => panel.labelId));
+  assert.equal(new Set(tabLabelIds).size, tabLabelIds.length);
+
   assert.deepEqual(actual.stepGroups, expected.stepGroups);
   assert.deepEqual(actual.tabGroups, expected.tabGroups);
   assert.deepEqual(actual.callouts, expected.callouts);
@@ -282,10 +330,6 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
   assert.equal(actual.paramListSizes.length, 23);
   assert.equal(actual.params.length, 45);
   assert.equal(actual.params.filter((field) => field.required === "Required").length, 36);
-  for (const group of actual.tabGroups) {
-    for (const panel of group.panels) assert.equal(panel.labelledBy, panel.labelId);
-  }
-
   const generatedSources = [...expectedInventoryTargets.values()]
     .map((target) => readFileSync(resolve(ROOT, target), "utf8"))
     .join("\n");
@@ -448,6 +492,30 @@ test("live generation is snapshot-backed, source-locked, guarded, and transactio
   assert.throws(() => assertOwnedOutputSet(new Map()), /owned inventory targets/);
 });
 
+test("snapshot validation rejects a missing derived link-health entry", async () => {
+  const { validateSnapshot } = await import("./port-page.mjs");
+  assert.equal(typeof validateSnapshot, "function");
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  snapshot.linkHealth = snapshot.linkHealth.slice(0, -1);
+  snapshot.linkHealthSha256 = sha256(JSON.stringify(snapshot.linkHealth));
+  assert.throws(() => validateSnapshot(snapshot), /link-health set differs/);
+});
+
+test("snapshot validation and card conversion reject empty link health", async () => {
+  const { convertBodyToMdx, validateSnapshot } = await import("./port-page.mjs");
+  assert.equal(typeof validateSnapshot, "function");
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  const cardPage = snapshot.pages.find((page) => /\/docs\/concepts\/store5\/overview$/.test(page.url));
+  assert.ok(cardPage);
+  snapshot.linkHealth = [];
+  snapshot.linkHealthSha256 = sha256(JSON.stringify(snapshot.linkHealth));
+  assert.throws(() => validateSnapshot(snapshot), /link-health set differs/);
+  assert.throws(
+    () => convertBodyToMdx(cardPage.bodyHtml, cardPage.url, cardPage.sourceMarkdown, new Map()),
+    /missing link-health status/,
+  );
+});
+
 test("URL rewriting fails closed for unsafe anchor and image schemes", async () => {
   const script = readFileSync(resolve(ROOT, "scripts/port-page.mjs"), "utf8");
   assert.doesNotMatch(script, /\(\?:mailto\|tel\|data\|javascript\)/);
@@ -563,6 +631,14 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
     const content = $("#content");
     assert.equal(content.length, 1, pathname);
     assert.doesNotMatch(content.text(), /\]\(#param-/, pathname);
+    assert.deepEqual(
+      content
+        .find("h2,h3,h4,h5,h6")
+        .map((_, heading) => normalizeHeading($(heading).text()))
+        .get(),
+      page.liveHeadings,
+      `${pathname}: compiled heading parity`,
+    );
 
     content.find("h2,h3,h4,h5,h6").each((_, heading) => {
       const depth = heading.tagName.slice(1);
@@ -943,7 +1019,7 @@ function compiledDirectWidgetBody($, item) {
   const body = $(item).children("[data-step-body]").clone();
   body.find("[data-step-group]").remove();
   body.find("[data-callout-label]").remove();
-  body.find("[data-tab-panel] > h3").remove();
+  body.find("[data-tab-panel-label]").remove();
   return normalizeWidgetBody(body.text());
 }
 

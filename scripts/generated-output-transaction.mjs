@@ -1,5 +1,6 @@
 import { createHash, randomUUID } from "node:crypto";
 import {
+  chmod,
   lstat,
   mkdir,
   readFile,
@@ -29,6 +30,7 @@ export async function reconcileOwnedOutputs({
   const originalLedgerBytes = await readRequiredRegularFile(repositoryRoot, ledgerTarget);
   const originalLedger = validateOwnedTargetLedger(JSON.parse(originalLedgerBytes.toString("utf8")), ledgerTarget);
   const priorEntries = originalLedger.owners[owner] ?? [];
+  const priorPaths = new Set(priorEntries.map((entry) => entry.path));
   const nextEntries = [...normalizedOutputs]
     .map(([path, content]) => ({ path, sha256: sha256(content) }))
     .sort(compareEntries);
@@ -42,6 +44,9 @@ export async function reconcileOwnedOutputs({
   );
   for (const entry of nextEntries) {
     if (otherOwnedPaths.has(entry.path)) throw new Error(`OWNED_TARGET_COLLISION: ${entry.path}`);
+    if (!priorPaths.has(entry.path) && (await lstatOptional(resolve(repositoryRoot, entry.path))) !== null) {
+      throw new Error(`OWNED_TARGET_UNCLAIMED: ${entry.path}`);
+    }
   }
 
   await assertSafeTargetPaths(repositoryRoot, staleEntries.map((entry) => entry.path));
@@ -62,6 +67,12 @@ export async function reconcileOwnedOutputs({
   };
   validateOwnedTargetLedger(nextLedger, ledgerTarget);
   const nextLedgerBytes = Buffer.from(`${JSON.stringify(nextLedger, null, 2)}\n`);
+  const targetModes = new Map();
+  for (const entry of nextEntries) {
+    const stat = await lstatOptional(resolve(repositoryRoot, entry.path));
+    targetModes.set(entry.path, stat === null ? 0o644 : stat.mode & 0o777);
+  }
+  const ledgerMode = (await lstat(ledgerPath)).mode & 0o777;
 
   const transactionRelative = `.t4-transaction-${randomUUID()}`;
   const transactionPath = resolve(repositoryRoot, transactionRelative);
@@ -76,12 +87,12 @@ export async function reconcileOwnedOutputs({
     let stageIndex = 0;
     for (const [target, content] of normalizedOutputs) {
       const stagePath = resolve(transactionPath, `output-${stageIndex}`);
-      await writeFile(stagePath, content, { flag: "wx", mode: 0o600 });
+      await writeStagedFile(stagePath, content, targetModes.get(target));
       staged.set(target, stagePath);
       stageIndex += 1;
     }
     const ledgerStagePath = resolve(transactionPath, "ledger-next");
-    await writeFile(ledgerStagePath, nextLedgerBytes, { flag: "wx", mode: 0o600 });
+    await writeStagedFile(ledgerStagePath, nextLedgerBytes, ledgerMode);
 
     const parentTargets = [...normalizedOutputs.keys(), ledgerTarget];
     for (const target of parentTargets) {
@@ -112,11 +123,6 @@ export async function reconcileOwnedOutputs({
     await testHooks.beforeLedgerInstall?.();
     await assertSafeTargetPaths(repositoryRoot, [ledgerTarget]);
     await rename(ledgerStagePath, ledgerPath);
-    installed.add(ledgerTarget);
-
-    for (const backupPath of backups.values()) await unlink(backupPath);
-    await rmdir(transactionPath);
-    return nextLedger;
   } catch (error) {
     const rollbackErrors = [];
     for (const target of [...installed].reverse()) {
@@ -164,6 +170,32 @@ export async function reconcileOwnedOutputs({
     }
     throw error;
   }
+
+  const cleanupErrors = [];
+  try {
+    await testHooks.afterLedgerInstall?.();
+  } catch (error) {
+    cleanupErrors.push(error);
+  }
+  for (const backupPath of backups.values()) {
+    try {
+      await unlink(backupPath);
+    } catch (error) {
+      if (error?.code !== "ENOENT") cleanupErrors.push(error);
+    }
+  }
+  try {
+    await rmdir(transactionPath);
+  } catch (error) {
+    cleanupErrors.push(error);
+  }
+  if (cleanupErrors.length > 0) {
+    throw new AggregateError(
+      cleanupErrors,
+      `OWNED_OUTPUT_COMMITTED_CLEANUP_FAILED: outputs and ledger are committed; rerunning is safe but does not retry cleanup for ${transactionRelative}; if that path still exists, inspect it and remove verified transaction leftovers manually`,
+    );
+  }
+  return nextLedger;
 }
 
 export async function verifyOwnedOutputs({ ledgerRelativePath, owner, outputs, root }) {
@@ -276,6 +308,11 @@ async function lstatOptional(path) {
     if (error?.code === "ENOENT") return null;
     throw error;
   }
+}
+
+async function writeStagedFile(path, content, mode) {
+  await writeFile(path, content, { flag: "wx", mode });
+  await chmod(path, mode);
 }
 
 function normalizeOutputs(outputs, ledgerTarget) {

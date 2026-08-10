@@ -269,7 +269,7 @@ function normalizeCards($, root, context) {
       throw new Error(`${context.pageUrl}: live/source card title differs at ${index + 1}`);
     }
     const healthUrl = sameOriginHealthUrl(sourceCard.href, context.pageUrl);
-    if (healthUrl && context.linkHealth.size > 0) {
+    if (healthUrl) {
       const status = context.linkHealth.get(healthUrl);
       if (status === undefined) throw new Error(`${context.pageUrl}: missing link-health status for ${healthUrl}`);
       if (status >= 400) {
@@ -1186,7 +1186,7 @@ function renderManifest(manifestRows, snapshot) {
   return `${header.join("\n")}\n| ${lines.join(" |\n| ")} |\n`;
 }
 
-function validateSnapshot(snapshot) {
+export function validateSnapshot(snapshot) {
   if (
     snapshot?.schemaVersion !== 2 ||
     snapshot.migrationDate !== MIGRATION_DATE ||
@@ -1216,6 +1216,10 @@ function validateSnapshot(snapshot) {
     )
   ) {
     throw new Error("invalid live snapshot link-health inventory");
+  }
+  const derivedLinkUrls = collectSameOriginLinkHealthUrls(snapshot.pages);
+  if (JSON.stringify(linkUrls) !== JSON.stringify(derivedLinkUrls)) {
+    throw new Error("live snapshot link-health set differs from pinned pages");
   }
   if (snapshot.linkHealthSha256 !== sha256(JSON.stringify(snapshot.linkHealth))) {
     throw new Error("live snapshot link-health hash differs");
