@@ -1,0 +1,35 @@
+---
+title: "Store foundations"
+---
+
+## Store
+
+Typed repository that mediates data flow between network, memory cache, and local storage in your app.
+
+## Mutable Store
+
+Mutable implementation of a typed repository that supports create (C), read (R), update (U) and delete (D) operations for local and network resources.
+
+## Source of Truth
+
+Single authoritative local data source, ensuring data consistency and enabling offline support.
+
+## Fetcher
+
+Defines how data will be fetched over the network.
+
+## Updater
+
+Defines how local changes will be pushed to the network.
+
+## Bookkeeper
+
+Tracks metadata of local changes and records synchronization failures.
+
+## Validator
+
+Allows you to define custom logic to determine whether local data is still valid or if it needs to be refreshed from the remote data source using the Fetcher.
+
+## Converter
+
+Converts items between network, local database, and domain data representations.

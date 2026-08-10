@@ -1,0 +1,75 @@
+---
+title: "Guides to common use cases"
+---
+
+## Handling CRUD Operations
+
+Learn how to support queries and mutations in your Store.
+
+## Offline-First Data Access with Store and SqlDelight
+
+Learn how to implement an offline-first architecture using Store and SqlDelight, enabling your app to provide seamless data access even without a network connection.
+
+## Data Synchronization and Conflict Resolution
+
+Master data synchronization between local and remote sources using `MutableStore`, including strategies for detection and resolution to maintain data integrity.
+
+## Error Handling and Retry Strategies
+
+Implement robust error handling and retry mechanisms with Store, ensuring your app gracefully recovers from network failures and provides a reliable user experience.
+
+## Authentication and Secure Data Access
+
+Integrate authentication flows with Store to manage secure data access, handle token refresh, and protect sensitive information within your application.
+
+## Real-Time Data Updates
+
+Learn to handle real-time data streams using Store, incorporating WebSockets or Server-Sent Events to keep your app’s data instantly up-to-date.
+
+## Handling Complex Data Relationships
+
+Navigate the challenges of managing complex relational data structures with Store, including nested data and associations like comments, ratings, and user profiles.
+
+## Advanced Caching Strategies
+
+Optimize your app’s performance with advanced caching strategies in Store, customizing cache policies, eviction strategies, and managing cache size limitations.
+
+## Testing Store and Its Associated Components
+
+Ensure the reliability of your data layer by learning best practices for testing Stores, Fetchers, and Source of Truth implementations in your applications.
+
+## Multiplatform Implementation
+
+Explore how to effectively use Store in a Kotlin Multiplatform project, sharing code across Android, iOS, and other platforms with consistent behavior.
+
+## Integration with Jetpack Compose and SwiftUI
+
+Connect Store with modern UI frameworks, enabling reactive and responsive interfaces driven by Store’s data streams.
+
+## Migration from Existing Data Layers
+
+Learn strategies for migrating your existing data management solutions to Store, minimizing disruption and leveraging Store’s powerful features.
+
+## Security and Data Encryption
+
+Implement data encryption and security best practices with Store to protect sensitive data stored locally and ensure compliance with security standards.
+
+## Working with Non-Paginated Lists
+
+Utilize `StoreMultiCache` to cache lists of items (collections) and decompose them into individual items (singles). This allows efficient caching and retrieval of both the entire collection and its individual elements.
+
+## Ensuring Data Integrity and Freshness
+
+Implement `Validator` in your Store to check if cached data is still valid before emitting it to the UI or caching it. This can include time-based validation or custom logic to determine data validity.
+
+## Integrating Store with State Management Libraries Like Redux
+
+Connect Store’s data streams to your state management solution to ensure the UI reacts to data changes efficiently.
+
+## Implementing Fallback Mechanisms to Enhance Resilience
+
+Learn how to set up primary and secondary fetchers, enabling your app to automatically switch to alternative data sources or strategies when the primary fetcher fails.
+
+## Pagination and Infinite Scrolling
+
+Discover how to efficiently load large datasets by implementing pagination and infinite scrolling with Store, providing smooth user experiences when browsing extensive lists.
