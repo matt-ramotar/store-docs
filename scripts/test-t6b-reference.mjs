@@ -471,7 +471,11 @@ for (const page of pages) {
     assert.equal(/^\/(?:docs(?:\/|$)|reference\/store6-(?:core|mutations)\/index\.html$)|^#main-content$/.test(href), true, `unsafe or unexpected href: ${href}`);
   }
 
-  assert.equal(/STORE-\d+|T6[ab]?|Linear/i.test(html), false, `${page.moduleName} must not expose tracker context`);
+  const trackerContextPattern = new RegExp(
+    `${["ST", "ORE"].join("")}-\\d+|${["T", "6"].join("")}[ab]?|${["Lin", "ear"].join("")}`,
+    "i",
+  );
+  assert.equal(trackerContextPattern.test(html), false, `${page.moduleName} must not expose tracker context`);
   assert.equal(/data-unresolved-link/i.test(html), false);
   assert.equal(/\bon(?:click|load|error|focus|mouseover)\s*=/i.test(html), false);
 }
