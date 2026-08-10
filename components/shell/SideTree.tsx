@@ -1,7 +1,7 @@
 "use client";
 
 import type * as PageTree from "fumadocs-core/page-tree";
-import { Sidebar, type SidebarMenuProps } from "@heroui-pro/react";
+import { Sheet, Sidebar, type SidebarMenuProps } from "@heroui-pro/react";
 import {
   isValidElement,
   type ReactNode,
@@ -35,6 +35,7 @@ export function SideTree(props: SideTreeProps) {
         <TreeContents {...props} scope="desktop" />
       </Sidebar>
       <Sidebar.Mobile aria-label="Documentation">
+        <Sheet.Heading className="sr-only">Documentation navigation</Sheet.Heading>
         <TreeContents {...props} scope="mobile" />
       </Sidebar.Mobile>
     </>
