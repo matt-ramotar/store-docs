@@ -6,6 +6,16 @@ import { Segment } from "@heroui-pro/react";
 import { ReadResolutionTable } from "@/components/overview/ReadResolutionTable";
 import { StartHereList } from "@/components/overview/StartHereList";
 import { SupportMatrix } from "@/components/overview/SupportMatrix";
+import {
+  Callout,
+  ParamField,
+  ParamList,
+  StepItem,
+  StepsGroup,
+  TabGroup,
+  TabPanel,
+  UnavailableDestination,
+} from "@/components/docs/MigratedWidgets";
 import { CodeSlab } from "@/components/shell/CodeSlab";
 
 function mergeClassName(base: string, className?: string) {
@@ -16,6 +26,7 @@ function mergeClassName(base: string, className?: string) {
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     Button,
+    Callout,
     CodeSlab,
     a: ({ className, ...props }) => (
       <a
@@ -104,6 +115,8 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     p: ({ className, ...props }) => (
       <p {...props} className={mergeClassName("my-4 leading-7 text-foreground", className)} />
     ),
+    ParamField,
+    ParamList,
     pre: ({ className, ...props }) => (
       <pre
         {...props}
@@ -116,7 +129,11 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ReadResolutionTable,
     Segment,
     StartHereList,
+    StepItem,
+    StepsGroup,
     SupportMatrix,
+    TabGroup,
+    TabPanel,
     table: ({ className, ...props }) => (
       <div
         role="region"
@@ -160,6 +177,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
         className={mergeClassName("my-4 list-disc space-y-2 ps-6 marker:text-muted", className)}
       />
     ),
+    UnavailableDestination,
     ...components,
   };
 }

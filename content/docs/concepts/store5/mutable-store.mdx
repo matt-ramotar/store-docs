@@ -3,14 +3,16 @@ title: "Mutable Store"
 description: "Designed to handle not only data retrieval but also data mutations. Manages the complexities associated with data synchronization between local and remote sources, conflict resolution, and offline support."
 ---
 
-> **Tip**
->
-> Check out *[Handling CRUD Operations](/docs/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
->
-> -   **Create**: Insert One, Insert Many
-> -   **Read**: Find One, Find Many, Find All, Observe One, Observe Many
-> -   **Update**: Update One, Update Many, Upsert One, Upsert Many
-> -   **Delete**: Delete One, Delete Many
+<Callout type="Tip">
+
+Check out *[Handling CRUD Operations](/docs/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
+
+-   **Create**: Insert One, Insert Many
+-   **Read**: Find One, Find Many, Find All, Observe One, Observe Many
+-   **Update**: Update One, Update Many, Upsert One, Upsert Many
+-   **Delete**: Delete One, Delete Many
+
+</Callout>
 
 ## Purpose of Mutable Store
 
@@ -41,77 +43,87 @@ interface MutableStore<Key : Any, Output : Any> {
 }
 ```
 
-Key
+<ParamList>
 
-Any
-
-required
+<ParamField name="Key" type="Any" required="true">
 
 The type representing the key used to identify the data item.
 
-Output
+</ParamField>
 
-Any
+<ParamField name="Output" type="Any" required="true">
 
-required
+The type representing the domain data model representation of the item being
+retrieved.
 
-The type representing the domain data model representation of the item being retrieved.
+</ParamField>
 
-Response
+<ParamField name="Response" type="Any" required="true">
 
-Any
+The type representing the response received after updating the remote data
+source.
 
-required
+</ParamField>
 
-The type representing the response received after updating the remote data source.
+</ParamList>
 
 #### `stream`
 
 A function that returns a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) of [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
 
-request
+<ParamList>
 
-StoreReadRequest&lt;Key>
-
-required
+<ParamField name="request" type="StoreReadRequest&lt;Key&gt;" required="true">
 
 The request configuration for the data retrieval.
+
+</ParamField>
+
+</ParamList>
 
 #### `write`
 
 A function that returns a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt).
 
-request
+<ParamList>
 
-StoreWriteRequest&lt;Key, Output, Response>
-
-required
+<ParamField name="request" type="StoreWriteRequest&lt;Key, Output, Response&gt;" required="true">
 
 The request configuration for the data mutation.
+
+</ParamField>
+
+</ParamList>
 
 #### `clear`
 
 A function that clears the data item identified by the given key.
 
-> **Note**
->
-> This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
+<Callout type="Note">
 
-key
+This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
 
-Key
+</Callout>
 
-required
+<ParamList>
+
+<ParamField name="key" type="Key" required="true">
 
 The key identifying the data item to be cleared.
+
+</ParamField>
+
+</ParamList>
 
 #### `clearAll`
 
 A function that clears all data items.
 
-> **Note**
->
-> This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
+<Callout type="Note">
+
+This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
+
+</Callout>
 
 ## Key Components
 
@@ -143,30 +155,36 @@ The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f907
 
 ### Reading Data
 
-1. **Initialization**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Initialization">
 
 Ensures that thead safety mechanisms and write request queues are initialized.
 
-```kotlin
+```kotlin theme={"system"}
 safeInitStore(request.key)
 ```
 
-2. **Eager Conflict Resolution**
+</StepItem>
+
+<StepItem label="2" title="Eager Conflict Resolution">
 
 Attempts to resolve any conflicts before proceeding with the read operation.
 
-```kotlin
+```kotlin theme={"system"}
 tryEagerlyResolveConflicts<Response>(request.key)
 ```
 
--   If conflicts exist, tries to synchronize local changes with the remote source.
--   If no conflicts, proceeds to data retrieval.
+* If conflicts exist, tries to synchronize local changes with the remote source.
+* If no conflicts, proceeds to data retrieval.
 
-3. **Data Retrieval**
+</StepItem>
+
+<StepItem label="3" title="Data Retrieval">
 
 Delegates the read operation to the [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt) instance.
 
-```kotlin
+```kotlin theme={"system"}
 delegate
     .stream(request)
     .collect { storeReadResponse ->
@@ -174,42 +192,54 @@ delegate
     }
 ```
 
+</StepItem>
+
+</StepsGroup>
+
 ### Writing Data
 
-1. **Request Queueing**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Request Queueing">
 
 The write request is added to the per-key write request queue.
 
-```kotlin
+```kotlin theme={"system"}
 addWriteRequestToQueue(writeRequest)
 ```
 
-2. **Local Update**
+</StepItem>
+
+<StepItem label="2" title="Local Update">
 
 The value is immediately written to the local data source.
 
-```kotlin
+```kotlin theme={"system"}
 delegate.write(writeRequest.key, writeRequest.value)
 ```
 
-3. **Server Synchronization Attempt**
+</StepItem>
+
+<StepItem label="3" title="Server Synchronization Attempt">
 
 Attempts to update the remote data source using the [Updater](/docs/concepts/store5/updater).
 
-```kotlin
+```kotlin theme={"system"}
 val updaterResult = tryUpdateServer(writeRequest)
 ```
 
-4. **Handling the Updater Result**
+</StepItem>
 
-NaN
+<StepItem label="4" title="Handling the Updater Result">
 
-Success
+<StepsGroup nested="true">
 
--   Updates the write request queue, removing processed requests.
--   Clears any failed sync records from the [Bookkeeper](/docs/concepts/store5/bookkeeper).
+<StepItem label="A" title="Success">
 
-```kotlin
+* Updates the write request queue, removing processed requests.
+* Clears any failed sync records from the [Bookkeeper](/docs/concepts/store5/bookkeeper).
+
+```kotlin theme={"system"}
 updateWriteRequestQueue<Response>(
     key = request.key,
     created = request.created,
@@ -219,20 +249,30 @@ updateWriteRequestQueue<Response>(
 bookkeeper?.clear(request.key)
 ```
 
-NaN
+</StepItem>
 
-Failure
+<StepItem label="B" title="Failure">
 
--   Records the failed attempt using the [Bookkeeper](/docs/concepts/store5/bookkeeper).
+* Records the failed attempt using the [Bookkeeper](/docs/concepts/store5/bookkeeper).
 
-```kotlin
+```kotlin theme={"system"}
 bookkeeper?.setLastFailedSync(request.key)
 ```
 
-5. **Response Emission**
+</StepItem>
+
+</StepsGroup>
+
+</StepItem>
+
+<StepItem label="5" title="Response Emission">
 
 Emits a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt) indicating success or failure.
 
-```kotlin
+```kotlin theme={"system"}
 emit(storeWriteResponse)
 ```
+
+</StepItem>
+
+</StepsGroup>

@@ -5,29 +5,33 @@ description: "Let’s build your first Store."
 
 In this example, we’ll build a simple Store to fetch and cache posts for the [Trails](https://github.com/MobileNativeFoundation/Trails) app.
 
-> **Note**
->
-> The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
+<Callout type="Note">
+
+The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
+
+</Callout>
 
 ## Prerequisites
 
-> **Info**
->
-> Quick Links to Prerequisites:
->
-> -   [Kotlin Multiplatform Project Setup](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html): Basic understanding of KMP and a project set up with shared `commonMain` code.
-> -   [Coroutines and Flow](https://kotlinlang.org/docs/coroutines-overview.html): Basic understanding of Kotlin Coroutines and Flow for asynchronous programming.
-> -   [Gradle](https://kotlinlang.org/docs/gradle.html): Familiarity with Gradle for dependency management.
+<Callout type="Info">
+
+Quick Links to Prerequisites:
+
+-   [Kotlin Multiplatform Project Setup](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform-create-first-app.html): Basic understanding of KMP and a project set up with shared `commonMain` code.
+-   [Coroutines and Flow](https://kotlinlang.org/docs/coroutines-overview.html): Basic understanding of Kotlin Coroutines and Flow for asynchronous programming.
+-   [Gradle](https://kotlinlang.org/docs/gradle.html): Familiarity with Gradle for dependency management.
+
+</Callout>
 
 ## Installation
 
-1. **Add the Dependency**
+<StepsGroup nested="false">
 
-Add the Store library to your project’s dependencies. Since we’re working with a KMP project, we’ll add the dependency to the `commonMain` source set.
+<StepItem label="1" title="Add the Dependency">
 
-libs.versions.toml
+Add the Store library to your project's dependencies. Since we're working with a KMP project, we'll add the dependency to the `commonMain` source set.
 
-```toml
+```toml libs.versions.toml theme={"system"}
 [versions]
 store = "5.1.0"
 
@@ -35,9 +39,7 @@ store = "5.1.0"
 store = { module = "org.mobilenativefoundation.store:store5", version.ref = "store" }
 ```
 
-build.gradle.kts
-
-```kotlin
+```kotlin build.gradle.kts theme={"system"}
 commonMain {
   dependencies {
     implementation(libs.store)
@@ -45,39 +47,47 @@ commonMain {
 }
 ```
 
-> **Tip**
->
-> Understanding Version Catalogs:
->
-> The `libs.versions.toml` file is part of Gradle’s Version Catalogs feature, which simplifies dependency management.
->
-> If you’re not using Version Catalogs, you can add the dependency directly to your `build.gradle.kts`:
->
-> ```kotlin
-> dependencies {
->     implementation("org.mobilenativefoundation.store:store5:5.1.0")
-> }
-> ```
->
-> For more information on Version Catalogs, visit the [Gradle Documentation](https://docs.gradle.org/current/userguide/platforms.html).
+<Callout type="Tip">
 
-2. **Sync the Project**
+Understanding Version Catalogs:
+
+The `libs.versions.toml` file is part of Gradle's Version Catalogs feature, which simplifies dependency management.
+
+If you're not using Version Catalogs, you can add the dependency directly to your `build.gradle.kts`:
+
+```kotlin theme={"system"}
+dependencies {
+    implementation("org.mobilenativefoundation.store:store5:5.1.0")
+}
+```
+
+For more information on Version Catalogs, visit the [Gradle Documentation](https://docs.gradle.org/current/userguide/platforms.html).
+
+</Callout>
+
+</StepItem>
+
+<StepItem label="2" title="Sync the Project">
 
 After adding the dependency, sync your project with Gradle to download the Store library.
+
+</StepItem>
+
+</StepsGroup>
 
 ## Building a Store
 
 Now, let’s build a simple Store to fetch and cache posts from our API and cache it for offline access.
 
-1. **Define the Data Models**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Define the Data Models">
 
 Define the models for a post.
 
-Network Model
+<TabGroup label="Code examples">
 
-Local Database Model
-
-Domain Model
+<TabPanel id="docs-quickstart-code-1-panel-1" label="Network Model" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.backend.models
@@ -100,6 +110,10 @@ data class PostNetworkModel(
 )
 ```
 
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-1-panel-2" label="Local Database Model" language="sql">
+
 ```sql
 package org.mobilenativefoundation.trails.xplat.lib.db
 
@@ -121,6 +135,10 @@ CREATE TABLE postEntity (
 );
 ```
 
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-1-panel-3" label="Domain Model" language="kotlin">
+
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.models
 
@@ -141,45 +159,55 @@ data class Post(
 )
 ```
 
-> **Note**
->
-> Using [SqlDelight](https://sqldelight.github.io/sqldelight) for Local Database Models:
->
-> The SQL schema defined using SqlDelight will generate Kotlin models for you. Here’s how the `PostEntity` class might look after generation:
->
-> ```kotlin
-> data class PostEntity(
->     val id: Long,
->     val creator_id: Long,
->     val caption: String?,
->     val created_at: String,
->     val likes_count: Long,
->     val comments_count: Long,
->     val shares_count: Long,
->     val views_count: Long,
->     val is_sponsored: Long,
->     val cover_url: String,
->     val platform: Platform,
->     val location_name: String?,
->     val is_favorited_by_current_user: Long
-> )
-> ```
->
-> For more details on how SqlDelight generates Kotlin classes from SQL schemas, check out the [SqlDelight Docs](https://sqldelight.github.io/sqldelight).
+</TabPanel>
 
-2. **Create the API Interface**
+</TabGroup>
 
-Define and implement an interface for your network calls. In this example, we’ll use [Ktor](https://ktor.io/docs/welcome.html) for HTTP requests.
+<Callout type="Note">
 
-> **Note**
->
-> Dependency Injection Context:
->
-> [Trails](https://github.com/MobileNativeFoundation/Trails) uses [kotlin-inject](https://github.com/evant/kotlin-inject), a compile-time dependency injection library for Kotlin. The `@Inject` annotation indicates a class can be injected.
+Using [SqlDelight](https://sqldelight.github.io/sqldelight) for Local Database Models:
 
-APIs
+The SQL schema defined using SqlDelight will generate Kotlin models for you. Here's how the `PostEntity` class might look after generation:
 
-Implementations
+```kotlin theme={"system"}
+data class PostEntity(
+    val id: Long,
+    val creator_id: Long,
+    val caption: String?,
+    val created_at: String,
+    val likes_count: Long,
+    val comments_count: Long,
+    val shares_count: Long,
+    val views_count: Long,
+    val is_sponsored: Long,
+    val cover_url: String,
+    val platform: Platform,
+    val location_name: String?,
+    val is_favorited_by_current_user: Long
+)
+```
+
+For more details on how SqlDelight generates Kotlin classes from SQL schemas, check out the [SqlDelight Docs](https://sqldelight.github.io/sqldelight).
+
+</Callout>
+
+</StepItem>
+
+<StepItem label="2" title="Create the API Interface">
+
+Define and implement an interface for your network calls. In this example, we'll use [Ktor](https://ktor.io/docs/welcome.html) for HTTP requests.
+
+<Callout type="Note">
+
+Dependency Injection Context:
+
+[Trails](https://github.com/MobileNativeFoundation/Trails) uses [kotlin-inject](https://github.com/evant/kotlin-inject), a compile-time dependency injection library for Kotlin. The `@Inject` annotation indicates a class can be injected.
+
+</Callout>
+
+<TabGroup label="Code examples">
+
+<TabPanel id="docs-quickstart-code-2-panel-1" label="APIs" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.rest.api
@@ -191,6 +219,10 @@ interface PostOperations {
 
 interface TrailsApi: PostOperations
 ```
+
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-2-panel-2" label="Implementations" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.rest.impl
@@ -228,17 +260,19 @@ class RealTrailsClient(
     PostOperations by postOperations
 ```
 
-3. **Implement Converters**
+</TabPanel>
+
+</TabGroup>
+
+</StepItem>
+
+<StepItem label="3" title="Implement Converters">
 
 We need to convert between our network model, domain model, and local database model.
 
-Network to Domain
+<TabGroup label="Code examples">
 
-Local Database to Domain
-
-Domain to Local Database
-
-Domain to Network
+<TabPanel id="docs-quickstart-code-3-panel-1" label="Network to Domain" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
@@ -266,6 +300,10 @@ object PostExtensions {
 }
 ```
 
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-3-panel-2" label="Local Database to Domain" language="kotlin">
+
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
 
@@ -291,6 +329,10 @@ object PostExtensions {
     }
 }
 ```
+
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-3-panel-3" label="Domain to Local Database" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
@@ -318,6 +360,10 @@ object PostExtensions {
 }
 ```
 
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-3-panel-4" label="Domain to Network" language="kotlin">
+
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.extensions
 
@@ -344,17 +390,25 @@ object PostExtensions {
 }
 ```
 
-4. **Set Up the Store Factory**
+</TabPanel>
 
-We’ll use a factory for creating a `PostStore` instance.
+</TabGroup>
 
-> **Info**
->
-> About the `TODO()` Placeholders:
->
-> The `TODO()` placeholders indicate where implementations will be provided in the subsequent steps.
+</StepItem>
 
-```kotlin
+<StepItem label="4" title="Set Up the Store Factory">
+
+We'll use a factory for creating a `PostStore` instance.
+
+<Callout type="Info">
+
+About the `TODO()` Placeholders:
+
+The `TODO()` placeholders indicate where implementations will be provided in the subsequent steps.
+
+</Callout>
+
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 typealias PostStore = Store<Int, Post>
@@ -390,11 +444,13 @@ class PostStoreFactory(
 }
 ```
 
-5. **Implement the Fetcher**
+</StepItem>
+
+<StepItem label="5" title="Implement the Fetcher">
 
 Our Fetcher will interact with the network data source using the `PostOperations` interface.
 
-```kotlin
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 private fun createFetcher(): Fetcher<Int, PostNetworkModel> =
@@ -404,11 +460,13 @@ private fun createFetcher(): Fetcher<Int, PostNetworkModel> =
   }
 ```
 
-6. **Implement the Source of Truth**
+</StepItem>
+
+<StepItem label="6" title="Implement the Source of Truth">
 
 Our Source of Truth will delegate to a local [SqlDelight](https://sqldelight.github.io/sqldelight) database.
 
-```kotlin
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 private fun createSourceOfTruth(): SourceOfTruth<Int, PostEntity, Post> =
@@ -425,33 +483,39 @@ private fun createSourceOfTruth(): SourceOfTruth<Int, PostEntity, Post> =
   )
 ```
 
-> **Tip**
->
-> Observing Database Changes Over Time:
->
-> To ensure your `SourceOfTruth` observes changes in the database, use `asFlow()` and appropriate mapping functions.
->
-> ```kotlin
-> trailsDatabase
->     .postQueries
->     .selectPostById(id.toLong())
->     .asFlow()
->     .mapToOneOrNull()
-> ```
+<Callout type="Tip">
 
-7. **Implement the Converter**
+Observing Database Changes Over Time:
+
+To ensure your `SourceOfTruth` observes changes in the database, use `asFlow()` and appropriate mapping functions.
+
+```kotlin theme={"system"}
+trailsDatabase
+    .postQueries
+    .selectPostById(id.toLong())
+    .asFlow()
+    .mapToOneOrNull()
+```
+
+</Callout>
+
+</StepItem>
+
+<StepItem label="7" title="Implement the Converter">
 
 Our Converter will convert between our network model, local database model, and domain model using the `PostExtensions` object.
 
-> **Note**
->
-> Understanding the Converter’s Role:
->
-> The Converter bridges the gap between the network model, local database model, and domain model within the Store.
->
-> While you have extension functions for conversions, the Converter integrates these into the Store’s pipeline, ensuring data flows correctly through each layer.
+<Callout type="Note">
 
-```kotlin
+Understanding the Converter's Role:
+
+The Converter bridges the gap between the network model, local database model, and domain model within the Store.
+
+While you have extension functions for conversions, the Converter integrates these into the Store's pipeline, ensuring data flows correctly through each layer.
+
+</Callout>
+
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 private fun createConverter(): Converter<PostNetworkModel, PostEntity, Post> =
@@ -461,11 +525,13 @@ private fun createConverter(): Converter<PostNetworkModel, PostEntity, Post> =
       .build()
 ```
 
-8. **Implement the Updater**
+</StepItem>
+
+<StepItem label="8" title="Implement the Updater">
 
 Our Updater will make a network call to update the post.
 
-```kotlin
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 private fun createUpdater(): Updater<Int, Post, Boolean> =
@@ -482,11 +548,13 @@ private fun createUpdater(): Updater<Int, Post, Boolean> =
   )
 ```
 
-9. **Implement the Bookkeeper**
+</StepItem>
+
+<StepItem label="9" title="Implement the Bookkeeper">
 
 Our Bookkeeper keeps track of failed syncs to enable eagerly resolving conflicts after local mutations.
 
-```kotlin
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 private fun createBookkeeper(): Bookkeeper<Int> =
@@ -532,25 +600,29 @@ private fun createBookkeeper(): Bookkeeper<Int> =
   )
 ```
 
-10. **Build the Store**
+</StepItem>
+
+<StepItem label="10" title="Build the Store">
 
 Provide the implementations to the Store Builder.
 
-> **Info**
->
-> How Components Work Together:
->
-> Each component of the Store has a specific role:
->
-> -   `Fetcher`: Retrieves data from the network.
-> -   `Source of Truth`: Manages local data storage.
-> -   `Converter`: Handles data transformations between models.
-> -   `Updater`: Syncs local changes back to the network.
-> -   `Bookkeeper`: Keeps track of failed updates for retry mechanisms.
->
-> By integrating these components, the Store efficiently manages data flow between the network, local storage, and your app’s UI.
+<Callout type="Info">
 
-```kotlin
+How Components Work Together:
+
+Each component of the Store has a specific role:
+
+* `Fetcher`: Retrieves data from the network.
+* `Source of Truth`: Manages local data storage.
+* `Converter`: Handles data transformations between models.
+* `Updater`: Syncs local changes back to the network.
+* `Bookkeeper`: Keeps track of failed updates for retry mechanisms.
+
+By integrating these components, the Store efficiently manages data flow between the network, local storage, and your app's UI.
+
+</Callout>
+
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl.store
 
 class PostStoreFactory(
@@ -581,25 +653,40 @@ class PostStoreFactory(
 }
 ```
 
+</StepItem>
+
+</StepsGroup>
+
 ## Using the Store
 
 Now, let’s use the Store to fetch and cache post data for the [Trails](https://github.com/MobileNativeFoundation/Trails) post detail screen.
 
-1. **Create a Post Repository**
+<StepsGroup nested="false">
 
-We’ll create a `PostRepository` that uses the `PostStore` to fetch and cache post data. The primary reason for this extra layer is it enables us to extract `Store` from the domain layer as an implementation detail of the `PostRepository`. It also enables us to add additional methods and strategies to the `PostRepository` in the future.
+<StepItem label="1" title="Create a Post Repository">
 
-> **Tip**
->
-> `PostRepository` is feature agnostic. We define the `PostRepository` under the common `lib/market/post/api` namespace and implement it in the `lib/market/post/impl` module to facilitate its reuse across features. Consumers can depend on the `lib/market/post/api` module without being exposed to the implementation details, such as the `PostStore`.
+We'll create a `PostRepository` that uses the `PostStore` to fetch and cache post data. The primary reason for this extra layer is it enables us to extract `Store` from the domain layer as an implementation detail of the `PostRepository`. It also enables us to add additional methods and strategies to the `PostRepository` in the future.
 
-> **Note**
->
-> A market is a composition of stores and systems enabling exchange between consumers and providers.
+<Callout type="Tip">
 
-API
+`PostRepository` is feature agnostic. We define the `PostRepository` under the
+common `lib/market/post/api` namespace and implement it in the
+`lib/market/post/impl` module to facilitate its reuse across features.
+Consumers can depend on the `lib/market/post/api` module without being exposed
+to the implementation details, such as the `PostStore`.
 
-Implementation
+</Callout>
+
+<Callout type="Note">
+
+A market is a composition of stores and systems enabling exchange between
+consumers and providers.
+
+</Callout>
+
+<TabGroup label="Code examples">
+
+<TabPanel id="docs-quickstart-code-4-panel-1" label="API" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.api
@@ -616,6 +703,10 @@ interface PostRepository {
     ): Post
 }
 ```
+
+</TabPanel>
+
+<TabPanel id="docs-quickstart-code-4-panel-2" label="Implementation" language="kotlin">
 
 ```kotlin
 package org.mobilenativefoundation.trails.xplat.lib.market.post.impl
@@ -659,11 +750,17 @@ class RealPostRepository(
 }
 ```
 
-2. **Define the Post Detail Screen**
+</TabPanel>
+
+</TabGroup>
+
+</StepItem>
+
+<StepItem label="2" title="Define the Post Detail Screen">
 
 [Trails](https://github.com/MobileNativeFoundation/Trails) is built with a [Circuit](https://github.com/slackhq/circuit) architecture. Before we can interact with the `PostRepository`, we need to define the `Screen`, `State`, and `Event` classes.
 
-```kotlin
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.api
 
 interface PostDetailScreen : Screen {
@@ -685,11 +782,13 @@ interface PostDetailScreen : Screen {
 }
 ```
 
-3. **Implement the Post Detail Presenter**
+</StepItem>
 
-A [Circuit Presenter](https://slackhq.github.io/circuit/presenter/) is intended to be the business logic for a screen’s UI and a translation layer in front of the data layer. Our `PostDetailScreenPresenter` will use the `PostRepository` to load the post data and update the UI in response to user actions.
+<StepItem label="3" title="Implement the Post Detail Presenter">
 
-```kotlin
+A [Circuit Presenter](https://slackhq.github.io/circuit/presenter/) is intended to be the business logic for a screen's UI and a translation layer in front of the data layer. Our `PostDetailScreenPresenter` will use the `PostRepository` to load the post data and update the UI in response to user actions.
+
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.impl
 
 @Inject
@@ -740,9 +839,11 @@ class PostDetailScreenPresenter(
 }
 ```
 
-4. **Display the Post Detail Screen**
+</StepItem>
 
-```kotlin
+<StepItem label="4" title="Display the Post Detail Screen">
+
+```kotlin theme={"system"}
 package org.mobilenativefoundation.trails.xplat.feat.postDetailScreen.impl
 
 @Inject
@@ -766,11 +867,15 @@ class PostDetailScreenUI : PostDetailScreen.UI {
 }
 ```
 
+</StepItem>
+
+</StepsGroup>
+
 ## Next Steps
 
 Now that you have built your first Store, it’s time to explore what else is possible:
 
-## [Deep Dive into Store](https://store.mobilenativefoundation.org/docs/docs/challenges-at-scale)
+## [Deep Dive into Store](/docs/challenges-at-scale)
 
 Comprehensive explanation of Store internals and the underlying principles.
 

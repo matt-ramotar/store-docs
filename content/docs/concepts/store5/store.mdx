@@ -26,57 +26,66 @@ interface Store<Key : Any, Output : Any> {
 }
 ```
 
-Key
+<ParamList>
 
-Any
-
-required
+<ParamField name="Key" type="Any" required="true">
 
 The type representing the key used to identify the data item.
 
-Output
+</ParamField>
 
-Any
+<ParamField name="Output" type="Any" required="true">
 
-required
+The type representing the domain data model representation of the item being
+retrieved.
 
-The type representing the domain data model representation of the item being retrieved.
+</ParamField>
+
+</ParamList>
 
 #### `stream`
 
 A function that returns a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) of [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
 
-request
+<ParamList>
 
-StoreReadRequest&lt;Key>
-
-required
+<ParamField name="request" type="StoreReadRequest&lt;Key&gt;" required="true">
 
 The request configuration for the data retrieval.
+
+</ParamField>
+
+</ParamList>
 
 #### `clear`
 
 A function that clears the data item identified by the given key.
 
-> **Note**
->
-> This method only removes data from the memory cache and source of truth. It will not update the remote data source.
+<Callout type="Note">
 
-key
+This method only removes data from the memory cache and source of truth. It will not update the remote data source.
 
-Key
+</Callout>
 
-required
+<ParamList>
+
+<ParamField name="key" type="Key" required="true">
 
 The key identifying the data item to be cleared.
+
+</ParamField>
+
+</ParamList>
 
 #### `clearAll`
 
 A function that clears all data items.
 
-> **Note**
->
-> This method only removes data from the memory cache and source of truth. It will not update the remote data source.
+<Callout type="Note">
+
+This method only removes data from the memory cache and source of truth. It will not update the remote data source.
+
+</Callout>
 
 ## Key Components
 
@@ -110,11 +119,13 @@ Here’s how Store manages data flow through your app:
 
 ### Reading Data
 
-1. **Memory Cache Check**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Memory Cache Check">
 
 Checks if the requested data is present and valid in the in-memory cache.
 
-```kotlin
+```kotlin theme={"system"}
 val cachedToEmit = if (request.shouldSkipCache(CacheType.MEMORY)) {
     null
 } else {
@@ -127,40 +138,51 @@ val cachedToEmit = if (request.shouldSkipCache(CacheType.MEMORY)) {
 }
 ```
 
-NaN
+<StepsGroup nested="true">
 
-Validation
+<StepItem label="A" title="Validation">
 
-If data is found, it’s validating using the [Validator](/docs/concepts/store5/validator). If a [Validator](/docs/concepts/store5/validator) is not provided, the data is considered valid.
+If data is found, it's validating using the
+[Validator](/docs/concepts/store5/validator). If a
+[Validator](/docs/concepts/store5/validator) is not provided, the data is
+considered valid.
 
-NaN
+</StepItem>
 
-Emission
+<StepItem label="B" title="Emission">
 
 Valid data is emitted immediately to the consumer.
 
-```kotlin
+</StepItem>
+
+</StepsGroup>
+
+```kotlin theme={"system"}
 cachedToEmit?.let { it: Output ->
   emit(StoreReadResponse.Data(value = it, origin = StoreReadResponseOrigin.Cache))
 }
 ```
 
-2. **Decide Data Source**
+</StepItem>
+
+<StepItem label="2" title="Decide Data Source">
 
 Determines whether to read from the [SourceOfTruth](/docs/concepts/store5/source-of-truth), fetch from the network, or both. Emits `NoNewData` if neither [SourceOfTruth](/docs/concepts/store5/source-of-truth) nor network fetch is requested.
 
-```kotlin
+```kotlin theme={"system"}
 if (sourceOfTruth == null && !request.fetch) {
   emit(StoreReadResponse.NoNewData(origin = StoreReadResponseOrigin.Cache))
   return@flow
 }
 ```
 
-3. **Source of Truth Read**
+</StepItem>
+
+<StepItem label="3" title="Source of Truth Read">
 
 If a [SourceOfTruth](/docs/concepts/store5/source-of-truth) is configured and not skipped, attempts to read data from it.
 
-```kotlin
+```kotlin theme={"system"}
 if (request.fetch) {
   diskNetworkCombined(request, sourceOfTruth)
 } else {
@@ -168,47 +190,68 @@ if (request.fetch) {
 }
 ```
 
-NaN
+<StepsGroup nested="true">
 
-Validation
+<StepItem label="A" title="Validation">
 
-If data is found, it’s validating using the [Validator](/docs/concepts/store5/validator). If a [Validator](/docs/concepts/store5/validator) is not provided, the data is considered valid.
+If data is found, it's validating using the
+[Validator](/docs/concepts/store5/validator). If a
+[Validator](/docs/concepts/store5/validator) is not provided, the data is
+considered valid.
 
-NaN
+</StepItem>
 
-Emission
+<StepItem label="B" title="Emission">
 
 Valid data is emitted to the consumer.
 
-NaN
+</StepItem>
 
-Network Fetch Decision
+<StepItem label="C" title="Network Fetch Decision">
 
 If data is not found or invalid, decides whether to fetch from the network.
 
-4. **Network Fetch**
+</StepItem>
+
+</StepsGroup>
+
+</StepItem>
+
+<StepItem label="4" title="Network Fetch">
 
 If a network fetch is required, fetches data from the network.
 
-```kotlin
+```kotlin theme={"system"}
 val networkFlow = createNetworkFlow(request, networkLock)
 ```
 
-> **Note**
->
-> The [FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt) ensures only one network call per key.
+<Callout type="Note">
 
-NaN
+The
+[FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt)
+ensures only one network call per key.
 
-Data Handling
+</Callout>
 
-Fetched data is written to the [SourceOfTruth](/docs/concepts/store5/source-of-truth) and memory cache.
+<StepsGroup nested="true">
 
-5. **Combine and Emit Data**
+<StepItem label="A" title="Data Handling">
+
+Fetched data is written to the
+[SourceOfTruth](/docs/concepts/store5/source-of-truth) and
+memory cache.
+
+</StepItem>
+
+</StepsGroup>
+
+</StepItem>
+
+<StepItem label="5" title="Combine and Emit Data">
 
 Combines the flows from the network and the source of truth to emit data in the correct order and origin to the subscribers.
 
-```kotlin
+```kotlin theme={"system"}
 emitAll(
   stream.transform { output: StoreReadResponse<Output> ->
     emit(output)
@@ -217,35 +260,49 @@ emitAll(
 )
 ```
 
+</StepItem>
+
+</StepsGroup>
+
 ### Writing Data
 
 While the Store primarily focuses on reading data, it provides an internal write method for updating data in the cache and [SourceOfTruth](/docs/concepts/store5/source-of-truth).
 
-1. **Update Memory Cache**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Update Memory Cache">
 
 Updates the in-memory cache with the new data.
 
-```kotlin
+```kotlin theme={"system"}
 memCache?.put(key, value)
 ```
 
-2. **Update Source of Truth**
+</StepItem>
+
+<StepItem label="2" title="Update Source of Truth">
 
 Writes the new data to the local storage (source of truth).
 
-```kotlin
+```kotlin theme={"system"}
 sourceOfTruth?.write(key, converter.fromOutputToLocal(value))
 ```
 
-3. **Error Handling**
+</StepItem>
+
+<StepItem label="3" title="Error Handling">
 
 Catches any exceptions during the write operation and returns the appropriate result.
 
-```kotlin
+```kotlin theme={"system"}
 catch (error: Throwable) {
   StoreDelegateWriteResult.Error.Exception(error)
 }
 ```
+
+</StepItem>
+
+</StepsGroup>
 
 ## Best Practices
 

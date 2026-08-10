@@ -23,49 +23,50 @@ interface Updater<Key : Any, Output : Any, Response : Any> {
 }
 ```
 
-Key
+<ParamList>
 
-Any
+<ParamField name="Key" type="Any" required="true">
 
-required
+The type representing the key used to identify the data to fetch. For example,
+if fetching a list of posts, this could be an `Int` representing the post ID.
 
-The type representing the key used to identify the data to fetch. For example, if fetching a list of posts, this could be an `Int` representing the post ID.
+</ParamField>
 
-Output
+<ParamField name="Output" type="Any" required="true">
 
-Any
+The type representing the domain data model representation of the item being
+retrieved.
 
-required
+</ParamField>
 
-The type representing the domain data model representation of the item being retrieved.
+<ParamField name="Response" type="Any" required="true">
 
-Response
+The type representing the response received after updating the remote data
+source.
 
-Any
+</ParamField>
 
-required
-
-The type representing the response received after updating the remote data source.
+</ParamList>
 
 #### `post`
 
 Makes a network request to update the remote data source with the provided data.
 
-key
+<ParamList>
 
-Key
-
-required
+<ParamField name="key" type="Key" required="true">
 
 The unique key identifying the data item.
 
-value
+</ParamField>
 
-Output
-
-required
+<ParamField name="value" type="Output" required="true">
 
 The data to be written, in the domain model format.
+
+</ParamField>
+
+</ParamList>
 
 #### `onCompletion`
 
@@ -77,66 +78,92 @@ An optional callback executed upon the completion of the network operation.
 
 When a data mutation occurs in the lcoal Store, the [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt) is invoked to synchronize the change with the remote data source.
 
-1. **Local Mutation**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Local Mutation">
 
 A write request is made to the Store, updating the local data.
 
-```kotlin
+```kotlin theme={"system"}
 val writeRequest = StoreWriteRequest.of(key, value)
 mutableStore.write(writeRequest)
 ```
 
-2. **Queue Write Request**
+</StepItem>
 
-The write request is added to a per-key write request queue in the [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt).
+<StepItem label="2" title="Queue Write Request">
 
-```kotlin
+The write request is added to a per-key write request queue in the
+[RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt).
+
+```kotlin theme={"system"}
 addWriteRequestToQueue(writeRequest)
 ```
 
-3. **Update Local Store**
+</StepItem>
 
-The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) writes the new value to the local data source using a delegate [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
+<StepItem label="3" title="Update Local Store">
 
-```kotlin
+The
+[RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt)
+writes the new value to the local data source using a delegate
+[RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
+
+```kotlin theme={"system"}
 delegate.write(writeRequest.key, writeRequest.value)
 ```
 
-4. **Attempt Server Synchronization**
+</StepItem>
+
+<StepItem label="4" title="Attempt Server Synchronization">
 
 The [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt) attempts to post the latest value to the remote data source.
 
-```kotlin
+```kotlin theme={"system"}
 val updaterResult = updater.post(writeRequest.key, writeRequest.value)
 ```
 
-5. **Handle Updater Result**
+</StepItem>
 
-NaN
+<StepItem label="5" title="Handle Updater Result">
 
-Success
+<StepsGroup nested="true">
 
--   Updates the write request queue, removing processed requests.
+<StepItem label="A" title="Success">
 
--   Clears any failed sync records from the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
+* Updates the write request queue, removing processed requests.
 
--   Executes `onCompletion` callback if provided.
+* Clears any
+  failed sync records from the
+  [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
 
-NaN
+* Executes `onCompletion` callback if provided.
 
-Failure
+</StepItem>
 
--   Records the failed attempt using the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
+<StepItem label="B" title="Failure">
 
--   Leaves the write request in the queue for future retries.
+* Records the failed attempt using the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
 
-6. **Emit Write Response**
+* Leaves the write request in the queue for future retries.
+
+</StepItem>
+
+</StepsGroup>
+
+</StepItem>
+
+<StepItem label="6" title="Emit Write Response">
 
 The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) emits a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt) to consumers, indicating the success or failure of the write operation.
 
-```kotlin
+```kotlin theme={"system"}
 emit(storeWriteResponse)
 ```
+
+</StepItem>
+
+</StepsGroup>
 
 ## Best Practices
 

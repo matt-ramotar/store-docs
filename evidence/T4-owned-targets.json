@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "owners": {
+    "port-page:acquire": [
+      {
+        "path": "evidence/T4-live-snapshot.json",
+        "sha256": "513ec3b074da81057dd53710a6015c9b695c4d432ff796045bde3afa80e68155"
+      }
+    ],
+    "port-page:generate": [
+      {
+        "path": "app/developer-newsletter/overview/page.tsx",
+        "sha256": "4ed66e6411765d6b172a1a2d5822d7f930dad93b746fa53bb9303eff88be13fe"
+      },
+      {
+        "path": "app/release-notes/overview/page.tsx",
+        "sha256": "b7deeb2344542e3ac8db7fee690bfa0038cb16c3c089c0b6ab8bf65438be3eb2"
+      },
+      {
+        "path": "content/docs/best-practices/store5/overview.mdx",
+        "sha256": "557f1d0530bbaa795d86b7d358f42b029ac4674cc282f79f167e554b805d271e"
+      },
+      {
+        "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
+        "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a"
+      },
+      {
+        "path": "content/docs/challenges-at-scale.mdx",
+        "sha256": "5d226bc1d5d170b5a308a87d31318d531eea0f5fa366f178019b74bbaba279b1"
+      },
+      {
+        "path": "content/docs/community/overview.mdx",
+        "sha256": "ed3848d286c21fe050d59088d1ecca88f35faf51a1c824b588ceee708ef9ddb1"
+      },
+      {
+        "path": "content/docs/concepts/store5/bookkeeper.mdx",
+        "sha256": "ee19278b52093072b8fbcda27b6c16a451b44251168217775a24605df6f49bcf"
+      },
+      {
+        "path": "content/docs/concepts/store5/converter.mdx",
+        "sha256": "25d78f9618dc9af51b74a2d04b29fc27f61f4ad85b5eb582c0291eb9fa23e619"
+      },
+      {
+        "path": "content/docs/concepts/store5/fetcher.mdx",
+        "sha256": "0812a2c2d162e89e8d0049646ee7757ce52b64477c1c0d259b012720c7614d99"
+      },
+      {
+        "path": "content/docs/concepts/store5/mutable-store.mdx",
+        "sha256": "3cf6681b664cd5595ea1c1082a6b47dcfd2b95b5e735f660955723f04e3662fc"
+      },
+      {
+        "path": "content/docs/concepts/store5/overview.mdx",
+        "sha256": "cfe1a2156de86c2a232ed4ebe01c516c83aaa2ff8598eed99e85396d17991f4e"
+      },
+      {
+        "path": "content/docs/concepts/store5/source-of-truth.mdx",
+        "sha256": "b761ba393e463d1ef8bb055fa7305f9b1e2f8f5a430f349f229fcf90e03a33df"
+      },
+      {
+        "path": "content/docs/concepts/store5/store.mdx",
+        "sha256": "0ff3d42e0fc2c705aff0c396a8304a1e487213378c1c0fe152ae86ce867f3289"
+      },
+      {
+        "path": "content/docs/concepts/store5/updater.mdx",
+        "sha256": "5499b1f9e4dbb36dcdeb03623386204813dd861c3a4a0ece315fd740202a6802"
+      },
+      {
+        "path": "content/docs/concepts/store5/validator.mdx",
+        "sha256": "75c151a7358b15a8baa6ae09a6876199d5cf1c68835a5da2d66adf56dd0432d6"
+      },
+      {
+        "path": "content/docs/intro.mdx",
+        "sha256": "3f5b896a840f812f2083c437cb54bda7ed933609f5b62ac7a6ca8b25890228a9"
+      },
+      {
+        "path": "content/docs/meet-store.mdx",
+        "sha256": "5dbdad8c87797cc38a7e65758ff7b6bf10f6c706bacffc3987bb4e505a03af46"
+      },
+      {
+        "path": "content/docs/quickstart.mdx",
+        "sha256": "be9ae79ef4a86751180ab44d063393137a36f63af9d3df6f728f31ab71624cc5"
+      },
+      {
+        "path": "content/docs/use-cases/store5/advanced-caching-strategies.mdx",
+        "sha256": "e8c626b37b865a66826d87d115d43fedfdd407843c2e11e8191520043468c687"
+      },
+      {
+        "path": "content/docs/use-cases/store5/authentication-and-secure-data-access.mdx",
+        "sha256": "d87486b56f87f10ca68e1d1effd21849c8c4b446b393b8db018f0d9a953d3c2b"
+      },
+      {
+        "path": "content/docs/use-cases/store5/data-synchronization-and-conflict-resolution.mdx",
+        "sha256": "36ba28ae9cd624ce33b55d8b1fff5fc43a00e3f106cc6113138d7d418074ec91"
+      },
+      {
+        "path": "content/docs/use-cases/store5/ensuring-data-integrity-and-freshness.mdx",
+        "sha256": "358ab027b2dabbe4766c2856e6ca47f4e002d763d32038d7354ac7c94f85b480"
+      },
+      {
+        "path": "content/docs/use-cases/store5/error-handling-and-retry-strategies.mdx",
+        "sha256": "10e6f6a53674cae8e68e0b5eef47876ffb0a1e0611bb38211d0469a74d85cc51"
+      },
+      {
+        "path": "content/docs/use-cases/store5/handling-complex-data-relationships.mdx",
+        "sha256": "db4fc04852893f169f8dfd387e0ce0e2752284836d34bdbced5825ddba0fdb63"
+      },
+      {
+        "path": "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx",
+        "sha256": "b44c9467d3ba1a9fde69de151a2f7cbd37703cd5adca2ff2cbe29d0f8ff104f7"
+      },
+      {
+        "path": "content/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience.mdx",
+        "sha256": "49d3c7e414967bcca25134583a44fce3d109794886864761c8d5e030ad9e68ea"
+      },
+      {
+        "path": "content/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux.mdx",
+        "sha256": "c7cca008406dc236313db45542e3d2ae9f798c0ff2601e19e7e32c024dd83c36"
+      },
+      {
+        "path": "content/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui.mdx",
+        "sha256": "22018bfbea1e0b581bd571429ef1159fd93977e2919cc54df61718f6215cecf0"
+      },
+      {
+        "path": "content/docs/use-cases/store5/migrating-from-existing-data-layers.mdx",
+        "sha256": "aa8ebf85f0838232e4665ec09502f4dc1adec7cdf29222b40bb0ebd171316e7e"
+      },
+      {
+        "path": "content/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight.mdx",
+        "sha256": "5882b3d535f39408532d714339fe081590ad6bd9ed6f3e71287f4a1c8fcb2207"
+      },
+      {
+        "path": "content/docs/use-cases/store5/overview.mdx",
+        "sha256": "f628777954741b8006912d8f1755c1da8260afde479b884c694ebb8ae9c209b6"
+      },
+      {
+        "path": "content/docs/use-cases/store5/pagination-and-infinite-scrolling.mdx",
+        "sha256": "de9ee22139bffa8afb318ed1594231ab9843bd98f1b4725206a674601be16ac8"
+      },
+      {
+        "path": "content/docs/use-cases/store5/real-time-data-updates.mdx",
+        "sha256": "4b1c10c5ae29b31ac1e74225138a3d666ab048232a8a4658c5255caa2e488d21"
+      },
+      {
+        "path": "content/docs/use-cases/store5/security-and-data-encryption.mdx",
+        "sha256": "1de504c7e068819969cc376d61b1d0085f3e587a8fe4aa97fac69e44ffa02eaf"
+      },
+      {
+        "path": "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx",
+        "sha256": "cb05acceef61618dfb69b686c3cc74231f678ddec74bbb7ae40728afff96a34e"
+      },
+      {
+        "path": "content/docs/use-cases/store5/testing-store-and-its-components.mdx",
+        "sha256": "a14b97ce7f6ea646c540b59366bb88828ed478a6725e51e7969b963b1df37af1"
+      },
+      {
+        "path": "content/docs/use-cases/store5/working-with-non-paginated-lists.mdx",
+        "sha256": "ace5a01b1c1d681ad6db896c5df80c9e15060855110df7e39786bce850679576"
+      },
+      {
+        "path": "evidence/T4-manifest.md",
+        "sha256": "b521be39260c0ed7838238136a803d944329df83f5911756577bd91cebc30f45"
+      }
+    ],
+    "sync-store6-docs": [
+      {
+        "path": "content/docs/store6/compose.mdx",
+        "sha256": "fc6db20221ad1ce58ffcff8d256330743455392f93198e80cc51072b41527cc1"
+      },
+      {
+        "path": "content/docs/store6/contributing.mdx",
+        "sha256": "341130c484dc74832ec45f05775ff6a38a1ccf70bcc2e76cd7ccfcef7f4e109c"
+      },
+      {
+        "path": "content/docs/store6/important-defaults.mdx",
+        "sha256": "89bef2c1b57b56e5a649b80506cd549fff52a8aa96ed4b00d7ccaa4627610a1e"
+      },
+      {
+        "path": "content/docs/store6/invalidate-vs-clear.mdx",
+        "sha256": "10e9efa7d10ee3a5c68e9f204ba3562f98e790f972d9f8a97aa1dd89d9b56a96"
+      },
+      {
+        "path": "content/docs/store6/key-design.mdx",
+        "sha256": "5b7240ea52ccad9eab8dd1064d59524fc8d1708084ae8de2871b8884985e3fec"
+      },
+      {
+        "path": "content/docs/store6/quickstart.mdx",
+        "sha256": "cb2c224b304f66c528d46ace1b78c06fe97f7a5d392053a92aa573045a13fdde"
+      },
+      {
+        "path": "content/docs/store6/roadmap.mdx",
+        "sha256": "a60ea77d53b25418d8c14d48dea1d4e85e5583041ddd2581fd9afc85da30173f"
+      },
+      {
+        "path": "content/docs/store6/sqldelight.mdx",
+        "sha256": "7e092b7c78e811979f7e8071479440e45af70c9108a40cdd3ec9cfc73d15a063"
+      },
+      {
+        "path": "content/docs/store6/stability.mdx",
+        "sha256": "33247f808225237d14b3e0ec4e694939efc296363b0af0923fa8d58fd50de039"
+      },
+      {
+        "path": "public/llms.txt",
+        "sha256": "a5d9f357adfd5ccc66cca87a19d304ff404f8dfc335c80cfa8bdcf0764514d8a"
+      }
+    ]
+  }
+}

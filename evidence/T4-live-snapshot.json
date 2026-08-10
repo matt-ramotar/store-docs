@@ -1,8 +1,147 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "migrationDate": "2026-08-09",
   "inventorySha256": "ae9adf8b46763b5bc35f38f4c37c51c7d16a2f610b5d8f7869c8a98cf9655a5f",
   "sitemapSha256": "688f8d04b64d486f0ee24f01f562edea5c22729cacbb0a0e12a52da408905821",
+  "linkHealth": [
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/cookbook/overview"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/best-practices/store5/single-or-multiple-stores"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/challenges-at-scale"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/bookkeeper"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/converter"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/fetcher"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/mutable-store"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/overview"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/source-of-truth"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/store"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/updater"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/concepts/store5/validator"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/intro"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/quickstart"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/advanced-caching-strategies"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/authentication-and-secure-data-access"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/data-synchronization-and-conflict-resolution"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/ensuring-data-integrity-and-freshness"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/error-handling-and-retry-strategies"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/handling-complex-data-relationships"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/implementing-crud-operations-in-store"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/migrating-from-existing-data-layers"
+    },
+    {
+      "status": 404,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/multiplatform-integration"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/overview"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/pagination-and-infinite-scrolling"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/real-time-data-updates"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/security-and-data-encryption"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/setting-up-store-for-crud-operations"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/testing-store-and-its-components"
+    },
+    {
+      "status": 200,
+      "url": "https://store.mobilenativefoundation.org/docs/use-cases/store5/working-with-non-paginated-lists"
+    }
+  ],
+  "linkHealthSha256": "b04e544eac83b8131b90acbc3bbaed900a004a4f2d0049f251fc824e4a2f7dca",
   "pages": [
     {
       "bodyHtml": "",

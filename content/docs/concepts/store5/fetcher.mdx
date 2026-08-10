@@ -24,39 +24,48 @@ interface Fetcher<Key : Any, Network : Any> {
 }
 ```
 
-Key
+<ParamList>
 
-Any
+<ParamField name="Key" type="Any" required="true">
 
-required
+The type representing the key used to identify the data to fetch. For example,
+if fetching a list of posts, this could be an `Int` representing the post ID.
 
-The type representing the key used to identify the data to fetch. For example, if fetching a list of posts, this could be an `Int` representing the post ID.
+</ParamField>
 
-Network
+<ParamField name="Network" type="Any" required="true">
 
-Any
+The type representing the data fetched from the remote source. For example, if
+fetching a list of posts, this could be `List<Post>` representing the list
+of posts.
 
-required
+</ParamField>
 
-The type representing the data fetched from the remote source. For example, if fetching a list of posts, this could be `List<Post>` representing the list of posts.
+<ParamField name="name" type="String?" required="false">
 
-name
+An optional unique name for the Fetcher, useful when differentiating between
+multiple fetchers, particularly when using fallbacks.
 
-String?
+</ParamField>
 
-An optional unique name for the Fetcher, useful when differentiating between multiple fetchers, particularly when using fallbacks.
+<ParamField name="fallback" type="Fetcher&lt;Key, Network&gt;?" required="false">
 
-fallback
+An optional
+[Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt)
+to be used if the parent
+[Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt)
+fails.
 
-Fetcher&lt;Key, Network>?
+</ParamField>
 
-An optional [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt) to be used if the parent [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt) fails.
+<ParamField name="invoke(key: Key)" type="Flow&lt;FetcherResult&lt;Network&gt;&gt;" required="false">
 
-invoke(key: Key)
+A function that takes a key and returns a `Flow<FetcherResult<Network>>`,
+representing the asynchronous stream of fetched data or errors.
 
-Flow&lt;FetcherResult&lt;Network>>
+</ParamField>
 
-A function that takes a key and returns a `Flow<FetcherResult<Network>>`, representing the asynchronous stream of fetched data or errors.
+</ParamList>
 
 ### FetcherResult
 
@@ -76,19 +85,21 @@ sealed class FetcherResult<out Network : Any> {
 }
 ```
 
-value
+<ParamList>
 
-Network
-
-required
+<ParamField name="value" type="Network" required="true">
 
 The fetched data.
 
-origin
+</ParamField>
 
-String?
+<ParamField name="origin" type="String?" required="false">
 
 An optional string to identify the source of the data.
+
+</ParamField>
+
+</ParamList>
 
 #### FetcherResult.Error
 
@@ -116,13 +127,15 @@ sealed class FetcherResult<out Network : Any> {
 }
 ```
 
-error
+<ParamList>
 
-Throwable
-
-required
+<ParamField name="error" type="Throwable" required="true">
 
 The exception that occurred.
+
+</ParamField>
+
+</ParamList>
 
 ##### FetcherResult.Error.Message
 
@@ -140,13 +153,15 @@ sealed class FetcherResult<out Network : Any> {
 }
 ```
 
-message
+<ParamList>
 
-String
-
-required
+<ParamField name="message" type="String" required="true">
 
 The error message.
+
+</ParamField>
+
+</ParamList>
 
 ##### FetcherResult.Error.Custom
 
@@ -166,93 +181,124 @@ sealed class FetcherResult<out Network : Any> {
 }
 ```
 
-E
+<ParamList>
 
-Any
+<ParamField name="E" type="Any" required="true">
 
-required
+The type representing the custom error. For example, if fetching a list of
+posts, this could be `PostNetworkError`.
 
-The type representing the custom error. For example, if fetching a list of posts, this could be `PostNetworkError`.
+</ParamField>
 
-error
-
-E
-
-required
+<ParamField name="error" type="E" required="true">
 
 The custom error.
 
+</ParamField>
+
+</ParamList>
+
 ## Data Flow
 
-1. **Data Request**
+<StepsGroup nested="false">
+
+<StepItem label="1" title="Data Request">
 
 Application code requests data from the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt).
 
-> **Tip**
->
-> Extension for Making a Cached Data Request:
->
-> ```kotlin
-> suspend fun <Key : Any, Output : Any> Store<Key, Output>.get(key: Key) =
->     stream(StoreReadRequest.cached(key, refresh = false))
->         .filterNot { it is StoreReadResponse.Loading || it is StoreReadResponse.NoNewData }
->         .first()
->         .requireData()
-> ```
+<Callout type="Tip">
 
-> **Tip**
->
-> Extension for Making a Fresh Data Request:
->
-> ```kotlin
-> suspend fun <Key : Any, Output : Any> Store<Key, Output>.fresh(key: Key) =
->   stream(StoreReadRequest.fresh(key))
->       .filterNot { it is StoreReadResponse.Loading || it is StoreReadResponse.NoNewData }
->       .first()
->       .requireData()
-> ```
+Extension for Making a Cached Data Request:
 
-2. **Client-Side Checks Conditional On Request Type**
+```kotlin theme={"system"}
+suspend fun <Key : Any, Output : Any> Store<Key, Output>.get(key: Key) =
+    stream(StoreReadRequest.cached(key, refresh = false))
+        .filterNot { it is StoreReadResponse.Loading || it is StoreReadResponse.NoNewData }
+        .first()
+        .requireData()
+```
 
-> **Note**
->
-> Fresh Data Requests Bypass Client-Side Checks:
->
-> If the request is for fresh data, the
-> [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt)
-> bypasses the [Memory
-> Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/Cache.kt),
-> [Source Of
-> Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt),
-> and
-> [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)
-> and invokes the
-> [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt)
-> immediately.
+</Callout>
 
-- **A. Cache Check**
+<Callout type="Tip">
+
+Extension for Making a Fresh Data Request:
+
+```kotlin theme={"system"}
+suspend fun <Key : Any, Output : Any> Store<Key, Output>.fresh(key: Key) =
+  stream(StoreReadRequest.fresh(key))
+      .filterNot { it is StoreReadResponse.Loading || it is StoreReadResponse.NoNewData }
+      .first()
+      .requireData()
+```
+
+</Callout>
+
+</StepItem>
+
+<StepItem label="2" title="Client-Side Checks Conditional On Request Type">
+
+<Callout type="Note">
+
+Fresh Data Requests Bypass Client-Side Checks:
+
+If the request is for fresh data, the
+[Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt)
+bypasses the [Memory
+Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/Cache.kt),
+[Source Of
+Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt),
+and
+[Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)
+and invokes the
+[Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt)
+immediately.
+
+</Callout>
+
+<StepsGroup nested="true">
+
+<StepItem label="A" title="Cache Check">
 
 If the request is for cached data, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) checks the
 [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/Cache.kt) for the requested data. If the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/Cache.kt) does not contain
 the data, the Store checks the [Source Of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt), if the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) is configured
 with a [Source Of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt).
 
-- **B. Validation**
+</StepItem>
+
+<StepItem label="B" title="Validation">
 
 If the data is missing or determined invalid by the [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt), the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) invokes the [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt).
 
-3. **Data Fetching**
+</StepItem>
+
+</StepsGroup>
+
+</StepItem>
+
+<StepItem label="3" title="Data Fetching">
 
 The [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt) retrieves data from the remote source, emitting [FetcherResult](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/FetcherResult.kt) objects.
 
-4. **Error Handling**
+</StepItem>
+
+<StepItem label="4" title="Error Handling">
 
 If an error occurs, the [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt) emits a [FetcherResult.Error](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/FetcherResult.kt), which the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) can handle appropriately.
 
-5. **Data Storage**
+</StepItem>
+
+<StepItem label="5" title="Data Storage">
 
 Successful data is written to the [Source Of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) and [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/cache/src/commonMain/kotlin/org/mobilenativefoundation/store/cache5/Cache.kt).
 
-6. **Data Delivery**
+</StepItem>
+
+<StepItem label="6" title="Data Delivery">
 
 The [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) provides the data to the application in the form of a [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
+
+</StepItem>
+
+</StepsGroup>

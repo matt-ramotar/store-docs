@@ -1,54 +1,89 @@
-import { createHash, randomUUID } from "node:crypto";
+import { createHash } from "node:crypto";
 import { existsSync, lstatSync } from "node:fs";
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { execFile as execFileCallback } from "node:child_process";
 import { promisify } from "node:util";
 import { dirname, relative, resolve, sep } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { reconcileOwnedOutputs, verifyOwnedOutputs } from "./generated-output-transaction.mjs";
 
 const execFile = promisify(execFileCallback);
 const ROOT = resolve(import.meta.dirname, "..");
 const LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
+const OWNED_TARGETS_PATH = "evidence/T4-owned-targets.json";
+const OUTPUT_OWNER = "sync-store6-docs";
 const GITHUB_ROOT = "https://github.com/matt-ramotar/Store6";
 
-const options = parseArguments(process.argv.slice(2));
-const lock = JSON.parse(await readFile(LOCK_PATH, "utf8"));
-const sourceRoot = resolve(options.sourceRoot);
-const inputs = await validateLockedInputs(sourceRoot, lock);
-const routeBySource = new Map(
-  lock.sources
-    .filter((entry) => entry.target.endsWith(".mdx"))
-    .map((entry) => [
-      resolve(sourceRoot, entry.path),
-      `/${entry.target.slice("content/".length, -".mdx".length)}`,
-    ]),
-);
+if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
+  await run(parseArguments(process.argv.slice(2)));
+}
 
-const outputs = new Map();
-for (const entry of lock.sources) {
-  const sourcePath = resolve(sourceRoot, entry.path);
-  const source = inputs.get(entry.path);
-  if (entry.target.endsWith(".mdx")) {
-    const transformed = transformMarkdownSource(source, sourcePath, sourceRoot, routeBySource);
-    outputs.set(entry.target, transformed.output);
-  } else if (entry.target === "public/llms.txt") {
-    outputs.set(
-      entry.target,
-      ensureFinalNewline(rewriteMarkdownLinks(source.replace(/\r\n/g, "\n"), sourcePath, sourceRoot, routeBySource)),
-    );
+async function run(options) {
+  const lock = JSON.parse(await readFile(LOCK_PATH, "utf8"));
+  const sourceRoot = resolve(options.sourceRoot);
+  const outputs = await buildLockedOutputs(sourceRoot, lock);
+  if (options.check) {
+    await verifyOwnedOutputs({
+      ledgerRelativePath: OWNED_TARGETS_PATH,
+      outputs,
+      owner: OUTPUT_OWNER,
+      root: ROOT,
+    });
+    console.log(`checked ${outputs.size} locked Store6 outputs at ${lock.revision}`);
   } else {
-    throw new Error(`unsupported locked target: ${entry.target}`);
+    await writeStore6OutputTransaction(outputs);
+    console.log(`synchronized ${outputs.size} locked Store6 outputs at ${lock.revision}`);
   }
 }
 
-if (options.check) {
-  for (const [target, expected] of outputs) {
-    const actual = await readFile(resolve(ROOT, target), "utf8");
-    if (actual !== expected) throw new Error(`${target}: generated output differs`);
+async function buildLockedOutputs(sourceRoot, lock) {
+  const inputs = await validateLockedInputs(sourceRoot, lock);
+  const routeBySource = new Map(
+    lock.sources
+      .filter((entry) => entry.target.endsWith(".mdx"))
+      .map((entry) => [
+        resolve(sourceRoot, entry.path),
+        `/${entry.target.slice("content/".length, -".mdx".length)}`,
+      ]),
+  );
+  const outputs = new Map();
+  for (const entry of lock.sources) {
+    const sourcePath = resolve(sourceRoot, entry.path);
+    const source = inputs.get(entry.path);
+    if (entry.target.endsWith(".mdx")) {
+      const transformed = transformMarkdownSource(source, sourcePath, sourceRoot, routeBySource);
+      outputs.set(entry.target, transformed.output);
+    } else if (entry.target === "public/llms.txt") {
+      outputs.set(
+        entry.target,
+        ensureFinalNewline(rewriteMarkdownLinks(source.replace(/\r\n/g, "\n"), sourcePath, sourceRoot, routeBySource)),
+      );
+    } else {
+      throw new Error(`unsupported locked target: ${entry.target}`);
+    }
   }
-  console.log(`checked ${outputs.size} locked Store6 outputs at ${lock.revision}`);
-} else {
-  await writeOutputTransaction(outputs);
-  console.log(`synchronized ${outputs.size} locked Store6 outputs at ${lock.revision}`);
+  if (outputs.size !== deriveStore6OwnedTargets(lock).length) {
+    throw new Error("Store6 output census differs from the source lock");
+  }
+  return outputs;
+}
+
+export function deriveStore6OwnedTargets(lock) {
+  if (!lock || !Array.isArray(lock.sources)) throw new Error("invalid Store6 source lock");
+  const targets = lock.sources.map((entry) => entry.target).sort();
+  if (new Set(targets).size !== targets.length) throw new Error("Store6 source lock has duplicate targets");
+  return targets;
+}
+
+export function writeStore6OutputTransaction(outputs, options = {}) {
+  return reconcileOwnedOutputs({
+    ledgerRelativePath: options.ledgerRelativePath ?? OWNED_TARGETS_PATH,
+    outputs,
+    owner: OUTPUT_OWNER,
+    root: options.root ?? ROOT,
+    testHooks: options.testHooks,
+  });
 }
 
 export function transformMarkdownSource(source, sourcePath, sourceRootValue, routes) {
@@ -211,35 +246,6 @@ function parseArguments(argumentsList) {
   }
   if (!sourceRootValue) throw new Error("usage: sync-store6-docs.mjs --source-root <checkout> [--check]");
   return { check, sourceRoot: sourceRootValue };
-}
-
-async function writeOutputTransaction(outputMap) {
-  const originals = new Map();
-  const temporary = new Map();
-  try {
-    for (const [target, content] of outputMap) {
-      const targetPath = resolve(ROOT, target);
-      if (!isWithin(ROOT, targetPath)) throw new Error(`target escapes repository: ${target}`);
-      await mkdir(dirname(targetPath), { recursive: true });
-      try {
-        originals.set(targetPath, await readFile(targetPath));
-      } catch (error) {
-        if (error?.code !== "ENOENT") throw error;
-        originals.set(targetPath, null);
-      }
-      const temporaryPath = `${targetPath}.${randomUUID()}.tmp`;
-      await writeFile(temporaryPath, content, "utf8");
-      temporary.set(targetPath, temporaryPath);
-    }
-    for (const [targetPath, temporaryPath] of temporary) await rename(temporaryPath, targetPath);
-  } catch (error) {
-    for (const temporaryPath of temporary.values()) await unlink(temporaryPath).catch(() => {});
-    for (const [targetPath, original] of originals) {
-      if (original === null) await unlink(targetPath).catch(() => {});
-      else await writeFile(targetPath, original);
-    }
-    throw error;
-  }
 }
 
 function removeFencedCode(source) {

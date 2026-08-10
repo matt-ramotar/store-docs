@@ -20,50 +20,56 @@ interface Converter<Network : Any, Local : Any, Output : Any> {
 }
 ```
 
-Network
+<ParamList>
 
-Any
+<ParamField name="Network" type="Any" required="true">
 
-required
+The type representing the data fetched from the remote source. For example, if
+fetching a list of posts, this could be `List<Post>` representing the list
+of posts.
 
-The type representing the data fetched from the remote source. For example, if fetching a list of posts, this could be `List<Post>` representing the list of posts.
+</ParamField>
 
-Local
+<ParamField name="Local" type="Any" required="true">
 
-Any
+The type representing the local database model representation of the item
+being retrieved.
 
-required
+</ParamField>
 
-The type representing the local database model representation of the item being retrieved.
+<ParamField name="Output" type="Any" required="true">
 
-Output
+The type representing the domain data model representation of the item being
+retrieved.
 
-Any
+</ParamField>
 
-required
-
-The type representing the domain data model representation of the item being retrieved.
+</ParamList>
 
 #### `fromNetworkToLocal`
 
 Converts a network data model into a local data model suitable for storage.
 
-network
+<ParamList>
 
-Network
-
-required
+<ParamField name="network" type="Network" required="true">
 
 The network data model to be converted.
+
+</ParamField>
+
+</ParamList>
 
 #### `fromOutputToLocal`
 
 Converts a domain data model into a local data model suitable for storage.
 
-output
+<ParamList>
 
-Output
-
-required
+<ParamField name="output" type="Output" required="true">
 
 The network data model to be converted.
+
+</ParamField>
+
+</ParamList>

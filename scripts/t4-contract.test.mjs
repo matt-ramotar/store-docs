@@ -11,6 +11,7 @@ const INVENTORY_PATH = resolve(ROOT, "evidence/live-url-inventory.txt");
 const MANIFEST_PATH = resolve(ROOT, "evidence/T4-manifest.md");
 const SNAPSHOT_PATH = resolve(ROOT, "evidence/T4-live-snapshot.json");
 const STORE6_LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
+const OWNED_TARGETS_PATH = resolve(ROOT, "evidence/T4-owned-targets.json");
 const LIVE_ORIGIN = "https://store.mobilenativefoundation.org";
 const SITEMAP_URL = `${LIVE_ORIGIN}/sitemap.xml`;
 const EXCLUDED_URL = `${LIVE_ORIGIN}/api/openapi.json`;
@@ -147,15 +148,16 @@ test("component-aware migration preserves cards, steps, callouts, descriptions, 
   assert.ok(existsSync(SNAPSHOT_PATH), "missing pinned live snapshot");
 
   const expectedCardCounts = new Map([
-    ["content/docs/concepts/store5/overview.mdx", 8],
-    ["content/docs/use-cases/store5/overview.mdx", 18],
-    ["content/docs/community/overview.mdx", 5],
-    ["content/docs/meet-store.mdx", 5],
+    ["content/docs/concepts/store5/overview.mdx", { linked: 8, unavailable: 0 }],
+    ["content/docs/use-cases/store5/overview.mdx", { linked: 17, unavailable: 1 }],
+    ["content/docs/community/overview.mdx", { linked: 5, unavailable: 0 }],
+    ["content/docs/meet-store.mdx", { linked: 5, unavailable: 0 }],
   ]);
   for (const [target, expected] of expectedCardCounts) {
     const source = readFileSync(resolve(ROOT, target), "utf8");
     const linkedHeadings = [...source.matchAll(/^## \[[^\]]+\]\(([^)]+)\)$/gm)];
-    assert.equal(linkedHeadings.length, expected, target);
+    assert.equal(linkedHeadings.length, expected.linked, target);
+    assert.equal([...source.matchAll(/<UnavailableDestination\b/g)].length, expected.unavailable, target);
   }
 
   const fetcher = readFileSync(resolve(ROOT, "content/docs/concepts/store5/fetcher.mdx"), "utf8");
@@ -164,19 +166,16 @@ test("component-aware migration preserves cards, steps, callouts, descriptions, 
   assert.match(fetcher, /Validation/);
 
   const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
-  const liveCallouts = snapshot.pages.reduce((total, page) => {
-    const $ = cheerio.load(page.bodyHtml);
-    return total + $('[role="note"][data-callout-type]').length;
-  }, 0);
-  const sourceOnlyCallouts = snapshot.pages.filter((page) =>
-    /<Steps\b[^>]*stepNumber="2"[^>]*>[\s\S]*?<Note>/.test(page.sourceMarkdown),
-  ).length;
+  const sourceCallouts = snapshot.pages.reduce(
+    (total, page) => total + [...page.sourceMarkdown.matchAll(/<(?:Info|Note|Tip)>/g)].length,
+    0,
+  );
   const inventorySources = [...expectedInventoryTargets.values()]
     .map((target) => readFileSync(resolve(ROOT, target), "utf8"))
     .join("\n");
   assert.equal(
-    [...inventorySources.matchAll(/^> \*\*(?:Info|Note|Tip)\*\*$/gm)].length,
-    liveCallouts + sourceOnlyCallouts,
+    [...inventorySources.matchAll(/<Callout\b/g)].length,
+    sourceCallouts,
   );
 
   const meet = readFileSync(resolve(ROOT, "content/docs/meet-store.mdx"), "utf8");
@@ -187,6 +186,172 @@ test("component-aware migration preserves cards, steps, callouts, descriptions, 
   assert.equal(markdownImageTargets(meet).length, 3);
   assert.equal(markdownImageTargets(decision).length, 1);
   assert.match(readFrontmatterDocument(resolve(ROOT, "content/docs/meet-store.mdx")).description, /Store/);
+});
+
+test("migrated widgets retain grouped steps, code panels, callouts, and parameter definitions", () => {
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  const expected = sourceWidgetContract(snapshot);
+  const actual = {
+    callouts: [],
+    paramListSizes: [],
+    params: [],
+    stepGroups: [],
+    tabGroups: [],
+  };
+
+  for (const page of snapshot.pages.filter((entry) => new URL(entry.url).pathname.startsWith("/docs/"))) {
+    const pathname = new URL(page.url).pathname;
+    const $ = cheerio.load(readStaticHtml(pathname));
+    assert.doesNotMatch($("#content").text(), /\bNaN\b/, pathname);
+    assert.doesNotMatch(
+      $("#content").html() ?? "",
+      /<(?:callout|paramfield|paramlist|stepitem|stepsgroup|tabgroup|tabpanel)\b/i,
+      `${pathname}: literal generated component syntax`,
+    );
+
+    $("#content [data-step-group]").each((_, group) => {
+      const parentItem = $(group).parent().closest("[data-step-item]");
+        actual.stepGroups.push({
+          nested: parentItem.length > 0,
+          page: pathname,
+          items: $(group)
+            .children("[data-step-item]")
+            .map((__, item) => ({
+              body: compiledDirectWidgetBody($, item),
+              label: $(item).attr("data-step-label"),
+              title: normalizeText($(item).children("[data-step-title]").find("strong").text()),
+            }))
+            .get(),
+        });
+        $(group).children("[data-step-item]").each((__, item) => {
+          assert.equal($(item).children("[data-step-body]").length, 1, `${pathname}: step body containment`);
+        });
+      });
+    $("#content [data-tab-group]").each((_, group) => {
+      const panels = $(group).children("[data-tab-panel]");
+      actual.tabGroups.push({
+        label: $(group).attr("aria-label"),
+        page: pathname,
+        panels: panels
+          .map((__, panel) => ({
+                labelledBy: $(panel).attr("aria-labelledby"),
+                label: normalizeText($(panel).children("h3").first().text()),
+                labelId: $(panel).children("h3").first().attr("id"),
+                code: normalizeCode($(panel).find("pre").first().text()),
+                language: $(panel).attr("data-language"),
+              }))
+          .get(),
+      });
+    });
+    $("#content aside[role=note][data-callout-type]").each((_, callout) => {
+      actual.callouts.push({
+        body: normalizeWidgetBody($(callout).children("[data-callout-body]").text()),
+        page: pathname,
+        type: $(callout).attr("data-callout-type"),
+      });
+    });
+    $("#content dl[data-param-list]").each((_, list) => {
+      const fields = $(list).children("[data-param-field]");
+      actual.paramListSizes.push({ page: pathname, size: fields.length });
+      fields.each((__, field) => {
+        const definitions = new Map();
+        $(field).children("dt").each((___, term) => {
+          definitions.set(normalizeText($(term).text()), normalizeText($(term).next("dd").text()));
+        });
+        actual.params.push({
+          description: definitions.get("Description"),
+          name: definitions.get("Parameter"),
+          page: pathname,
+          required: definitions.get("Required"),
+          type: definitions.get("Type"),
+        });
+      });
+    });
+  }
+
+  assert.deepEqual(actual.stepGroups, expected.stepGroups);
+  assert.deepEqual(actual.tabGroups, expected.tabGroups);
+  assert.deepEqual(actual.callouts, expected.callouts);
+  assert.deepEqual(actual.paramListSizes, expected.paramListSizes);
+  assert.deepEqual(actual.params, expected.params);
+  assert.equal(actual.stepGroups.length, 19);
+  assert.equal(actual.stepGroups.reduce((sum, group) => sum + group.items.length, 0), 70);
+  assert.equal(actual.tabGroups.length, 4);
+  assert.equal(actual.tabGroups.reduce((sum, group) => sum + group.panels.length, 0), 11);
+  assert.equal(actual.callouts.length, 51);
+  assert.equal(actual.paramListSizes.length, 23);
+  assert.equal(actual.params.length, 45);
+  assert.equal(actual.params.filter((field) => field.required === "Required").length, 36);
+  for (const group of actual.tabGroups) {
+    for (const panel of group.panels) assert.equal(panel.labelledBy, panel.labelId);
+  }
+
+  const generatedSources = [...expectedInventoryTargets.values()]
+    .map((target) => readFileSync(resolve(ROOT, target), "utf8"))
+    .join("\n");
+  assert.doesNotMatch(generatedSources, /<(?:Steps?|CodeGroup|Info|Note|Tip)\b/);
+  assert.equal([...generatedSources.matchAll(/<ParamField\b/g)].length, 45);
+});
+
+test("the token replacement fence remains exact", () => {
+  const styles = readFileSync(resolve(ROOT, "app/globals.css"), "utf8");
+  assert.equal([...styles.matchAll(/^\/\* STORE TOKENS START \*\/$/gm)].length, 1);
+  assert.equal([...styles.matchAll(/^\/\* STORE TOKENS END \*\/$/gm)].length, 1);
+});
+
+test("same-origin migration links are healthy or rendered as unavailable", () => {
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  const linkHealth = new Map(snapshot.linkHealth.map((entry) => [entry.url, entry.status]));
+  assert.equal(Array.isArray(snapshot.linkHealth), true);
+  assert.ok(snapshot.linkHealth.length > 0);
+  for (const entry of snapshot.linkHealth) {
+    assert.match(entry.url, /^https:\/\/store\.mobilenativefoundation\.org\//);
+    assert.match(String(entry.status), /^\d{3}$/);
+  }
+
+  const quickstart = readFileSync(resolve(ROOT, "content/docs/quickstart.mdx"), "utf8");
+  assert.match(quickstart, /\/docs\/challenges-at-scale/);
+  assert.doesNotMatch(quickstart, /\/docs\/docs\/challenges-at-scale/);
+
+  const useCases = cheerio.load(readStaticHtml("/docs/use-cases/store5/overview"));
+  const unavailable = useCases('#content [data-unavailable-destination="/docs/use-cases/store5/multiplatform-integration"]');
+  assert.equal(unavailable.length, 1);
+  assert.equal(normalizeText(unavailable.prevAll("h2").first().text()), "Multiplatform Implementation");
+  assert.match(normalizeText(unavailable.text()), /unavailable/i);
+  assert.equal(useCases('#content a[href="/docs/use-cases/store5/multiplatform-integration"]').length, 0);
+
+  const cookbook = cheerio.load(readStaticHtml("/docs/meet-store"));
+  assert.equal(
+    cookbook('#content a[href="https://store.mobilenativefoundation.org/cookbook/overview"]').length,
+    1,
+  );
+
+  for (const page of snapshot.pages.filter((entry) => new URL(entry.url).pathname.startsWith("/docs/"))) {
+    const pathname = new URL(page.url).pathname;
+    const compiled = cheerio.load(readStaticHtml(pathname));
+    compiled("#content a[href]").each((_, anchor) => {
+      const href = compiled(anchor).attr("href");
+      assert.ok(href, `${pathname}: empty href`);
+      if (href.startsWith("#") || /^(?:mailto|tel):/i.test(href)) return;
+      if (href.startsWith("/")) {
+        assertLocalTargetExists(href, pathname);
+        return;
+      }
+      const destination = new URL(href);
+      if (destination.origin !== LIVE_ORIGIN) return;
+      destination.hash = "";
+      const status = linkHealth.get(destination.href);
+      assert.ok(status, `${pathname}: missing link-health record for ${destination.href}`);
+      assert.ok(status < 400, `${pathname}: unhealthy same-origin href ${destination.href} (${status})`);
+    });
+  }
+
+  const row = readManifestRows().find((entry) => entry.url.endsWith("/docs/use-cases/store5/overview"));
+  assert.equal(row?.status, "ported with noted loss");
+  assert.match(row?.loss ?? "", /multiplatform-integration/i);
+  assert.match(row?.loss ?? "", /unavailable/i);
+
+  assert.ok(existsSync(OWNED_TARGETS_PATH), "missing committed output ledger");
 });
 
 test("publishable tracked text excludes local paths and private publication vocabulary", () => {
@@ -261,10 +426,13 @@ test("live generation is snapshot-backed, source-locked, guarded, and transactio
   assert.match(script, /--acquire/);
   assert.match(script, /--generate/);
   assert.match(script, /assertOwnedOutputSet/);
-  assert.match(script, /writeOutputTransaction/);
+  assert.match(script, /writeLiveOutputTransaction/);
+  assert.match(script, /T4-owned-targets\.json/);
 
   const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  assert.equal(snapshot.schemaVersion, 2);
   assert.equal(snapshot.migrationDate, "2026-08-09");
+  assert.equal(sha256(JSON.stringify(snapshot.linkHealth)), snapshot.linkHealthSha256);
   assert.equal(snapshot.pages.length, inventory.length);
   assert.deepEqual(snapshot.pages.map((page) => page.url), inventory);
   assert.equal(new Set(snapshot.pages.map((page) => page.url)).size, inventory.length);
@@ -338,8 +506,14 @@ test("manifest fidelity values match ported bodies and warrant every status", ()
     const headingsMatch = JSON.stringify(liveHeadings) === JSON.stringify(portedHeadings);
     const meetsRatio = liveChars === 0 ? portedChars === 0 : portedChars / liveChars >= 0.6;
     const warrantedClean = headingsMatch && meetsRatio;
-    assert.equal(row.status, warrantedClean ? "ported clean" : "ported with noted loss", row.url);
-    assert.equal(row.loss === "none", warrantedClean, row.url);
+    const unavailableDestination = row.url.endsWith("/docs/use-cases/store5/overview");
+    assert.equal(
+      row.status,
+      unavailableDestination ? "ported with noted loss" : warrantedClean ? "ported clean" : "ported with noted loss",
+      row.url,
+    );
+    assert.equal(row.loss === "none", warrantedClean && !unavailableDestination, row.url);
+    if (unavailableDestination) assert.match(row.loss, /multiplatform-integration.*unavailable/i);
 
     if (liveChars === 0) {
       assert.equal(portedChars, 0);
@@ -405,7 +579,12 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
       assert.ok($(image).hasClass("max-w-full") && $(image).hasClass("h-auto"), `${pathname}: image sizing`);
     });
 
-    const expected = semanticContract(page.bodyHtml, page.sourceMarkdown, page.url);
+    const expected = semanticContract(
+      page.bodyHtml,
+      page.sourceMarkdown,
+      page.url,
+      new Map(snapshot.linkHealth.map((entry) => [entry.url, entry.status])),
+    );
     const actualLinks = content
       .find("a[href]")
       .toArray()
@@ -445,12 +624,15 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
   assert.ok(stability('#content [role="region"][aria-label="Scrollable table"]').length > 0);
 
   const fetcher = cheerio.load(readStaticHtml("/docs/concepts/store5/fetcher"));
-  const stepSequence = fetcher("#content ol")
-    .toArray()
-    .map((list, index) => ({
-      number: Number(fetcher(list).attr("start") ?? index + 1),
-      title: normalizeText(fetcher(list).children("li").first().find("strong").first().text()),
-    }));
+  const outer = fetcher('#content [data-step-group][data-step-nested="false"]');
+  assert.equal(outer.length, 1);
+  const stepSequence = outer
+    .children("[data-step-item]")
+    .map((_, item) => ({
+      number: Number(fetcher(item).attr("data-step-label")),
+      title: normalizeText(fetcher(item).children("[data-step-title]").text()).replace(/^\w+\.\s*/, ""),
+    }))
+    .get();
   assert.deepEqual(stepSequence, [
     { number: 1, title: "Data Request" },
     { number: 2, title: "Client-Side Checks Conditional On Request Type" },
@@ -459,7 +641,19 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
     { number: 5, title: "Data Storage" },
     { number: 6, title: "Data Delivery" },
   ]);
-  assert.match(fetcher("#content").text(), /A\. Cache Check[\s\S]*B\. Validation/);
+  const branches = outer
+    .children('[data-step-item][data-step-label="2"]')
+    .find('[data-step-group][data-step-nested="true"]')
+    .children("[data-step-item]")
+    .map((_, item) => ({
+      label: fetcher(item).attr("data-step-label"),
+      title: normalizeText(fetcher(item).children("[data-step-title]").text()).replace(/^\w+\.\s*/, ""),
+    }))
+    .get();
+  assert.deepEqual(branches, [
+    { label: "A", title: "Cache Check" },
+    { label: "B", title: "Validation" },
+  ]);
 });
 
 test("copied indented source examples are fenced before MDX compilation", () => {
@@ -576,6 +770,13 @@ test(
       [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]),
       inventory,
     );
+    for (const entry of snapshot.linkHealth) {
+      assert.equal(
+        await fetchStatusWith5xxRetry(entry.url),
+        entry.status,
+        `${entry.url}: link-health status changed`,
+      );
+    }
     for (let index = 0; index < rows.length; index += 1) {
       const row = rows[index];
       const html = await fetchWith5xxRetry(row.url);
@@ -616,7 +817,12 @@ test(
           }
         }
 
-        const expected = semanticContract(body.html() ?? "", sourceMarkdown, row.url);
+        const expected = semanticContract(
+          body.html() ?? "",
+          sourceMarkdown,
+          row.url,
+          new Map(snapshot.linkHealth.map((entry) => [entry.url, entry.status])),
+        );
         const compiled = cheerio.load(readStaticHtml(new URL(row.url).pathname));
         const actualLinks = compiled("#content a[href]")
           .toArray()
@@ -630,17 +836,390 @@ test(
         assert.deepEqual(actualLinks, expected.links, `${row.url}: meaningful links differ`);
         assert.deepEqual(actualMedia, expected.media, `${row.url}: visible light media differ`);
 
-        const renderedCallouts = body.find('[role="note"][data-callout-type]').length;
-        const sourceOnlyCallouts = /<Steps\b[^>]*stepNumber="2"[^>]*>[\s\S]*?<Note>/.test(sourceMarkdown) ? 1 : 0;
         assert.equal(
-          [...document.body.matchAll(/^> \*\*(?:Info|Note|Tip)\*\*$/gm)].length,
-          renderedCallouts + sourceOnlyCallouts,
+          compiled("#content aside[role=note][data-callout-type]").length,
+          [...sourceMarkdown.matchAll(/<(?:Info|Note|Tip)>/g)].length,
           `${row.url}: callout count differs`,
         );
       }
     }
   },
 );
+
+function sourceWidgetContract(snapshot) {
+  const contract = {
+    callouts: [],
+    paramListSizes: [],
+    params: [],
+    stepGroups: [],
+    tabGroups: [],
+  };
+  for (const page of snapshot.pages.filter((entry) => new URL(entry.url).pathname.startsWith("/docs/"))) {
+    const pathname = new URL(page.url).pathname;
+    const tree = parseWidgetSource(page.sourceMarkdown, page.url);
+
+    for (const group of topLevelWidgetStepGroups(tree)) {
+      appendSourceStepGroup(contract.stepGroups, group, pathname, false, page.url);
+    }
+
+    for (const node of collectWidgetComponents(tree, new Set(["Info", "Note", "Tip"]))) {
+      contract.callouts.push({
+        body: normalizeWidgetBody(sourceVisibleText(node.children)),
+        page: pathname,
+        type: node.name.toLowerCase(),
+      });
+    }
+
+    for (const run of sourceParamRuns(tree)) {
+      contract.paramListSizes.push({ page: pathname, size: run.length });
+      for (const node of run) {
+        const attributes = parseWidgetAttributes(node.attributes);
+        const name = attributes.path ?? attributes.query;
+        assert.ok(name, `${page.url}: ParamField name`);
+        assert.ok(attributes.type, `${page.url}: ParamField type`);
+        contract.params.push({
+          description: sourceVisibleText(node.children),
+          name,
+          page: pathname,
+          required: attributes.required === true ? "Required" : "Optional",
+          type: attributes.type,
+        });
+      }
+    }
+
+    for (const node of collectWidgetComponents(tree, new Set(["CodeGroup"]))) {
+      contract.tabGroups.push({
+        label: "Code examples",
+        page: pathname,
+        panels: parseSourceCodePanels(node, page.url).map((panel, index) => {
+          const groupNumber = contract.tabGroups.filter((group) => group.page === pathname).length + 1;
+          const panelId = `${pathname.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}-code-${groupNumber}-panel-${index + 1}`;
+          return {
+            code: normalizeCode(panel.code),
+            label: panel.label,
+            labelledBy: `${panelId}-label`,
+            labelId: `${panelId}-label`,
+            language: panel.language,
+          };
+        }),
+      });
+    }
+  }
+  return contract;
+}
+
+function appendSourceStepGroup(result, group, pathname, nested, pageUrl) {
+  const items = widgetStepItems(group);
+  result.push({
+    items: items.map((item, index) => {
+      const attributes = parseWidgetAttributes(item.attributes);
+      const parsed = widgetStepTitleAndChildren(item, attributes, pageUrl);
+      return {
+        body: sourceDirectWidgetBody(parsed.children),
+        label: attributes.stepNumber ?? String(index + 1),
+        title: parsed.title,
+      };
+    }),
+    nested,
+    page: pathname,
+  });
+  for (const item of items) {
+    const attributes = parseWidgetAttributes(item.attributes);
+    const parsed = widgetStepTitleAndChildren(item, attributes, pageUrl);
+    if (item.name === "Steps") {
+      const branches = parsed.children.filter((child) => child.type === "component" && child.name === "Step");
+      if (branches.length > 0) appendSourceStepGroup(result, { children: branches }, pathname, true, pageUrl);
+      continue;
+    }
+    for (const child of parsed.children) {
+      if (child.type === "component" && child.name === "Steps") {
+        appendSourceStepGroup(result, child, pathname, true, pageUrl);
+      }
+    }
+  }
+}
+
+function compiledDirectWidgetBody($, item) {
+  const body = $(item).children("[data-step-body]").clone();
+  body.find("[data-step-group]").remove();
+  body.find("[data-callout-label]").remove();
+  body.find("[data-tab-panel] > h3").remove();
+  return normalizeWidgetBody(body.text());
+}
+
+function sourceDirectWidgetBody(children) {
+  return normalizeWidgetBody(
+    children
+      .map((child) => {
+        if (child.type === "text") return sourceMarkdownText(child.value);
+        if (child.name === "Steps" || child.name === "Step") return "";
+        if (["Info", "Note", "Tip"].includes(child.name)) return sourceVisibleText(child.children);
+        if (child.name === "CodeGroup") {
+          return parseSourceCodePanels(child, "source CodeGroup").map((panel) => panel.code).join(" ");
+        }
+        return "";
+      })
+      .join(" "),
+  );
+}
+
+function normalizeWidgetBody(value) {
+  return normalizeText(value)
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[\u201c\u201d]/g, '"')
+    .replace(/\s/gu, "");
+}
+
+function sourceVisibleText(children) {
+  return normalizeText(
+    children
+      .map((child) => {
+        if (child.type === "text") return sourceMarkdownText(child.value);
+        return sourceVisibleText(child.children);
+      })
+      .join(" "),
+  );
+}
+
+function sourceMarkdownText(source) {
+  const protectedCode = [];
+  let fence;
+  const withProtectedCode = source
+    .split(/(\r?\n)/)
+    .map((part) => {
+      if (/^\r?\n$/.test(part)) return part;
+      const fenceMarker = part.match(/^\s*(`{3,}|~{3,})/);
+      if (!fence && fenceMarker) {
+        fence = { character: fenceMarker[1][0], length: fenceMarker[1].length };
+        return "";
+      }
+      if (fence) {
+        const closing = part.match(/^\s*(`{3,}|~{3,})\s*$/);
+        if (closing && closing[1][0] === fence.character && closing[1].length >= fence.length) {
+          fence = undefined;
+          return "";
+        }
+        return protectWidgetCode(part, protectedCode);
+      }
+      return part.replace(/`([^`]+)`/g, (_, code) => protectWidgetCode(code, protectedCode));
+    })
+    .join("");
+  const visible = withProtectedCode
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/^\s{0,3}(?:#{1,6}|>|[-+*]|\d+[.)])\s*/gm, "")
+    .replace(/[\*_~]/g, "")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+  return visible.replace(/\uE000(\d+)\uE001/g, (_, index) => protectedCode[Number(index)]);
+}
+
+function protectWidgetCode(code, protectedCode) {
+  const index = protectedCode.push(code) - 1;
+  return `\uE000${index}\uE001`;
+}
+
+const TEST_WIDGET_NAMES = new Set(["CodeGroup", "Info", "Note", "ParamField", "Step", "Steps", "Tip"]);
+
+function parseWidgetSource(source, pageUrl) {
+  const masked = maskWidgetFences(source);
+  const root = { children: [], name: "Root", type: "component" };
+  const stack = [root];
+  let cursor = 0;
+  let searchIndex = 0;
+  while (searchIndex < masked.length) {
+    const start = masked.indexOf("<", searchIndex);
+    if (start === -1) break;
+    const prefix = masked.slice(start).match(/^<\/?([A-Z][A-Za-z0-9]*)\b/);
+    if (!prefix || !TEST_WIDGET_NAMES.has(prefix[1])) {
+      searchIndex = start + 1;
+      continue;
+    }
+    const end = widgetTagEnd(source, start, pageUrl);
+    const raw = source.slice(start, end + 1);
+    const closing = /^<\//.test(raw);
+    const selfClosing = /\/\s*>$/.test(raw);
+    const name = prefix[1];
+    if (start > cursor) stack.at(-1).children.push({ type: "text", value: source.slice(cursor, start) });
+    if (closing) {
+      assert.equal(stack.at(-1).name, name, `${pageUrl}: widget closing tag`);
+      stack.pop();
+    } else {
+      const nameStart = raw.indexOf(name) + name.length;
+      const node = {
+        attributes: raw.slice(nameStart, raw.length - (selfClosing ? 2 : 1)),
+        children: [],
+        name,
+        type: "component",
+      };
+      stack.at(-1).children.push(node);
+      if (!selfClosing) stack.push(node);
+    }
+    cursor = end + 1;
+    searchIndex = end + 1;
+  }
+  if (cursor < source.length) stack.at(-1).children.push({ type: "text", value: source.slice(cursor) });
+  assert.equal(stack.length, 1, `${pageUrl}: unclosed widget`);
+  return root;
+}
+
+function maskWidgetFences(source) {
+  let fence;
+  return (source.match(/.*(?:\n|$)/g) ?? [])
+    .map((line) => {
+      const opening = line.match(/^\s*(`{3,}|~{3,})/);
+      const masked = line.replace(/[^\n\r]/g, " ");
+      if (!fence && opening) {
+        fence = { character: opening[1][0], length: opening[1].length };
+        return masked;
+      }
+      if (fence) {
+        const closing = line.match(/^\s*(`{3,}|~{3,})\s*(?:\r?\n)?$/);
+        if (closing && closing[1][0] === fence.character && closing[1].length >= fence.length) fence = undefined;
+        return masked;
+      }
+      return line;
+    })
+    .join("");
+}
+
+function widgetTagEnd(source, start, pageUrl) {
+  let quote;
+  for (let index = start + 1; index < source.length; index += 1) {
+    const character = source[index];
+    if (quote) {
+      if (character === quote && source[index - 1] !== "\\") quote = undefined;
+    } else if (character === '"' || character === "'") quote = character;
+    else if (character === ">") return index;
+  }
+  assert.fail(`${pageUrl}: unterminated widget tag`);
+}
+
+function collectWidgetComponents(root, names) {
+  const result = [];
+  function visit(node) {
+    if (node.type !== "component") return;
+    if (names.has(node.name)) result.push(node);
+    for (const child of node.children) visit(child);
+  }
+  visit(root);
+  return result;
+}
+
+function topLevelWidgetStepGroups(root) {
+  const groups = [];
+  function visit(node, insideStep) {
+    if (node.type !== "component") return;
+    if (node.name === "Steps" && !insideStep) groups.push(node);
+    const nested = insideStep || node.name === "Steps" || node.name === "Step";
+    for (const child of node.children) visit(child, nested);
+  }
+  visit(root, false);
+  return groups;
+}
+
+function widgetStepItems(group) {
+  return group.children.filter((child) => {
+    if (child.type !== "component") return false;
+    if (child.name === "Step") return true;
+    if (child.name !== "Steps") return false;
+    const attributes = parseWidgetAttributes(child.attributes);
+    return Boolean(attributes.title || attributes.stepNumber);
+  });
+}
+
+function widgetStepTitleAndChildren(node, attributes, pageUrl) {
+  if (attributes.title) return { children: node.children, title: attributes.title };
+  const children = node.children.map((child) => ({ ...child }));
+  for (const child of children) {
+    if (child.type !== "text") continue;
+    const match = child.value.match(/^\s*\*\*([^*\n]+)\*\*\s*(?:\r?\n|$)/);
+    if (!match) {
+      if (child.value.trim().length === 0) continue;
+      break;
+    }
+    child.value = child.value.slice(match[0].length);
+    return { children, title: normalizeText(match[1]) };
+  }
+  assert.fail(`${pageUrl}: Step title missing`);
+}
+
+function sourceParamRuns(tree) {
+  const runs = [];
+  let current = [];
+  for (const child of tree.children) {
+    if (child.type === "component" && child.name === "ParamField") {
+      current.push(child);
+    } else if (!(child.type === "text" && child.value.trim().length === 0)) {
+      if (current.length > 0) runs.push(current);
+      current = [];
+    }
+  }
+  if (current.length > 0) runs.push(current);
+  return runs;
+}
+
+function parseWidgetAttributes(source) {
+  const attributes = {};
+  let index = 0;
+  while (index < source.length) {
+    while (/\s/.test(source[index] ?? "")) index += 1;
+    if (index >= source.length) break;
+    const name = source.slice(index).match(/^([A-Za-z][A-Za-z0-9_-]*)/)?.[1];
+    assert.ok(name, `invalid widget attribute in ${source}`);
+    index += name.length;
+    while (/\s/.test(source[index] ?? "")) index += 1;
+    if (source[index] !== "=") {
+      attributes[name] = true;
+      continue;
+    }
+    index += 1;
+    while (/\s/.test(source[index] ?? "")) index += 1;
+    const quote = source[index];
+    assert.ok(quote === '"' || quote === "'", `non-literal widget attribute ${name}`);
+    const start = index + 1;
+    index = start;
+    while (source[index] !== quote) index += 1;
+    attributes[name] = source.slice(start, index);
+    index += 1;
+  }
+  return attributes;
+}
+
+function parseSourceCodePanels(node, pageUrl) {
+  const source = node.children.map((child) => child.value ?? "").join("").replace(/\r\n/g, "\n");
+  const lines = source.split("\n");
+  const panels = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    const opening = lines[index].match(/^\s*(`{3,}|~{3,})([^\s]+)\s+(.+?)\s+theme=\{["']system["']\}\s*$/);
+    if (!opening) continue;
+    const code = [];
+    let closed = false;
+    for (index += 1; index < lines.length; index += 1) {
+      const closing = lines[index].match(/^\s*(`{3,}|~{3,})\s*$/);
+      if (closing && closing[1][0] === opening[1][0] && closing[1].length >= opening[1].length) {
+        closed = true;
+        break;
+      }
+      code.push(lines[index]);
+    }
+    assert.equal(closed, true, `${pageUrl}: CodeGroup fence`);
+    panels.push({ code: dedentForTest(code.join("\n")), label: normalizeText(opening[3]), language: opening[2] });
+  }
+  return panels;
+}
+
+function dedentForTest(source) {
+  const lines = source.replace(/^\n|\n$/g, "").split("\n");
+  const indents = lines.filter((line) => line.trim()).map((line) => line.match(/^\s*/)[0].length);
+  const minimum = indents.length > 0 ? Math.min(...indents) : 0;
+  return lines.map((line) => line.slice(minimum)).join("\n").trim();
+}
+
+function normalizeCode(value) {
+  return value.replace(/\r\n/g, "\n").replace(/^\n+|\n+$/g, "");
+}
 
 function readLines(path) {
   return readFileSync(path, "utf8").trim().split(/\r?\n/).filter(Boolean);
@@ -780,7 +1359,7 @@ function markdownImageTargets(source) {
   ].map((match) => match[1]);
 }
 
-function semanticContract(bodyHtml, sourceMarkdown, pageUrl) {
+function semanticContract(bodyHtml, sourceMarkdown, pageUrl, linkHealth = new Map()) {
   const $ = cheerio.load(`<div id="contract-root">${bodyHtml}</div>`, null, false);
   const root = $("#contract-root");
   root.find("[class]").each((_, element) => {
@@ -797,7 +1376,12 @@ function semanticContract(bodyHtml, sourceMarkdown, pageUrl) {
     .map((anchor) => rewriteExpectedLiveUrl($(anchor).attr("href"), pageUrl, false));
   for (const match of sourceMarkdown.matchAll(/<Card\b([^>]*)>/g)) {
     const href = match[1].match(/(?:^|\s)href="([^"]+)"/)?.[1];
-    if (href) links.push(rewriteExpectedLiveUrl(href, pageUrl, false));
+    if (href) {
+      const healthUrl = expectedSameOriginHealthUrl(href, pageUrl);
+      if (!healthUrl || (linkHealth.get(healthUrl) ?? 200) < 400) {
+        links.push(rewriteExpectedLiveUrl(href, pageUrl, false));
+      }
+    }
   }
   const sourceOnlyStep = sourceMarkdown.match(/<Steps\b[^>]*stepNumber="2"[^>]*>([\s\S]*?)<\/Steps>/)?.[1] ?? "";
   for (const match of sourceOnlyStep.matchAll(/(?<!!)\[[^\]]+\]\(([^)\s]+)(?:\s+[^)]*)?\)/g)) {
@@ -817,9 +1401,24 @@ function rewriteExpectedLiveUrl(rawTarget, pageUrl, asset) {
   const target = rawTarget.trim();
   if (!asset && (target.startsWith("#") || /^(?:mailto|tel):/i.test(target))) return target;
   const resolved = new URL(target, pageUrl);
+  if (!asset && resolved.origin === LIVE_ORIGIN && resolved.pathname.startsWith("/docs/docs/")) {
+    const candidate = `/docs/${resolved.pathname.slice("/docs/docs/".length)}`;
+    if (inventory.includes(`${LIVE_ORIGIN}${candidate}`)) resolved.pathname = candidate;
+  }
   if (resolved.origin === LIVE_ORIGIN && !asset && inventory.includes(`${resolved.origin}${resolved.pathname}`)) {
     return `${resolved.pathname}${resolved.search}${resolved.hash}`;
   }
+  return resolved.href;
+}
+
+function expectedSameOriginHealthUrl(rawTarget, pageUrl) {
+  const resolved = new URL(rawTarget, pageUrl);
+  if (resolved.origin !== LIVE_ORIGIN) return undefined;
+  if (resolved.pathname.startsWith("/docs/docs/")) {
+    const candidate = `/docs/${resolved.pathname.slice("/docs/docs/".length)}`;
+    if (inventory.includes(`${LIVE_ORIGIN}${candidate}`)) resolved.pathname = candidate;
+  }
+  resolved.hash = "";
   return resolved.href;
 }
 
@@ -873,6 +1472,18 @@ async function fetchWith5xxRetry(url) {
     }
     if (!response.ok) throw new Error(`${url}: HTTP ${response.status}`);
     return response.text();
+  }
+  throw new Error(`${url}: exhausted retries`);
+}
+
+async function fetchStatusWith5xxRetry(url) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const remaining = 1000 - (Date.now() - lastLiveRequestStartedAt);
+    if (remaining > 0) await sleep(remaining);
+    lastLiveRequestStartedAt = Date.now();
+    const response = await fetch(url);
+    if (response.status >= 500 && response.status <= 599 && attempt < 2) continue;
+    return response.status;
   }
   throw new Error(`${url}: exhausted retries`);
 }
