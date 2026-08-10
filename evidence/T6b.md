@@ -110,6 +110,30 @@ Light-surface hover text now uses `--accent-strong` (`#0a6259`), which measures
 focus-visible states, which measures `16.563:1`. The same contract test then
 exited `0` for both pages.
 
+The contrast validator is intentionally bounded to these self-contained
+placeholder styles and does not claim to implement a general browser CSS
+cascade. It requires one embedded style element, rejects external stylesheets
+and inline presentation attributes, parses grouped selectors in source order,
+and accepts only the current explicit selector, link declaration, and visual
+declaration sets. Custom properties may occur only in `:root`. A duplicate
+link or visual declaration is rejected rather than resolved by source order.
+Every anchor must also match exactly one modeled document location.
+
+A later injected `main a:hover { color: var(--accent); }` rule initially made
+the test exit `1` because the old validator missed the override:
+
+```text
+AssertionError [ERR_ASSERTION]: Missing expected exception: a later, more-specific link rule must be rejected
+```
+
+After the validator correction, that fixture is rejected as an unmodeled
+selector. Additional fixtures verify rejection of an unmodeled selector inside
+a grouped rule, a duplicate `a:hover` color declaration at a later source
+position, and a `main` background override. Header, main, and skip-link matrix
+backgrounds are derived from the parsed `header`, `html`, and `.skip-link`
+declarations. Any unmodeled selector or relevant background declaration now
+fails the bounded contract before ratio calculation.
+
 ## Unresolved-link check
 
 The plan command exited `0` and printed `0`:
@@ -152,7 +176,7 @@ The three owned implementation files have these SHA-256 values:
 | --- | --- |
 | `public/reference/store6-core/index.html` | `7fdcb639f3ee84ba9a4fbd2051c4c3244a6b65833bd5fba4c881cb8db46f2780` |
 | `public/reference/store6-mutations/index.html` | `82f66a63f196edb96df92f25b5c8bcba5d42074dafb85d5405b81053f2013290` |
-| `scripts/test-t6b-reference.mjs` | `1a53d88fefcece2e4eca8e200d3cdbd2377ce5967a6b4c17a13e6c9e34a2a275` |
+| `scripts/test-t6b-reference.mjs` | `248baa43272d38e3a7cead7717931be23943fbce4faa73cf70d2d678978d635f` |
 
 `git diff --check` exited `0`. T6b did not start a server, open a browser,
 capture a screenshot, mutate Store6, use Figma, write to Linear, push, deploy,
@@ -163,8 +187,10 @@ gate.
 
 1. **Accuracy:** the failure classification, exact Gradle task names, source
    paths, public destinations, nav href, runtime versions, command results, and
-   route boundary were checked against the blocker record, repository source,
-   installed Next documentation, generated manifest, and fresh command output.
+   route boundary, contrast calculations, and bounded stylesheet assumptions
+   were checked against the blocker record, repository source, installed Next
+   documentation, generated manifest, injected fixtures, and fresh command
+   output.
 2. **Warrant:** the pages describe only the observed build blocker and future
    replacement procedure. They do not claim generated documentation, a working
    Dokka task, resolved Dokka links, runtime serving, browser verification, or
