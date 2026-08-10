@@ -1,11 +1,26 @@
 "use client";
 
 import type * as PageTree from "fumadocs-core/page-tree";
-import { Sidebar } from "@heroui-pro/react";
-import { isValidElement, type ReactNode } from "react";
+import { Sidebar, type SidebarMenuProps } from "@heroui-pro/react";
+import {
+  isValidElement,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import { VersionSwitcher } from "@/components/shell/VersionSwitcher";
 import { primaryNavItems, type DocsVersion } from "@/lib/nav";
+import { normalizeExpandedKeys } from "@/lib/sidebar-expansion";
+
+type SidebarExpandedChangeHandler = NonNullable<
+  SidebarMenuProps<object>["onExpandedChange"]
+>;
+type SidebarExpandedKeys = Parameters<SidebarExpandedChangeHandler>[0];
+type SidebarExpandedKey = SidebarExpandedKeys extends Set<infer Key> ? Key : never;
 
 export type SideTreeProps = {
   currentPath: string;
@@ -27,7 +42,40 @@ export function SideTree(props: SideTreeProps) {
 }
 
 function TreeContents({ currentPath, tree, version, scope }: SideTreeProps & { scope: string }) {
-  const defaultExpandedKeys = getDefaultExpandedKeys(tree.children, currentPath, scope);
+  const expansionKeys = useMemo(
+    () => getExpansionKeys(tree.children, currentPath, scope),
+    [currentPath, scope, tree.children],
+  );
+  const [expandedKeys, setExpandedKeys] = useState<SidebarExpandedKeys>(() =>
+    normalizeExpandedKeys<SidebarExpandedKey>(
+      [...expansionKeys.defaultOpenKeys, ...expansionKeys.currentKeys],
+      expansionKeys.lockedKeys,
+    ),
+  );
+  const previousDefaultOpenKeys = useRef(new Set(expansionKeys.defaultOpenKeys));
+
+  useEffect(() => {
+    const newlyDefaultOpenKeys = [...expansionKeys.defaultOpenKeys].filter(
+      (key) => !previousDefaultOpenKeys.current.has(key),
+    );
+    previousDefaultOpenKeys.current = new Set(expansionKeys.defaultOpenKeys);
+
+    setExpandedKeys((currentKeys) =>
+      normalizeExpandedKeys<SidebarExpandedKey>(
+        [...currentKeys, ...expansionKeys.currentKeys, ...newlyDefaultOpenKeys],
+        expansionKeys.lockedKeys,
+      ),
+    );
+  }, [expansionKeys]);
+
+  const handleExpandedChange = useCallback<SidebarExpandedChangeHandler>(
+    (proposedKeys) => {
+      setExpandedKeys(
+        normalizeExpandedKeys<SidebarExpandedKey>(proposedKeys, expansionKeys.lockedKeys),
+      );
+    },
+    [expansionKeys.lockedKeys],
+  );
 
   return (
     <>
@@ -68,7 +116,8 @@ function TreeContents({ currentPath, tree, version, scope }: SideTreeProps & { s
             ) : null}
             <Sidebar.Menu
               aria-label={`${toText(tree.name, "Documentation")} pages`}
-              defaultExpandedKeys={defaultExpandedKeys}
+              expandedKeys={expandedKeys}
+              onExpandedChange={handleExpandedChange}
               showGuideLines="hover"
             >
               {renderNodes(tree.children, currentPath, scope)}
@@ -178,25 +227,45 @@ function NodeLabel({ description, name }: { description?: ReactNode; name: React
   );
 }
 
-function getDefaultExpandedKeys(
+type ExpansionKeys = {
+  currentKeys: Set<string>;
+  defaultOpenKeys: Set<string>;
+  lockedKeys: Set<string>;
+};
+
+function getExpansionKeys(
   nodes: PageTree.Node[],
   currentPath: string,
   scope: string,
   ancestry: number[] = [],
-): string[] {
-  const keys: string[] = [];
+): ExpansionKeys {
+  const keys: ExpansionKeys = {
+    currentKeys: new Set(),
+    defaultOpenKeys: new Set(),
+    lockedKeys: new Set(),
+  };
 
   nodes.forEach((node, index) => {
     if (node.type !== "folder") return;
 
     const path = [...ancestry, index];
-    if (node.defaultOpen || node.collapsible === false || containsCurrentPage(node, currentPath)) {
-      keys.push(getNodeId(node, scope, path));
-    }
-    keys.push(...getDefaultExpandedKeys(node.children, currentPath, scope, path));
+    const id = getNodeId(node, scope, path);
+
+    if (node.defaultOpen) keys.defaultOpenKeys.add(id);
+    if (node.collapsible === false) keys.lockedKeys.add(id);
+    if (containsCurrentPage(node, currentPath)) keys.currentKeys.add(id);
+
+    const childKeys = getExpansionKeys(node.children, currentPath, scope, path);
+    addKeys(keys.currentKeys, childKeys.currentKeys);
+    addKeys(keys.defaultOpenKeys, childKeys.defaultOpenKeys);
+    addKeys(keys.lockedKeys, childKeys.lockedKeys);
   });
 
   return keys;
+}
+
+function addKeys(target: Set<string>, source: Set<string>) {
+  for (const key of source) target.add(key);
 }
 
 function containsCurrentPage(folder: PageTree.Folder, currentPath: string): boolean {
