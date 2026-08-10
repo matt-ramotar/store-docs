@@ -1,15 +1,20 @@
 ---
 title: "Deciding Between Single or Multiple Stores"
+description: "An architectural decision guide for single or multiple Stores."
 ---
 
 ## Introduction
 
 When building apps with Store, one of the key architectural decisions is whether to use a single Store or multiple Stores to manage your data. This guide will help you make that decision based on your specific use case and requirements.
 
-**Prerequisites**Before diving in, you should:
-
--   Complete the [Quickstart](/docs/quickstart).
--   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
+> **Info**
+>
+> **Prerequisites**
+>
+> Before diving in, you should:
+>
+> -   Complete the [Quickstart](/docs/quickstart).
+> -   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
 
 ## Real-World Example
 
@@ -35,40 +40,52 @@ Deciding between a single Store and multiple Stores depends on several factors:
 
 ### Data Coupling
 
-**Question**: Are the data sources tightly coupled or independent?
+> **Note**
+>
+> **Question**: Are the data sources tightly coupled or independent?
 
 -   **Tightly Coupled Data**: If the data from all APIs is interdependent and always used together, a single Store might be beneficial.
 -   **Independent Data**: If the data sources can be used separately or have different lifecycles, multiple Stores offers better modularity.
 
-**Question**: Do you require atomic updates across data sources?
+> **Note**
+>
+> **Question**: Do you require atomic updates across data sources?
 
 -   **Atomic Updates**: A single Store can manage atomic updates more effectively if you need to ensure that updates to multiple data sources happen simultaneously.
 -   **Independent Updates**: If updates to different data sources can happen independently, you should consider complexity tradeoffs next.
 
 ### Caching Strategies
 
-**Question**: Do your data sources require different caching strategies or validation rules?
+> **Note**
+>
+> **Question**: Do your data sources require different caching strategies or validation rules?
 
 -   **Each Data Source Has Unique Caching or Validation Needs**: Use multiple Stores to tailor caching strategies to each data source.
 -   **Same Caching and Validation Needs**: A single Store can simplify caching if both data sources share the same caching or validation needs.
 
 ### Complexity of Data Merging
 
-**Question**: Is combining data within a single Store less complex? Is combining data in the repository layer feasible?
+> **Note**
+>
+> **Question**: Is combining data within a single Store less complex? Is combining data in the repository layer feasible?
 
 -   **Simple Merging Logic**: If combining data in the repository layer is feasible, multiple Stores offers better modularity.
 -   **Complex Merging Logic**: If merging data is complex, encapsulating it within a single Store can reduce complexity, lowering the odds of errors and increasing maintainability.
 
 ### Error Handling
 
-**Question**: Do the data sources have different error handling requirements?
+> **Note**
+>
+> **Question**: Do the data sources have different error handling requirements?
 
 -   **Independent Error Handling**: Multiple Stores allow for handling errors separately, promoting a more robust and decoupled system and improved user experience.
 -   **Unified Error Handling**: A single Store can handle errors collectively, which might be more convenient in some cases but could also lead to individual data source issues being masked.
 
 ### Scalability and Extensibility
 
-**Question**: Will other data sources need to be added in the future?
+> **Note**
+>
+> **Question**: Will other data sources need to be added in the future?
 
 -   **Scalability and Extensibility are Top Priorities**: Multiple Stores make it easier to integrate additional APIs without affecting existing ones.
 -   **Data Sources Will Not Change**: If no additional data sources will ever be needed, a single Store can simplify the architecture and reduce maintenance overhead.
@@ -77,14 +94,16 @@ Deciding between a single Store and multiple Stores depends on several factors:
 
 Use this flow chart to decide whether to use a single Store or multiple Stores.
 
-**How to Use the Flow Chart**:
+> **Info**
+>
+> **How to Use the Flow Chart**:
+>
+> -   Start at the top of the chart.
+> -   Answer each question with “yes” or “no”.
+> -   Green paths represent “yes”.
+> -   Red paths represent “no”.
 
--   Start at the top of the chart.
--   Answer each question with “yes” or “no”.
--   Green paths represent “yes”.
--   Red paths represent “no”.
-
-![Decision Flow Chart](https://mintcdn.com/mobilenativefoundation/SdOvKh2Z73sRVGgu/images/single-or-multiple-stores-light.svg?fit=max&auto=format&n=SdOvKh2Z73sRVGgu&q=85&s=88472c0b19480975020fb90bc11d0f5e) ![Decision Flow Chart](https://mintcdn.com/mobilenativefoundation/SdOvKh2Z73sRVGgu/images/single-or-multiple-stores-dark.svg?fit=max&auto=format&n=SdOvKh2Z73sRVGgu&q=85&s=f40ad63d013ad86a3e0a1e93d7d78436)
+![Decision Flow Chart](https://mintcdn.com/mobilenativefoundation/SdOvKh2Z73sRVGgu/images/single-or-multiple-stores-light.svg?fit=max&auto=format&n=SdOvKh2Z73sRVGgu&q=85&s=88472c0b19480975020fb90bc11d0f5e)
 
 ## Trails App Decision
 
@@ -98,18 +117,22 @@ For the [Trails](https://github.com/MobileNativeFoundation/Trails) app, we decid
 
 ## Implementation Tips
 
-**When Using Multiple Stores**:
+> **Tip**
+>
+> **When Using Multiple Stores**:
+>
+> -   Create a repository layer to combine data from different Stores.
+> -   Use appropriate caching strategies for each Store.
+> -   Implement clear error handling for each Store.
+> -   Use Kotlin [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)s to combine data streams.
 
--   Create a repository layer to combine data from different Stores.
--   Use appropriate caching strategies for each Store.
--   Implement clear error handling for each Store.
--   Use Kotlin [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)s to combine data streams.
-
-**When Using a Single Store**:
-
--   Design a robust domain model that accommodates all data.
--   Implement careful error handling that considers partial data.
--   Use appropriate validation rules for different data types.
+> **Tip**
+>
+> **When Using a Single Store**:
+>
+> -   Design a robust domain model that accommodates all data.
+> -   Implement careful error handling that considers partial data.
+> -   Use appropriate validation rules for different data types.
 
 ## Conclusion
 

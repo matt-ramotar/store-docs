@@ -1,5 +1,6 @@
 ---
 title: "Updater"
+description: "Responsible for synchronizing local data mutations with remote data sources."
 ---
 
 ## Purpose of the Updater
@@ -22,10 +23,6 @@ interface Updater<Key : Any, Output : Any, Response : Any> {
 }
 ```
 
-[​
-
-](#param-key)
-
 Key
 
 Any
@@ -33,10 +30,6 @@ Any
 required
 
 The type representing the key used to identify the data to fetch. For example, if fetching a list of posts, this could be an `Int` representing the post ID.
-
-[​
-
-](#param-output)
 
 Output
 
@@ -46,10 +39,6 @@ required
 
 The type representing the domain data model representation of the item being retrieved.
 
-[​
-
-](#param-response)
-
 Response
 
 Any
@@ -58,13 +47,9 @@ required
 
 The type representing the response received after updating the remote data source.
 
-#### post
+#### `post`
 
 Makes a network request to update the remote data source with the provided data.
-
-[​
-
-](#param-key)
 
 key
 
@@ -74,10 +59,6 @@ required
 
 The unique key identifying the data item.
 
-[​
-
-](#param-value)
-
 value
 
 Output
@@ -86,7 +67,7 @@ required
 
 The data to be written, in the domain model format.
 
-#### onCompletion
+#### `onCompletion`
 
 An optional callback executed upon the completion of the network operation.
 
@@ -96,9 +77,7 @@ An optional callback executed upon the completion of the network operation.
 
 When a data mutation occurs in the lcoal Store, the [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt) is invoked to synchronize the change with the remote data source.
 
-1
-
-Local Mutation
+1. **Local Mutation**
 
 A write request is made to the Store, updating the local data.
 
@@ -107,9 +86,7 @@ val writeRequest = StoreWriteRequest.of(key, value)
 mutableStore.write(writeRequest)
 ```
 
-2
-
-Queue Write Request
+2. **Queue Write Request**
 
 The write request is added to a per-key write request queue in the [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt).
 
@@ -117,9 +94,7 @@ The write request is added to a per-key write request queue in the [RealMutableS
 addWriteRequestToQueue(writeRequest)
 ```
 
-3
-
-Update Local Store
+3. **Update Local Store**
 
 The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) writes the new value to the local data source using a delegate [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
 
@@ -127,9 +102,7 @@ The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f907
 delegate.write(writeRequest.key, writeRequest.value)
 ```
 
-4
-
-Attempt Server Synchronization
+4. **Attempt Server Synchronization**
 
 The [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt) attempts to post the latest value to the remote data source.
 
@@ -137,16 +110,16 @@ The [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8b
 val updaterResult = updater.post(writeRequest.key, writeRequest.value)
 ```
 
-5
-
-Handle Updater Result
+5. **Handle Updater Result**
 
 NaN
 
 Success
 
 -   Updates the write request queue, removing processed requests.
+
 -   Clears any failed sync records from the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
+
 -   Executes `onCompletion` callback if provided.
 
 NaN
@@ -154,11 +127,10 @@ NaN
 Failure
 
 -   Records the failed attempt using the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt).
+
 -   Leaves the write request in the queue for future retries.
 
-6
-
-Emit Write Response
+6. **Emit Write Response**
 
 The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) emits a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt) to consumers, indicating the success or failure of the write operation.
 

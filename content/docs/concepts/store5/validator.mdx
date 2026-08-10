@@ -1,8 +1,11 @@
 ---
 title: "Validator"
+description: "Allows you to define custom logic to determine whether your local data is still valid or if it needs to be refreshed from the remote source using the Fetcher."
 ---
 
-The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) is optional. If you don’t provide one, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) defaults to considering the cached data valid.
+> **Info**
+>
+> The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) is optional. If you don’t provide one, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) defaults to considering the cached data valid.
 
 ## Purpose of the Validator
 
@@ -22,10 +25,6 @@ interface Validator<Output : Any> {
 }
 ```
 
-[​
-
-](#param-output)
-
 Output
 
 Any
@@ -33,10 +32,6 @@ Any
 required
 
 The type representing your domain data model. For example, if you have a `Store<Int, Post>`, the `Output` is `Post`.
-
-[​
-
-](#param-is-valid-item-output)
 
 isValid(item: Output)
 
@@ -46,30 +41,24 @@ A suspending function that determines whether the given item is still valid.
 
 ## Data Flow
 
-1
-
-Data Retrieval Request
+1. **Data Retrieval Request**
 
 When your application requests cached data from the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt), it first checks the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) to see if the data is available.
 
-The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) only operates on data from the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) and does not validate data coming directly from the network.
+> **Note**
+>
+> The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt) only operates on data from the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) and does not validate data coming directly from the network.
 
-2
-
-Validation Check
+2. **Validation Check**
 
 The [Validator](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Validator.kt)’s `isValid` method is called with the cached data as the parameter.
 
-3
-
-Validity Determination
+3. **Validity Determination**
 
 -   If `isValid` returns `true`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) considers the cached data valid and servies it to the application.
 -   If `isValid` returns `false`, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) deems the cached data invalid and proceeds to fetch fresh data from the remote source using the [Fetcher](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Fetcher.kt).
 
-4
-
-Data Update
+4. **Data Update**
 
 If new data is fetched, it’s stored in the [Memory Cache](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/MemoryCache.kt) and the [Source of Truth](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/SourceOfTruth.kt) for future requests.
 

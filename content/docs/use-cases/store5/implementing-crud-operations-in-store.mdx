@@ -1,23 +1,30 @@
 ---
 title: "Implementing CRUD Operations in Store"
+description: "Learn how to build a Store supporting queries and mutations."
 ---
 
 ## Introduction
 
 This is the second part of our two-part guide on handling CRUD (Create, Read, Update, Delete) operations in Store. In the [first part](/docs/use-cases/store5/setting-up-store-for-crud-operations), we focused on defining a flexible data model and operations to accommodate complex queries and mutations. This part will focus on implementing these CRUD operations in our `Store`.
 
-Prerequisites:
+> **Info**
+>
+> Prerequisites:
+>
+> -   Complete [Part 1](/docs/use-cases/store5/setting-up-store-for-crud-operations) of this guide.
+> -   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
 
--   Complete [Part 1](/docs/use-cases/store5/setting-up-store-for-crud-operations) of this guide.
--   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
+> **Note**
+>
+> The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
 
-The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
-
-## Implementing the Fetcher
+## Implementing the `Fetcher`
 
 We’ll begin by extracting the `Fetcher` creation logic into a separate class called `PostFetcherFactory`.
 
-We only need to handle `Query` operations in the `Fetcher`, because we only invoke `Fetcher` on reads.
+> **Note**
+>
+> We only need to handle `Query` operations in the `Fetcher`, because we only invoke `Fetcher` on reads.
 
 ```kotlin
 class PostFetcherFactory(
@@ -98,17 +105,21 @@ class PostFetcherFactory(
 }
 ```
 
-Using `Fetcher.ofFlow` allows us to support operations that observe changes over time, such as `ObserveOne` and `ObserveMany`.
+> **Tip**
+>
+> Using `Fetcher.ofFlow` allows us to support operations that observe changes over time, such as `ObserveOne` and `ObserveMany`.
 
-## Implementing the Source of Truth
+## Implementing the `Source of Truth`
 
 Next, we’ll extract the `Source of Truth` creation logic into separate classes for better readability. We will create a `Reader` to handle read operations and a `Writer` to handle create, update, and delete operations.
 
-### Defining the Reader
+### Defining the `Reader`
 
 The `Reader` is responsible for reading data from the local database based on the operation requested.
 
-Similar to `Fetcher`, our `Reader` only needs to handle `Query` operations.
+> **Note**
+>
+> Similar to `Fetcher`, our `Reader` only needs to handle `Query` operations.
 
 ```kotlin
 class PostSourceOfTruthReader(
@@ -124,11 +135,13 @@ class PostSourceOfTruthReader(
 }
 ```
 
-### Defining the Writer
+### Defining the `Writer`
 
 The `Writer` handles writing data to the local database after fetches or mutations.
 
-However, our `Writer` needs to handle all `Query` and `Mutation` operations because we write to the `Source of Truth` on both reads and writes.
+> **Note**
+>
+> However, our `Writer` needs to handle all `Query` and `Mutation` operations because we write to the `Source of Truth` on both reads and writes.
 
 ```kotlin
 class PostSourceOfTruthWriter(
@@ -144,7 +157,7 @@ class PostSourceOfTruthWriter(
 }
 ```
 
-### Setting Up the Source of Truth Factory
+### Setting Up the `Source of Truth` Factory
 
 ```kotlin
 class PostSourceOfTruthFactory(
@@ -172,9 +185,11 @@ class PostSourceOfTruthFactory(
 }
 ```
 
-### Implementing the Reader
+### Implementing the `Reader`
 
-When emitting data, if there is no value to emit (e.g., no entities found), we return `null` instead of an empty list. This prevents the `Store` from considering the operation fulfilled and triggers a fetch from the network.
+> **Note**
+>
+> When emitting data, if there is no value to emit (e.g., no entities found), we return `null` instead of an empty list. This prevents the `Store` from considering the operation fulfilled and triggers a fetch from the network.
 
 ```kotlin
 class PostSourceOfTruthReader(
@@ -284,7 +299,7 @@ class PostSourceOfTruthReader(
 }
 ```
 
-### Implementing the Writer
+### Implementing the `Writer`
 
 ```kotlin
 class PostSourceOfTruthWriter(
@@ -369,13 +384,17 @@ class PostSourceOfTruthWriter(
 }
 ```
 
-Ensure that your `Writer` handles all operation cases, including both mutations and queries, to maintain consistency between the local data and remote sources.
+> **Tip**
+>
+> Ensure that your `Writer` handles all operation cases, including both mutations and queries, to maintain consistency between the local data and remote sources.
 
-## Implementing the Updater
+## Implementing the `Updater`
 
 Next, we’ll extract the `Updater` creation logic into a separate class called `PostUpdaterFactory`. The `Updater` is responsible for synchronizing local mutations with the remote data source.
 
-We invoke `Updater` on reads if conflicts might exist. This means we need to handle query operations too. If we do hit code for handling a query operation, it means we are fetching a `Post` but the `Bookkeeper` has an unresolved sync failure for that `Post`. So, before we can pull the latest value, we need to push our latest local value to the network.
+> **Note**
+>
+> We invoke `Updater` on reads if conflicts might exist. This means we need to handle query operations too. If we do hit code for handling a query operation, it means we are fetching a `Post` but the `Bookkeeper` has an unresolved sync failure for that `Post`. So, before we can pull the latest value, we need to push our latest local value to the network.
 
 ```kotlin
 class PostUpdaterFactory(
@@ -452,9 +471,11 @@ class PostUpdaterFactory(
 }
 ```
 
-## Implementing the Bookkeeper
+## Implementing the `Bookkeeper`
 
-We only check for failed syncs on reads. We only set failed syncs on writes.
+> **Note**
+>
+> We only check for failed syncs on reads. We only set failed syncs on writes.
 
 ```kotlin
 class PostBookkeeperFactory(
@@ -705,8 +726,12 @@ class PostStoreFactory(
 }
 ```
 
-We use the same type for all three parameters in the `Converter` because we are not transforming the data anymore. The `Converter` simply passes the data through as-is.
+> **Note**
+>
+> We use the same type for all three parameters in the `Converter` because we are not transforming the data anymore. The `Converter` simply passes the data through as-is.
 
-Organizing our code into separate classes and factories makes it more maintainable and easier to understand. Each component has a clear responsibility.
+> **Tip**
+>
+> Organizing our code into separate classes and factories makes it more maintainable and easier to understand. Each component has a clear responsibility.
 
 By implementing these components, we’ve built a Store that supports complex CRUD operations, enabling efficient data synchronization between local storage and remote sources. This modular approach allows for easier testing, maintenance, and potential reuse in other parts of your app.

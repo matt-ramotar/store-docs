@@ -1,13 +1,16 @@
 ---
 title: "Mutable Store"
+description: "Designed to handle not only data retrieval but also data mutations. Manages the complexities associated with data synchronization between local and remote sources, conflict resolution, and offline support."
 ---
 
-Check out *[Handling CRUD Operations](/docs/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
-
--   **Create**: Insert One, Insert Many
--   **Read**: Find One, Find Many, Find All, Observe One, Observe Many
--   **Update**: Update One, Update Many, Upsert One, Upsert Many
--   **Delete**: Delete One, Delete Many
+> **Tip**
+>
+> Check out *[Handling CRUD Operations](/docs/use-cases/store5/setting-up-store-for-crud-operations)* for a guide on supporting:
+>
+> -   **Create**: Insert One, Insert Many
+> -   **Read**: Find One, Find Many, Find All, Observe One, Observe Many
+> -   **Update**: Update One, Update Many, Upsert One, Upsert Many
+> -   **Delete**: Delete One, Delete Many
 
 ## Purpose of Mutable Store
 
@@ -38,10 +41,6 @@ interface MutableStore<Key : Any, Output : Any> {
 }
 ```
 
-[​
-
-](#param-key)
-
 Key
 
 Any
@@ -49,10 +48,6 @@ Any
 required
 
 The type representing the key used to identify the data item.
-
-[​
-
-](#param-output)
 
 Output
 
@@ -62,10 +57,6 @@ required
 
 The type representing the domain data model representation of the item being retrieved.
 
-[​
-
-](#param-response)
-
 Response
 
 Any
@@ -74,13 +65,9 @@ required
 
 The type representing the response received after updating the remote data source.
 
-#### stream
+#### `stream`
 
 A function that returns a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) of [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
-
-[​
-
-](#param-request)
 
 request
 
@@ -90,13 +77,9 @@ required
 
 The request configuration for the data retrieval.
 
-#### write
+#### `write`
 
 A function that returns a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt).
-
-[​
-
-](#param-request-1)
 
 request
 
@@ -106,15 +89,13 @@ required
 
 The request configuration for the data mutation.
 
-#### clear
+#### `clear`
 
 A function that clears the data item identified by the given key.
 
-This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
-
-[​
-
-](#param-key)
+> **Note**
+>
+> This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
 
 key
 
@@ -124,25 +105,36 @@ required
 
 The key identifying the data item to be cleared.
 
-#### clearAll
+#### `clearAll`
 
 A function that clears all data items.
 
-This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
+> **Note**
+>
+> This method only removes data from the delegate [Store](/docs/concepts/store5/store). It will not update the remote data source.
 
 ## Key Components
 
 The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) is the default implementation of the [MutableStore](/docs/concepts/store5/mutable-store) interface. It’s composed of the following components:
 
 1.  **[Delegate Store](/docs/concepts/store5/store)**: Read operations are delegated to an instance of [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt). This delegation allows [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) to leverage the efficient caching and data retrieval mechanisms already implemented in [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt).
+
 2.  **[Updater](/docs/concepts/store5/updater)**: Handles applying local changes to the remote data source. It defines the logic for how data mutations are synchronized with the server.
+
 3.  **[Bookkeeper](/docs/concepts/store5/bookkeeper)**: Rracks failed synchronization attempts. It ensures that any local changes that could not be synced due to network issues or other failures are retried, maintaining data consistency.
+
 4.  **Write Request Queue**: For each key, [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) maintains a write request queue (`WriteRequestQueue<Key, Output, *>`). This queue holds pending write operations that need to be synchronized with the remote data source. New write requests are added to the queue. Upon successful synchronization, processed requests are removed.
+
 5.  **Thread Safety Mechanisms**: To handle concurrent operations safely, [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt) uses:
+
     -   A global [Mutex](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.concurrent/-mutex/) to synchronize access to per-key [ThreadSafety](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/internal/concurrent/ThreadSafety.kt#L5-L8) objects.
+
     -   [ThreadSafety](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/internal/concurrent/ThreadSafety.kt#L5-L8) objects that manage fine-grained locking mechanisms for each key.
+
     -   [Lightswitch](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/internal/concurrent/Lightswitch.kt) mechanisms managing read-write locks efficiently.
+
 6.  **Conflict Resolution Logic**: Conflict resolution is integral to [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealMutableStore.kt). At a high level:
+
     -   Checks for conflicts using the [Bookkeeper](/docs/concepts/store5/bookkeeper) and pending write requests.
     -   Attempts to synchronize with the remote source to resolve conflicts.
     -   Updates the local state based on the outcome.
@@ -151,9 +143,7 @@ The [RealMutableStore](https://github.com/MobileNativeFoundation/Store/blob/f907
 
 ### Reading Data
 
-1
-
-Initialization
+1. **Initialization**
 
 Ensures that thead safety mechanisms and write request queues are initialized.
 
@@ -161,9 +151,7 @@ Ensures that thead safety mechanisms and write request queues are initialized.
 safeInitStore(request.key)
 ```
 
-2
-
-Eager Conflict Resolution
+2. **Eager Conflict Resolution**
 
 Attempts to resolve any conflicts before proceeding with the read operation.
 
@@ -174,9 +162,7 @@ tryEagerlyResolveConflicts<Response>(request.key)
 -   If conflicts exist, tries to synchronize local changes with the remote source.
 -   If no conflicts, proceeds to data retrieval.
 
-3
-
-Data Retrieval
+3. **Data Retrieval**
 
 Delegates the read operation to the [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt) instance.
 
@@ -190,9 +176,7 @@ delegate
 
 ### Writing Data
 
-1
-
-Request Queueing
+1. **Request Queueing**
 
 The write request is added to the per-key write request queue.
 
@@ -200,9 +184,7 @@ The write request is added to the per-key write request queue.
 addWriteRequestToQueue(writeRequest)
 ```
 
-2
-
-Local Update
+2. **Local Update**
 
 The value is immediately written to the local data source.
 
@@ -210,9 +192,7 @@ The value is immediately written to the local data source.
 delegate.write(writeRequest.key, writeRequest.value)
 ```
 
-3
-
-Server Synchronization Attempt
+3. **Server Synchronization Attempt**
 
 Attempts to update the remote data source using the [Updater](/docs/concepts/store5/updater).
 
@@ -220,9 +200,7 @@ Attempts to update the remote data source using the [Updater](/docs/concepts/sto
 val updaterResult = tryUpdateServer(writeRequest)
 ```
 
-4
-
-Handling the Updater Result
+4. **Handling the Updater Result**
 
 NaN
 
@@ -251,9 +229,7 @@ Failure
 bookkeeper?.setLastFailedSync(request.key)
 ```
 
-5
-
-Response Emission
+5. **Response Emission**
 
 Emits a [StoreWriteResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreWriteResponse.kt) indicating success or failure.
 

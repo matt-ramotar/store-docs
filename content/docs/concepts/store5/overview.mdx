@@ -2,34 +2,34 @@
 title: "Store foundations"
 ---
 
-## Store
+## [Store](/docs/concepts/store5/store)
 
 Typed repository that mediates data flow between network, memory cache, and local storage in your app.
 
-## Mutable Store
+## [Mutable Store](/docs/concepts/store5/mutable-store)
 
 Mutable implementation of a typed repository that supports create (C), read (R), update (U) and delete (D) operations for local and network resources.
 
-## Source of Truth
+## [Source of Truth](/docs/concepts/store5/source-of-truth)
 
 Single authoritative local data source, ensuring data consistency and enabling offline support.
 
-## Fetcher
+## [Fetcher](/docs/concepts/store5/fetcher)
 
 Defines how data will be fetched over the network.
 
-## Updater
+## [Updater](/docs/concepts/store5/updater)
 
 Defines how local changes will be pushed to the network.
 
-## Bookkeeper
+## [Bookkeeper](/docs/concepts/store5/bookkeeper)
 
 Tracks metadata of local changes and records synchronization failures.
 
-## Validator
+## [Validator](/docs/concepts/store5/validator)
 
 Allows you to define custom logic to determine whether local data is still valid or if it needs to be refreshed from the remote data source using the Fetcher.
 
-## Converter
+## [Converter](/docs/concepts/store5/converter)
 
 Converts items between network, local database, and domain data representations.

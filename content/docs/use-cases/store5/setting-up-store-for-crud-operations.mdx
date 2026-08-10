@@ -1,21 +1,26 @@
 ---
 title: "Setting Up Store for CRUD operations"
+description: "Learn how to build a Store supporting queries and mutations."
 ---
 
 ## Introduction
 
 In this two-part guide, we’ll build a Store to handle CRUD (Create, Read, Update, Delete) operations for the [Trails](https://github.com/MobileNativeFoundation/Trails) app. This first part focuses on defining a flexible data model and the operations required to accommodate complex queries and mutations.
 
-Prerequisites:
+> **Info**
+>
+> Prerequisites:
+>
+> -   Complete the [Quickstart](/docs/quickstart).
+> -   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
 
--   Complete the [Quickstart](/docs/quickstart).
--   Have an understanding of the core Store [concepts](/docs/concepts/store5/overview).
-
-The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
+> **Note**
+>
+> The code for this example is available in the [Trails](https://github.com/MobileNativeFoundation/Trails) repository.
 
 ## Defining the Data Model
 
-### Creating a Generalized Model Interface
+### Creating a Generalized `Model` Interface
 
 To create a flexible and reusable `Store`, we’ll start by defining a generalized `Model` interface. This interface represents any data type we wish to store and forms the foundation of our data model.
 
@@ -47,16 +52,18 @@ interface Model<out K : Model.Key, out P : Model.Properties, out E : Model.Edges
 
 The `Model` interfaces uses type parameters `K`, `P`, and `E` to represent the `Key`, `Properties`, and `Edges` of the model, respectively. This design allows us to define models with varying structures while maintaining type safety.
 
-### Implementing the Model Interface in Post
+### Implementing the `Model` Interface in `Post`
 
 With the `Model` interface in place, we can now refactor our `Post` class to implement this interface. This enables us to define operations on different aspects of a `Post`, such as its key, properties, and edges.
 
-Implementing the `Model` interface in `Post` allows us to define operations on various `Post` models. For instance:
-
--   When creating a new `Post`, we have only the `Properties` (no `Key` or `Edges`).
--   When updating a `Post`, we have both the `Key` and the `Properties`.
--   When fetching a feed of `Post`s, we have a list of `Post.Node`.
--   When fetching a single `Post`, we have a `Post.Composite`.
+> **Note**
+>
+> Implementing the `Model` interface in `Post` allows us to define operations on various `Post` models. For instance:
+>
+> -   When creating a new `Post`, we have only the `Properties` (no `Key` or `Edges`).
+> -   When updating a `Post`, we have both the `Key` and the `Properties`.
+> -   When fetching a feed of `Post`s, we have a list of `Post.Node`.
+> -   When fetching a single `Post`, we have a `Post.Composite`.
 
 ```kotlin
 @Serializable
@@ -108,7 +115,7 @@ This refactored `Post` class now aligns with the `Model` interface, allowing us 
 
 ## Defining Operations
 
-### Creating the Operation Sealed Class
+### Creating the `Operation` Sealed Class
 
 To represent different types of operations (queries and mutations), we’ll define a generalized `Operation` sealed class. This class serves as the base for all specific operation types in our `Store`.
 
@@ -135,7 +142,7 @@ sealed class Operation<
 
 The `Operation` class is parameterized with the types `K`, `P`, `E`, and `N`, corresponding to the `Model` components. The `Operation` class has two subclasses, `Query` and `Mutation`. `Query` represents read operations, while `Mutation` represents write operations.
 
-### Defining Create Operations
+### Defining `Create` Operations
 
 Under the `Mutation` class, we can define the `Create` operations that allow us to insert new data into the `Store`.
 
@@ -161,7 +168,7 @@ sealed class Mutation<
 
 In the `Create` operations, we have `InsertOne` and `InsertMany`, which accept `Properties` or a list of `Properties` as input. Notice that we use `Nothing` for types we don’t have yet, such as the `Key` for new entries.
 
-### Defining Read Operations
+### Defining `Read` Operations
 
 Let’s define a `DataSources` sealed class to represent the different sources of data we may want to query.
 
@@ -177,7 +184,9 @@ data class DataSources(val memory: Boolean, val disk: Boolean, val remote: Boole
 
 The `DataSources` class allows us to specify whether to fetch data from memory, disk, or remote sources.
 
-Providing a companion object with common configurations improves readability and reduces the likelihood of errors.
+> **Tip**
+>
+> Providing a companion object with common configurations improves readability and reduces the likelihood of errors.
 
 Next, we can define the `Query` operations within the `Operation` class. Each query operation specifies the `DataSources` to use.
 
@@ -215,7 +224,7 @@ The `Query` operations include:
 -   `FindAll` for fetching all items.
 -   `ObserveOne` and `ObserveMany` for observing changes to specific items.
 
-### Defining Update Operations
+### Defining `Update` Operations
 
 Under the `Mutation` class, we can define the `Update` operations for modifying existing data.
 
@@ -268,7 +277,7 @@ The `Update` operations include:
 -   `UpdateOne` and `UpdateMany` for updating existing items.
 -   `UpsertOne` and `UpsertMany` for inserting or updating an item.
 
-### Defining Delete Operations
+### Defining `Delete` Operations
 
 Finally, we can define `Delete` operations under the `Mutation` class.
 
@@ -313,7 +322,9 @@ These operations require the `Key` of the items to be deleted.
 
 ## Defining Output Types
 
-Because our operations can return either a single `Model` or a collection of `Model`s, we need to define an output type that can represent both cases. We’ll define an `Output` sealed class to represent the results of our operations.
+Because our operations can return either a single `Model` or a collection of `Model`s, we need to define an output type that can represent both cases.
+
+We’ll define an `Output` sealed class to represent the results of our operations.
 
 ```kotlin
 sealed class Output<out T: Model> {
@@ -339,6 +350,8 @@ typealias Output = Output<Post>
 typealias PostStore = MutableStore<PostOperation, Output>
 ```
 
-Creating type aliases for `PostOperation`, `Output`, and `PostStore` simplifies our code and improves readability.
+> **Tip**
+>
+> Creating type aliases for `PostOperation`, `Output`, and `PostStore` simplifies our code and improves readability.
 
 By defining flexible data model and operation classes, we’ve established a foundation for handling complex query and mutation operations. In the [next part of this guide](/docs/use-cases/store5/implementing-crud-operations-in-store), we’ll modify our implementations of `Fetcher`, `SourceOfTruth`, `Updater`, and `Bookkeeper` to support these operations.

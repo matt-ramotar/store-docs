@@ -1,5 +1,6 @@
 ---
 title: "Store"
+description: "The core component of the Store library, managing data flow between network, memory cache, and local storage in your app."
 ---
 
 ## Purpose of Store
@@ -25,10 +26,6 @@ interface Store<Key : Any, Output : Any> {
 }
 ```
 
-[​
-
-](#param-key)
-
 Key
 
 Any
@@ -36,10 +33,6 @@ Any
 required
 
 The type representing the key used to identify the data item.
-
-[​
-
-](#param-output)
 
 Output
 
@@ -49,13 +42,9 @@ required
 
 The type representing the domain data model representation of the item being retrieved.
 
-#### stream
+#### `stream`
 
 A function that returns a [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/) of [StoreReadResponse](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/StoreReadResponse.kt).
-
-[​
-
-](#param-request)
 
 request
 
@@ -65,15 +54,13 @@ required
 
 The request configuration for the data retrieval.
 
-#### clear
+#### `clear`
 
 A function that clears the data item identified by the given key.
 
-This method only removes data from the memory cache and source of truth. It will not update the remote data source.
-
-[​
-
-](#param-key)
+> **Note**
+>
+> This method only removes data from the memory cache and source of truth. It will not update the remote data source.
 
 key
 
@@ -83,31 +70,38 @@ required
 
 The key identifying the data item to be cleared.
 
-#### clearAll
+#### `clearAll`
 
 A function that clears all data items.
 
-This method only removes data from the memory cache and source of truth. It will not update the remote data source.
+> **Note**
+>
+> This method only removes data from the memory cache and source of truth. It will not update the remote data source.
 
 ## Key Components
 
 The [RealStore](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/RealStore.kt) is the default implementation of the Store interface. It’s composed of the following components:
 
 1.  **[FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt)**: Responsible for efficient network operations.
+
     -   Prevents duplicate network calls for the same data.
     -   Shares responses among multiple requesters.
     -   Manages network request lifecycles.
 2.  **[SourceOfTruthWithBarrier](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/SourceOfTruthWithBarrier.kt)**: Wraps the [SourceOfTruth](/docs/concepts/store5/source-of-truth).
+
     -   Synchronizes read and write operations.
     -   Provides persistent data storage.
     -   Maintains data consistency.
 3.  **Memory Cache**: Fast, temporary storage.
+
     -   Provides quick data retrieval without hitting disk or network.
     -   Reduces latency.
     -   Automatically manages memory usage.
 4.  **[Converter](/docs/concepts/store5/converter)**: Transforms data between network, local database, and domain data model types.
+
     -   Facilitates data compatibility between different layers of the Store.
 5.  **[Validator](/docs/concepts/store5/validator)**: Validates cached data to ensure it’s still valid.
+
     -   Prevents serving stale or invalid data to consumers.
 
 ## Data Flow
@@ -116,9 +110,7 @@ Here’s how Store manages data flow through your app:
 
 ### Reading Data
 
-1
-
-Memory Cache Check
+1. **Memory Cache Check**
 
 Checks if the requested data is present and valid in the in-memory cache.
 
@@ -153,9 +145,7 @@ cachedToEmit?.let { it: Output ->
 }
 ```
 
-2
-
-Decide Data Source
+2. **Decide Data Source**
 
 Determines whether to read from the [SourceOfTruth](/docs/concepts/store5/source-of-truth), fetch from the network, or both. Emits `NoNewData` if neither [SourceOfTruth](/docs/concepts/store5/source-of-truth) nor network fetch is requested.
 
@@ -166,9 +156,7 @@ if (sourceOfTruth == null && !request.fetch) {
 }
 ```
 
-3
-
-Source of Truth Read
+3. **Source of Truth Read**
 
 If a [SourceOfTruth](/docs/concepts/store5/source-of-truth) is configured and not skipped, attempts to read data from it.
 
@@ -198,9 +186,7 @@ Network Fetch Decision
 
 If data is not found or invalid, decides whether to fetch from the network.
 
-4
-
-Network Fetch
+4. **Network Fetch**
 
 If a network fetch is required, fetches data from the network.
 
@@ -208,7 +194,9 @@ If a network fetch is required, fetches data from the network.
 val networkFlow = createNetworkFlow(request, networkLock)
 ```
 
-The [FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt) ensures only one network call per key.
+> **Note**
+>
+> The [FetcherController](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/impl/FetcherController.kt) ensures only one network call per key.
 
 NaN
 
@@ -216,9 +204,7 @@ Data Handling
 
 Fetched data is written to the [SourceOfTruth](/docs/concepts/store5/source-of-truth) and memory cache.
 
-5
-
-Combine and Emit Data
+5. **Combine and Emit Data**
 
 Combines the flows from the network and the source of truth to emit data in the correct order and origin to the subscribers.
 
@@ -235,9 +221,7 @@ emitAll(
 
 While the Store primarily focuses on reading data, it provides an internal write method for updating data in the cache and [SourceOfTruth](/docs/concepts/store5/source-of-truth).
 
-1
-
-Update Memory Cache
+1. **Update Memory Cache**
 
 Updates the in-memory cache with the new data.
 
@@ -245,9 +229,7 @@ Updates the in-memory cache with the new data.
 memCache?.put(key, value)
 ```
 
-2
-
-Update Source of Truth
+2. **Update Source of Truth**
 
 Writes the new data to the local storage (source of truth).
 
@@ -255,9 +237,7 @@ Writes the new data to the local storage (source of truth).
 sourceOfTruth?.write(key, converter.fromOutputToLocal(value))
 ```
 
-3
-
-Error Handling
+3. **Error Handling**
 
 Catches any exceptions during the write operation and returns the appropriate result.
 

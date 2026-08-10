@@ -1,5 +1,6 @@
 ---
 title: "Converter"
+description: "Handles the transformation of data between network, local storage, and domain models."
 ---
 
 ## Purpose of the Converter
@@ -19,10 +20,6 @@ interface Converter<Network : Any, Local : Any, Output : Any> {
 }
 ```
 
-[​
-
-](#param-network)
-
 Network
 
 Any
@@ -30,10 +27,6 @@ Any
 required
 
 The type representing the data fetched from the remote source. For example, if fetching a list of posts, this could be `List<Post>` representing the list of posts.
-
-[​
-
-](#param-local)
 
 Local
 
@@ -43,10 +36,6 @@ required
 
 The type representing the local database model representation of the item being retrieved.
 
-[​
-
-](#param-output)
-
 Output
 
 Any
@@ -55,13 +44,9 @@ required
 
 The type representing the domain data model representation of the item being retrieved.
 
-#### fromNetworkToLocal
+#### `fromNetworkToLocal`
 
 Converts a network data model into a local data model suitable for storage.
-
-[​
-
-](#param-network)
 
 network
 
@@ -71,13 +56,9 @@ required
 
 The network data model to be converted.
 
-#### fromOutputToLocal
+#### `fromOutputToLocal`
 
 Converts a domain data model into a local data model suitable for storage.
-
-[​
-
-](#param-output)
 
 output
 

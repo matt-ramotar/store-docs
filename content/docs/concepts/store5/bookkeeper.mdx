@@ -1,10 +1,13 @@
 ---
 title: "Bookkeeper"
+description: "Designed to track local data changes that haven’t been successfully synchronized with the remote data source. It plays a crucial role in conflict resolution, especially in applications that support offline operations or have intermittent network connectivity."
 ---
 
 ## Relevant Context
 
-Check out Google’s [Offline First](https://developer.android.com/training/data-storage/offline-first) guide for more information on conflict resolution strategies.
+> **Tip**
+>
+> Check out Google’s [Offline First](https://developer.android.com/training/data-storage/offline-first) guide for more information on conflict resolution strategies.
 
 Conflict resolution is critical when your app makes local changes while offline or when there are discrepancies between the client and server data. The [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) helps by:
 
@@ -38,10 +41,6 @@ interface Bookkeeper<Key : Any> {
 }
 ```
 
-[​
-
-](#param-key)
-
 Key
 
 Any
@@ -50,19 +49,11 @@ required
 
 The type representing the key used to identify the data item.
 
-[​
-
-](#param-get-last-failed-sync-key-key)
-
 getLastFailedSync(key: Key)
 
 Long?
 
 Returns the timestamp of the last failed sync attempt for the given key.
-
-[​
-
-](#param-set-last-failed-sync-key-key-timestamp-long-now)
 
 setLastFailedSync(key: Key, timestamp: Long = now())
 
@@ -70,19 +61,11 @@ Boolean
 
 Records a failed sync attempt with the provided timestamp.
 
-[​
-
-](#param-clear-key-key)
-
 clear(key: Key)
 
 Boolean
 
 Clears the record of failed syncs for the given key.
-
-[​
-
-](#param-clear-all)
 
 clearAll()
 
@@ -92,30 +75,23 @@ Clears all records of failed syncs.
 
 ## Data Flow
 
-1
-
-Local Changes Made
+1. **Local Changes Made**
 
 The application makes a local change that needs to be synced with the remote source.
 
-2
-
-Sync Attempt
+2. **Sync Attempt**
 
 The Store attempts to update the remote source using the [Updater](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Updater.kt).
 
-3
-
-Write Response Handling
+3. **Write Response Handling**
 
 -   **On Success**: If the sync succeeds, the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) clears any records of failed syncs for that key.
 -   **On Failure**: If the sync fails, the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) records the failure along with a timestamp.
 
-4
-
-Conflict Resolution on Read
+4. **Conflict Resolution on Read**
 
 -   Before serving data, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) checks with the [Bookkeeper](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Bookkeeper.kt) to see if there are any unsynced local changes.
+
 -   If there are failed syncs, the [Store](https://github.com/MobileNativeFoundation/Store/blob/f9072fc59cc8bfe95cfe008cc8a9ce999301b242/store/src/commonMain/kotlin/org/mobilenativefoundation/store/store5/Store.kt) attempts to resolve them before returning data.
 
 ## Implementing a Bookkeeper

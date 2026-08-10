@@ -3,7 +3,7 @@
 @import "@heroui/styles";
 @import "@heroui-pro/react/css";
 
-/* STORE-21 TOKENS START */
+/* STORE TOKENS START */
 :root {
   --background: oklch(0.968077 0.007383 80.721); /* #F7F4EF */
   --surface: oklch(1 0 0); /* #FFF */
@@ -69,4 +69,4 @@
   --color-store-code-surface: oklch(0.188201 0.019602 252.183); /* #0D141C */
   --color-store-code-foreground: oklch(0.898202 0.015641 257.2); /* #D7DEE8 */
 }
-/* STORE-21 TOKENS END */
+/* STORE TOKENS END */

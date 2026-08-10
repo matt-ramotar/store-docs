@@ -21,7 +21,7 @@ export default async function Page(props: {
 
   return (
     <AppShell currentPath={page.url} pageTree={source.pageTree} toc={toc}>
-      <article className="mx-auto max-w-3xl">
+      <article className="mx-auto w-full min-w-0 max-w-3xl">
         <header className="space-y-4">
           <h1 id="page-title" className="text-4xl font-semibold tracking-tight">
             {page.data.title}
@@ -33,7 +33,7 @@ export default async function Page(props: {
           ) : null}
           <Separator />
         </header>
-        <div className="mt-8 leading-7">
+        <div id="content" className="mt-8 min-w-0 leading-7">
           <MDX components={getMDXComponents()} />
         </div>
       </article>

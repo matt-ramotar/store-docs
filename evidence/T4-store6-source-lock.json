@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "revision": "a6a156e99db29cebf7da238263b007802bff2bfb",
+  "sources": [
+    {
+      "path": "docs/store6/quickstart.md",
+      "sha256": "f02625d024c8aab5dcd64da25792f37d30f0935b0035a771061acda3ddc480af",
+      "target": "content/docs/store6/quickstart.mdx"
+    },
+    {
+      "path": "docs/store6/important-defaults.md",
+      "sha256": "c4751f27063e37d58c37cdf6a0183bf9a32b97a3b6eba0078ac8bf3f9744c597",
+      "target": "content/docs/store6/important-defaults.mdx"
+    },
+    {
+      "path": "docs/store6/invalidate-vs-clear.md",
+      "sha256": "12da7ca244fb6e0c0172afd3ad4808594da30382c217e50bb97b85d0505d69f1",
+      "target": "content/docs/store6/invalidate-vs-clear.mdx"
+    },
+    {
+      "path": "docs/store6/key-design.md",
+      "sha256": "a1b620e5f5ce1cc750740a37350b4fc401200afc70cd756585441301398cb222",
+      "target": "content/docs/store6/key-design.mdx"
+    },
+    {
+      "path": "STABILITY.md",
+      "sha256": "1fefba6af15edd74c7b70aeb970d8378f784185d0c315f4c9c3da2810b1e6cea",
+      "target": "content/docs/store6/stability.mdx"
+    },
+    {
+      "path": "ROADMAP.md",
+      "sha256": "c83a05933544f6f2484de1f28babe4073ee469cdb619cdf7240db9dcb7e2f14f",
+      "target": "content/docs/store6/roadmap.mdx"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "sha256": "4fee66fc7805e1efd26a581152f5651a58a140bdbb4819b4dbadc6417378930a",
+      "target": "content/docs/store6/contributing.mdx"
+    },
+    {
+      "path": "store6-compose/README.md",
+      "sha256": "1a8f0ee674ba200fe0ace9a6ac571608e9c13eee34d0f497711299429f659e28",
+      "target": "content/docs/store6/compose.mdx"
+    },
+    {
+      "path": "store6-sqldelight/README.md",
+      "sha256": "04d03b4f89be57c07aed107f43dfbe740b0bd726e1f7ebee8654e611c3479fbf",
+      "target": "content/docs/store6/sqldelight.mdx"
+    },
+    {
+      "path": "llms.txt",
+      "sha256": "b8899bd4b42b07e0413d921e5a8fe60093c8aa3407b759353bae3d6b3189762b",
+      "markdownLinkCount": 7,
+      "target": "public/llms.txt"
+    }
+  ]
+}
