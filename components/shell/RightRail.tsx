@@ -1,7 +1,7 @@
 import type { TOCItemType } from "fumadocs-core/toc";
-import { Chip, Link, Separator } from "@heroui/react";
-import { FloatingToc } from "@heroui-pro/react";
+import { Chip, Separator } from "@heroui/react";
 
+import { ActiveFloatingToc } from "@/components/shell/ActiveFloatingToc";
 import { docsVersions, type DocsVersion } from "@/lib/nav";
 
 export type RightRailProps = {
@@ -24,28 +24,7 @@ export function RightRail({ items, version }: RightRailProps) {
           </h2>
           <p className="text-muted mt-1 text-xs">Jump to a section.</p>
         </div>
-        <FloatingToc placement="right" triggerMode="press">
-          <FloatingToc.Trigger aria-label="Open table of contents">
-            {items.map((item, index) => (
-              <FloatingToc.Bar
-                key={item.url}
-                active={index === 0}
-                level={Math.max(1, item.depth - 1)}
-              />
-            ))}
-          </FloatingToc.Trigger>
-          <FloatingToc.Content className="flex w-64 flex-col gap-1 p-2">
-            {items.map((item) => (
-              <Link
-                key={item.url}
-                className="text-foreground hover:bg-default block rounded-xl px-3 py-2 text-sm no-underline"
-                href={item.url}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </FloatingToc.Content>
-        </FloatingToc>
+        <ActiveFloatingToc items={items} />
       </section>
       <Separator />
       <section aria-labelledby="page-status-heading" className="space-y-3">
