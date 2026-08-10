@@ -162,13 +162,15 @@ test("route derivation rejects an orphan content documentation route", async () 
   });
 });
 
-test("route derivation rejects an unexpected application page entrypoint", async () => {
-  await withFixture(async (root) => {
-    writeContractFixture(root);
-    writeFixture(root, "app/unexpected/page.tsx", "fixture\n");
+test("route derivation rejects unexpected application page entrypoints for every configured extension", async () => {
+  for (const extension of ["mdx", "md", "jsx", "js", "tsx", "ts"]) {
+    await withFixture(async (root) => {
+      writeContractFixture(root);
+      writeFixture(root, `app/unexpected/page.${extension}`, "fixture\n");
 
-    await assert.rejects(deriveRouteContract({ root }), /application page entrypoints differ/);
-  });
+      await assert.rejects(deriveRouteContract({ root }), /application page entrypoints differ/);
+    });
+  }
 });
 
 test("route derivation rejects an unexpected public reference entrypoint", async () => {

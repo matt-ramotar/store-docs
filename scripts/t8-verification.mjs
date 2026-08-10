@@ -11,6 +11,7 @@ const DEFAULT_ROOT = resolve(import.meta.dirname, "..");
 const MINIMUM_REQUEST_START_GAP_MS = 1_000;
 const MAXIMUM_5XX_RETRIES = 2;
 const DEFAULT_REQUEST_TIMEOUT_MS = 30_000;
+const CONFIGURED_APPLICATION_PAGE_PATTERN = /\/page\.(?:mdx?|jsx?|tsx?)$/;
 
 const CONTRACT_SOURCES = Object.freeze({
   inventory: "evidence/live-url-inventory.txt",
@@ -165,7 +166,7 @@ export async function deriveRouteContract({ root = DEFAULT_ROOT } = {}) {
   const applicationPages = await collectMatchingTargets(
     absoluteRoot,
     "app",
-    (target) => target.endsWith("/page.tsx"),
+    (target) => CONFIGURED_APPLICATION_PAGE_PATTERN.test(target),
   );
   const expectedApplicationPages = [
     "app/(docs)/docs/[[...slug]]/page.tsx",

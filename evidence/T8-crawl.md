@@ -77,7 +77,9 @@ The nine synchronized Store6 pages are derived from exact equality between the
 Store6 source lock and its owned-target ledger. The hand-authored Store6
 overview remains outside that lock. Independent source scans found exactly the
 expected content documentation, application page entrypoints, and public
-reference HTML entrypoints.
+reference HTML entrypoints. The application census recognizes the six page
+extensions enabled by the current Next/createMDX configuration:
+`page.{mdx,md,jsx,js,tsx,ts}`.
 
 ## Local HTTP crawl
 
