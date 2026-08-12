@@ -17,6 +17,17 @@
 /docs/store6/important-defaults
 /docs/store6/invalidate-vs-clear
 /docs/store6/key-design
+/docs/store6/mutations
+/docs/store6/mutations/aliases
+/docs/store6/mutations/conflicts
+/docs/store6/mutations/drain-and-restart
+/docs/store6/mutations/inspection
+/docs/store6/mutations/journal-storage
+/docs/store6/mutations/mutators
+/docs/store6/mutations/pending-write-ui
+/docs/store6/mutations/quickstart
+/docs/store6/mutations/server
+/docs/store6/mutations/testing
 /docs/store6/overview
 /docs/store6/quickstart
 /docs/store6/roadmap

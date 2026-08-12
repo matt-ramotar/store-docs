@@ -25,6 +25,19 @@ import {
 const ROOT = resolve(import.meta.dirname, "..");
 const LIVE_ORIGIN = "https://store.mobilenativefoundation.org";
 const LOCAL_ORIGIN = "http://127.0.0.1:3222";
+const B3_MUTATION_ROUTES = [
+  "/docs/store6/mutations",
+  "/docs/store6/mutations/aliases",
+  "/docs/store6/mutations/conflicts",
+  "/docs/store6/mutations/drain-and-restart",
+  "/docs/store6/mutations/inspection",
+  "/docs/store6/mutations/journal-storage",
+  "/docs/store6/mutations/mutators",
+  "/docs/store6/mutations/pending-write-ui",
+  "/docs/store6/mutations/quickstart",
+  "/docs/store6/mutations/server",
+  "/docs/store6/mutations/testing",
+];
 
 test("committed sources derive the inventory, separate exclusion, extras, and page census", async () => {
   const contract = await deriveRouteContract({ root: ROOT });
@@ -51,6 +64,15 @@ test("committed sources derive the inventory, separate exclusion, extras, and pa
     { path: "/api/search", surface: "static search API" },
     { path: "/llms.txt", surface: "public text file" },
   ]);
+});
+
+test("committed route contract includes all B3 mutation routes", async () => {
+  const contract = await deriveRouteContract({ root: ROOT });
+
+  assert.deepEqual(
+    contract.extras.filter((route) => route === "/docs/store6/mutations" || route.startsWith("/docs/store6/mutations/")),
+    B3_MUTATION_ROUTES,
+  );
 });
 
 test("fixture derivation gets synchronized Store6 routes from both lock and ledger", async () => {
@@ -620,6 +642,7 @@ function writeContractFixture(root, options = {}) {
     "/docs/store6/guides/persistence",
     "/docs/store6/guides/swift",
     "/docs/store6/guides/testing",
+    ...B3_MUTATION_ROUTES,
     "/docs/store6/overview",
     "/docs/store6/quickstart",
     "/docs/store6/room",
@@ -696,6 +719,17 @@ function writeContractFixture(root, options = {}) {
     "content/docs/store6/guides/persistence.mdx",
     "content/docs/store6/guides/swift.mdx",
     "content/docs/store6/guides/testing.mdx",
+    "content/docs/store6/mutations/aliases.mdx",
+    "content/docs/store6/mutations/conflicts.mdx",
+    "content/docs/store6/mutations/drain-and-restart.mdx",
+    "content/docs/store6/mutations/index.mdx",
+    "content/docs/store6/mutations/inspection.mdx",
+    "content/docs/store6/mutations/journal-storage.mdx",
+    "content/docs/store6/mutations/mutators.mdx",
+    "content/docs/store6/mutations/pending-write-ui.mdx",
+    "content/docs/store6/mutations/quickstart.mdx",
+    "content/docs/store6/mutations/server.mdx",
+    "content/docs/store6/mutations/testing.mdx",
     "content/docs/store6/overview.mdx",
     syncedTarget,
     syncedRoomTarget,
@@ -731,7 +765,8 @@ function readLines(path) {
 
 function docsRoute(target) {
   const relative = target.slice("content/docs/".length, -".mdx".length);
-  return relative === "index" ? "/docs" : `/docs/${relative}`;
+  const route = relative === "index" ? "" : relative.replace(/\/index$/, "");
+  return route ? `/docs/${route}` : "/docs";
 }
 
 function inventoryTarget(path) {

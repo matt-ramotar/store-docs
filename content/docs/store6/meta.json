@@ -12,6 +12,8 @@
     "room",
     "sqldelight",
     "compose",
+    "---Mutations (experimental)---",
+    "mutations",
     "---Project---",
     "stability",
     "roadmap",

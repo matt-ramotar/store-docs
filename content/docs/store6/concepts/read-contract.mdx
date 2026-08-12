@@ -105,7 +105,8 @@ Two facts about `OVERLAY` frames are worth learning before you ever use the writ
   keys on `origin == Origin.OVERLAY`, never on `isStale`; a spinner driven by `isStale` will never
   fire for a pending write, and that is intended. The full consumer guidance lives in
   [the stability policy](/docs/store6/stability#9-reading-pending-writes-and-staleness), and the
-  mutations documentation covers pending-write UI in depth.
+  [pending-write UI guide](/docs/store6/mutations/pending-write-ui) covers the consumer pattern in
+  depth.
 - **`get` is never projected by a configured overlay.** Overlays apply only to `stream`, so an
   optimistic write is invisible to `get` — it is a point read of committed truth. To observe your
   own optimistic write, observe `stream`.
@@ -193,4 +194,4 @@ than once has no additional effect.
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

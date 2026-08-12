@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "index",
+    "quickstart",
+    "mutators",
+    "pending-write-ui",
+    "server",
+    "conflicts",
+    "aliases",
+    "drain-and-restart",
+    "journal-storage",
+    "inspection",
+    "testing"
+  ]
+}

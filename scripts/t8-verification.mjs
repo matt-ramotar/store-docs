@@ -74,6 +74,50 @@ const FIXED_EXTRA_SOURCES = Object.freeze([
     source: "content/docs/store6/guides/testing.mdx",
   },
   {
+    path: "/docs/store6/mutations",
+    source: "content/docs/store6/mutations/index.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/aliases",
+    source: "content/docs/store6/mutations/aliases.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/conflicts",
+    source: "content/docs/store6/mutations/conflicts.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/drain-and-restart",
+    source: "content/docs/store6/mutations/drain-and-restart.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/inspection",
+    source: "content/docs/store6/mutations/inspection.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/journal-storage",
+    source: "content/docs/store6/mutations/journal-storage.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/mutators",
+    source: "content/docs/store6/mutations/mutators.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/pending-write-ui",
+    source: "content/docs/store6/mutations/pending-write-ui.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/quickstart",
+    source: "content/docs/store6/mutations/quickstart.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/server",
+    source: "content/docs/store6/mutations/server.mdx",
+  },
+  {
+    path: "/docs/store6/mutations/testing",
+    source: "content/docs/store6/mutations/testing.mdx",
+  },
+  {
     path: "/reference/store6-core/index.html",
     source: "public/reference/store6-core/index.html",
   },
@@ -623,7 +667,8 @@ function inventoryTarget(path) {
 
 function docsRoute(target) {
   const relative = target.slice("content/docs/".length, -".mdx".length);
-  return relative === "index" ? "/docs" : `/docs/${relative}`;
+  const route = relative === "index" ? "" : relative.replace(/\/index$/, "");
+  return route ? `/docs/${route}` : "/docs";
 }
 
 function parsePathLines(text, label) {

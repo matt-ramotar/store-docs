@@ -78,6 +78,91 @@
       "name": "guides-testing-policy-fixtures",
       "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/docs/GuideTestingSnippets.kt",
       "pages": ["/docs/store6/guides/testing"]
+    },
+    {
+      "name": "mutations-alias-key-resolver",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
+      "pages": ["/docs/store6/mutations/aliases"]
+    },
+    {
+      "name": "mutations-alias-provisional-create",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
+      "pages": ["/docs/store6/mutations/aliases"]
+    },
+    {
+      "name": "mutations-alias-stream-rekey",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
+      "pages": ["/docs/store6/mutations/aliases"]
+    },
+    {
+      "name": "mutations-conflicts-policy",
+      "path": "store6-mutations/src/commonTest/kotlin/ConflictPolicyDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/conflicts"]
+    },
+    {
+      "name": "mutations-inspection-event-collector",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
+      "pages": ["/docs/store6/mutations/inspection"]
+    },
+    {
+      "name": "mutations-journal-sqldelight-install",
+      "path": "store6-mutations-sqldelight/src/jvmTest/kotlin/JournalStorageInstallDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/journal-storage"]
+    },
+    {
+      "name": "mutations-journal-storage-interface",
+      "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt",
+      "pages": ["/docs/store6/mutations/journal-storage"]
+    },
+    {
+      "name": "mutations-mutators-five-shapes",
+      "path": "store6-mutations/src/commonTest/kotlin/MutatorRegistrationDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/mutators"]
+    },
+    {
+      "name": "mutations-overview-build-and-drain",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationOverviewDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations"]
+    },
+    {
+      "name": "mutations-pending-write-ui-badges",
+      "path": "store6-compose/src/commonTest/kotlin/org/mobilenativefoundation/store6/compose/docs/PendingWriteUiDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/pending-write-ui"]
+    },
+    {
+      "name": "mutations-quickstart",
+      "path": "store6-mutations-quickstart/src/main/kotlin/Main.kt",
+      "pages": ["/docs/store6/mutations/quickstart"]
+    },
+    {
+      "name": "mutations-restart-key-resolvers",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
+      "pages": ["/docs/store6/mutations/drain-and-restart"]
+    },
+    {
+      "name": "mutations-server-conflict-signal",
+      "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationServerContractDocsSnippets.kt",
+      "pages": ["/docs/store6/mutations/server"]
+    },
+    {
+      "name": "mutations-server-http-adapter",
+      "path": "store6-mutations/src/commonTest/kotlin/MutationServerHttpDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/server"]
+    },
+    {
+      "name": "mutations-server-interface",
+      "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+      "pages": ["/docs/store6/mutations/server"]
+    },
+    {
+      "name": "mutations-testing-journal-contract",
+      "path": "store6-mutations-sqldelight/src/jvmTest/kotlin/TestingJournalContractDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/testing"]
+    },
+    {
+      "name": "mutations-testing-projector-purity",
+      "path": "store6-mutations-testing/src/commonTest/kotlin/MutatorPurityDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/testing"]
     }
   ]
 }

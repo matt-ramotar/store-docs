@@ -1,0 +1,173 @@
+---
+title: "Conflict resolution"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**Experimental tier.** `store6-mutations` is a separate artifact in the 6.0.0-alpha01 floor, and
+every public symbol carries `@ExperimentalStoreApi`. Its shapes may change or be removed in any
+release. Read the [stability policy](/docs/store6/stability) before adopting it.
+
+</Callout>
+
+## The default: server wins
+
+Without a registered merge policy, a server-signalled conflict ends with server-wins. Store
+recaptures the authoritative server state, retires the intent, and sends no further push for it.
+Server-wins is always available and deliberately has no builder setter that can remove it.
+
+<Callout type="Note">
+
+**A merge policy adds a retry choice. It does not remove server-wins.** A merge must return either
+`MutationConflictResolution.Retry` or `MutationConflictResolution.ServerWins` explicitly.
+
+</Callout>
+
+Server-wins also determines the intent's invalidation effects. Every still-pending durable effect is
+marked `SKIPPED`, not applied, before the intent retires. The conflict does not trigger another
+invalidation through those effects.
+
+<Callout type="Note">
+
+**Conflicts have one server-side spelling.** The
+[server guide](/docs/store6/mutations/server) shows the required `StoreResults.conflict` exception
+shape. Other transport failures are not conflict signals.
+
+</Callout>
+
+## The `conflicts` block
+
+Register optional policy on the mutation-store builder with `conflicts { }`. A later call to the
+builder door replaces an earlier conflict block. Inside one block, `precondition` and `merge` may
+each be registered at most once. A duplicate registration fails immediately with
+`IllegalArgumentException`.
+
+This builder helper retries a local display-name edit only when the server did not change that same
+field. It keeps the server's other fields and falls back to server-wins for every other shape:
+
+{/* snippet: mutations-conflicts-policy */}
+```kotlin
+@file:OptIn(org.mobilenativefoundation.store6.core.ExperimentalStoreApi::class)
+
+import org.mobilenativefoundation.store6.core.StoreKey
+import org.mobilenativefoundation.store6.mutations.MutationConflictResolution
+import org.mobilenativefoundation.store6.mutations.MutationPresence
+import org.mobilenativefoundation.store6.mutations.MutationStoreBuilder
+
+data class Profile(
+    val displayName: String,
+    val avatarUrl: String,
+)
+
+fun <K : StoreKey> MutationStoreBuilder<K, Profile>.installProfileConflicts() {
+    conflicts {
+        precondition { candidate ->
+            candidate.capturedMeta?.takeIf { it.etag != null }
+        }
+
+        merge { base, mine, theirs ->
+            if (
+                base is MutationPresence.Present &&
+                mine is MutationPresence.Present &&
+                theirs is MutationPresence.Present &&
+                theirs.value.displayName == base.value.displayName
+            ) {
+                MutationConflictResolution.Retry(
+                    MutationPresence.Present(
+                        theirs.value.copy(displayName = mine.value.displayName),
+                    ),
+                )
+            } else {
+                MutationConflictResolution.ServerWins
+            }
+        }
+    }
+}
+```
+
+Call `installProfileConflicts()` inside the `mutationStore { }` builder. Both callbacks are pure
+policy functions. Keep transport in `MutationServer`.
+
+## The precondition selector
+
+`precondition` receives one library-owned `MutationPreconditionCandidate`. It contains the durable
+identity, process-local key, mutation id, generation, captured `base`, projected `mine`, and captured
+`StoreMeta`. It is not a `MutationPush` and offers no transport door.
+
+The selector runs exactly once when Store prepares a new semantic generation and never on a
+transport retry. A retry of the same generation reuses the frozen selection. After Store receives an
+ordinary conflict, it leaves the current generation unchanged, persists the execution as
+`REFRESH_REQUIRED`, and ends that drain. A later explicit drain runs the conflict policy. If its merge
+returns `Retry`, Store prepares `g + 1` and invokes the selector once for that new generation before
+the generation can be sent.
+
+Returning `null` selects an existence/value precondition without metadata. It does not make the
+write unconditional: the candidate's `base` remains the precondition. When no selector is installed,
+Store selects the candidate's captured metadata. Store snapshots the selected metadata before
+retaining it, so later mutation of the returned object does not change the prepared generation.
+
+A non-cancellation exception from the selector parks the intent as a normalized `CONFLICT` failure
+before that generation is sent.
+
+## The merge policy
+
+An ordinary server-conflict receipt first leaves the current generation unchanged, persists the
+execution as `REFRESH_REQUIRED`, and ends that drain before any fresh read or merge. On a later
+explicit drain, Store completes a fresh-read barrier and recaptures the current authoritative state
+as `theirs`.
+It then invokes the installed merge policy, or chooses `ServerWins` when no merge is installed. The
+merge receives the immutable generation's `base` and `mine` along with that recaptured `theirs`. All
+three values use `MutationPresence`, so deletion is `MutationPresence.Absent`, never a nullable
+value.
+
+The return value chooses the terminal or retry path:
+
+| Merge result | Durable transition | Transport and effects |
+| --- | --- | --- |
+| `Retry(presence)` | Persist generation `g + 1` as ready before sending it. Generation `g` remains unchanged. | The new generation has a new idempotency key and may be pushed during that later drain. |
+| `ServerWins` | Retire the intent against the recaptured authoritative state. | Send no further push and mark every pending invalidation effect `SKIPPED`. |
+| Non-cancellation throw | Park the intent with a normalized `CONFLICT` failure. | Send no merged generation. |
+
+Transport retries within one generation keep that generation's immutable payload, precondition,
+and idempotency key. A merge retry is different: even when it chooses the same presence, it creates
+`g + 1` and a new idempotency key before the first send. A `CancellationException` from the merge is
+rethrown and leaves the current conflict generation available for a later explicit drain.
+
+## The repeat bound
+
+Merge retries cannot repeat the same server receipt forever. Store tracks the trailing run of
+conflict receipts by the optional server-reported `StoreMeta`: `writtenAtEpochMillis` and `etag`, or
+the absence of metadata. On the third consecutive receipt with identical metadata, it durably parks
+the intent with failure kind `CONFLICT` instead of invoking the merge or preparing another
+generation. A different metadata receipt resets that trailing run; changing only the conflict
+message does not.
+
+A parked intent is terminal and never re-enters the executable FIFO. Use
+[`deadLetters()` inspection](/docs/store6/mutations/inspection) to find the normalized failure and
+the generation at which it parked.
+
+## Observing conflicts
+
+Durable inspection and advisory events answer different questions:
+
+- `pending(key)` and `pendingWrites()` report current nonterminal state. After an ordinary conflict
+  receipt, the public state is `REFRESHING`, backed by durable `REFRESH_REQUIRED`, and the drain that
+  received the conflict has already returned. It remains there until a later explicit drain runs the
+  fresh-read barrier, recaptures authoritative state, and invokes the merge policy or, when none is
+  installed, chooses `ServerWins`.
+- `deadLetters()` is the durable source for a conflict that ended by a policy failure or the repeat
+  bound. Its `MutationFailure.kind` is `CONFLICT`.
+- `events` may emit `MutationConflictObserved` with the conflicted generation and the server's
+  `StoreMeta`, when present. Server-wins may also emit `MutationEffectSkipped` and
+  `MutationRetired` lifecycle events.
+
+The event stream is advisory and lossy: replay `0`, extra buffer capacity `64`, and oldest dropped
+on overflow. It is not settlement truth and cannot replace inspection. See
+[Inspection and observability](/docs/store6/mutations/inspection) for the complete boundary.
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "be47062070eba8f8a327279e9c5a68caa0ef06ca",
+  "revision": "539614c06be1a8f20dead562585e47394551ebae",
   "sources": [
     {
       "path": "docs/store6/quickstart.md",
@@ -54,8 +54,8 @@
     },
     {
       "path": "llms.txt",
-      "sha256": "8baf03391e3c70cc77e9174b891c5abdacd138bca8a83faa48db1674aa84466f",
-      "markdownLinkCount": 22,
+      "sha256": "f5462524552751aa117866b67a25fc9c7e4deb8650f534e2da56eeddeb29d4ee",
+      "markdownLinkCount": 33,
       "target": "public/llms.txt"
     }
   ]

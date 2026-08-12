@@ -153,7 +153,7 @@ before combining its Swift files deterministically.
 This is a surface-drift check, not a runtime conformance test and not proof that every Store module
 publishes every Apple target. It also does not change stability tiers: the mutations dump makes its
 current Experimental surface reviewable; it does not freeze it. Mutation-specific Swift guidance
-will live at `/docs/store6/mutations` when that page becomes available.
+starts with the [mutations overview](/docs/store6/mutations).
 
 Objective-C export and SKIE are the supported bridges today. The stability commitment is to keep
 generated-Swift verification for the supported bridge set, not to preserve those two lane names
@@ -162,4 +162,4 @@ directly from the repository without resolving an artifact.
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

@@ -1,0 +1,208 @@
+---
+title: "Inspection and observability"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**Experimental tier.** `store6-mutations` is a separate artifact in the 6.0.0-alpha01 floor, and
+every public symbol carries `@ExperimentalStoreApi`. Its shapes may change or be removed in any
+release. Read the [stability policy](/docs/store6/stability) before adopting it.
+
+</Callout>
+
+<Callout type="Note">
+
+**An acknowledgement event is not settlement.** Remote acceptance followed by process death before
+the local ack-receipt transaction commits leaves the intent `INFLIGHT`; restart may
+replay the same immutable generation with the same idempotency key. Once the receipt is durable and
+`MutationAcknowledged` can be emitted, restart may repeat adoption, effect application, or
+retirement finalization, but it does not re-push that generation. Make the endpoint idempotent, or
+key it by mutation identity. The [server guide](/docs/store6/mutations/server) defines this contract.
+
+</Callout>
+
+## Two kinds of observability
+
+Mutation inspection separates journal-backed facts from best-effort signals:
+
+| Surface | Lifetime | Use |
+|---|---|---|
+| `pending(key)`, `pendingWrites()`, `deadLetters()` | Truthful snapshots reconstructed from the journal. With durable journal storage, they survive process restart. | Reconciliation, recovery, and settlement decisions. |
+| `events` | In-process mutation lifecycle telemetry with no replay and bounded buffering. | Logging, diagnostics, and live UI hints. |
+| `poisoned` | In-process exact-throwable reports with a replay window of 16. | Diagnose a projector that violated its contract. |
+| `keyEvents` | In-process core writer notifications with no replay and bounded buffering. | Observe delegated Store writes, invalidations, and deletions. |
+
+The default in-memory journal does not survive process death. Install durable storage before
+depending on inspection after restart. See [Journal storage](/docs/store6/mutations/journal-storage).
+
+<Callout type="Note">
+
+**Never build settlement logic on `events`, `poisoned`, or `keyEvents`.** Signals can be dropped,
+collectors can start too late, and restart supplies no completed history. A flow is never a drain,
+acknowledgement, retry, or settlement protocol. Read the journal through the inspection functions.
+
+</Callout>
+
+## Durable truth
+
+### `pending(key)`
+
+`pending(key)` returns the current nonterminal intents for the key's terminal identity in durable
+client-sequence FIFO order. Alias traversal uses durable identity pairs only. Inspection never
+reconstructs a `K`, never calls the resolver, and therefore cannot fail because a canonical key is
+unresolvable.
+
+### `pendingWrites()`
+
+`pendingWrites()` returns every nonterminal active intent across all durable identities in durable
+client-sequence order. It is a snapshot, not a subscription. Retired history never appears.
+
+### `deadLetters()`
+
+`deadLetters()` returns only durably `PARKED` intents. Parking is legal only before a successful
+acknowledgement is durably recorded. Once parked, that client sequence never re-enters the
+executable FIFO. Retired history and post-acknowledgement work do not appear here.
+
+<Callout type="Note">
+
+**Dead letters are terminal.** Store does not resume a parked row. Inspect its normalized failure
+and make the recovery decision in application code, such as correcting the underlying data and
+submitting a new intent.
+
+</Callout>
+
+### The five public pending states
+
+Five public states cover the six nonterminal durable execution phases:
+
+| Public state | Durable phase |
+|---|---|
+| `PENDING` | `UNPREPARED` or `READY` |
+| `INFLIGHT` | `INFLIGHT` |
+| `REFRESHING` | `REFRESH_REQUIRED` |
+| `ADOPTING` | `ACKED` |
+| `APPLYING_EFFECTS` | `EFFECTS_PENDING` |
+
+A parked execution appears only in `deadLetters()`. A retired execution appears in neither
+pending inspection nor dead letters.
+
+### `PendingIntent` fields
+
+| Field | Meaning |
+|---|---|
+| `namespace` | Verbatim effective namespace. |
+| `canonicalId` | Verbatim effective canonical id. |
+| `mutationId` | Opaque public id assigned at enqueue. |
+| `mutatorId` | Registered mutator storage identity. |
+| `state` | Public mapping of the current active execution phase. |
+| `attempt` | Completed network attempts for the current generation. |
+| `createdAtEpochMillis` | Durable enqueue time in Unix epoch milliseconds. |
+
+## The failure taxonomy
+
+`MutationFailureKind` is an append-only classification with nine broad kinds:
+
+| Kind | Meaning |
+|---|---|
+| `IDENTITY` | The key resolver returned `null`, threw, or returned a mismatched identity pair. |
+| `CODEC` | Stored argument or value bytes could not be decoded, or the stored mutator is not registered. |
+| `PROJECTION` | A registered projection function threw before transport. |
+| `PROTOCOL` | The backend violated the acknowledgement, alias, or retirement-checkpoint protocol. |
+| `CONFLICT` | A precondition conflict ended the intent because policy threw or the repeat bound was reached. |
+| `TRANSPORT` | `MutationServer.push` or `MutationServer.retire` threw a non-cancellation failure. |
+| `ADOPTION` | Writing a durable acknowledgement into Store failed. |
+| `EFFECT` | Applying a durable invalidation effect to its target failed. |
+| `PERSISTENCE` | A journal-storage operation failed. |
+
+`MutationFailure` is normalized and restart-safe. A raw `StoreError` or `Throwable` is never
+persisted or carried by it. Store removes stack-trace lines and remaining ISO control characters,
+then truncates at a Unicode code-point boundary. `detail` is at most 128 UTF-8 bytes and `message`
+is at most 1,024 UTF-8 bytes. `occurredAtEpochMillis` records Unix epoch milliseconds.
+
+## Advisory events
+
+`events` is a read-only `SharedFlow<MutationEvent>` with replay `0`, extra buffer capacity `64`,
+and `DROP_OLDEST` overflow. Store emits with non-blocking `tryEmit` only. A new collector receives
+no history, restart replays nothing, and no event carries a raw `Throwable` or `StoreError`.
+
+Intent-scoped events carry a `mutationId` and durable identity pair:
+
+| Event | Observation |
+|---|---|
+| `MutationEnqueued` | The intent durably entered the journal. |
+| `MutationAttempted` | A transport invocation began after `INFLIGHT` became durable. |
+| `MutationConflictObserved` | The backend reported a precondition conflict. |
+| `MutationAcknowledged` | A successful acknowledgement became durable. |
+| `MutationAdopted` | The durable acknowledgement was adopted into Store. |
+| `MutationEffectApplied` | An invalidation effect reached `APPLIED`. |
+| `MutationEffectSkipped` | Conflict server-wins moved an invalidation effect to `SKIPPED`. |
+| `MutationFailed` | A retryable failure retained an active intent instead of parking it. |
+| `MutationParked` | The intent durably parked and left the executable FIFO. |
+| `MutationRetired` | The intent retired and advanced the contiguous local high-water. |
+
+Checkpoint events are client-scoped and deliberately do not fabricate a mutation identity or
+generation:
+
+| Event | Observation |
+|---|---|
+| `MutationCheckpointConfirmed` | A validated retirement-checkpoint receipt was persisted. |
+| `MutationCheckpointFailed` | A non-cancellation checkpoint transport, protocol, or persistence failure occurred without creating an intent-owned failure row. |
+
+Collect for a lifetime your application owns. This example stops after 30 seconds and treats the
+output only as diagnostics:
+
+{/* snippet: mutations-inspection-event-collector */}
+```kotlin
+withTimeoutOrNull(30_000L) {
+    mutations.events.collect { event ->
+        println(event::class.simpleName ?: "MutationEvent")
+    }
+}
+// Dropped events are expected under pressure. Reconcile with durable inspection.
+```
+
+## The poisoned flow
+
+`poisoned` reports a projector throw as a `PoisonedIntent` containing the exact local `Throwable`.
+For the durable execution path, a projector throw also parks the row with a normalized
+`PROJECTION` failure. The exact throwable is never persisted and does not cross restart.
+
+The flow replays up to 16 in-process reports and drops the oldest under pressure. For the
+documented projector case, fix the projector rather than treating the report as retry policy; see
+[Authoring mutators](/docs/store6/mutations/mutators).
+
+## KeyEvents
+
+`MutationStore.keyEvents` republishes the delegated core Store's writer-event flow. The mutations
+facade deliberately returns `null` from `runtime()`, but keeps this advisory flow available as a
+public member.
+
+`KeyEvents` is deliberately open rather than sealed. Its current variants are `Written`,
+`Invalidated`, and `Deleted`; retain an `else` branch when matching so a future minor-version
+variant does not break the consumer. `Written` covers fetch commits and write-handle adoption,
+`Invalidated` covers successful stale marks, and `Deleted` covers successful destructive removals.
+There is no `Rekeyed` variant. Canonical-key changes are observed through the stream swap and
+inspection described in [Aliases and canonical rekeying](/docs/store6/mutations/aliases).
+
+Delivery is a best-effort hot flow with replay `0` and a buffer of `64` that drops the oldest
+event. It never completes, including after `Store.close`, so scope collection to an application
+lifecycle. Purge sweeps, nonresident watermark coverage, external source-of-truth changes, and
+superseded fetches emit no key event. The [extension guide](/docs/store6/guides/extending) covers
+the open hierarchy in more detail.
+
+## Relationship to store-level telemetry
+
+`telemetry(...)` in the mutation-store configure lambda installs `StoreTelemetry` on the delegated
+core Store. Its callbacks observe fetches, public serves, invalidations, and clears without
+participating in correctness. The mutations-owned `events` flow is a separate vocabulary for the
+journalled write lifecycle, while `keyEvents` remains the core writer-event stream.
+
+Use [Devtools and the inspector](/docs/store6/guides/devtools) for shipped core telemetry sinks and
+live inspection. None of these advisory surfaces replaces mutation inspection.
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

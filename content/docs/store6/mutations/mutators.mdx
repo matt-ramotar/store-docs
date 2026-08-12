@@ -1,0 +1,256 @@
+---
+title: "Authoring mutators"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**Experimental tier.** `store6-mutations` is a separate artifact in the 6.0.0-alpha01 floor, and
+every public symbol carries `@ExperimentalStoreApi`. Its shapes may change or be removed in any
+release. Read the [stability policy](/docs/store6/stability) before adopting it.
+
+</Callout>
+
+## Registrations are durable and named
+
+Build a `MutatorRegistry<K, V>` once with `mutatorRegistry { }`. Each operation has a stable `id`,
+a typed argument shape, a projector, and a declarative invalidation function. The journal stores
+the registered id, argument version, and encoded arguments; it never stores a closure supplied at
+the `mutate` call site.
+
+The durable registration identity is the id plus the argument version. Duplicate ids and versions
+below `1` fail during registration. After the builder has produced its registry, it rejects another
+registration. When `mutate` receives a ref, Store validates that the ref belongs to that exact
+registry before appending anything to the journal.
+
+## The five shapes
+
+This example retains the typed ref returned by every registration. The four named codec values are
+app implementations of `MutationCodec<UserCommand>`, `MutationCodec<Rename>`,
+`MutationCodec<NewUser>`, and `MutationCodec<User>` respectively.
+
+{/* snippet: mutations-mutators-five-shapes */}
+```kotlin
+@file:OptIn(org.mobilenativefoundation.store6.core.ExperimentalStoreApi::class)
+
+import org.mobilenativefoundation.store6.core.StoreKey
+import org.mobilenativefoundation.store6.core.StoreNamespace
+import org.mobilenativefoundation.store6.mutations.MutationCodec
+import org.mobilenativefoundation.store6.mutations.MutationPresence
+import org.mobilenativefoundation.store6.mutations.MutatorRef
+import org.mobilenativefoundation.store6.mutations.MutatorRegistry
+import org.mobilenativefoundation.store6.mutations.StaleSet
+import org.mobilenativefoundation.store6.mutations.mutatorRegistry
+
+private class UserKey(private val id: String) : StoreKey {
+    override val namespace: StoreNamespace = StoreNamespace("users")
+    override fun canonicalId(): String = id
+}
+
+private data class User(val id: String, val name: String)
+private data class Rename(val name: String)
+private data class NewUser(val id: String, val name: String)
+
+private sealed interface UserCommand {
+    data class Replace(val user: User) : UserCommand
+    data object Delete : UserCommand
+    data object Decline : UserCommand
+}
+
+private data class UserMutators(
+    val registry: MutatorRegistry<UserKey, User>,
+    val genericRef: MutatorRef<UserKey, User, UserCommand>,
+    val updateRef: MutatorRef<UserKey, User, Rename>,
+    val createRef: MutatorRef<UserKey, User, NewUser>,
+    val deleteRef: MutatorRef<UserKey, User, Unit>,
+    val upsertRef: MutatorRef<UserKey, User, User>,
+)
+
+private fun noStales(): StaleSet<UserKey> =
+    StaleSet(keys = emptySet(), namespaces = emptySet())
+
+private fun buildUserMutators(
+    userCommandCodec: MutationCodec<UserCommand>,
+    renameCodec: MutationCodec<Rename>,
+    newUserCodec: MutationCodec<NewUser>,
+    userCodec: MutationCodec<User>,
+): UserMutators {
+    lateinit var genericRef: MutatorRef<UserKey, User, UserCommand>
+    lateinit var updateRef: MutatorRef<UserKey, User, Rename>
+    lateinit var createRef: MutatorRef<UserKey, User, NewUser>
+    lateinit var deleteRef: MutatorRef<UserKey, User, Unit>
+    lateinit var upsertRef: MutatorRef<UserKey, User, User>
+
+    val registry =
+        mutatorRegistry<UserKey, User> {
+            genericRef =
+                mutator(
+                    id = "user-command",
+                    version = 1,
+                    codec = userCommandCodec,
+                    stales = { _, _ -> noStales() },
+                    project = { _, command ->
+                        when (command) {
+                            is UserCommand.Replace -> MutationPresence.Present(command.user)
+                            UserCommand.Delete -> MutationPresence.Absent
+                            UserCommand.Decline -> null
+                        }
+                    },
+                )
+
+            updateRef =
+                update(
+                    id = "rename-user",
+                    version = 1,
+                    codec = renameCodec,
+                    stales = { _, _ -> noStales() },
+                    project = { user, rename -> user.copy(name = rename.name) },
+                )
+
+            createRef =
+                create(
+                    id = "create-user",
+                    version = 1,
+                    codec = newUserCodec,
+                    stales = { _, _ -> noStales() },
+                    project = { args -> User(id = args.id, name = args.name) },
+                )
+
+            deleteRef =
+                delete(
+                    id = "delete-user",
+                    stales = { _, _ -> noStales() },
+                )
+
+            upsertRef =
+                upsert(
+                    id = "put-user",
+                    version = 1,
+                    codec = userCodec,
+                    stales = { _, _ -> noStales() },
+                    project = { _, user -> MutationPresence.Present(user) },
+                )
+        }
+
+    return UserMutators(
+        registry = registry,
+        genericRef = genericRef,
+        updateRef = updateRef,
+        createRef = createRef,
+        deleteRef = deleteRef,
+        upsertRef = upsertRef,
+    )
+}
+```
+
+### `mutator`
+
+The generic shape accepts
+`project: (MutationPresence<V>, A) -> MutationPresence<V>?` alongside `stales`. It can produce a
+present value, project absence, or decline. Use it when the narrower helpers do not express the
+operation.
+
+### `update`
+
+`update` transforms an existing `V`. If the confirmed base is `Absent`, the helper returns `null`
+and declines the intent; your projector is not asked to manufacture a missing value.
+
+### `create`
+
+`create` builds a `V` from its arguments alone. It deliberately ignores the confirmed base and
+wraps the result in `Present`.
+
+### `delete`
+
+`delete` always projects `Absent`, so it remains drainable. It accepts neither a version nor a
+codec. Store owns its fixed version-1 `Unit` codec, whose encoding is exactly zero bytes. A durable
+delete row with another argument version or any argument bytes is a normalized `CODEC` failure.
+
+### `upsert`
+
+`upsert` receives the explicit confirmed `MutationPresence<V>` and must return a non-null
+`MutationPresence<V>`. It can project `Present` or `Absent`, but it cannot decline.
+
+## The presence algebra
+
+Mutation values do not use nullable `V`. The base, optimistic value, and adoption boundary all
+carry one of two explicit states:
+
+| Projector result | Meaning |
+|---|---|
+| `MutationPresence.Present(value)` | The entity should exist with `value`. |
+| `MutationPresence.Absent` | The entity should not exist; this is a deletion. |
+| `null` | Decline this intent without applying it. |
+
+A declined head remains pending and blocks only the suffix for that same effective key. It is not a
+delete and is not skipped to reach later work for that key. As a base, `Absent` is also an
+existence precondition: apply only while the entity is still absent, not an unconditional write.
+
+## Purity rules and what breaking them costs
+
+`project` runs synchronously inside the mutation engine's overlay application. Store may invoke it
+repeatedly, or concurrently for different keys. It must therefore be a pure, deterministic,
+non-blocking function of `(base, args)`. Do not read clocks, random generators, mutable ambient
+state, or perform I/O, and do not call back into Store.
+
+<Callout type="Note">
+
+**A projector throw permanently parks the intent.** This is deliberate containment, not retry.
+Store reports the exact in-process throwable through `MutationStore.poisoned`, records a normalized
+durable `PROJECTION` failure, and never returns that parked sequence to the executable FIFO. The
+throwable itself does not survive restart. Use
+[inspection](/docs/store6/mutations/inspection) to read the durable dead letter.
+
+</Callout>
+
+The core `Overlay` contract has a separate defensive boundary. If its `apply` or `changes`
+contract is violated, projection is terminalized for that key and projected streams fail with a
+deterministic internal exception. Store never silently falls back to an unprojected value.
+
+## Declare invalidation with `stales`
+
+`stales(key, args)` is data, not an effect callback. It must be pure: equal inputs produce
+structurally equal `StaleSet`s. Before the intent's first push, Store copies the result, normalizes
+keys to their full durable identity pairs, deduplicates entries, sorts them, and persists immutable
+effect records. Return the keys whose confirmed values become stale and any whole namespaces that
+must be invalidated after adoption.
+
+## Typed refs and registry ownership
+
+`MutatorRef<K, V, A>` binds key, value, and argument types at the Kotlin call site. It also carries
+an internal ownership token. Passing a ref from another registry instance to `mutate` throws
+`IllegalArgumentException` before the journal append, even if that registry contains an identical
+id. Ownership is registry identity, not string matching.
+
+Keep the registry and its refs together, as the example's `UserMutators` does. Rebuilding an
+equivalent registry creates different ownership; its refs are not interchangeable with the refs
+from the registry used to construct the `MutationStore`.
+
+## Args codec versioning
+
+Every non-delete registration supplies a positive argument version and a `MutationCodec<A>`.
+Encoding and decoding must be pure and deterministic for a given version. Store copies encoded
+output before retaining it and passes a fresh byte-array copy into every decode, so codec code
+cannot mutate a stored retry generation through a retained array.
+
+Treat codec evolution as append-only. `decode(version, bytes)` receives the version persisted with
+the row, which can be older than the currently registered version. Add a new format version while
+retaining every older decoder until all rows using it have safely retired and been pruned.
+
+## Proving purity
+
+The [`MutatorPurityContractKit`](/docs/store6/mutations/testing) registers the exact projector under
+test and exercises fresh representative samples. Its inherited checks cover repeat determinism,
+equivalent independent two-step replay traces, invocation-count independence, named ambient-state
+changes, and input mutation. The two-step check is not an idempotence requirement: append and
+increment projectors remain lawful when both independent traces agree.
+
+The kit cannot discover arbitrary ambient state. Supply probes for each external value that the
+projector could observe, then keep the production projector and the registry-bound test subject the
+same function.
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

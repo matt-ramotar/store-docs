@@ -1536,7 +1536,11 @@ function assertLocalTargetExists(target, sourcePath) {
     return;
   }
   if (pathname.startsWith("/docs/")) {
-    assert.ok(existsSync(resolve(ROOT, `content${pathname}.mdx`)), `${sourcePath}: ${target}`);
+    assert.ok(
+      existsSync(resolve(ROOT, `content${pathname}.mdx`)) ||
+        existsSync(resolve(ROOT, `content${pathname}/index.mdx`)),
+      `${sourcePath}: ${target}`,
+    );
     return;
   }
   if (EXPECTED_OUTSIDE_ROUTES.has(`${LIVE_ORIGIN}${pathname}`)) {

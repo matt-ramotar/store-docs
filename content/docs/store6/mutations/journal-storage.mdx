@@ -1,0 +1,183 @@
+---
+title: "Journal storage"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**Experimental tier.** `store6-mutations` and `store6-mutations-sqldelight` are separate
+experimental artifacts in the 6.0.0-alpha01 floor. Their public declarations carry
+`@ExperimentalStoreApi` and may change or be removed in any release. The SQLDelight artifact has
+one public type: `SqlDelightMutationJournalStorage`. Read the
+[stability policy](/docs/store6/stability) before adopting either artifact.
+
+</Callout>
+
+<Callout type="Note">
+
+**Durable storage does not make remote acceptance and local acknowledgement receipt atomic.** Remote
+acceptance followed by process death before the local ack-receipt transaction commits leaves the
+intent `INFLIGHT`; restart may replay the same immutable generation with the same idempotency key.
+Once the receipt is durable, restart may repeat adoption, effect application, or retirement
+finalization, but it does not re-push that generation. Make each endpoint idempotent, or key it by
+mutation identity.
+
+</Callout>
+
+## The default is in memory
+
+If you leave `journalStorage(...)` unset, `MutationStoreBuilder` creates one
+`InMemoryMutationJournalStorage`. Its journal remains available only for the lifetime of that
+instance. Reusing the same object can model a reopen while the process is alive, but process death
+loses every queued record. Real restart hydration requires a persistent implementation reopened
+over the same durable store.
+
+Each in-memory transaction takes one mutex and works on a private snapshot. A normal return
+validates and commits the whole snapshot. Any thrown `Throwable` discards it. This makes the default
+useful for optimistic UI and queued work within one process run, not for a durable offline queue.
+Use durable storage before depending on replay after process death. The
+[drain and restart guide](/docs/store6/mutations/drain-and-restart) covers the hydration and replay
+contract.
+
+## The SQLDelight journal
+
+`SqlDelightMutationJournalStorage(driver, transacter)` persists the journal in SQLite. The
+`SqlDriver` and `Transacter` must address the same connection and database authority. Store cannot
+verify that pairing.
+
+<Callout type="Note">
+
+**Treat the driver and transacter as one authority.** A mismatched pair breaks transaction and
+storage-local ID guarantees. Construct the adapter before exposing the driver to concurrent work.
+After construction, either dedicate that driver to mutation-journal adapters or externally
+serialize every other use of it. The adapter cannot coordinate arbitrary SQL or other adapter
+families.
+
+</Callout>
+
+The adapter supports synchronous drivers whose raw operations return `QueryResult.Value`. Async web
+drivers are not supported. Each adapter selects one of 64 hash-striped mutexes from the driver's
+hash, and every transaction uses that gate. Transactions for the same driver therefore serialize;
+unrelated drivers may share a stripe.
+
+Construction installs an adapter-owned sidecar schema. Its `store6_mutation_*`,
+`store6_key_alias`, and `store6_key_tombstone` tables are separate from your generated schema, and
+SQLite `user_version` remains yours. The sidecar keeps its own `store6_mutation_schema` version row;
+the current version is 2. Construction can migrate version 1 to version 2 when durable mutation
+namespaces are quiescent. If they are not, construction fails with instructions to drain or park
+and retire the remaining work before retrying the upgrade.
+
+Given an existing `SqlDriver`, its matching generated database or other `Transacter`, and the
+required mutation-store inputs, install the adapter through the builder door:
+
+{/* snippet: mutations-journal-sqldelight-install */}
+```kotlin
+@file:OptIn(org.mobilenativefoundation.store6.core.ExperimentalStoreApi::class)
+
+import org.mobilenativefoundation.store6.mutations.mutationStore
+import org.mobilenativefoundation.store6.mutations.sqldelight.SqlDelightMutationJournalStorage
+
+val journal =
+    SqlDelightMutationJournalStorage(
+        driver = driver,
+        transacter = database,
+    )
+
+val store =
+    mutationStore(
+        registry = registry,
+        server = server,
+        keyResolver = keyResolver,
+        valueCodecVersion = 1,
+        valueCodec = valueCodec,
+    ) {
+        fetcher(networkFetcher)
+        journalStorage(journal)
+    }
+```
+
+The [Store SQLDelight adapter](/docs/store6/sqldelight) is a separate artifact for read-side values
+and freshness metadata. Both adapters can use one database when every driver, transacter, and query
+belongs to that same database authority.
+
+## Implementing custom storage
+
+<Callout type="Note">
+
+**Implementing storage is a deliberate act.** Both `MutationJournalStorage` and
+`MutationJournalTransaction` use `@SubclassOptInRequired(DelicateStoreApi::class)`. An implementation
+must explicitly accept that opt-in in addition to the experimental API tier.
+
+</Callout>
+
+The seam has one transaction door:
+
+{/* snippet: mutations-journal-storage-interface */}
+```kotlin
+@ExperimentalStoreApi
+@SubclassOptInRequired(DelicateStoreApi::class)
+public interface MutationJournalStorage {
+    /** Runs [block] as one serializable, exception-atomic unit of work. */
+    public suspend fun <R> transaction(block: (MutationJournalTransaction) -> R): R
+}
+```
+
+Treat each callback as one serializable, exception-atomic unit. A normal return commits every
+operation. Any thrown `Throwable`, including cancellation, commits nothing and propagates unchanged.
+The outer function is suspending, but the callback is not. Codec, resolver, transport, and policy
+work cannot suspend while the transaction is held. The `MutationJournalTransaction` handle becomes
+invalid as soon as the callback returns.
+
+Storage implementations must also preserve these representation rules:
+
+- Persist enum names, never ordinals.
+- Store every time as Unix epoch milliseconds.
+- Copy every byte array on entry and again on delivery.
+- Allocate storage-local IDs for intents and failure evidence through the seam's insertion methods.
+- Return records in the contract's deterministic orders: client sequence for intents and
+  executions; client sequence then generation for attempts and acknowledgements; storage-local
+  failure ID for failures; client sequence then effect index for effects; and deterministic source
+  or generation identity for aliases and tombstones.
+
+### The nine journal records
+
+At this revision, the storage package freezes nine logical records as the implementation contract.
+Preserve both their roles and their constructor invariants.
+
+| Record | Role | Key invariants |
+| --- | --- | --- |
+| `MutationClientRecord` | Allocation and retirement high-water state for one client | `recordVersion` is positive; `0 <= serverConfirmedRetiredThroughSequence <= retiredThroughSequence <= lastAllocatedSequence`. |
+| `MutationIntentRecord` | Immutable encoded mutation intent | `recordVersion`, `clientSequence`, and `mutatorVersion` are positive; `argsBlob` is copied on construction and every read. |
+| `MutationExecutionRecord` | Current durable execution state for one intent | Sequence is positive; generation and attempt are non-negative; `lastAttemptAt` exists exactly after an attempt; `activeFailureId` exists exactly in `PARKED`, and `retiredAt` exactly in `RETIRED`; prepared phases reference a positive generation. |
+| `MutationAttemptRecord` | Immutable semantic generation with a write-once conflict receipt | Sequence, generation, and codec version are positive; advertised retirement is non-negative; base and optimistic blob presence matches the corresponding presence enum; metadata and conflict-receipt fields are internally complete; blobs are copied. |
+| `MutationAckRecord` | Write-once acknowledgement for one exact generation | Sequence, generation, and codec version are positive; authoritative blob presence matches its presence enum; canonical target fields are both absent or both present, and a target requires an authoritative present value; the blob is copied. |
+| `MutationFailureRecord` | Append-only normalized failure evidence | Sequence is positive and generation is non-negative; `detail` is at most 128 UTF-8 bytes and `message` at most 1,024 UTF-8 bytes. |
+| `MutationEffectRecord` | One durable key or namespace invalidation | Sequence is positive and effect index is non-negative; `canonicalId` exists exactly for `KEY`; `completedAt` is null exactly while disposition is `PENDING`. |
+| `MutationKeyAliasRecord` | Same-namespace redirect edge | Creator sequence is positive; source and target namespaces match; source and target IDs differ; `activatedAt` exists exactly for `ACTIVE`. |
+| `MutationKeyTombstoneRecord` | One absence generation for an effective identity | Creator sequence is positive; successor identity fields are paired, and any successor sequence is positive; pending, active, and superseded states carry exactly their required activation and supersession fields. |
+
+### Pruning
+
+`prune(clientId, serverConfirmedRetiredThroughSequence)` may remove eligible rows only at or below
+the client's persisted server-confirmed retirement prefix. The supplied prefix may not exceed that
+persisted value. Ordinary pruning never removes alias redirects or active or pending tombstone
+generations.
+
+A superseded tombstone becomes eligible only when its creator is within the supplied prefix and its
+superseding intent is also within the persisted server-confirmed prefix of the client that owns that
+intent. Keep these checks inside the same transaction as the deletions.
+
+## Certifying an implementation
+
+Extend `MutationJournalStorageContractKit` in a consumer test source set. Implement
+`createStorage()` with a fresh journal and `reopenStorage(previous)` with a new adapter over the same
+durable store, then run every inherited test on every supported target. The kit also inherits
+semantic kill-point scenarios around retirement finalization and pruning, covering both sides of
+their commit boundaries. The [mutations testing guide](/docs/store6/mutations/testing) shows the
+contract-kit setup.
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

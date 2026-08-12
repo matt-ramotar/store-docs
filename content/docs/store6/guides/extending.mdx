@@ -63,9 +63,8 @@ Calling `runtime()` on this decorator returns `null`. The runtime extension reco
 engine-backed Store, not a wrapper that happens to delegate to one. That boundary lets a decorator
 expose only its own affordances instead of leaking its delegate's raw capabilities.
 
-The mutation facade follows the same narrowing pattern. It delegates Store reads and maintenance
-but leaves `runtime()` null so its raw write handle stays hidden. Its guide will live at
-`/docs/store6/mutations`; that page is not available in this documentation set yet.
+The [mutation facade](/docs/store6/mutations) follows the same narrowing pattern. It delegates Store
+reads and maintenance but leaves `runtime()` null so its raw write handle stays hidden.
 
 ## Seam-only telemetry
 
@@ -136,8 +135,7 @@ mechanism. Pair it with `apply` only when the adopted value is known fresh.
 <Callout type="Info">
 
 `StoreWriteHandle` is the extension-facing acknowledgement path, not a general consumer write API.
-Consumer writes belong to the journalled mutation path documented at `/docs/store6/mutations` when
-that guide becomes available.
+Consumer writes belong to the [journalled mutation path](/docs/store6/mutations).
 
 </Callout>
 
@@ -189,7 +187,7 @@ An `apply` or `changes` violation terminalizes projection for that key. Current 
 streams fail with a deterministic internal exception that retains the original cause; the engine
 does not silently fall back to unprojected data.
 The mutation extension is the intended producer of projection-change signals after confirmed
-commit and retirement. Its guide will live at `/docs/store6/mutations`.
+commit and retirement. The [mutations overview](/docs/store6/mutations) explains that lifecycle.
 
 ## WallClock
 
@@ -258,4 +256,4 @@ contracts that make the recapture step possible.
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*

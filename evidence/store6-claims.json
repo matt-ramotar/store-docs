@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "be47062070eba8f8a327279e9c5a68caa0ef06ca",
+  "revision": "539614c06be1a8f20dead562585e47394551ebae",
   "claims": [
     {
       "id": "home/001",
@@ -11,7 +11,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 13,
             "end": 13
@@ -28,7 +28,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 19,
             "end": 19
@@ -45,7 +45,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 62,
             "end": 62
@@ -251,7 +251,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 76,
             "end": 76
@@ -336,7 +336,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 12,
             "end": 12
@@ -353,7 +353,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 72,
             "end": 72
@@ -438,7 +438,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 80,
             "end": 80
@@ -506,7 +506,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 28,
             "end": 28
@@ -557,7 +557,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 32,
             "end": 32
@@ -608,7 +608,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 12,
             "end": 12
@@ -693,7 +693,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "1d4c59627f5a0524b613ca97fa5ca87f2e3ef2ad6c675fa9eac098e3439963f6",
+          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
           "lines": {
             "start": 16,
             "end": 16
@@ -772,13 +772,13 @@
     {
       "id": "tokens-demo/004",
       "page": "/tokens-demo",
-      "claim": "/tokens-demo is one of 18 fixed extra routes in the contract-locked route census; synchronized Store6 routes are derived separately from the source lock.",
+      "claim": "/tokens-demo is one of 29 fixed extra routes in the contract-locked route census; the 11 sync-owned Store6 routes are derived separately from the source lock.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "526100de893f6a7e42cf2767225878f33d2787cf2aa075c652c34d90deda48d2",
+          "sha256": "15c2a04cdbd6a06a338620abae4e616db46e18c42b9ede9d5865d8fb7bfc5e4f",
           "lines": {
             "start": 24,
             "end": 85
@@ -863,7 +863,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 19,
             "end": 19
@@ -982,7 +982,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 10,
             "end": 10
@@ -1281,7 +1281,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 10,
             "end": 10
@@ -1315,7 +1315,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreResult.kt",
-          "sha256": "102152be4b4ff82313f06f1bb173d1f57427f15ec8e7cd16f1645936f2958a35",
+          "sha256": "7c946298e3b4368566a20e83f287443f692fce3b87c5979239372ff34286baa5",
           "lines": {
             "start": 66,
             "end": 66
@@ -1383,7 +1383,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 12,
             "end": 12
@@ -1400,7 +1400,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 14,
             "end": 14
@@ -1417,7 +1417,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 9,
             "end": 9
@@ -1434,7 +1434,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 47,
             "end": 47
@@ -1451,7 +1451,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt",
-          "sha256": "763aada7a51543b2c4bce5283b0ac382a8b059cdbcb2639da659d779e74cd3ab",
+          "sha256": "a0e088bacfa64ed2322f6572fe8aa506c69cd60c116ed4ab78fa9eed4f4d4e3c",
           "lines": {
             "start": 13,
             "end": 13
@@ -1485,7 +1485,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt",
-          "sha256": "763aada7a51543b2c4bce5283b0ac382a8b059cdbcb2639da659d779e74cd3ab",
+          "sha256": "a0e088bacfa64ed2322f6572fe8aa506c69cd60c116ed4ab78fa9eed4f4d4e3c",
           "lines": {
             "start": 48,
             "end": 48
@@ -1604,7 +1604,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 21,
             "end": 21
@@ -1706,7 +1706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 16,
             "end": 16
@@ -1723,7 +1723,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt",
-          "sha256": "8007d5392cbd37921dcb397e76917da2185ed9da3b92b40ac7f721c851022d4b",
+          "sha256": "93224e0ca546b6e306af64d438641633a78d88cfe1559443c543376689695564",
           "lines": {
             "start": 6,
             "end": 6
@@ -1740,7 +1740,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt",
-          "sha256": "8007d5392cbd37921dcb397e76917da2185ed9da3b92b40ac7f721c851022d4b",
+          "sha256": "93224e0ca546b6e306af64d438641633a78d88cfe1559443c543376689695564",
           "lines": {
             "start": 10,
             "end": 10
@@ -1774,7 +1774,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt",
-          "sha256": "8007d5392cbd37921dcb397e76917da2185ed9da3b92b40ac7f721c851022d4b",
+          "sha256": "93224e0ca546b6e306af64d438641633a78d88cfe1559443c543376689695564",
           "lines": {
             "start": 8,
             "end": 8
@@ -1791,7 +1791,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 16,
             "end": 16
@@ -2097,7 +2097,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 22,
             "end": 22
@@ -2148,7 +2148,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 22,
             "end": 45
@@ -2182,7 +2182,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 12,
             "end": 14
@@ -2199,7 +2199,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 16,
             "end": 18
@@ -2488,7 +2488,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 50,
             "end": 54
@@ -2607,7 +2607,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 45,
             "end": 49
@@ -3015,7 +3015,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/KeyEvents.kt",
-          "sha256": "92382d2a78c2b0061a5a40f2d7a4fb77c15d33db5af37b1a608886850bfa36f2",
+          "sha256": "7145dad4bf38b02f19fbcac37c03dfd80ceb6263a99c2ddb44c62e6954384c79",
           "lines": {
             "start": 10,
             "end": 12
@@ -3032,7 +3032,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/KeyEvents.kt",
-          "sha256": "92382d2a78c2b0061a5a40f2d7a4fb77c15d33db5af37b1a608886850bfa36f2",
+          "sha256": "7145dad4bf38b02f19fbcac37c03dfd80ceb6263a99c2ddb44c62e6954384c79",
           "lines": {
             "start": 14,
             "end": 17
@@ -3287,7 +3287,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt",
-          "sha256": "8007d5392cbd37921dcb397e76917da2185ed9da3b92b40ac7f721c851022d4b",
+          "sha256": "93224e0ca546b6e306af64d438641633a78d88cfe1559443c543376689695564",
           "lines": {
             "start": 5,
             "end": 8
@@ -3372,7 +3372,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 46,
             "end": 46
@@ -3458,7 +3458,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 246,
             "end": 246
@@ -3492,7 +3492,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 200,
             "end": 200
@@ -3509,7 +3509,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 492,
             "end": 492
@@ -3526,7 +3526,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 500,
             "end": 500
@@ -3730,7 +3730,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 82,
             "end": 82
@@ -3832,7 +3832,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 301,
             "end": 301
@@ -3849,7 +3849,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 333,
             "end": 333
@@ -3866,7 +3866,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 257,
             "end": 257
@@ -3883,7 +3883,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 243,
             "end": 243
@@ -3900,7 +3900,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 178,
             "end": 178
@@ -3917,7 +3917,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 299,
             "end": 299
@@ -3934,7 +3934,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 319,
             "end": 319
@@ -3951,7 +3951,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 274,
             "end": 274
@@ -4003,7 +4003,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 185,
             "end": 185
@@ -4071,7 +4071,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 414,
             "end": 414
@@ -4122,10 +4122,376 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEvents.kt",
-          "sha256": "10453a76f8cbaf9b9b4b2b594e929b37cbc681a429c84eb03f20410039c5bfde",
+          "sha256": "2e714eb8617b8c42e347e5b5eb806b7b74012d748f08922e66bcb73a59660dfe",
           "lines": {
             "start": 164,
             "end": 164
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/001",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "The only canonical-rekey channel is MutationPresentAck.canonicalKey: it is an optional same-namespace redirect on confirmed presence, null preserves the pushed identity, and MutationAbsentAck cannot carry a canonical target.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
+          "lines": {
+            "start": 286,
+            "end": 333
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalRecords.kt",
+          "sha256": "18b8db7ef2565069efdf2ef59c6b65fdad281217ce855c31d44b1874800c6338",
+          "lines": {
+            "start": 252,
+            "end": 290
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/002",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "Canonical admission accepts null and self targets as no-op identities, rejects a cross-namespace target before adoption, and stores only non-self same-namespace redirect edges whose activatedAt field exists exactly in ACTIVE state.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationJournal.kt",
+          "sha256": "1a0211203e9c4bc4cf9af5d6afe261d80e0c9e6e51073276b89ad7a682c5a1c4",
+          "lines": {
+            "start": 451,
+            "end": 629
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalRecords.kt",
+          "sha256": "18b8db7ef2565069efdf2ef59c6b65fdad281217ce855c31d44b1874800c6338",
+          "lines": {
+            "start": 341,
+            "end": 362
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/003",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "Every retry of one generation idempotency key must acknowledge the same effective canonical target; a changed target is a protocol violation that parks the intent without adoption.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
+          "lines": {
+            "start": 300,
+            "end": 319
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2720,
+            "end": 2852
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/004",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "The PENDING alias edge, acknowledgement receipt, and ACKED execution phase commit in one journal transaction; retirement finalization advances the edge to ACTIVE only after every declared invalidation effect is terminal, and facade routing changes at activation.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2904,
+            "end": 2981
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 3593,
+            "end": 3713
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/005",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "If the server accepts a push but Store fails or dies before the local acknowledgement-receipt transaction commits, the last durable phase remains INFLIGHT and a later drain may re-push the same immutable generation and idempotency key; replay across process restart requires journal storage that survives. Once ACKED is durable, recovery may repeat only local adoption, effects, and retirement and never re-pushes that generation, so the endpoint must remain idempotent.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 1857,
+            "end": 2013
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2904,
+            "end": 3132
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/MutationAckOrchestrationTest.kt",
+          "sha256": "cd297a09a5498b9d193b0aa1c0c29b9e1007a0c79fede59e0a4b014316649d6f",
+          "lines": {
+            "start": 355,
+            "end": 560
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/006",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "Durable key identity is exactly the string pair (namespace.value, canonicalId()), and ordinary journal prune never removes alias redirects, so an alias survives restart for as long as its journal storage does.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
+          "lines": {
+            "start": 42,
+            "end": 75
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt",
+          "sha256": "6437eb94945496515dbb364fba133357c70df924c6ba4efad8e17d84cefe92f4",
+          "lines": {
+            "start": 163,
+            "end": 175
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/007",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "MutationStore resolves every key-taking operation to the active terminal identity: terminal keys bypass the resolver, aliased identities require exact-pair reconstruction, get, invalidate, and clear make one attempt and throw a conversion-backed StoreException on failure, and mutate resolves before append so failure leaves no partial intent.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 42,
+            "end": 57
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 198,
+            "end": 253
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/008",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "pending(key) follows durable identity pairs without invoking MutationKeyResolver, keyed drain owns and can re-home to the terminal identity, and only the MutationStore facade—not a raw Store reference—provides alias routing.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 42,
+            "end": 57
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 255,
+            "end": 305
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/009",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "A live facade stream keeps the same outer Flow and swaps to the canonical delegate after alias activation; resolver null, throw, or identity mismatch emits exactly one conversion StoreResult.Error with servedStale=false, never falls back or completes, waits for a newer resolution signal, and close wakes the waiter.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 70,
+            "end": 196
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 364,
+            "end": 370
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/010",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "There is no dedicated rekey event in KeyEvents or MutationEvent; consumers observe activation through the live-stream swap and durable inspection, while pending-write UI remains keyed to Origin.OVERLAY rather than isStale.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
+          "lines": {
+            "start": 42,
+            "end": 57
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEvents.kt",
+          "sha256": "2e714eb8617b8c42e347e5b5eb806b7b74012d748f08922e66bcb73a59660dfe",
+          "lines": {
+            "start": 12,
+            "end": 313
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/MutationAliasFacadeTest.kt",
+          "sha256": "b1dd05f79d94d9e078d8672cf6798d1168836e16e76da3a542ec19d2779d4103",
+          "lines": {
+            "start": 111,
+            "end": 144
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/011",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "MutationAbsentAck atomically inserts a PENDING tombstone with its acknowledgement receipt; retirement activates it, replay excludes same-client entries at or below the highest ACTIVE tombstone for the terminal identity, and a later retiring intent supersedes that bound to permit delete-then-recreate.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalRecords.kt",
+          "sha256": "18b8db7ef2565069efdf2ef59c6b65fdad281217ce855c31d44b1874800c6338",
+          "lines": {
+            "start": 52,
+            "end": 58
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalRecords.kt",
+          "sha256": "18b8db7ef2565069efdf2ef59c6b65fdad281217ce855c31d44b1874800c6338",
+          "lines": {
+            "start": 364,
+            "end": 419
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 1292,
+            "end": 1308
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2904,
+            "end": 2981
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 3621,
+            "end": 3713
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/mutations/aliases/012",
+      "page": "/docs/store6/mutations/aliases",
+      "claim": "PENDING and ACTIVE tombstones survive ordinary journal prune, and tombstones stop only journal replay: every fetch begun after a MutationAbsentAck must still return FetcherResult.Deleted.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/storage/MutationJournalStorage.kt",
+          "sha256": "6437eb94945496515dbb364fba133357c70df924c6ba4efad8e17d84cefe92f4",
+          "lines": {
+            "start": 163,
+            "end": 175
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
+          "lines": {
+            "start": 253,
+            "end": 269
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
+          "lines": {
+            "start": 321,
+            "end": 333
           }
         }
       ]
@@ -4139,7 +4505,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 258,
             "end": 258
@@ -4156,7 +4522,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 276,
             "end": 276
@@ -4173,7 +4539,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 263,
             "end": 263
@@ -4190,7 +4556,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 45,
             "end": 45
@@ -4207,7 +4573,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 394,
             "end": 394
@@ -4394,7 +4760,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 296,
             "end": 296
@@ -4411,7 +4777,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt",
-          "sha256": "0ca55775a056d59177a6c971890fbf006dd6bc65b879061322d99820bcaac8c0",
+          "sha256": "927ebabbbe5daf6de090e0ff82e016b304b3498f91b6d43e213894de06482423",
           "lines": {
             "start": 182,
             "end": 182
@@ -4428,7 +4794,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt",
-          "sha256": "0ca55775a056d59177a6c971890fbf006dd6bc65b879061322d99820bcaac8c0",
+          "sha256": "927ebabbbe5daf6de090e0ff82e016b304b3498f91b6d43e213894de06482423",
           "lines": {
             "start": 17,
             "end": 17
@@ -4445,7 +4811,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt",
-          "sha256": "0ca55775a056d59177a6c971890fbf006dd6bc65b879061322d99820bcaac8c0",
+          "sha256": "927ebabbbe5daf6de090e0ff82e016b304b3498f91b6d43e213894de06482423",
           "lines": {
             "start": 32,
             "end": 32
@@ -4462,7 +4828,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationInspection.kt",
-          "sha256": "0ca55775a056d59177a6c971890fbf006dd6bc65b879061322d99820bcaac8c0",
+          "sha256": "927ebabbbe5daf6de090e0ff82e016b304b3498f91b6d43e213894de06482423",
           "lines": {
             "start": 64,
             "end": 64
@@ -4479,7 +4845,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEvents.kt",
-          "sha256": "10453a76f8cbaf9b9b4b2b594e929b37cbc681a429c84eb03f20410039c5bfde",
+          "sha256": "2e714eb8617b8c42e347e5b5eb806b7b74012d748f08922e66bcb73a59660dfe",
           "lines": {
             "start": 15,
             "end": 15
@@ -4700,7 +5066,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 12,
             "end": 51
@@ -4734,7 +5100,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 42,
             "end": 67
@@ -4819,7 +5185,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FetcherResult.kt",
-          "sha256": "74f5e0a8ef92dae8281362eeb342782fdb4fd36f3381a98f82fd698ddaad7146",
+          "sha256": "1f0f1c26e978a7f82d2032a3966664c4e9d65939e4379697eee6959cd190079c",
           "lines": {
             "start": 22,
             "end": 45
@@ -4836,7 +5202,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/FreshnessValidator.kt",
-          "sha256": "763aada7a51543b2c4bce5283b0ac382a8b059cdbcb2639da659d779e74cd3ab",
+          "sha256": "a0e088bacfa64ed2322f6572fe8aa506c69cd60c116ed4ab78fa9eed4f4d4e3c",
           "lines": {
             "start": 36,
             "end": 63
@@ -4853,7 +5219,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationProtocol.kt",
-          "sha256": "a5b23383481f608397022103b964c07038036346f2acc7317730f5e0238d6cbe",
+          "sha256": "0031ce490a17c86055ae2a6c86120e75f79fed18bd0bda1854da22f26d54026c",
           "lines": {
             "start": 253,
             "end": 281
@@ -4887,7 +5253,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Bookkeeper.kt",
-          "sha256": "9bceca599f1db82c3c77ffdf456de7ef5fa4d6769d3b6463bd451e4eb8bf8381",
+          "sha256": "feb3729ba27883a28709a681c1344311e5699db9cce6675ccd3f3818164d5478",
           "lines": {
             "start": 9,
             "end": 19
@@ -4989,7 +5355,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 30,
             "end": 34
@@ -5375,13 +5741,13 @@
     {
       "id": "docs/store6/contributing/005",
       "page": "/docs/store6/contributing",
-      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision be470620 with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
+      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision 539614c0 with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 3,
             "end": 3
@@ -5390,7 +5756,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "f0280fa83738405f4906edca65c663d621e27324d703ab6b8049466cedb59c46",
+          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
           "lines": {
             "start": 36,
             "end": 38
@@ -5569,7 +5935,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 492,
             "end": 492
@@ -5586,7 +5952,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 46,
             "end": 46
@@ -6183,7 +6549,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Bookkeeper.kt",
-          "sha256": "9bceca599f1db82c3c77ffdf456de7ef5fa4d6769d3b6463bd451e4eb8bf8381",
+          "sha256": "feb3729ba27883a28709a681c1344311e5699db9cce6675ccd3f3818164d5478",
           "lines": {
             "start": 35,
             "end": 35
@@ -6200,7 +6566,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 492,
             "end": 492
@@ -6268,7 +6634,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 12,
             "end": 12
@@ -6591,7 +6957,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 492,
             "end": 492
@@ -6796,7 +7162,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Freshness.kt",
-          "sha256": "1f75cee478af4dea32a41e7c44be662fa2e27936e8858bb920a75fa22d63686a",
+          "sha256": "b180a41698c58e9d1cff260d34a60aa54df3435b368769581189797237451742",
           "lines": {
             "start": 12,
             "end": 12
@@ -6847,7 +7213,7 @@
         {
           "repository": "store6",
           "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/StoreError.kt",
-          "sha256": "8007d5392cbd37921dcb397e76917da2185ed9da3b92b40ac7f721c851022d4b",
+          "sha256": "93224e0ca546b6e306af64d438641633a78d88cfe1559443c543376689695564",
           "lines": {
             "start": 10,
             "end": 10
@@ -7170,7 +7536,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationStore.kt",
-          "sha256": "0ad30a992fcba09efeb8a7a8e4c51df0cf88c1ff3d8719c69b8455ffc3fe3048",
+          "sha256": "ee7d62e4802ec247cc6fb62b95b09b6309f5c49407f2cc85df316fd74e4d46b0",
           "lines": {
             "start": 492,
             "end": 492

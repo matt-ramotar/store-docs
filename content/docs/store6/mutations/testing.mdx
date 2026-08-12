@@ -1,0 +1,251 @@
+---
+title: "Testing mutations"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**Experimental tier.** `store6-mutations-testing` is a separate artifact in the
+6.0.0-alpha01 floor; use it as a test-source-set dependency. Every public declaration in its four
+source files carries `@ExperimentalStoreApi` and may change or be removed in any release. It will
+be published separately from `store6-mutations`. Read the
+[stability policy](/docs/store6/stability) before adopting it.
+
+</Callout>
+
+## What this module is for
+
+`store6-mutations-testing` has two certification jobs:
+
+1. Prove that a custom `MutationJournalStorage` implements the journal contract, including restart
+   and simulated-crash behavior.
+2. Prove that a registered projector is a pure, deterministic function of `(base, args)` over the
+   representative inputs and bounded ambient state you provide.
+
+These suites are for storage implementers and mutator authors. For application-facing fakes and
+read-side seam contract kits, use the separate
+[general testing artifact](/docs/store6/guides/testing).
+
+## Certifying journal storage
+
+Extend `MutationJournalStorageContractKit` in the consumer test source set and implement two hooks:
+
+- `createStorage()` must return a fresh storage instance for each inherited test.
+- `reopenStorage(previous)` defines a restart. An in-memory implementation returns the same
+  instance; a persistent implementation returns a new adapter over the same durable store without
+  clearing its records.
+
+The kit tests named rule families rather than pretending every execution phase has one total
+ordering:
+
+| Rule family | Contract exercised |
+| --- | --- |
+| Retry | `INFLIGHT -> READY` is legal after a transport failure. |
+| Conflict refresh | `REFRESH_REQUIRED` can advance to a new immutable generation before returning to `READY`. |
+| Terminal state | `RETIRED` and `PARKED` cannot advance again. |
+| Acknowledged work | `ACKED` and `EFFECTS_PENDING` cannot regress to a pre-ack phase. |
+| Transactions | If the transaction callback throws, none of its operations commit. |
+| Pruning | Deletion stops at the persisted server-confirmed retirement prefix; alias redirects and the active tombstone generation survive ordinary pruning. |
+
+The following shape mirrors the SQLDelight adapter's own contract test. `JournalFixture` and
+`freshJournalFixture()` are test-owned helpers: each fresh fixture creates a new durable database,
+and its `driver` and `transacter` address that same database. Calling `storage()` again creates a
+new adapter over the existing database.
+
+{/* snippet: mutations-testing-journal-contract */}
+```kotlin
+@file:OptIn(org.mobilenativefoundation.store6.core.ExperimentalStoreApi::class)
+
+import app.cash.sqldelight.Transacter
+import app.cash.sqldelight.db.SqlDriver
+import org.mobilenativefoundation.store6.mutations.sqldelight.SqlDelightMutationJournalStorage
+import org.mobilenativefoundation.store6.mutations.storage.MutationJournalStorage
+import org.mobilenativefoundation.store6.mutations.testing.MutationJournalStorageContractKit
+import kotlin.test.AfterTest
+
+private class JournalFixture(
+    val driver: SqlDriver,
+    val transacter: Transacter,
+) {
+    fun storage(): MutationJournalStorage =
+        SqlDelightMutationJournalStorage(driver, transacter)
+}
+
+class SqlDelightJournalContractTest : MutationJournalStorageContractKit() {
+    private val fixtures = mutableListOf<JournalFixture>()
+    private val ownerByStorage = mutableMapOf<MutationJournalStorage, JournalFixture>()
+
+    override fun createStorage(): MutationJournalStorage {
+        val fixture = freshJournalFixture()
+        fixtures += fixture
+        return fixture.storage().also { storage -> ownerByStorage[storage] = fixture }
+    }
+
+    override fun reopenStorage(previous: MutationJournalStorage): MutationJournalStorage {
+        val fixture = checkNotNull(ownerByStorage[previous])
+        return fixture.storage().also { storage -> ownerByStorage[storage] = fixture }
+    }
+
+    @AfterTest
+    fun closeDrivers() {
+        var firstFailure: Throwable? = null
+        try {
+            fixtures.forEach { fixture ->
+                try {
+                    fixture.driver.close()
+                } catch (failure: Throwable) {
+                    if (firstFailure == null) firstFailure = failure
+                }
+            }
+        } finally {
+            fixtures.clear()
+            ownerByStorage.clear()
+        }
+        firstFailure?.let { throw it }
+    }
+}
+```
+
+The `@AfterTest` teardown closes every driver even when an earlier close fails. Run the inherited
+suite on every target your storage implementation supports; passing it on one platform does not
+certify another driver's transaction or persistence behavior. The
+[journal storage guide](/docs/store6/mutations/journal-storage) defines the full record and
+transaction contract behind these tests.
+
+## Deterministic crash scenarios
+
+`MutationJournalStorageContractKit` inherits `JournalStorageKillPointScenarios`, so extending the
+contract kit runs the crash scenarios automatically. The scenarios wrap each fresh implementation
+in `KillPointJournalStorage`, a deterministic one-shot decorator.
+
+`arm(killPoint)` rejects a second arm while one point is pending. The selected point stays armed
+across unrelated transactions, then clears before throwing `JournalStorageCrashException`. A
+reopen or retry therefore cannot trip the same arm twice. Classification depends on the execution
+phase observed at transaction entry and the operation invoked, not transaction counts, scheduler
+timing, or enum ordinals.
+
+The five boundaries are:
+
+| Kill point | Boundary |
+| --- | --- |
+| `BEFORE_RETIREMENT_FINALIZATION_COMMIT` | Retirement finalization has run inside the callback, but its transaction must roll back. |
+| `AFTER_RETIREMENT_FINALIZATION_COMMIT` | Retirement finalization committed before the simulated crash. |
+| `BEFORE_PRUNE` | The prune operation has not run. |
+| `BEFORE_PRUNE_COMMIT` | Prune ran inside the callback, but its transaction must roll back. |
+| `AFTER_PRUNE_COMMIT` | Prune committed before the simulated crash. |
+
+<Callout type="Note">
+
+These scenarios certify the durable retirement and pruning boundaries, not the transport. A failure
+or process death can replay the immutable generation and its idempotency key only before the local
+acknowledgement-receipt transaction commits. Once `ACKED` is durable, recovery may repeat adoption,
+effects, or retirement, but it does not call `MutationServer.push` again. The endpoint must still
+handle a repeated generation key idempotently because transport retries and failures before that
+receipt commit can resend it. The [server guide](/docs/store6/mutations/server) defines that
+obligation.
+
+</Callout>
+
+## Proving projector purity
+
+Extend `MutatorPurityContractKit<K, V, A, S>` and return a subject built with
+`mutatorPuritySubject(...)`. The factory registers the projector and retains that exact lambda for
+the tests, so the tested function cannot drift from the function registered under its
+`MutatorRef`.
+
+The subject requires both kinds of evidence:
+
+- At least one named `MutatorPuritySample`. Its `newBase` and `newArgs` factories must return fresh,
+  structurally equivalent values on every call so one invocation cannot mutate a later
+  invocation's inputs.
+- At least one named `MutatorAmbientProbe`, with baseline, changed, and restore transitions for
+  bounded external state the projector claims to ignore. The kit is black-box: it cannot discover
+  ambient state you do not name.
+
+The inherited tests cover repeat determinism, two independent double-application replay traces,
+invocation-count independence, and independence from every supplied ambient probe. They also
+detect a projector that mutates its base or arguments.
+
+This example expresses the [quickstart's rename behavior](/docs/store6/mutations/quickstart) in the
+generic presence-aware projector shape. `User`, `UserKey`, `Rename`, and `RenameCodec` are the same
+application types used there. The snapshot is a detached structural value; the ambient locale is
+deliberately absent from the projector.
+
+{/* snippet: mutations-testing-projector-purity */}
+```kotlin
+import org.mobilenativefoundation.store6.core.ExperimentalStoreApi
+import org.mobilenativefoundation.store6.mutations.MutationPresence
+import org.mobilenativefoundation.store6.mutations.StaleSet
+import org.mobilenativefoundation.store6.mutations.testing.MutatorAmbientProbe
+import org.mobilenativefoundation.store6.mutations.testing.MutatorPurityContractKit
+import org.mobilenativefoundation.store6.mutations.testing.MutatorPuritySample
+import org.mobilenativefoundation.store6.mutations.testing.mutatorPuritySubject
+
+@OptIn(ExperimentalStoreApi::class)
+class RenameProjectorContractTest :
+    MutatorPurityContractKit<UserKey, User, Rename, Pair<String, String>>() {
+    private var ambientLocaleTag: String = "en-US"
+
+    override fun createSubject() =
+        mutatorPuritySubject<UserKey, User, Rename, Pair<String, String>>(
+            id = "rename",
+            version = 1,
+            codec = RenameCodec,
+            stales = { _, _ -> StaleSet(keys = emptySet(), namespaces = emptySet()) },
+            samples =
+                listOf(
+                    MutatorPuritySample(
+                        name = "rename a present user",
+                        newBase = { MutationPresence.Present(User(id = "42", name = "Ada")) },
+                        newArgs = { Rename(name = "Grace") },
+                    ),
+                ),
+            snapshotValue = { user -> user.id to user.name },
+            ambientProbes =
+                listOf(
+                    MutatorAmbientProbe(
+                        name = "locale tag",
+                        enterBaseline = { ambientLocaleTag = "en-US" },
+                        enterChanged = { ambientLocaleTag = "tr-TR" },
+                        restore = { ambientLocaleTag = "en-US" },
+                    ),
+                ),
+            project = { base, rename ->
+                when (base) {
+                    is MutationPresence.Present ->
+                        MutationPresence.Present(base.value.copy(name = rename.name))
+                    MutationPresence.Absent -> null
+                }
+            },
+        )
+}
+```
+
+`snapshotValue` exists because `MutationPresence.Present` deliberately does not define structural
+equality. Return detached structural data that can be compared safely; do not return the same
+mutable value the projector receives.
+
+<Callout type="Note">
+
+**Double application is replay equivalence, not idempotence.** The test compares two independent
+`project(project(base, args), args)` traces. It does not require the second application to equal the
+first. Requiring that would incorrectly reject valid append and increment mutators.
+
+</Callout>
+
+## What these kits do not cover
+
+These kits certify a storage implementation and a projector over the cases you supply. They do not
+certify an application's complete enqueue, drain, acknowledgement, or backend behavior.
+
+Store's own suites exercise the end-to-end engine protocol. In application tests, put your own
+deterministic server fake behind the public `MutationServer` interface and cover the backend
+outcomes your app handles, including repeated idempotency keys, conflicts, canonical rekeys,
+deletions, retirement checkpoints, and transport failures. Keep read-side policy tests in the
+[general testing artifact](/docs/store6/guides/testing).
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*
