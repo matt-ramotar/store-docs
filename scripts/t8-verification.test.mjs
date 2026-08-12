@@ -59,7 +59,10 @@ test("fixture derivation gets synchronized Store6 routes from both lock and ledg
     const contract = await deriveRouteContract({ root });
 
     assert.deepEqual(contract.inventoryUrls, fixture.inventoryUrls);
-    assert.deepEqual(contract.store6SyncedRoutes, ["/docs/store6/quickstart"]);
+    assert.deepEqual(contract.store6SyncedRoutes, [
+      "/docs/store6/quickstart",
+      "/docs/store6/room",
+    ]);
     assert.deepEqual(contract.extras, fixture.extras);
     assert.deepEqual(contract.pageRoutes, [...new Set([...fixture.inventoryPaths, ...fixture.extras])].sort());
   });
@@ -601,6 +604,7 @@ function writeContractFixture(root, options = {}) {
   ];
   const inventoryPaths = inventoryUrls.map((url) => new URL(url).pathname);
   const syncedTarget = "content/docs/store6/quickstart.mdx";
+  const syncedRoomTarget = "content/docs/store6/room.mdx";
   const extras = [
     "/",
     "/docs",
@@ -609,8 +613,16 @@ function writeContractFixture(root, options = {}) {
     "/docs/store6/concepts/freshness",
     "/docs/store6/concepts/memory-and-lifecycle",
     "/docs/store6/concepts/read-contract",
+    "/docs/store6/guides/devtools",
+    "/docs/store6/guides/extending",
+    "/docs/store6/guides/fetchers",
+    "/docs/store6/guides/performance",
+    "/docs/store6/guides/persistence",
+    "/docs/store6/guides/swift",
+    "/docs/store6/guides/testing",
     "/docs/store6/overview",
     "/docs/store6/quickstart",
+    "/docs/store6/room",
     "/reference/store6-core/index.html",
     "/reference/store6-mutations/index.html",
     "/tokens-demo",
@@ -636,6 +648,7 @@ function writeContractFixture(root, options = {}) {
         schemaVersion: 1,
         sources: [
           { path: "docs/store6/quickstart.md", target: syncedTarget },
+          { path: "store6-room/README.md", target: syncedRoomTarget },
           { path: "llms.txt", target: "public/llms.txt" },
         ],
       },
@@ -656,6 +669,7 @@ function writeContractFixture(root, options = {}) {
           ],
           "sync-store6-docs": [
             { path: syncedTarget, sha256: "0".repeat(64) },
+            { path: syncedRoomTarget, sha256: "0".repeat(64) },
             { path: "public/llms.txt", sha256: "0".repeat(64) },
           ],
         },
@@ -675,8 +689,16 @@ function writeContractFixture(root, options = {}) {
     "content/docs/store6/concepts/freshness.mdx",
     "content/docs/store6/concepts/memory-and-lifecycle.mdx",
     "content/docs/store6/concepts/read-contract.mdx",
+    "content/docs/store6/guides/devtools.mdx",
+    "content/docs/store6/guides/extending.mdx",
+    "content/docs/store6/guides/fetchers.mdx",
+    "content/docs/store6/guides/performance.mdx",
+    "content/docs/store6/guides/persistence.mdx",
+    "content/docs/store6/guides/swift.mdx",
+    "content/docs/store6/guides/testing.mdx",
     "content/docs/store6/overview.mdx",
     syncedTarget,
+    syncedRoomTarget,
     ...inventoryPaths.map(inventoryTarget),
     "public/llms.txt",
     "public/reference/store6-core/index.html",

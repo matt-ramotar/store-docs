@@ -1,0 +1,279 @@
+---
+title: "Devtools and the inspector"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+`store6-devtools` observes Store's telemetry seam without reading Store internals. It provides a
+structured logger, an in-memory monitor, and a composite sink. `store6-devtools-inspector` renders
+the monitor's event-derived state inside a Compose app. There is no external transport or host
+process.
+
+## Install in one line
+
+Opt in to `ExperimentalStoreApi`, import `StoreTelemetryLogger`, and add one line to the store
+builder:
+
+{/* snippet: guides-devtools-logger-install */}
+```kotlin
+telemetry(StoreTelemetryLogger())
+```
+
+To retain an in-memory projection for the inspector while logging the same events, install both
+sinks together. This block is verbatim from the devtools README:
+
+{/* snippet: guides-devtools-composite-install */}
+```kotlin
+import org.mobilenativefoundation.store6.devtools.StoreDevtoolsMonitor
+import org.mobilenativefoundation.store6.devtools.StoreTelemetryLogger
+import org.mobilenativefoundation.store6.devtools.storeTelemetryOf
+
+val logger = StoreTelemetryLogger()
+val monitor = StoreDevtoolsMonitor()
+
+val users = store<UserKey, User> {
+    fetcher(userFetcher)
+    telemetry(storeTelemetryOf(logger, monitor))
+}
+```
+
+`storeTelemetryOf` invokes its sinks in registration order. Each sink must obey the telemetry
+contract: handlers are non-suspending, non-blocking, and never throw into Store correctness.
+
+The UI-free devtools artifact uses Store 6's full twelve-target convention: Android, JVM,
+`iosArm64`, `iosSimulatorArm64`, `iosX64`, `macosArm64`, `watchosArm64`, `tvosArm64`, JS, WasmJS,
+`linuxX64`, and `mingwX64`.
+
+## The v0 log line
+
+`StoreTelemetryLogger` emits one line per event. Fields appear in this order:
+
+```text
+<label> v0 seq=<Long> t_ms=<Long> evt=<kind> ns=<String> key=<String> [origin=<Origin>] [fetch_ms=<Long>] [error=<StoreError variant>]
+```
+
+`seq` is one-based within one logger. `t_ms` is monotonic elapsed whole milliseconds since that
+logger was created. `ns` and `key` are the two components of `StoreKey` identity. Optional fields
+keep the order `origin`, `fetch_ms`, then `error`, and each event emits only the fields that apply.
+
+The vocabulary has exactly six event kinds:
+
+| `evt` | Additional fields | Meaning |
+| --- | --- | --- |
+| `fetch_started` | none | A fetch attempt started. |
+| `fetch_succeeded` | `fetch_ms` | A fetch committed or revalidated successfully. |
+| `fetch_failed` | `fetch_ms`, `error` | A fetch settled with an error. |
+| `serve` | `origin` | A public read served a visible value. |
+| `invalidate` | none | Invalidation completed successfully. |
+| `clear` | none | Clearing completed successfully. |
+
+`error` is exactly one of `Fetch`, `Persistence`, `Conversion`, `FreshnessUnsatisfiable`,
+`Conflict`, or `Missing`. The logger formats the line and calls its emitter synchronously on the
+handler's caller thread. Concurrent handlers receive unique sequences, but delivery is not
+serialized, so a higher sequence may arrive first. Use `seq`, not callback arrival, as the
+canonical ordering key. A custom emitter must return promptly and be thread-safe.
+
+The label is a nonblank structural token and cannot contain whitespace, control characters, `"`,
+`=`, or `\`. Identity values containing structural delimiters or line controls are quoted and
+escaped so each event remains one line.
+
+Logger lines and inspector presentation contain identities and lifecycle facts, never stored
+values or a `StoreError` message or cause. The monitor does retain the structured `StoreError` in
+memory. Application code that holds `monitor.state` can inspect its message and cause.
+
+<Callout type="Note">
+
+v0 is versioned and experimental. Its names and field order are stable within v0, but a later alpha
+may revise the vocabulary. It is not the Store 6.1 wire format, and cross-alpha parser compatibility
+is not guaranteed.
+
+</Callout>
+
+## The monitor projection is observed telemetry, not engine truth
+
+`StoreDevtoolsMonitor.state` is a `StateFlow<DevtoolsSnapshot>`. Each snapshot contains key
+summaries sorted by namespace and canonical key, retained events from oldest to newest, the number
+of events dropped from the bounded log, and the latest assigned sequence.
+
+Key state is derived only from events the monitor observed:
+
+| Observed event | Derived state | Other changes |
+| --- | --- | --- |
+| `fetch_started` | `FETCHING` | Increment the fetch count. |
+| `fetch_succeeded` | `FRESH` | Record the event time as the age anchor and clear the last error. |
+| `fetch_failed` | `ERROR` | Retain the structured error. |
+| `invalidate` | `STALE` | Preserve the other observed facts. |
+| `clear` | `CLEARED` | Remove the age anchor. |
+| `serve` | Preserve the current state, or `OBSERVED` when this is the first event for the key. | Record the last origin and increment the serve count. |
+
+<Callout type="Note">
+
+`FRESH` is not freshness authority. It means only that the monitor has not observed an
+invalidation, clear, or failure since the latest success. Policy staleness and `MaxAge` expiry emit
+no event, so they cannot change this projection. Age remains unknown until an observed successful
+fetch supplies an anchor.
+
+</Callout>
+
+The retained-event capacity defaults to 500. Overflow drops the oldest event and increments
+`droppedEvents`; key summaries remain. `clearLog()` removes retained events and resets the drop
+count while preserving key summaries and the sequence high-water mark.
+
+## The in-process inspector
+
+The inspector exposes two alternative Compose hosts. This example is verbatim from the inspector
+README:
+
+{/* snippet: guides-devtools-inspector-hosts */}
+```kotlin
+import androidx.compose.runtime.Composable
+import org.mobilenativefoundation.store6.core.ExperimentalStoreApi
+import org.mobilenativefoundation.store6.devtools.StoreDevtoolsMonitor
+import org.mobilenativefoundation.store6.devtools.compose.StoreInspector
+import org.mobilenativefoundation.store6.devtools.compose.StoreInspectorOverlay
+
+@OptIn(ExperimentalStoreApi::class)
+@Composable
+fun InspectorOnly(monitor: StoreDevtoolsMonitor) {
+    StoreInspector(monitor)
+}
+
+@OptIn(ExperimentalStoreApi::class)
+@Composable
+fun AppWithInspector(
+    monitor: StoreDevtoolsMonitor,
+    content: @Composable () -> Unit,
+) {
+    StoreInspectorOverlay(monitor = monitor, content = content)
+}
+```
+
+Install the same `monitor` in the Store builder. `StoreInspector(monitor)` renders the inspector
+directly. `StoreInspectorOverlay` wraps application content with a floating toggle and a panel over
+the lower half of the app.
+
+The inspector has three tabs:
+
+- **Keys** shows namespace, canonical key, derived state, last served origin, and observed-success
+  age.
+- **Timeline** shows chronological rows for one key, labelled with the exact v0 event kind and the
+  derived state after each event. If retained history begins with `serve`, that row is `OBSERVED`;
+  the inspector does not reconstruct dropped history.
+- **Events** shows retained events newest first and reports how many older events were dropped.
+
+Everything stays in process. The composables read the monitor's `StateFlow`; there are no sockets,
+host tools, or web panel.
+
+The inspector artifact is configured for eight targets: Android, JVM, `iosArm64`,
+`iosSimulatorArm64`, `iosX64`, `macosArm64`, JS, and WasmJS. JS uses Node. WasmJS uses a browser
+runtime because the Compose UI dependency graph is browser-only on this toolchain. No other Store 6
+targets are in this artifact.
+
+## Reference demo app
+
+The repository includes `store6-devtools-demo`, a reference app that installs the logger and
+monitor together and wraps its content in `StoreInspectorOverlay`. Its fetcher exposes latency and
+failure controls, while the screen can invalidate or clear one key.
+
+The demo is an application module, not a published library. Its targets are Android, JVM desktop,
+`iosX64`, `iosArm64`, and `iosSimulatorArm64`. It does not declare the inspector artifact's JS,
+WasmJS, or native `macosArm64` targets; its desktop app runs on the JVM.
+
+### Desktop
+
+From the Store 6 repository root, run:
+
+```shell
+./gradlew :store6-devtools-demo:run
+```
+
+This uses the module's Compose Desktop entry point and opens a window titled
+`store6 devtools demo`.
+
+### Android
+
+Connect an emulator or device, select its serial explicitly, then build, install, and launch:
+
+```shell
+adb devices
+./gradlew :store6-devtools-demo:assembleDebug
+ANDROID_SERIAL=<serial> ./gradlew :store6-devtools-demo:installDebug
+adb -s <serial> shell am start -n org.mobilenativefoundation.store6.devtoolsdemo/.MainActivity
+```
+
+Replace `<serial>` with one `device` entry from `adb devices`. The Android app has `minSdk = 24`,
+`targetSdk = 36`, and `compileSdk = 36`.
+
+### iOS
+
+The Kotlin framework acceptance command for an Apple Silicon simulator is:
+
+```shell
+./gradlew :store6-devtools-demo:linkDebugFrameworkIosSimulatorArm64
+```
+
+The committed Xcode host is `store6-devtools-demo/iosApp/iosApp.xcodeproj`. Open it, select an iOS
+simulator, and run scheme `iosApp`. The host's deployment target is iOS 15. From the repository
+root, its build-only acceptance command is:
+
+```shell
+cd store6-devtools-demo
+xcodebuild -project iosApp/iosApp.xcodeproj -scheme iosApp -sdk iphonesimulator build
+```
+
+The Gradle command verifies the Kotlin framework, while launching the iOS UI requires Xcode and a
+simulator.
+
+### Android and iOS acceptance checklist
+
+Run these six checks on both Android and iOS:
+
+1. Launch the app and open the inspector with the floating action button.
+2. Confirm the key appears as `FRESH` with its age ticking.
+3. Set latency to 3000 ms, tap **Invalidate**, and confirm `STALE`, then `FETCHING`, followed by
+   refreshed content.
+4. Enable failure, tap **Invalidate**, and confirm `ERROR` and `fetch_failed`.
+5. Tap **Clear** and confirm `CLEARED`.
+6. Confirm logcat or the Xcode console contains Store6 v0 logger lines.
+
+## What installed telemetry costs, and what unset costs
+
+Installed telemetry is not free. Each monitor event performs a `StateFlow` compare-and-set update
+and rebuilds an immutable snapshot over the key summaries and bounded log. Each logger event
+formats one line and invokes its emitter synchronously. The emitter's work is part of the cost.
+
+Leaving telemetry unset preserves the engine's null fast path. Each call site short-circuits on a
+null guard, and the engine does not allocate a fetch-duration mark.
+
+The current JMH comparison reports µs/op as score ± 99.9% score error:
+
+| Path | Unset | Configured no-op |
+| --- | ---: | ---: |
+| `fetchGet` | 9.85882 ± 0.95009 | 8.76580 ± 0.09741 |
+| `residentServe` | 0.206781 ± 0.002764 | 0.199851 ± 0.002588 |
+| `streamEmissions` | 84.6412 ± 3.4787 | 82.2187 ± 1.4784 |
+
+No positive configured-no-op overhead was resolved. The negative point estimates do not show that
+the no-op sink is faster, and the measurements do not prove literal zero cost. See the
+[performance guide](/docs/store6/guides/performance) for how to read Store 6 benchmark evidence.
+
+<Callout type="Note">
+
+`store6-devtools` and `store6-devtools-inspector` are Experimental and targeted for alpha02. Their
+public declarations may change or be removed in any release. See
+[API tiers](/docs/store6/concepts/api-tiers) for the opt-in contract.
+
+</Callout>
+
+## Where next
+
+- [Freshness policies](/docs/store6/concepts/freshness) explains why policy staleness is outside
+  the monitor's event-derived projection.
+- [Extending Store through the seam](/docs/store6/guides/extending) covers custom telemetry sinks
+  and extension patterns.
+- The mutations inspection guide covers journal inspection and advisory mutation events.
+
+---
+
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

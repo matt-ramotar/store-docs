@@ -31,6 +31,7 @@ const STORE6_TARGETS = [
   "content/docs/store6/contributing.mdx",
   "content/docs/store6/compose.mdx",
   "content/docs/store6/sqldelight.mdx",
+  "content/docs/store6/room.mdx",
 ];
 const T3_OVERVIEW_SHA256 = "d308649827de60465915b9b1b1f6fde48c25cb4c2bb660554e4ada577e7c77b3";
 

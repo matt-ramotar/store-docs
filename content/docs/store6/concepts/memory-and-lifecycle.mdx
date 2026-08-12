@@ -67,9 +67,9 @@ disk until you install `persistence(...)`.
 
 So with zero configuration, "durable" means: outside the engine. That state survives eviction —
 which is why eviction is invisible — but it does not survive process death. To keep values and
-freshness bookkeeping across restarts, install a persistence adapter;
-[store6-sqldelight](/docs/store6/sqldelight) is a complete one, and a Room adapter ships alongside
-it.
+freshness bookkeeping across restarts, install a
+[persistence adapter](/docs/store6/guides/persistence); [store6-sqldelight](/docs/store6/sqldelight)
+is a complete one, and a [Room adapter](/docs/store6/room) ships alongside it.
 
 <Callout type="Note">
 
@@ -129,4 +129,4 @@ the screen that started them, something is collecting outside the lifecycle it s
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

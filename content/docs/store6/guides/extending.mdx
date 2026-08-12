@@ -1,0 +1,261 @@
+---
+title: "Extending Store through the seam"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+Store exposes a small set of extension seams for decorators, telemetry, advisory events,
+projection, time, and engine-backed acknowledgement. These APIs let an extension remain outside
+the engine while preserving Store's public contracts.
+
+<Callout type="Note">
+
+Every seam type on this page is `@ExperimentalStoreApi`. Implementing `Store` or a seam interface
+also requires the `DelicateStoreApi` subclass opt-in. The seam package is a freeze candidate, not
+frozen. Read [API tiers](/docs/store6/concepts/api-tiers) and the
+[stability policy](/docs/store6/stability) before publishing an extension against it.
+
+</Callout>
+
+## What this page is
+
+The patterns below come from `store6-extension-probe`, an unpublished module in the Store
+repository. It verifies that public Store API plus the seam package are sufficient to build these
+extension shapes without engine access.
+
+Treat the module as reference source. It is not a dependency, has no published coordinates, and
+is not a reusable extension library. Copy the relevant pattern into your own extension and keep
+your public surface narrower than the engine capabilities it consumes.
+
+## The delegating decorator
+
+A Store decorator can use Kotlin delegation and override only the behavior it owns. The probe's
+`LoggingStore` intercepts `stream`, logs all four `StoreResult` kinds, and delegates every other
+Store operation:
+
+{/* snippet: guides-extending-logging-store */}
+```kotlin
+/** A public-API decorator whose `runtime()` is null because it exposes its own affordances. */
+@OptIn(DelicateStoreApi::class)
+public class LoggingStore<K : StoreKey, V : Any>(
+    private val delegate: Store<K, V>,
+    private val log: (String) -> Unit,
+) : Store<K, V> by delegate {
+    override fun stream(
+        key: K,
+        freshness: Freshness,
+    ): Flow<StoreResult<V>> =
+        delegate.stream(key, freshness).onEach { result ->
+            log(
+                when (result) {
+                    is StoreResult.Loading -> "loading(${key.canonicalId()})"
+                    is StoreResult.Data -> "data(${key.canonicalId()}, ${result.origin})"
+                    is StoreResult.Revalidated -> "revalidated(${key.canonicalId()})"
+                    is StoreResult.Error -> "error(${key.canonicalId()})"
+                },
+            )
+        }
+}
+```
+
+Calling `runtime()` on this decorator returns `null`. The runtime extension recognizes an
+engine-backed Store, not a wrapper that happens to delegate to one. That boundary lets a decorator
+expose only its own affordances instead of leaking its delegate's raw capabilities.
+
+The mutation facade follows the same narrowing pattern. It delegates Store reads and maintenance
+but leaves `runtime()` null so its raw write handle stays hidden. Its guide will live at
+`/docs/store6/mutations`; that page is not available in this documentation set yet.
+
+## Seam-only telemetry
+
+`MetricsTelemetry` proves that lifecycle metrics do not require an engine subclass or downcast. It
+implements only `StoreTelemetry` and counts fetch starts, fetch successes, fetch failures, serves,
+invalidations, and clears.
+
+All six handlers are non-suspending. An implementation must return quickly, must not block, and
+must not throw. The engine does not invoke a telemetry handler while holding its state lock or
+write lock. Install one sink with `telemetry(sink)`. When telemetry is unset, the builder retains a
+null sink and the engine takes its null fast path.
+
+Use [Devtools and observability](/docs/store6/guides/devtools) for the shipped telemetry sinks and
+`storeTelemetryOf(...)`, which combines multiple sinks behind the builder's single telemetry door.
+
+## Consuming KeyEvents
+
+`StoreRuntime.keyEvents` is an advisory event flow. `KeyEvents` is deliberately open rather than
+sealed, and its constructors are internal because only the engine produces events. Consumers must
+retain an `else` branch so a new event variant in a minor release does not break exhaustive `when`
+expressions.
+
+The probe uses this complete consumer shape:
+
+{/* snippet: guides-extending-key-events */}
+```kotlin
+public fun describeKeyEvent(event: KeyEvents): String =
+    when (event) {
+        is KeyEvents.Written -> "written(${event.key.canonicalId()}, ${event.origin})"
+        is KeyEvents.Invalidated -> "invalidated(${event.key.canonicalId()})"
+        is KeyEvents.Deleted -> "deleted(${event.key.canonicalId()})"
+        else -> "unknown(${event.key.canonicalId()})"
+    }
+```
+
+Delivery is best-effort. The hot flow has replay `0` and a bounded buffer of `64`; overflow drops
+the oldest event. Correctness must not depend on receiving every notification. Durable facts remain
+in Store state and bookkeeping.
+
+The flow never completes, including after `Store.close()`. Scope collection to the extension's own
+lifecycle and cancel it there. Purge sweeps, nonresident watermark coverage, external
+source-of-truth changes, and superseded fetches emit no key event.
+
+## The extension-facing write path: StoreRuntime and StoreWriteHandle
+
+`store.runtime()` returns a nullable `StoreRuntime<K, V>`. A real engine-backed Store exposes three
+capabilities without an implementation downcast:
+
+- `writeHandle` is the acknowledgement and freshness path.
+- `keyEvents` is the best-effort event flow described above.
+- `telemetry` is the exact sink configured at build time, or `null` when none was installed.
+
+Non-engine stores, fakes, and decorators return `null`. Check that result at the extension boundary
+instead of assuming every `Store` implementation has an engine runtime.
+
+`StoreWriteHandle.apply(key, value)` writes through the configured source of truth under the
+engine write lock. Streams observe the committed value as `Data(origin = SOT)`. It does not fetch,
+call the network, or record bookkeeping success. A non-cancellation persistence failure throws a
+`StoreException` carrying `StoreError.Persistence`, retains the cause, and leaves engine state
+unchanged.
+
+`markStale(key)` has the same semantics as `Store.invalidate(key)`, including the key event and
+invalidation telemetry callback. `confirmFresh(key, etag)` records bookkeeping success when
+residence exists, clears durable staleness like a `304 Not Modified`, and refreshes resident
+metadata without fetching. It does nothing without a resident value, and it is not an observation
+mechanism. Pair it with `apply` only when the adopted value is known fresh.
+
+<Callout type="Info">
+
+`StoreWriteHandle` is the extension-facing acknowledgement path, not a general consumer write API.
+Consumer writes belong to the journalled mutation path documented at `/docs/store6/mutations` when
+that guide becomes available.
+
+</Callout>
+
+## Custom overlay projection
+
+`Overlay<K, V>` is the direct core projection seam for streams. Install one with
+`StoreBuilder.overlay(overlay)`. The last registration wins. Leaving it unset keeps the direct
+residence fast path and allocates no projection writer or readiness state.
+
+The public interface is:
+
+{/* snippet: guides-extending-overlay-seam */}
+```kotlin
+@ExperimentalStoreApi
+@SubclassOptInRequired(DelicateStoreApi::class)
+public interface Overlay<K : StoreKey, V : Any> {
+    /** Computes the current projected value for [key] from confirmed [base] or absence. */
+    public fun apply(
+        key: K,
+        base: V?,
+    ): V?
+
+    /** Signals keys whose projection inputs changed without changing confirmed residence. */
+    public val changes: Flow<StoreKey>
+}
+```
+
+`apply` receives the latest confirmed value, or `null` for confirmed absence. Its return value has
+these stream effects:
+
+| Confirmed base | `apply` result | Stream projection |
+|---|---|---|
+| non-null | equal value | Preserve the confirmed envelope, including origin, age, staleness, and refresh state |
+| non-null | different non-null value | Emit overlay data with zero age and no staleness |
+| non-null | `null` | Expose absence, which is an optimistic delete |
+| `null` | non-null value | Emit overlay data, which is an optimistic create |
+| `null` | `null` | Preserve confirmed absence |
+
+For an overlaid value, `refreshing` reflects the live fetch slot. `Store.get` is never projected;
+overlays affect only `stream`.
+
+The engine calls `apply` once for each accepted residence revision or matching `changes` emission,
+independent of collector count. `apply` must be pure, non-blocking, no-throw, and must not call back
+into Store. It runs outside Store locks. Emit a key from `changes` after that key's projection input
+changes. The engine filters those signals by canonical key identity. The flow may complete normally
+but must not fail.
+
+An `apply` or `changes` violation terminalizes projection for that key. Current and future projected
+streams fail with a deterministic internal exception that retains the original cause; the engine
+does not silently fall back to unprojected data.
+The mutation extension is the intended producer of projection-change signals after confirmed
+commit and retirement. Its guide will live at `/docs/store6/mutations`.
+
+## WallClock
+
+`WallClock` supplies wall time for age and freshness-bound calculations only. Its complete
+interface is one non-suspending function:
+
+{/* snippet: guides-extending-wall-clock-seam */}
+```kotlin
+@ExperimentalStoreApi
+@SubclassOptInRequired(DelicateStoreApi::class)
+public interface WallClock {
+    /** Returns the current wall-clock time in milliseconds since the Unix epoch. */
+    public fun nowEpochMillis(): Long
+}
+```
+
+`nowEpochMillis()` returns milliseconds since the Unix epoch. Implementations must be cheap and
+non-blocking. Never use this clock as an ordering source: Store's global monotone success sequence,
+not wall time, orders successes, stale marks, and watermarks.
+
+If `wallClock(...)` is not called, `StoreBuilder` uses its internal system clock, backed by each
+platform's wall clock. Install a custom clock only when the Store needs a different age/bounds
+source. Tests can use `TestWallClock` from `store6-testing`; the
+[testing guide](/docs/store6/guides/testing) covers its epoch-millisecond controls.
+
+## Case study: coordinating a transactional acknowledgement
+
+`CoordinatedTransactionalSourceOfTruth` is a reference implementation of one difficult extension
+boundary. It wraps a `TransactionalSourceOfTruth` and exposes a paired overlay. During
+`acknowledge`, each active reader collection has its own per-key gate and generation.
+
+The sequence is:
+
+```text
+success:  transaction open → retirement signal (coalesced) → commit
+          → apply + confirmFresh → collection restart
+          → authoritative first-row recapture → row delivery → one retirement signal
+
+rollback: transaction rollback → collection restart
+          → authoritative first-row recapture → discard retirement signals
+          (confirmFresh is not an observation step)
+```
+
+1. Close the key's gate and open the source-of-truth transaction.
+2. Write the confirmed echo and retire the journal entry in that transaction. Retirement signal
+   attempts made while the gate is closed are coalesced.
+3. After the transaction commits, adopt the echo with `StoreWriteHandle.apply`, then call
+   `confirmFresh` with its ETag.
+4. Restart each active source-of-truth collection. Its contractually immediate first row recaptures
+   current authority while obsolete generations are ignored.
+5. Deliver those recaptured rows before releasing one coalesced retirement signal.
+
+The journal storage used by the retirement callback must participate in the delegate's transaction
+domain; the callback type cannot enforce that relationship. If the transaction rolls back, the
+wrapper performs the same authoritative recapture, discards retirement signal attempts, and does
+not use `confirmFresh` as an observation path.
+
+<Callout type="Note">
+
+This coordinator is an unpublished buildability probe, not a general-purpose journal
+implementation. Use it to study the ordering boundary, not as a dependency or a ready-made write
+system. The [persistence guide](/docs/store6/guides/persistence) defines the transaction and reader
+contracts that make the recapture step possible.
+
+</Callout>
+
+---
+
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

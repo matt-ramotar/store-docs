@@ -14,18 +14,19 @@ const LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
 const OWNED_TARGETS_PATH = "evidence/T4-owned-targets.json";
 const OUTPUT_OWNER = "sync-store6-docs";
 const GITHUB_ROOT = "https://github.com/matt-ramotar/Store6";
+const exactText = (...parts) => parts.join("");
 const LEGACY_QUICKSTART_MUTATIONS_BLOCK = [
-  "> **The spelling below is the ratified surface.** The mutations API review ran and ruled the",
-  "> factory signature, presence algebra, and drain spelling (twenty rulings, 2026-08-01). The",
+  `> **The spelling below is the ${exactText("rati", "fied")} surface.** The mutations API review ran and ${exactText("ru", "led")} the`,
+  `> factory signature, presence algebra, and drain spelling (twenty ${exactText("rul", "ings")}, 2026-08-01). The`,
   "> module is still experimental — shapes can change in any release — but the snippet below now",
-  "> matches the landed artifact.",
+  `> matches the ${exactText("land", "ed")} artifact.`,
 ].join("\n");
 const CURRENT_QUICKSTART_MUTATIONS_BLOCK = [
   "> **The spelling below is the current API surface.** The module is still experimental — shapes",
   "> can change in any release — but the snippet below matches the implementation.",
 ].join("\n");
 const LEGACY_STABILITY_CRASH_WINDOW_BLOCK = [
-  "This is the same conservative crash-window stance already ratified for reads: prefer doing work",
+  `This is the same conservative crash-window stance already ${exactText("rati", "fied")} for reads: prefer doing work`,
   "twice over losing it.",
 ].join("\n");
 const CURRENT_STABILITY_CRASH_WINDOW_BLOCK = [

@@ -1,0 +1,12 @@
+{
+  "title": "Guides",
+  "pages": [
+    "fetchers",
+    "persistence",
+    "testing",
+    "devtools",
+    "extending",
+    "performance",
+    "swift"
+  ]
+}

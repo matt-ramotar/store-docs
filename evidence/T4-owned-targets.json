@@ -191,16 +191,20 @@
         "sha256": "a60ea77d53b25418d8c14d48dea1d4e85e5583041ddd2581fd9afc85da30173f"
       },
       {
+        "path": "content/docs/store6/room.mdx",
+        "sha256": "ca64912cb279bfeb5d4700275f36510264c4422599bc1d347bde3abed4ec9ea2"
+      },
+      {
         "path": "content/docs/store6/sqldelight.mdx",
-        "sha256": "7e092b7c78e811979f7e8071479440e45af70c9108a40cdd3ec9cfc73d15a063"
+        "sha256": "c21e095b623109eff59239726e0ec951b5f461774ae131ab0bf3f3bf9ac9b701"
       },
       {
         "path": "content/docs/store6/stability.mdx",
-        "sha256": "33247f808225237d14b3e0ec4e694939efc296363b0af0923fa8d58fd50de039"
+        "sha256": "4c0bbd463a7cad5be08b9036905857c814c48913b8269c4c49d39b11de79630a"
       },
       {
         "path": "public/llms.txt",
-        "sha256": "a5d9f357adfd5ccc66cca87a19d304ff404f8dfc335c80cfa8bdcf0764514d8a"
+        "sha256": "b39853dde00332296e9c2efce7b448d1448562f6ccf03f70aafa38d698ee4392"
       }
     ]
   }

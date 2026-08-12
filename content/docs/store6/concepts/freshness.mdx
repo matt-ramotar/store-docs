@@ -187,7 +187,7 @@ A `Conditional` plan is how ETags reach a seam fetcher: the fetcher receives the
 selected, and a `FetcherResult.NotModified` response comes back to collectors as exactly one
 `Revalidated` frame — with the resident value's age, never a redundant `Data` frame — and clears
 staleness. Deep coverage of conditional fetching and custom validators belongs to the fetchers
-guide and the extending-Store guide.
+[guide](/docs/store6/guides/fetchers) and the [extending-Store guide](/docs/store6/guides/extending).
 
 ## Coming from Store 5
 
@@ -205,4 +205,4 @@ A component-by-component mapping from Store 5 to Store 6 ships with the migratio
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

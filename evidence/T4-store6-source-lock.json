@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "333a54d4d97eb7a37b45481e0cc4524f91c44476",
+  "revision": "be47062070eba8f8a327279e9c5a68caa0ef06ca",
   "sources": [
     {
       "path": "docs/store6/quickstart.md",
@@ -24,7 +24,7 @@
     },
     {
       "path": "STABILITY.md",
-      "sha256": "1fefba6af15edd74c7b70aeb970d8378f784185d0c315f4c9c3da2810b1e6cea",
+      "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
       "target": "content/docs/store6/stability.mdx"
     },
     {
@@ -44,13 +44,18 @@
     },
     {
       "path": "store6-sqldelight/README.md",
-      "sha256": "04d03b4f89be57c07aed107f43dfbe740b0bd726e1f7ebee8654e611c3479fbf",
+      "sha256": "40920ee1fbc4f9ae4c3c2ddbcac8587114b97e57506c56fe49934197ff84965d",
       "target": "content/docs/store6/sqldelight.mdx"
     },
     {
+      "path": "store6-room/README.md",
+      "sha256": "5183db2e0515d8e4d177834ddb30fd3fadb9e9c108c2c679e885f624fa582d03",
+      "target": "content/docs/store6/room.mdx"
+    },
+    {
       "path": "llms.txt",
-      "sha256": "b8899bd4b42b07e0413d921e5a8fe60093c8aa3407b759353bae3d6b3189762b",
-      "markdownLinkCount": 7,
+      "sha256": "8baf03391e3c70cc77e9174b891c5abdacd138bca8a83faa48db1674aa84466f",
+      "markdownLinkCount": 22,
       "target": "public/llms.txt"
     }
   ]

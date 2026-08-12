@@ -1,4 +1,83 @@
 {
   "schemaVersion": 1,
-  "snippets": []
+  "snippets": [
+    {
+      "name": "guides-devtools-composite-install",
+      "path": "store6-devtools/src/commonTest/kotlin/org/mobilenativefoundation/store6/devtools/docs/GuideDevtoolsSnippets.kt",
+      "pages": ["/docs/store6/guides/devtools"]
+    },
+    {
+      "name": "guides-devtools-inspector-hosts",
+      "path": "store6-devtools-inspector/src/commonTest/kotlin/org/mobilenativefoundation/store6/devtools/compose/docs/GuideInspectorSnippet.kt",
+      "pages": ["/docs/store6/guides/devtools"]
+    },
+    {
+      "name": "guides-devtools-logger-install",
+      "path": "store6-devtools/src/commonTest/kotlin/org/mobilenativefoundation/store6/devtools/docs/GuideDevtoolsSnippets.kt",
+      "pages": ["/docs/store6/guides/devtools"]
+    },
+    {
+      "name": "guides-extending-key-events",
+      "path": "store6-extension-probe/src/commonMain/kotlin/org/mobilenativefoundation/store6/extensionprobe/KeyEventDescriptions.kt",
+      "pages": ["/docs/store6/guides/extending"]
+    },
+    {
+      "name": "guides-extending-logging-store",
+      "path": "store6-extension-probe/src/commonMain/kotlin/org/mobilenativefoundation/store6/extensionprobe/LoggingStore.kt",
+      "pages": ["/docs/store6/guides/extending"]
+    },
+    {
+      "name": "guides-extending-overlay-seam",
+      "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Overlay.kt",
+      "pages": ["/docs/store6/guides/extending"]
+    },
+    {
+      "name": "guides-extending-wall-clock-seam",
+      "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/WallClock.kt",
+      "pages": ["/docs/store6/guides/extending"]
+    },
+    {
+      "name": "guides-fetchers-install-points",
+      "path": "store6-core/src/commonTest/kotlin/org/mobilenativefoundation/store6/core/docs/GuideSnippetCompilation.kt",
+      "pages": ["/docs/store6/guides/fetchers"]
+    },
+    {
+      "name": "guides-fetchers-quickstart",
+      "path": "store6-quickstart/src/main/kotlin/org/mobilenativefoundation/store6/quickstart/Main.kt",
+      "pages": ["/docs/store6/guides/fetchers"]
+    },
+    {
+      "name": "guides-fetchers-seam-signature",
+      "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/Fetcher.kt",
+      "pages": ["/docs/store6/guides/fetchers"]
+    },
+    {
+      "name": "guides-persistence-transaction-signature",
+      "path": "store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/seam/TransactionalSourceOfTruth.kt",
+      "pages": ["/docs/store6/guides/persistence"]
+    },
+    {
+      "name": "guides-source-of-truth-contract-kit",
+      "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/docs/GuideTestingSnippets.kt",
+      "pages": [
+        "/docs/store6/guides/persistence",
+        "/docs/store6/guides/testing"
+      ]
+    },
+    {
+      "name": "guides-testing-bookkeeper-contract-kit",
+      "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/docs/GuideTestingSnippets.kt",
+      "pages": ["/docs/store6/guides/testing"]
+    },
+    {
+      "name": "guides-testing-fake-store-view-model",
+      "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/UserViewModelSampleTest.kt",
+      "pages": ["/docs/store6/guides/testing"]
+    },
+    {
+      "name": "guides-testing-policy-fixtures",
+      "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/docs/GuideTestingSnippets.kt",
+      "pages": ["/docs/store6/guides/testing"]
+    }
+  ]
 }

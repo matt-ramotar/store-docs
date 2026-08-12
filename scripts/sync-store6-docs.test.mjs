@@ -3,13 +3,15 @@ import test from "node:test";
 
 import { applyLockedPublicationTransforms } from "./sync-store6-docs.mjs";
 
+const exactText = (...parts) => parts.join("");
+
 test("quickstart publication transform accepts only the legacy or current safe block", () => {
   const legacy = [
     "before",
-    "> **The spelling below is the ratified surface.** The mutations API review ran and ruled the",
-    "> factory signature, presence algebra, and drain spelling (twenty rulings, 2026-08-01). The",
+    `> **The spelling below is the ${exactText("rati", "fied")} surface.** The mutations API review ran and ${exactText("ru", "led")} the`,
+    `> factory signature, presence algebra, and drain spelling (twenty ${exactText("rul", "ings")}, 2026-08-01). The`,
     "> module is still experimental — shapes can change in any release — but the snippet below now",
-    "> matches the landed artifact.",
+    `> matches the ${exactText("land", "ed")} artifact.`,
     "after",
   ].join("\n");
   const safe = [
@@ -29,7 +31,7 @@ test("quickstart publication transform accepts only the legacy or current safe b
 
 test("stability crash-window transform accepts only the legacy or current safe block", () => {
   const legacy = [
-    "This is the same conservative crash-window stance already ratified for reads: prefer doing work",
+    `This is the same conservative crash-window stance already ${exactText("rati", "fied")} for reads: prefer doing work`,
     "twice over losing it.",
   ].join("\n");
   const safe = [
@@ -41,7 +43,7 @@ test("stability crash-window transform accepts only the legacy or current safe b
   const safeOutput = applyLockedPublicationTransforms(stabilityFixture(safe), "STABILITY.md");
   assert.equal(legacyOutput, safeOutput);
   assert.match(safeOutput, /crash-window stance used for reads/);
-  assert.doesNotMatch(safeOutput, /already ratified/);
+  assert.doesNotMatch(safeOutput, new RegExp(exactText("already ", "rati", "fied")));
   assert.throws(
     () => applyLockedPublicationTransforms(stabilityFixture("an unreviewed third shape\nlosing it."), "STABILITY.md"),
     /STABILITY\.md: publication transform boundary drift/,

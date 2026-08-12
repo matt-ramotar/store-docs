@@ -1,0 +1,199 @@
+---
+title: "Persistence: the SourceOfTruth contract"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+`SourceOfTruth<K, V>` is Store's persistence seam for one nullable row per key. Install an
+implementation with `persistence(sot)` on `StoreBuilder`. Without one, the builder installs an
+internal in-memory source of truth, so Store does not write values to disk.
+
+## What a source of truth is to Store
+
+The engine reads `SourceOfTruth.reader`, writes successfully fetched values through
+`SourceOfTruth.write`, and treats `SourceOfTruth.delete` as destructive persistence removal. The
+interface has five operations:
+
+- `reader(key): Flow<V?>`
+- `write(key, value)`
+- `delete(key)`
+- `deleteNamespace(namespace)`
+- `deleteAll()`
+
+The row type `V` is non-null. Absence is represented by the nullable value emitted from `reader`.
+There is no `clearCache` operation on this seam because clearing Store's memory is not a
+persistence mutation.
+
+The read path is:
+
+```text
+read request
+    |
+    v
+memory --> SourceOfTruth.reader(key) ------------------> stream emissions
+                         |                                      ^
+                         | absent and the read policy fetches   |
+                         v                                      |
+                      fetcher --> SourceOfTruth.write(key, value)
+```
+
+Memory can satisfy a read before persistence is consulted. When Store collects the source of
+truth, that reader flow feeds later stream emissions. A successful fetch is written through the
+same seam, and the resulting reader notification can feed later emissions.
+
+## The reader contract
+
+Every `reader(key)` implementation must satisfy all of these rules:
+
+- Every collection first emits the current row, or `null` when the row is absent.
+- While collected, it emits every subsequent matching change made through that source-of-truth
+  instance. This includes a write equal to the current value and a matching `delete`,
+  `deleteNamespace`, or `deleteAll`, which emits `null`. Emissions may be conflated.
+- Collection never completes normally. A non-cancellation failure is permitted; Store retries the
+  reader, and every new attempt starts again with the current row. Collection cancellation
+  propagates.
+- A change made while no reader is collected must appear in the next collection's first emission.
+  Whether an active reader reacts to changes made through another source-of-truth instance is an
+  implementation choice. Store's memory fast path may continue serving the previously observed
+  value until that new collection begins.
+
+The cross-instance distinction matters for database adapters. A database can contain a newer row
+without an existing adapter instance having a signal that wakes its active reader. The next
+collection must still begin with that newer row.
+
+## The mutation contract
+
+`write`, `delete`, `deleteNamespace`, and `deleteAll` have one completion boundary:
+
+- **Normal return means applied.** A subsequent reader collection begins with the applied row or
+  absence. The mutation's current-row notification has also been published to every matching
+  active collection, although downstream operators may still have it queued.
+- **Throwing means not applied.** Completion is exception-atomic for every `Throwable`, including
+  `CancellationException`.
+
+A mutation may publish intermediate rows, including `null`. Its notification of the final applied
+row or absence must be the last notification for that row before the mutation returns. Any later
+notification that supersedes that mutation is therefore ordered after the return boundary.
+
+`deleteNamespace` and `deleteAll` remove matching persisted rows. Active readers receive `null`
+and remain live for later writes.
+
+## Transactions are a detectable capability
+
+`TransactionalSourceOfTruth<K, V>` extends `SourceOfTruth<K, V>` with one operation:
+
+{/* snippet: guides-persistence-transaction-signature */}
+```kotlin
+public suspend fun <R> withTransaction(block: suspend () -> R): R
+```
+
+The block is atomic with respect to writes made through that source. This is an optional,
+detectable capability: Store checks `sot is TransactionalSourceOfTruth`. It never assumes that a
+plain `SourceOfTruth` is transactional, and the interface provides no silent non-atomic fallback.
+
+The capability does not, by itself, promise that a separately installed `Bookkeeper` participates
+in the same transaction. That boundary depends on the adapter and how its row and metadata
+operations share a database.
+
+## Choosing an adapter: Room or SQLDelight
+
+Both adapters implement the source-of-truth contract. Their durable atomicity, reader signaling,
+and target coverage differ:
+
+| Boundary | Room | SQLDelight |
+| --- | --- | --- |
+| Atomicity | `RoomSourceOfTruth` transacts row mutations, but Store's value write and the separate `RoomBookkeeper` metadata write are two non-atomic durable steps. A crash or absorbed sidecar failure between them can leave a value without freshness metadata; rehydration treats it as age-unknown and stale. | Each user-row mutation and its matching metadata mutation commit in one `Transacter` transaction. The callbacks, transacter, bookkeeper, and adapter must share the same `SqlDriver`. |
+| Reader semantics | A generation-gated echo sits above Room's table-granular invalidation. For structural value types, equal-value rewrites through the instance re-emit exactly once, while same-table writes to another row do not re-emit an unchanged value. | Signals are instance-scoped. Writes through the instance notify matching active readers, including equal-value rewrites. Direct SQL and commits through another instance do not wake an existing reader; a new collection reads those changes in its first emission. |
+| Target coverage | Eight of core's twelve targets: Android, JVM, iosArm64, iosSimulatorArm64, macosArm64, watchosArm64, tvosArm64, and linuxX64. It does not currently target js, wasmJs, mingwX64, or iosX64. | Compiles for all twelve core targets. JS and Wasm are compile-only because the adapter currently requires synchronous drivers. |
+
+Use the [Room adapter](/docs/store6/room) or
+[SQLDelight adapter](/docs/store6/sqldelight) walkthrough for concrete schema and wiring steps.
+
+## The Bookkeeper seam
+
+`SourceOfTruth` owns rows. `Bookkeeper` owns successful `StoreMeta`, consecutive failures,
+and the ordering used to determine durable staleness. The builder installs an in-memory bookkeeper
+by default; `persistence(sot)` does not replace it. Install a database-backed implementation with
+`bookkeeper(...)` when metadata, stale marks, and watermarks must survive reconstruction.
+
+Every per-key operation identifies a record only by
+`(key.namespace.value, key.canonicalId())`. Key object identity and concrete key class do not
+participate. Namespace operations likewise match only `namespace.value`.
+
+One store-local monotone sequence is shared by recorded successes, per-key stale marks, namespace
+watermarks, and the global watermark. A key's status uses this exact rule:
+
+```text
+durablyStale = max(key mark, namespace watermark, global watermark) > (last success or 0)
+```
+
+That ordering has three practical consequences:
+
+- A failure-only record is not durably stale until a positive stale mark or watermark covers it.
+- A success recorded after an earlier mark or watermark clears that earlier staleness.
+- Forgetting records never resets namespace or global watermarks, and watermarks only advance.
+
+`status(key)` returns `KeyStatus?`. A non-null status carries the latest successful `StoreMeta`, the
+latest success sequence, the latest failure time, the consecutive failure count, and
+`durablyStale`. A watermark can produce a stale status for a key that has no record; when there is
+neither a record nor a covering watermark, `status` returns `null`.
+
+The failure boundary differs between operational updates and maintenance:
+
+- `recordSuccess`, `recordFailure`, and per-key `forget` do not throw storage failures through the
+  interface. Implementations absorb or report those failures themselves. Cooperative cancellation
+  may still propagate. `recordSuccess` also clears the failure timestamp and count.
+- `markStale`, `advanceStaleWatermark`, `advanceGlobalStaleWatermark`, `forgetNamespace`, and
+  `forgetAll` may throw storage failures. Each is exception-atomic for every `Throwable`, including
+  cancellation: normal return means the complete operation applied, and throwing means it had no
+  effect.
+
+The default in-memory implementation retains this algebra only while the instance is retained.
+Reconstructing it loses its records and watermarks. A persistent bookkeeper must durably retain the
+same information. See
+[Memory, eviction, and store lifecycle](/docs/store6/concepts/memory-and-lifecycle) for the boundary
+between engine residence and durable state.
+
+## Certify a custom implementation
+
+Extend `SourceOfTruthContractKit<K, V>` in your test source set and return a fresh implementation
+from `createSourceOfTruth()`. The sample below is verbatim from the kit's KDoc:
+
+{/* snippet: guides-source-of-truth-contract-kit */}
+```kotlin
+class MySourceOfTruthContractTest : SourceOfTruthContractKit<MyKey, MyValue>() {
+    override fun createSourceOfTruth() = MySourceOfTruth()
+    override val keyA = MyKey("users", "a")
+    override val keyB = MyKey("users", "b")
+    override val keyOtherNamespace = MyKey("teams", "a")
+    override fun value(index: Int) = MyValue("value-$index")
+}
+```
+
+Every inherited `@Test` runs on every target you compile. The source-of-truth kit covers fifteen
+reader and mutation contracts. If your implementation also supplies a bookkeeper, pair it with
+`BookkeeperContractKit`; its six contracts cover canonical identity, failure state, success reset,
+and watermark staleness. The [testing guide](/docs/store6/guides/testing) covers the broader Store
+test surface.
+
+<Callout type="Note">
+
+`SourceOfTruth`, `TransactionalSourceOfTruth`, and `Bookkeeper` are `@ExperimentalStoreApi`.
+Implementing these seam interfaces requires the subclass opt-in, and their shapes may change in any
+release. The seam package is a **freeze candidate, not frozen**. See
+[API tiers](/docs/store6/concepts/api-tiers) and the
+[stability policy](/docs/store6/stability) before publishing an implementation.
+
+</Callout>
+
+## Where next
+
+- [Fetcher guide](/docs/store6/guides/fetchers) — define the network side of read resolution.
+- [Room adapter](/docs/store6/room) — wire an existing Room database.
+- [SQLDelight adapter](/docs/store6/sqldelight) — wire generated queries and one synchronous driver.
+- [Testing guide](/docs/store6/guides/testing) — test stores, seams, and custom implementations.
+
+---
+
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

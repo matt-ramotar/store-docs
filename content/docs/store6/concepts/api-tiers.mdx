@@ -90,8 +90,8 @@ artifacts. The compiler says:
 
 There is no supported reason to opt into this one. If you find yourself wanting an internal type —
 usually to change how fetching, persistence, freshness, or observation works — the supported route
-is the seam: the extension surface exists precisely so that nobody needs the internals. A guide to
-extending Store through the seam is planned.
+is the seam: the extension surface exists precisely so that nobody needs the internals. The
+[extending guide](/docs/store6/guides/extending) covers that seam.
 
 ## The tier is on the artifact
 
@@ -148,9 +148,10 @@ accepted, not a bug report.
 **`@DelicateStoreApi`**: read the contract KDoc of the declaration you are opting into, and uphold
 every documented semantic — the KDoc on these declarations is the contract, not commentary.
 Custom source-of-truth and bookkeeper implementations should run the contract kits that ship in
-`store6-testing` (`SourceOfTruthContractKit`, `BookkeeperContractKit`); a testing guide and an
-extending guide covering that workflow are planned.
+`store6-testing` (`SourceOfTruthContractKit`, `BookkeeperContractKit`); the
+[testing guide](/docs/store6/guides/testing) and [extending guide](/docs/store6/guides/extending)
+cover that workflow.
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

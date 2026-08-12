@@ -1,0 +1,196 @@
+---
+title: "Fetchers: results, errors, and conditional fetch"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+A fetcher is the boundary between Store and a backend. It accepts a key and produces either a
+value or a result that tells Store what happened. Store owns residence, persistence, freshness,
+and result delivery around that call. Your fetcher owns the backend request and any retry or
+fallback policy inside it.
+
+## The fetcher is the one required input
+
+Every store must register a fetcher before it is built. Calling `store<K, V> { }` without one
+throws `IllegalArgumentException` with this message:
+
+`store<K, V> { } requires a fetcher { }, fetcherOfResult { }, or fetcher(Fetcher) block.`
+
+Installing persistence does not satisfy this requirement. Even
+[`Freshness.LocalOnly`](/docs/store6/concepts/freshness), which never invokes the fetcher, still
+requires one at build time. `LocalOnly` can read a resident value or probe the configured source of
+truth once, but an absent local value becomes `StoreError.Missing` without a fetch.
+
+The compiled [quickstart](/docs/store6/quickstart) uses the smallest registration form:
+
+{/* snippet: guides-fetchers-quickstart */}
+```kotlin
+val users = store<UserKey, User> {
+    fetcher { key -> FakeApi.getUser(key.id) }
+}
+```
+
+## Three install points, last registration wins
+
+`StoreBuilder` exposes three ways to install the one fetcher a store will use:
+
+- `fetcher { key -> value }` is success-or-throw sugar. A returned value becomes
+  `FetcherResult.Success`; a thrown exception follows the store's fetch-failure path.
+- `fetcherOfResult { key -> result }` lets the lambda return any `FetcherResult`. Its name follows
+  the Store 5 `Fetcher.ofResult` form.
+- `fetcher(fetcher)` installs the regular-interface `Fetcher<K, V>` seam. This overload is
+  experimental and is the only form that receives a conditional-request ETag from Store.
+
+The call shapes look like this when the application has an API and a seam fetcher:
+
+{/* snippet: guides-fetchers-install-points */}
+```kotlin
+val plainUsers = store<UserKey, User> {
+    fetcher { key -> api.getUser(key.id) }
+}
+
+val resultUsers = store<UserKey, User> {
+    fetcherOfResult { key ->
+        FetcherResult.Success(api.getUser(key.id))
+    }
+}
+
+@OptIn(ExperimentalStoreApi::class)
+val conditionalUsers = store<UserKey, User> {
+    fetcher(conditionalUserFetcher)
+}
+```
+
+Each registration replaces the previously registered fetcher. If a builder calls two or all
+three forms, only the last one is installed. Registrations do not compose a fallback chain.
+
+<Callout type="Note">
+
+The lambda `fetcher` and `fetcherOfResult` members are stable builder surface. The regular-interface
+overload and `Fetcher` itself are `@ExperimentalStoreApi`. Calling that overload requires the
+experimental opt-in. Implementing `Fetcher` also requires the `DelicateStoreApi` subclass opt-in.
+See [API tiers](/docs/store6/concepts/api-tiers) and the
+[stability policy](/docs/store6/stability) before adopting the seam.
+
+</Callout>
+
+`Fetcher` is deliberately a regular interface rather than a `fun interface`. A lambda passed to
+`fetcher(...)` therefore keeps resolving to the stable success-or-throw overload instead of the
+experimental seam overload.
+
+## The FetcherResult vocabulary
+
+`FetcherResult` is a sealed interface with exactly four kinds:
+
+| Result | Meaning |
+|---|---|
+| `Success(value, etag)` | A fetched value and an optional ETag. `etag` defaults to `null`. |
+| `NotModified(etag)` | The resident value is still current. `etag` defaults to `null`, which keeps the previously recorded tag. |
+| `Error(cause)` | The fetch failed. It is equivalent to throwing `cause` from the fetcher. |
+| `Deleted` | The server reports that the value no longer exists. |
+
+The result type carries no experimental annotation because the stable `fetcherOfResult` member
+returns it. It is the seam result vocabulary that callers can use without opting into the
+regular-interface `Fetcher`.
+
+Fetch failures become `StoreError.Fetch` on the read paths. See
+[Errors and failure handling](/docs/store6/concepts/errors) for how `stream` and `get` deliver that
+error differently.
+
+## Conditional fetch: ETags and the Revalidated frame
+
+The seam fetcher is one suspend call with a nullable ETag:
+
+{/* snippet: guides-fetchers-seam-signature */}
+```kotlin
+public suspend fun fetch(
+    key: K,
+    etag: String?,
+): FetcherResult<V>
+```
+
+Store passes a non-null `etag` if and only if its freshness validator selected a conditional fetch
+plan. Otherwise the argument is `null`. Returning `FetcherResult.NotModified` tells Store that the
+resident value remains current. Store refreshes its metadata and uses the returned ETag, or keeps
+the previously recorded tag when `NotModified.etag` is `null`.
+
+A successful not-modified response emits exactly one `StoreResult.Revalidated(age)` frame and
+clears durable staleness. It does not emit a redundant `Data` frame because no new value was
+fetched. If there is no resident value to revalidate, `NotModified` produces
+`StoreError.Missing`. The [read contract](/docs/store6/concepts/read-contract) shows why consumers
+must handle `Revalidated` alongside `Loading`, `Data`, and `Error`.
+
+The two builder lambdas accept only a key. Neither `fetcher { }` nor `fetcherOfResult { }` receives
+the ETag selected by a conditional plan. Use the seam interface when the backend request itself
+needs Store's conditional-request ETag.
+
+## Deleted: server-reported deletion
+
+Return `FetcherResult.Deleted` when the server says the requested value no longer exists. Store
+destructively clears the resident value, forgets its freshness metadata, and reports
+`StoreError.Missing` to streams and waiters. The deletion does not schedule an automatic refetch.
+
+`Deleted` is a statement from the backend. Caller-driven removal uses `clear`, whose race and
+stream behavior are covered in [Invalidate or clear](/docs/store6/invalidate-vs-clear).
+
+## Where retry policy lives
+
+The engine performs zero retries and zero backoff. One demand cycle invokes the configured fetcher
+exactly once. A failure schedules no background retry, and a later Store call is new demand rather
+than a continuation of the failed call.
+
+Put retries, backoff, circuit breaking, and fallback endpoints inside the fetcher body. The
+following pattern is illustrative. `BackendFailure` and its `retryable` property are application
+types, not Store APIs. Coroutine cancellation must remain outside that exception hierarchy so it
+continues to propagate.
+
+```kotlin
+fetcherOfResult { key ->
+    try {
+        FetcherResult.Success(primaryApi.getUser(key.id))
+    } catch (primaryFailure: BackendFailure) {
+        if (!primaryFailure.retryable) {
+            FetcherResult.Error(primaryFailure)
+        } else {
+            try {
+                FetcherResult.Success(secondaryApi.getUser(key.id))
+            } catch (terminalFailure: BackendFailure) {
+                FetcherResult.Error(terminalFailure)
+            }
+        }
+    }
+}
+```
+
+From Store's perspective, that entire policy is still one fetcher invocation for the demand cycle.
+The application decides which backend failures are retryable, how long to wait, and when a
+fallback is safe.
+
+## Fetcher boundaries
+
+A fetcher implementation must cooperate with coroutine cancellation. It must not write Store
+residence, persistence, or bookkeeping directly. Return one `FetcherResult` from the suspend call
+and let the engine apply the result.
+
+There is no multi-emission fetcher. If a push or streaming source produces later values, write
+those values through the configured source-of-truth instance instead. Its active readers observe
+changes made through that instance, and the resulting `Data` is attributed `Origin.SOT`. The
+[persistence guide](/docs/store6/guides/persistence) covers the source-of-truth contract. Reactivity
+to changes made through another source-of-truth instance is implementation-specific.
+
+For conditional-fetch tests, `FakeFetcher` records every invocation, including the nullable `etag`
+that the engine passed. This makes unconditional and conditional plans directly assertable. The
+[testing guide](/docs/store6/guides/testing) covers its scripted result queues and invocation
+records.
+
+<Callout type="Tip">
+
+**Next:** `/docs/store6/mutations` builds on this fetch contract with optimistic, durable writes.
+That page is not available yet.
+
+</Callout>
+
+---
+
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*

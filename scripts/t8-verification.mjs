@@ -46,6 +46,34 @@ const FIXED_EXTRA_SOURCES = Object.freeze([
     source: "content/docs/store6/concepts/read-contract.mdx",
   },
   {
+    path: "/docs/store6/guides/devtools",
+    source: "content/docs/store6/guides/devtools.mdx",
+  },
+  {
+    path: "/docs/store6/guides/extending",
+    source: "content/docs/store6/guides/extending.mdx",
+  },
+  {
+    path: "/docs/store6/guides/fetchers",
+    source: "content/docs/store6/guides/fetchers.mdx",
+  },
+  {
+    path: "/docs/store6/guides/performance",
+    source: "content/docs/store6/guides/performance.mdx",
+  },
+  {
+    path: "/docs/store6/guides/persistence",
+    source: "content/docs/store6/guides/persistence.mdx",
+  },
+  {
+    path: "/docs/store6/guides/swift",
+    source: "content/docs/store6/guides/swift.mdx",
+  },
+  {
+    path: "/docs/store6/guides/testing",
+    source: "content/docs/store6/guides/testing.mdx",
+  },
+  {
     path: "/reference/store6-core/index.html",
     source: "public/reference/store6-core/index.html",
   },

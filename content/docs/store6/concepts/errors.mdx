@@ -31,7 +31,7 @@ The variant set is frozen for the 6.x major. New failure kinds map into these ca
 their structured detail payloads rather than as new subclasses, which is what lets the hierarchy
 bridge to an exhaustive Swift enum. The consequence is worth spelling out: an exhaustive `when`
 over `StoreError` is safe to write — no `else` branch — on Kotlin and on the bridged Swift side.
-(The Swift side of that bridge gets its own guide.)
+(The [Swift bridge guide](/docs/store6/guides/swift) covers that side.)
 
 ```kotlin
 users.stream(UserKey("42")).collect { result ->
@@ -160,8 +160,8 @@ three of those statements.
 If you want retries — backoff, jitter, a circuit breaker — build them inside your fetcher, where
 you control the policy and can see the transport-level failure that Store deliberately does not
 interpret. From the engine's perspective a retrying fetcher is still exactly one fetch per demand
-cycle, so deduplication and single-flighting are unaffected. The fetchers guide collects retry
-patterns.
+cycle, so deduplication and single-flighting are unaffected. The
+[fetchers guide](/docs/store6/guides/fetchers) collects retry patterns.
 
 ## Constructing errors in tests and extensions
 
@@ -186,9 +186,9 @@ val result = TestStoreResults.error(error, servedStale = false)
 Both objects cover every `StoreResult` state and every `StoreError` variant: `loading()`,
 `data(...)`, `revalidated(...)`, `error(...)`, and `exception(...)`, plus one factory per error
 variant — `fetchError`, `persistenceError`, `conversionError`, `freshnessUnsatisfiable`,
-`conflict`, and `missing`. The testing guide shows them at work alongside the fakes and contract
-kits.
+`conflict`, and `missing`. The [testing guide](/docs/store6/guides/testing) shows them at work
+alongside the fakes and contract kits.
 
 ---
 
-*Last verified: 2026-08-10 · `main` @ `a6a156e9`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-10 · `main` @ `be470620`, pre-6.0.0-alpha01*
