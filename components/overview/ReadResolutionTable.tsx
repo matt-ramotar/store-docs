@@ -1,4 +1,4 @@
-import { Alert, Chip, Table } from "@heroui/react";
+import { Alert, Chip, Link, Table } from "@heroui/react";
 
 const origins = [
   {
@@ -101,6 +101,12 @@ export function ReadResolutionTable() {
           Hydrated resident metadata does not reuse the persisted ETag, so a fetch planned from that
           state sees <code>etag=null</code>. After the first hydrated emission, a later resident
           emission may use <code>Origin.MEMORY</code>.
+        </p>
+        <p>
+          Read the <Link href="/docs/store6/concepts/read-contract">read contract</Link> for the
+          complete stream and point-read semantics. Use the{" "}
+          <Link href="/docs/store6/concepts/freshness">freshness policies</Link> to choose when a
+          fetch participates.
         </p>
       </div>
     </>

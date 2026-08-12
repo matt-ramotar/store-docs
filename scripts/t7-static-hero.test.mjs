@@ -84,8 +84,13 @@ test("the public source states the bounded invalidated-row contract", () => {
 
 test("the hero stays static, semantic, and free of later-stage surfaces", () => {
   const publicSource = PUBLIC_FILES.map(source).join("\n");
+  const thesis = source("components/hero/HeroThesis.tsx");
 
-  assert.equal((publicSource.match(/href=["']\/docs\/store6\/overview["']/g) ?? []).length, 1);
+  assert.equal((thesis.match(/<Link\b/g) ?? []).length, 2);
+  assert.equal((thesis.match(/href=["']\/docs\/store6\/overview["']/g) ?? []).length, 1);
+  assert.equal((thesis.match(/href=["']\/docs\/store6\/quickstart["']/g) ?? []).length, 1);
+  assert.match(thesis, />\s*Read the docs\s*<\/Link>/);
+  assert.match(thesis, />\s*Build your first store\s*<\/Link>/);
   assert.match(publicSource, /<svg\b/);
   assert.match(publicSource, /role=["']img["']/);
   assert.match(publicSource, /aria-labelledby=/);
@@ -237,12 +242,17 @@ test("the generated root preserves native semantics and the traced labels", () =
     'div[role="region"][aria-label="KeyEngine trace"][tabindex="0"]',
   );
   const docsLink = main.find('a[href="/docs/store6/overview"]');
+  const quickstartLink = main.find('a[href="/docs/store6/quickstart"]');
 
   assert.equal(main.length, 1);
   assert.equal(main.find("h1").text().trim(), "Offline is just another origin.");
   assert.equal(docsLink.length, 1);
-  assert.equal(main.find("a").length, 1);
+  assert.equal(docsLink.text().trim(), "Read the docs");
+  assert.equal(quickstartLink.length, 1);
+  assert.equal(quickstartLink.text().trim(), "Build your first store");
+  assert.equal(main.find("a").length, 2);
   assert.equal(docsLink.find("svg").length, 0);
+  assert.equal(quickstartLink.find("svg").length, 0);
   assert.match(figure.attr("class") ?? "", /(?:^|\s)min-w-0(?:\s|$)/);
   assert.equal(traceRegion.length, 1);
   for (const token of ["min-w-0", "w-full", "max-w-full", "overflow-x-auto"]) {

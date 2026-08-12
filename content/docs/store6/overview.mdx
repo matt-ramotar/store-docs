@@ -8,6 +8,11 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
     {"Store 6 coordinates network, persistence, and memory through one read contract. Start with a fetcher, then add only the persistence and projection seams your application needs."}
   </p>
 
+  <Callout type="Info">
+    Store 6 is in development targeting 6.0.0-alpha01; nothing is published yet. The `store6-core`
+    API is not frozen until the beta01 freeze candidate.
+  </Callout>
+
   <div className="flex flex-wrap gap-3">
     <Link
       className="rounded-xl bg-accent px-4 py-2.5 font-medium text-accent-foreground no-underline hover:no-underline"
@@ -53,3 +58,7 @@ API tier and target coverage are separate. Experimental modules can still publis
 matrices, while adapter execution depends on the database runtime available on each target.
 
 <SupportMatrix />
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6.0.0-alpha01*

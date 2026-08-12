@@ -12,16 +12,10 @@ export type VersionNavItem = NavItem & {
 };
 
 export const primaryNavItems: NavItem[] = [
-  { href: "/docs/intro", label: "Start" },
-  { href: "/docs/use-cases/store5/overview", label: "Use Store" },
-  {
-    href: "/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
-    label: "Integrations",
-  },
-  {
-    href: "/docs/use-cases/store5/testing-store-and-its-components",
-    label: "Test",
-  },
+  { href: "/docs/store6/overview", label: "Start" },
+  { href: "/docs/store6/guides/fetchers", label: "Use Store" },
+  { href: "/docs/store6/room", label: "Integrations" },
+  { href: "/docs/store6/guides/testing", label: "Test" },
   { href: "/reference/store6-core/index.html", label: "Reference" },
   { href: "/docs/community/overview", label: "Project" },
 ];

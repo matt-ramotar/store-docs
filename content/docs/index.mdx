@@ -1,14 +1,39 @@
 ---
 title: Store Documentation
-description: Scaffold smoke test for MDX and HeroUI integration.
 ---
 
-This page verifies `fumadocs-mdx` rendering through the shared component map,
-one HeroUI base component, and one HeroUI Pro barrel component.
+Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place: a network, a local database, and memory.
+Store 6 is the next major line; Store 5 continues under its own coordinates for the whole 6.x major.
 
-<Button>Get started</Button>
+## Store 6 — start here
 
-<Segment defaultSelectedKey="store6">
-  <Segment.Item id="store5">Store 5</Segment.Item>
-  <Segment.Item id="store6">Store 6</Segment.Item>
-</Segment>
+<Callout type="Info">
+
+Store 6 is in development targeting 6.0.0-alpha01; nothing is published yet. The `store6-core` API is not frozen until the beta01 freeze candidate.
+
+</Callout>
+
+- [Store 6 overview](/docs/store6/overview): What Store 6 is and where to start.
+- [Store 6 quickstart](/docs/store6/quickstart): Build the five-line store and run the full program.
+- [Important defaults](/docs/store6/important-defaults): See every zero-config behavior, each traced to a named conformance test.
+- [Migrate from Store 5](/docs/store6/migration/from-store5): Move one screen at a time while both coordinate lines live side by side.
+
+## Store 5 — maintained legacy
+
+Store 5 documentation remains available. `store5.*` and `store6.*` coordinates live side by side for the whole 6.x major, and `store6-store5-interop` is supported for all of 6.x.
+
+- [Store 5 landing](/docs/meet-store): Meet Store and find its core resources.
+- [Why Store?](/docs/intro): Understand the Store 5 model and capabilities.
+- [Store 5 quickstart](/docs/quickstart): Build your first Store 5 store.
+- [Store 5 component reference](/docs/concepts/store5/overview): Browse the Store 5 components and their roles.
+
+### Which track am I on?
+
+- **New project:** Start with the [Store 6 overview](/docs/store6/overview).
+- **Existing Store 5 app:** Keep the Store 5 documentation and read [Migrating from Store 5](/docs/store6/migration/from-store5) when you are ready. The Store 5 to Store 6 and Store 4 to Store 6 migration guides are launch gates for 6.0.0.
+
+## Project
+
+- [Stability](/docs/store6/stability): API tiers, the deprecation cycle, release cadence, and verification.
+- [Roadmap](/docs/store6/roadmap): What remains before release and what follows.
+- [Community resources](/docs/community/overview): Talks and interviews spanning both Store generations.

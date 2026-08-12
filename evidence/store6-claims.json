@@ -90,16 +90,25 @@
     {
       "id": "home/006",
       "page": "/",
-      "claim": "The hero's exact result strings 'Data(origin=Origin.SOT, isStale=true, refreshing=true)' and 'Error(StoreError.Fetch, servedStale=true)' are byte-pinned by the T7 harness, which also asserts the built main contains exactly one anchor element — so adding the quickstart CTA requires updating that harness in the same change.",
+      "claim": "The T7 harness byte-pins the hero's exact result strings 'Data(origin=Origin.SOT, isStale=true, refreshing=true)' and 'Error(StoreError.Fetch, servedStale=true)', and asserts that the built main exposes exactly two CTA anchors: the Store 6 overview and quickstart.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "c6a64f4e296fb61f6feb74d52b4124a1ee015cd3a26af1f0f414e3ecb9477f73",
+          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
           "lines": {
             "start": 14,
-            "end": 14
+            "end": 15
+          }
+        },
+        {
+          "repository": "store-docs",
+          "path": "scripts/t7-static-hero.test.mjs",
+          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
+          "lines": {
+            "start": 244,
+            "end": 255
           }
         }
       ]
@@ -198,10 +207,10 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3890be425244754991a1d655fcbe4c262f8550388661b8fca68c801e11fd7891",
+          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
           "lines": {
-            "start": 30,
-            "end": 30
+            "start": 24,
+            "end": 24
           }
         }
       ]
@@ -279,13 +288,13 @@
     {
       "id": "docs/intro/001",
       "page": "/docs/intro",
-      "claim": "The primary-nav Start item currently targets /docs/intro; the IA re-points it to /docs/store6/overview in lib/nav.ts while this route keeps serving 200.",
+      "claim": "The primary-nav Start item targets /docs/store6/overview.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3890be425244754991a1d655fcbe4c262f8550388661b8fca68c801e11fd7891",
+          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
           "lines": {
             "start": 15,
             "end": 15
@@ -415,7 +424,7 @@
     {
       "id": "docs/quickstart/004",
       "page": "/docs/quickstart",
-      "claim": "The search verifier pins the built index at exactly 54 raw results for the query 'fetcher', a count this page's content contributes to.",
+      "claim": "The search verifier pins the built index at exactly 60 raw results for the query 'fetcher', a count this page's content contributes to.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
@@ -540,10 +549,10 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3890be425244754991a1d655fcbe4c262f8550388661b8fca68c801e11fd7891",
+          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
           "lines": {
-            "start": 26,
-            "end": 26
+            "start": 20,
+            "end": 20
           }
         }
       ]
@@ -761,10 +770,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "c6a64f4e296fb61f6feb74d52b4124a1ee015cd3a26af1f0f414e3ecb9477f73",
+          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
           "lines": {
-            "start": 209,
-            "end": 209
+            "start": 214,
+            "end": 229
           }
         }
       ]
@@ -795,7 +804,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3890be425244754991a1d655fcbe4c262f8550388661b8fca68c801e11fd7891",
+          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
           "lines": {
             "start": 14,
             "end": 14
@@ -935,6 +944,57 @@
           "lines": {
             "start": 15,
             "end": 15
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/overview/009",
+      "page": "/docs/store6/overview",
+      "claim": "store6-devtools and store6-devtools-inspector are Experimental artifacts targeting alpha02.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "STABILITY.md",
+          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "lines": {
+            "start": 54,
+            "end": 55
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/overview/010",
+      "page": "/docs/store6/overview",
+      "claim": "store6-devtools uses Store 6's full 12-target convention: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-devtools/README.md",
+          "sha256": "a1c7f518e4cf93e0bfd8333394e4cb11e41820bb512e53ec4bcf1d1307dcb4ab",
+          "lines": {
+            "start": 46,
+            "end": 48
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/overview/011",
+      "page": "/docs/store6/overview",
+      "claim": "store6-devtools-inspector publishes exactly eight targets: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-devtools-inspector/README.md",
+          "sha256": "2983cefc3f3db79026881c283801048638e8282e5dff7be4240be00192febbe5",
+          "lines": {
+            "start": 53,
+            "end": 56
           }
         }
       ]

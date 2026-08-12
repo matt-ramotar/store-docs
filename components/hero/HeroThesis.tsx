@@ -18,12 +18,20 @@ export function HeroThesis() {
         invalidated persisted value visible while a refresh runs. Provenance and failure remain
         explicit.
       </Typography.Paragraph>
-      <Link
-        className="mt-8 inline-flex w-fit rounded-xl bg-accent px-5 py-3 font-semibold text-accent-foreground no-underline hover:no-underline"
-        href="/docs/store6/overview"
-      >
-        Read the docs
-      </Link>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <Link
+          className="inline-flex w-fit rounded-xl bg-accent px-5 py-3 font-semibold text-accent-foreground no-underline hover:no-underline"
+          href="/docs/store6/overview"
+        >
+          Read the docs
+        </Link>
+        <Link
+          className="inline-flex w-fit rounded-xl border border-border bg-surface px-5 py-3 font-semibold text-foreground no-underline hover:no-underline"
+          href="/docs/store6/quickstart"
+        >
+          Build your first store
+        </Link>
+      </div>
     </header>
   );
 }

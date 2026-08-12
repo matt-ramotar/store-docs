@@ -14,6 +14,13 @@ const SNAPSHOT_PATH = resolve(ROOT, "evidence/T4-live-snapshot.json");
 const STORE6_LOCK_PATH = resolve(ROOT, "evidence/T4-store6-source-lock.json");
 const OWNED_TARGETS_PATH = resolve(ROOT, "evidence/T4-owned-targets.json");
 const BANNED_INTERNAL_TOKENS_PATH = resolve(ROOT, "evidence/banned-internal-tokens.txt");
+const DOCS_HOME_PATH = resolve(ROOT, "content/docs/index.mdx");
+const DOCS_ROOT_META_PATH = resolve(ROOT, "content/docs/meta.json");
+const STORE6_OVERVIEW_PATH = resolve(ROOT, "content/docs/store6/overview.mdx");
+const START_HERE_LIST_PATH = resolve(ROOT, "components/overview/StartHereList.tsx");
+const READ_RESOLUTION_TABLE_PATH = resolve(ROOT, "components/overview/ReadResolutionTable.tsx");
+const SUPPORT_MATRIX_PATH = resolve(ROOT, "components/overview/SupportMatrix.tsx");
+const NAV_PATH = resolve(ROOT, "lib/nav.ts");
 const LIVE_ORIGIN = "https://store.mobilenativefoundation.org";
 const SITEMAP_URL = `${LIVE_ORIGIN}/sitemap.xml`;
 const EXCLUDED_URL = `${LIVE_ORIGIN}/api/openapi.json`;
@@ -33,7 +40,7 @@ const STORE6_TARGETS = [
   "content/docs/store6/sqldelight.mdx",
   "content/docs/store6/room.mdx",
 ];
-const T3_OVERVIEW_SHA256 = "d308649827de60465915b9b1b1f6fde48c25cb4c2bb660554e4ada577e7c77b3";
+const T3_OVERVIEW_SHA256 = "edc17abef2a6aeb3ce1d6ca89462d23fb0c975ac3084f9c5d854ae11637d3d07";
 
 const inventory = readLines(INVENTORY_PATH);
 const docsInventory = inventory.filter((url) => new URL(url).pathname.startsWith("/docs/"));
@@ -52,6 +59,322 @@ test("inventory defines direct docs targets and two exact outside routes", () =>
   assert.deepEqual(outsideInventory, [...EXPECTED_OUTSIDE_ROUTES.keys()]);
   for (const [url, target] of expectedInventoryTargets) {
     assert.equal(target, `content${new URL(url).pathname}.mdx`);
+  }
+});
+
+test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
+  const document = readFrontmatterDocument(DOCS_HOME_PATH);
+  const expectedIntro = [
+    "Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place: a network, a local database, and memory.",
+    "Store 6 is the next major line; Store 5 continues under its own coordinates for the whole 6.x major.",
+  ].join("\n");
+  const expectedLinks = [
+    "/docs/store6/overview",
+    "/docs/store6/quickstart",
+    "/docs/store6/important-defaults",
+    "/docs/store6/migration/from-store5",
+    "/docs/meet-store",
+    "/docs/intro",
+    "/docs/quickstart",
+    "/docs/concepts/store5/overview",
+    "/docs/store6/overview",
+    "/docs/store6/migration/from-store5",
+    "/docs/store6/stability",
+    "/docs/store6/roadmap",
+    "/docs/community/overview",
+  ];
+
+  assert.equal(document.title, "Store Documentation");
+  assert.equal(document.description, "");
+  assert.equal(document.body.trimStart().startsWith(expectedIntro), true);
+  assert.doesNotMatch(document.body, /^#\s+/m, "docs home must not contain a body H1");
+  assert.deepEqual(markdownHeadings(document.body), [
+    { depth: 2, title: "Store 6 — start here" },
+    { depth: 2, title: "Store 5 — maintained legacy" },
+    { depth: 3, title: "Which track am I on?" },
+    { depth: 2, title: "Project" },
+  ]);
+  assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 1);
+  assert.match(
+    document.body,
+    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01; nothing is published yet\. The `store6-core` API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
+  );
+  assert.deepEqual(markdownAndHtmlTargets(document.body), expectedLinks);
+  for (const target of expectedLinks) assertLocalTargetExists(target, "content/docs/index.mdx");
+  assert.match(document.body, /^## Store 5 — maintained legacy$/m);
+  assert.match(document.body, /Store 5 documentation remains available\./);
+  assert.match(document.body, /Store 5 continues under its own coordinates for the whole 6\.x major\./);
+  assert.doesNotMatch(document.body, /(?:snippet:|\bSTORE-\d+\b|\bLinear\b|\borchestrator\b|\bbatch B5\b)/i);
+});
+
+test("B5 docs root metadata presents Store 6 before the maintained legacy shelf", () => {
+  assert.ok(existsSync(DOCS_ROOT_META_PATH), "missing content/docs/meta.json");
+  const meta = JSON.parse(readFileSync(DOCS_ROOT_META_PATH, "utf8"));
+  assert.deepEqual(meta, {
+    pages: [
+      "store6",
+      "---Store 5 (legacy)---",
+      "concepts/store5",
+      "use-cases/store5",
+      "best-practices/store5",
+      "meet-store",
+      "intro",
+      "quickstart",
+      "community/overview",
+    ],
+  });
+  for (const entry of meta.pages.filter((page) => !page.startsWith("---"))) {
+    assert.equal(
+      existsSync(resolve(ROOT, `content/docs/${entry}.mdx`)) ||
+        existsSync(resolve(ROOT, `content/docs/${entry}/index.mdx`)) ||
+        existsSync(resolve(ROOT, `content/docs/${entry}`)),
+      true,
+      `content/docs/meta.json: missing ${entry}`,
+    );
+  }
+});
+
+test("B5 legacy shelves render with distinct page-tree names", async () => {
+  const { loader } = await import("fumadocs-core/source");
+  const rootMeta = JSON.parse(readFileSync(DOCS_ROOT_META_PATH, "utf8"));
+  const expectedFolders = [
+    {
+      folder: "concepts/store5",
+      name: "Concepts",
+      overviewTitle: "Store5",
+    },
+    {
+      folder: "use-cases/store5",
+      name: "Use cases",
+      overviewTitle: "Store5",
+    },
+    {
+      folder: "best-practices/store5",
+      name: "Best practices",
+      overviewTitle: "Store5",
+    },
+  ];
+  const files = [
+    { type: "meta", path: "meta.json", data: rootMeta },
+    ...expectedFolders.flatMap(({ folder, overviewTitle }) => [
+      {
+        type: "meta",
+        path: `${folder}/meta.json`,
+        data: JSON.parse(readFileSync(resolve(ROOT, `content/docs/${folder}/meta.json`), "utf8")),
+      },
+      {
+        type: "page",
+        path: `${folder}/overview.mdx`,
+        data: { title: overviewTitle },
+      },
+    ]),
+  ];
+  const tree = loader({ baseUrl: "/docs", source: { files } }).pageTree;
+  const legacyFolders = tree.children.filter((node) => node.type === "folder");
+
+  assert.deepEqual(
+    legacyFolders.map((folder) => ({
+      name: folder.name,
+      url: folder.children.find((node) => node.type === "page")?.url,
+    })),
+    expectedFolders.map(({ folder, name }) => ({
+      name,
+      url: `/docs/${folder}/overview`,
+    })),
+  );
+});
+
+test("B5 Store6 overview preserves the entry contract and exposes the complete adoption path", () => {
+  const document = readFrontmatterDocument(STORE6_OVERVIEW_PATH);
+  const startHere = readFileSync(START_HERE_LIST_PATH, "utf8");
+  const readResolution = readFileSync(READ_RESOLUTION_TABLE_PATH, "utf8");
+  const supportMatrix = readFileSync(SUPPORT_MATRIX_PATH, "utf8");
+
+  assert.equal(document.title, "Store 6");
+  assert.equal(
+    document.description,
+    "Typed Kotlin Multiplatform reads with explicit origins, freshness, and failure states.",
+  );
+  assert.doesNotMatch(document.body, /^#\s+/m, "overview must not contain a body H1");
+  assert.match(
+    document.body,
+    /Store 6 coordinates network, persistence, and memory through one read contract\. Start with a fetcher, then add only the persistence and projection seams your application needs\./,
+  );
+  assert.deepEqual(markdownHeadings(document.body), [
+    { depth: 2, title: "Start here" },
+    { depth: 2, title: "Read resolution" },
+    { depth: 2, title: "Modules and targets" },
+  ]);
+  assert.deepEqual(markdownAndHtmlTargets(document.body), [
+    "/docs/store6/quickstart",
+    "/docs/store6/important-defaults",
+  ]);
+  assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 1);
+  assert.match(
+    document.body,
+    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01; nothing is published yet\. The `store6-core`\s+API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
+  );
+  assert.match(
+    document.body,
+    /code=\{`val users = store<UserKey, User> \{\n    fetcher \{ key -> FakeApi\.getUser\(key\.id\) \}\n\}`\}/,
+  );
+  assert.match(
+    document.body,
+    /\n---\n\n\*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6\.0\.0-alpha01\*\n$/,
+  );
+
+  const startHereBlock = startHere.match(/const startHereItems = \[([\s\S]*?)\] as const;/)?.[1];
+  assert.ok(startHereBlock, "StartHereList must keep a static server-rendered item model");
+  assert.deepEqual(
+    [...startHereBlock.matchAll(/\bid: "([^"]+)"/g)].map((match) => match[1]),
+    ["quickstart", "important-defaults", "read-contract", "data-seams", "mutations", "migration"],
+  );
+  assert.deepEqual(
+    [...startHereBlock.matchAll(/\bhref: "([^"]+)"/g)].map((match) => match[1]),
+    [
+      "/docs/store6/quickstart",
+      "/docs/store6/important-defaults",
+      "/docs/store6/concepts/read-contract",
+      "/docs/store6/guides/fetchers",
+      "/docs/store6/guides/persistence",
+      "/docs/store6/mutations",
+      "/docs/store6/migration/from-store5",
+    ],
+  );
+  const experimentalChip = startHere.match(/<Chip\b[\s\S]*?<Chip\.Label>Experimental<\/Chip\.Label>[\s\S]*?<\/Chip>/)?.[0];
+  assert.ok(experimentalChip, "mutations must carry an Experimental chip");
+  assert.doesNotMatch(experimentalChip, /\b(?:href|onClick|onPress)=/, "tier chip must not be interactive");
+
+  assert.deepEqual(
+    [...readResolution.matchAll(/\blabel: "(Origin\.[A-Z]+)"/g)].map((match) => match[1]),
+    ["Origin.MEMORY", "Origin.SOT", "Origin.FETCHER", "Origin.OVERLAY"],
+  );
+  assert.match(readResolution, /wall-clock age alone never makes/);
+  assert.match(readResolution, /Data\(origin=Origin\.SOT, isStale=true, refreshing=true\)/);
+  assert.deepEqual(
+    [...readResolution.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
+    ["/docs/store6/concepts/read-contract", "/docs/store6/concepts/freshness"],
+  );
+
+  assert.deepEqual(
+    [...supportMatrix.matchAll(/\bmodule: "([^"]+)"/g)].map((match) => match[1]),
+    [
+      "store6-core",
+      "store6-testing",
+      "store6-mutations",
+      "store6-compose",
+      "store6-sqldelight",
+      "store6-room",
+      "store6-devtools",
+      "store6-devtools-inspector",
+    ],
+  );
+  assert.match(
+    supportMatrix,
+    /Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64\./,
+  );
+  assert.match(
+    supportMatrix,
+    /Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS\./,
+  );
+  assert.deepEqual(
+    [...supportMatrix.matchAll(/\{\s*module: "([^"]+)",\s*tier: "([^"]+)",\s*release: "([^"]+)",/g)].map(
+      ([, module, tier, release]) => ({ module, tier, release }),
+    ),
+    [
+      { module: "store6-core", tier: "Stable track", release: "alpha01" },
+      { module: "store6-testing", tier: "Experimental", release: "alpha01" },
+      { module: "store6-mutations", tier: "Experimental", release: "alpha01" },
+      {
+        module: "store6-compose",
+        tier: "Experimental",
+        release: "alpha01, may slip one alpha",
+      },
+      {
+        module: "store6-sqldelight",
+        tier: "Experimental",
+        release: "alpha01, may slip one alpha",
+      },
+      {
+        module: "store6-room",
+        tier: "Experimental",
+        release: "alpha01, may slip one alpha",
+      },
+      {
+        module: "store6-devtools",
+        tier: "Experimental",
+        release: "alpha02 (target)",
+      },
+      {
+        module: "store6-devtools-inspector",
+        tier: "Experimental",
+        release: "alpha02 (target)",
+      },
+    ],
+  );
+  assert.match(supportMatrix, /not frozen until the beta01 freeze candidate/);
+  const tierCell = supportMatrix.match(
+    /<Table\.Cell>\s*<div\b[^>]*data-tier-guidance=\{entry\.module\}[^>]*>[\s\S]*?<\/Table\.Cell>/,
+  )?.[0];
+  assert.ok(tierCell, "every mapped tier cell must expose row-level guidance");
+  assert.match(tierCell, /<TierChip tier=\{entry\.tier\} \/>/);
+  assert.deepEqual(
+    [...tierCell.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
+    ["/docs/store6/stability", "/docs/store6/concepts/api-tiers"],
+  );
+  assertNoNestedInteractiveLinks(tierCell, "components/overview/SupportMatrix.tsx tier cell");
+  assert.deepEqual(
+    [...supportMatrix.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
+    [
+      "/docs/store6/stability",
+      "/docs/store6/concepts/api-tiers",
+      "/reference/store6-core/index.html",
+    ],
+  );
+
+  for (const [path, source] of [
+    ["components/overview/StartHereList.tsx", startHere],
+    ["components/overview/ReadResolutionTable.tsx", readResolution],
+    ["components/overview/SupportMatrix.tsx", supportMatrix],
+  ]) {
+    assert.doesNotMatch(source, /^["']use client["'];?$/m, `${path} must remain a Server Component`);
+    assertNoNestedInteractiveLinks(source, path);
+    assert.doesNotMatch(source, /(?:snippet:|\bSTORE-\d+\b|\bLinear\b|\borchestrator\b|\bbatch B5\b)/i, path);
+  }
+  assert.doesNotMatch(document.body, /(?:snippet:|\bSTORE-\d+\b|\bLinear\b|\borchestrator\b|\bbatch B5\b)/i);
+});
+
+test("B5 primary navigation points at Store6 while version navigation remains stable", () => {
+  const source = readFileSync(NAV_PATH, "utf8");
+  const primaryBlock = source.match(/export const primaryNavItems:[^=]+?= \[([\s\S]*?)\n\];/)?.[1];
+  assert.ok(primaryBlock, "primaryNavItems declaration missing");
+  assert.deepEqual(
+    [...primaryBlock.matchAll(/\{\s*href: "([^"]+)",\s*label: "([^"]+)",?\s*\}/g)].map(
+      ([, href, label]) => ({ href, label }),
+    ),
+    [
+      { href: "/docs/store6/overview", label: "Start" },
+      { href: "/docs/store6/guides/fetchers", label: "Use Store" },
+      { href: "/docs/store6/room", label: "Integrations" },
+      { href: "/docs/store6/guides/testing", label: "Test" },
+      { href: "/reference/store6-core/index.html", label: "Reference" },
+      { href: "/docs/community/overview", label: "Project" },
+    ],
+  );
+
+  const versionBlock = source.match(/export const docsVersions:[^=]+?= \[([\s\S]*?)\n\];/)?.[1];
+  assert.ok(versionBlock, "docsVersions declaration missing");
+  assert.deepEqual(
+    [...versionBlock.matchAll(/\{\s*href: "([^"]+)",\s*id: "([^"]+)",\s*label: "([^"]+)"\s*\}/g)].map(
+      ([, href, id, label]) => ({ href, id, label }),
+    ),
+    [
+      { href: "/docs", id: "store5", label: "Store5" },
+      { href: "/docs/store6/overview", id: "store6", label: "Store6" },
+    ],
+  );
+  for (const target of [...primaryBlock.matchAll(/\bhref: "([^"]+)"/g)].map((match) => match[1])) {
+    assertLocalTargetExists(target, "lib/nav.ts");
   }
 });
 
@@ -1548,6 +1871,30 @@ function assertLocalTargetExists(target, sourcePath) {
     return;
   }
   assert.ok(existsSync(resolve(ROOT, `public${pathname}`)), `${sourcePath}: ${target}`);
+}
+
+function assertNoNestedInteractiveLinks(source, sourcePath) {
+  const stack = [];
+  for (const match of source.matchAll(/<\/?(?:Link(?!\.)|a)\b[^>]*>/g)) {
+    const markup = match[0];
+    const closing = markup.startsWith("</");
+    const selfClosing = /\/\s*>$/.test(markup);
+    const tag = /^<\/?Link\b/.test(markup) ? "Link" : "a";
+
+    if (closing) {
+      assert.equal(stack.at(-1), tag, `${sourcePath}: unmatched ${markup}`);
+      stack.pop();
+      continue;
+    }
+
+    assert.equal(
+      stack.length,
+      0,
+      `${sourcePath}: ${markup} is nested inside <${stack.at(-1)}>`,
+    );
+    if (!selfClosing) stack.push(tag);
+  }
+  assert.deepEqual(stack, [], `${sourcePath}: unclosed interactive link markup`);
 }
 
 function walkFiles(root) {
