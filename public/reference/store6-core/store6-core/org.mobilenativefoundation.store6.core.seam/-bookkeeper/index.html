@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Bookkeeper</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    store6-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-core/commonMain"
+                                       data-filter=":store6-core/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="store6-core::org.mobilenativefoundation.store6.core.seam/Bookkeeper///PointingToDeclaration//-1367340304">
+  <div class="breadcrumbs"><a href="../../../index.html">store6-core</a><span class="delimiter">/</span><a href="../index.html">org.mobilenativefoundation.store6.core.seam</a><span class="delimiter">/</span><span class="current">Bookkeeper</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Bookkeeper</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="index.html">Bookkeeper</a></div><p class="paragraph">Tracks successful metadata, consecutive failures, and durable staleness for canonical keys.</p><p class="paragraph">Every per-key operation derives identity exclusively from <code class="lang-kotlin">(key.namespace.value, key.canonicalId())</code>; object identity and concrete key class are never part of bookkeeping identity. Every namespace operation similarly normalizes identity exclusively by <code class="lang-kotlin">namespace.value</code>; <a href="../../org.mobilenativefoundation.store6.core/-store-namespace/index.html">StoreNamespace</a> object identity is never part of namespace matching. Implementations use one store-local monotone sequence shared by every success, per-key stale mark, namespace watermark, and global watermark. A key is durably stale exactly when <code class="lang-kotlin">max(mark/ns/global) &gt; (success ?: 0)</code>. Therefore a failure-only record is not durably stale until covered by a positive mark or watermark, and a later success clears earlier staleness.</p><p class="paragraph"><a href="record-success.html">recordSuccess</a>, <a href="record-failure.html">recordFailure</a>, and operational per-key <a href="forget.html">forget</a> are operationally infallible: implementations absorb or report their own storage failures and do not throw them through this interface. Cooperative cancellation may still propagate. <a href="record-success.html">recordSuccess</a> clears the prior failure timestamp and count.</p><p class="paragraph">The maintenance methods <a href="mark-stale.html">markStale</a>, <a href="advance-stale-watermark.html">advanceStaleWatermark</a>, <a href="advance-global-stale-watermark.html">advanceGlobalStaleWatermark</a>, <a href="forget-namespace.html">forgetNamespace</a>, and <a href="forget-all.html">forgetAll</a> may report storage failures by throwing. Each is exception-atomic for every <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-throwable/index.html">Throwable</a>, including cancellation: normal return means the full operation was applied, while throwing means it had no effect. Forget operations remove key records but never reset namespace or global watermarks, and watermarks otherwise only advance.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1228427586%2FFunctions%2F-1367340304" anchor-label="advanceGlobalStaleWatermark" id="-1228427586%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-global-stale-watermark.html"><span>advance</span><wbr></wbr><span>Global</span><wbr></wbr><span>Stale</span><wbr></wbr><span><span>Watermark</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1228427586%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="advance-global-stale-watermark.html"><span class="token function">advanceGlobalStaleWatermark</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Assigns the next shared sequence to global stale coverage as one exception-atomic, fallible maintenance operation; the watermark never resets.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-650129351%2FFunctions%2F-1367340304" anchor-label="advanceStaleWatermark" id="-650129351%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-stale-watermark.html"><span>advance</span><wbr></wbr><span>Stale</span><wbr></wbr><span><span>Watermark</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-650129351%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="advance-stale-watermark.html"><span class="token function">advanceStaleWatermark</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-namespace/index.html">StoreNamespace</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Assigns the next shared sequence to durable stale coverage for every key in <a href="advance-stale-watermark.html">namespace</a> as one exception-atomic, fallible maintenance operation; the watermark never resets.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1680415351%2FFunctions%2F-1367340304" anchor-label="forget" id="1680415351%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="forget.html"><span><span>forget</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1680415351%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="forget.html"><span class="token function">forget</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Forgets <a href="forget.html">key</a>'s record, including its per-key stale mark, without resetting namespace or global watermarks.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="303970298%2FFunctions%2F-1367340304" anchor-label="forgetAll" id="303970298%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="forget-all.html"><span>forget</span><wbr></wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="303970298%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="forget-all.html"><span class="token function">forgetAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Forgets all key records without resetting watermarks as one exception-atomic, fallible maintenance operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1447384506%2FFunctions%2F-1367340304" anchor-label="forgetNamespace" id="1447384506%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="forget-namespace.html"><span>forget</span><wbr></wbr><span><span>Namespace</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1447384506%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="forget-namespace.html"><span class="token function">forgetNamespace</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-namespace/index.html">StoreNamespace</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Forgets key records in <a href="forget-namespace.html">namespace</a> without resetting watermarks as one exception-atomic, fallible maintenance operation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2113809236%2FFunctions%2F-1367340304" anchor-label="markStale" id="2113809236%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mark-stale.html"><span>mark</span><wbr></wbr><span><span>Stale</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2113809236%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="mark-stale.html"><span class="token function">markStale</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Assigns the next shared sequence to <a href="mark-stale.html">key</a>'s stale mark as one exception-atomic, fallible maintenance operation; the shared sequence never resets.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="352163803%2FFunctions%2F-1367340304" anchor-label="recordFailure" id="352163803%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="record-failure.html"><span>record</span><wbr></wbr><span><span>Failure</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="352163803%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="record-failure.html"><span class="token function">recordFailure</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span></span><span class="parameter ">atEpochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Records one consecutive failure for <a href="record-failure.html">key</a> at <a href="record-failure.html">atEpochMillis</a> without making a failure-only record durably stale.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="516145613%2FFunctions%2F-1367340304" anchor-label="recordSuccess" id="516145613%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="record-success.html"><span>record</span><wbr></wbr><span><span>Success</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="516145613%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="record-success.html"><span class="token function">recordSuccess</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span></span><span class="parameter ">meta<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-meta/index.html">StoreMeta</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Records successful metadata for <a href="record-success.html">key</a>, assigns the next shared store-local monotone sequence, and clears its failure timestamp and count.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-913011844%2FFunctions%2F-1367340304" anchor-label="status" id="-913011844%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="status.html"><span><span>status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-913011844%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="status.html"><span class="token function">status</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-key-status/index.html">KeyStatus</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns canonical status for <a href="status.html">key</a>, including watermark-only staleness, or null when neither a record nor a covering watermark exists.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

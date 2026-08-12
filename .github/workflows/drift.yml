@@ -11,36 +11,66 @@ on:
         default: main
         type: string
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: store6-docs-drift
   cancel-in-progress: false
 
 jobs:
-  drift:
+  dokka-reference:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
+    outputs:
+      process: ${{ steps.cadence-gate.outputs.process }}
+      changed: ${{ steps.drift.outputs.changed }}
+      base_revision: ${{ steps.docs-base.outputs.revision }}
+      locked_revision: ${{ steps.drift.outputs.locked }}
+      store6_revision: ${{ steps.drift.outputs.head }}
+      source_changed: ${{ steps.artifact.outputs.source_changed }}
+      review_required: ${{ steps.artifact.outputs.review_required }}
+      release_tag: ${{ steps.cadence.outputs.release_tag }}
     steps:
-      - name: Check out the documentation site
+      - name: Require main workflow ref
+        shell: bash
+        run: |
+          [[ "$GITHUB_REF" == "refs/heads/main" ]] || {
+            echo "Store6 drift publication must run from refs/heads/main."
+            exit 1
+          }
+
+      - name: Check out documentation main
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
+          persist-credentials: false
 
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: Enable the project package manager
+      - name: Capture trusted documentation base
+        id: docs-base
+        env:
+          TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
+        shell: bash
         run: |
-          corepack enable
-          corepack install
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+          echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          node - <<'NODE' > "$TRUSTED_TARGETS"
+          const lock = require("./evidence/T4-store6-source-lock.json");
+          const targets = lock.sources.map(({ target }) => target);
+          if (
+            targets.length === 0 ||
+            targets.some((target) => typeof target !== "string" || target.length === 0) ||
+            new Set(targets).size !== targets.length
+          ) {
+            throw new Error("trusted Store6 source lock targets must be nonempty, unique strings");
+          }
+          process.stdout.write(`${JSON.stringify(targets)}\n`);
+          NODE
+          test -s "$TRUSTED_TARGETS"
 
       - name: Check out the requested Store6 revision
         env:
@@ -48,10 +78,54 @@ jobs:
         shell: bash
         run: |
           git clone --no-checkout https://github.com/matt-ramotar/Store6 ../Store6
-          git -C ../Store6 fetch --force origin "$STORE6_REF"
+          git check-ref-format --branch "$STORE6_REF" > /dev/null || {
+            echo "Store6 ref must be a valid branch, tag, or commit SHA without refspec syntax."
+            exit 1
+          }
+          git -C ../Store6 fetch --force --tags origin "$STORE6_REF"
           git -C ../Store6 checkout --detach FETCH_HEAD
 
+      - name: Determine Dokka reference cadence
+        id: cadence
+        run: node scripts/dokka-reference-cadence.mjs --source-root ../Store6 --event "$GITHUB_EVENT_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Validate Dokka reference cadence
+        id: cadence-gate
+        env:
+          MODE: ${{ steps.cadence.outputs.mode }}
+          PROCESS: ${{ steps.cadence.outputs.process }}
+          RELEASE_TAG: ${{ steps.cadence.outputs.release_tag }}
+        shell: bash
+        run: |
+          case "$PROCESS:$MODE" in
+            true:main-tracking)
+              [[ -z "$RELEASE_TAG" ]] || exit 1
+              ;;
+            true:tag-only)
+              [[ -n "$RELEASE_TAG" ]] || exit 1
+              ;;
+            false:tag-only)
+              [[ -z "$RELEASE_TAG" ]] || exit 1
+              ;;
+            *)
+              echo "Dokka reference cadence returned invalid outputs."
+              exit 1
+              ;;
+          esac
+          echo "process=$PROCESS" >> "$GITHUB_OUTPUT"
+
+      - name: Enable the project package manager
+        if: steps.cadence-gate.outputs.process == 'true'
+        run: |
+          corepack enable
+          corepack install
+
+      - name: Install dependencies
+        if: steps.cadence-gate.outputs.process == 'true'
+        run: pnpm install --frozen-lockfile
+
       - name: Verify the mirrored source list
+        if: steps.cadence-gate.outputs.process == 'true'
         shell: bash
         run: |
           node <<'NODE'
@@ -72,12 +146,34 @@ jobs:
 
       - name: Detect Store6 drift
         id: drift
+        env:
+          PROCESS: ${{ steps.cadence-gate.outputs.process }}
+          MODE: ${{ steps.cadence.outputs.mode }}
+          RELEASE_TAG: ${{ steps.cadence.outputs.release_tag }}
         shell: bash
         run: |
+          if [[ "$PROCESS" == "false" ]]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Dokka reference cadence is tag-only; scheduled drift processing is a no-op."
+            exit 0
+          fi
           locked="$(node -p "require('./evidence/T4-store6-source-lock.json').revision")"
           head="$(git -C ../Store6 rev-parse HEAD)"
           echo "locked=$locked" >> "$GITHUB_OUTPUT"
           echo "head=$head" >> "$GITHUB_OUTPUT"
+          if [[ "$MODE" == "tag-only" ]]; then
+            [[ -n "$RELEASE_TAG" ]] || {
+              echo "Release-tag cadence requires a release tag."
+              exit 1
+            }
+            tag_at_head="$(git -C ../Store6 tag --points-at HEAD --list "$RELEASE_TAG")"
+            [[ "$tag_at_head" == "$RELEASE_TAG" ]] || {
+              echo "Release-tag cadence must use the exact Store6 tag at HEAD."
+              exit 1
+            }
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [[ "$head" == "$locked" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "docs in sync with Store6 main @ $head"
@@ -96,6 +192,112 @@ jobs:
       - name: Verify synchronized Store6 output
         if: steps.drift.outputs.changed == 'true'
         run: node scripts/sync-store6-docs.mjs --source-root ../Store6 --check
+
+      - name: Verify trusted publication targets are unchanged
+        if: steps.drift.outputs.changed == 'true'
+        env:
+          TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
+        run: |
+          jq -e --slurpfile trusted "$TRUSTED_TARGETS" \
+            '[.sources[].target] == $trusted[0]' \
+            evidence/T4-store6-source-lock.json > /dev/null
+
+      - name: Verify exact reference revision
+        if: steps.drift.outputs.changed == 'true'
+        shell: bash
+        run: |
+          locked="$(node -p "require('./evidence/T4-store6-source-lock.json').revision")"
+          head="$(git -C ../Store6 rev-parse HEAD)"
+          [[ "$head" == "$locked" ]] || {
+            echo "Store6 checkout does not match evidence/T4-store6-source-lock.json."
+            exit 1
+          }
+
+      - name: Use Zulu JDK 17
+        if: steps.drift.outputs.changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '17'
+
+      - name: Generate Dokka reference
+        if: steps.drift.outputs.changed == 'true'
+        working-directory: ../Store6
+        run: ./gradlew :store6-core:dokkaHtml :store6-mutations:dokkaHtml --stacktrace
+
+      - name: Replace public Dokka reference trees
+        if: steps.drift.outputs.changed == 'true'
+        shell: bash
+        run: |
+          store6_core_root="../Store6/store6-core/build/dokka/html"
+          store6_core_index="${store6_core_root}/index.html"
+          store6_mutations_root="../Store6/store6-mutations/build/dokka/html"
+          store6_mutations_index="${store6_mutations_root}/index.html"
+          for root in "$store6_core_root" "$store6_mutations_root"; do
+            [[ -d "$root" && ! -L "$root" ]] || {
+              echo "Dokka output root must be a real directory: $root"
+              exit 1
+            }
+          done
+          for index in "$store6_core_index" "$store6_mutations_index"; do
+            [[ -f "$index" && ! -L "$index" && -s "$index" ]] || {
+              echo "Dokka index must be a real, nonempty regular file: $index"
+              exit 1
+            }
+          done
+          rsync -a --delete ../Store6/store6-core/build/dokka/html/ public/reference/store6-core/
+          rsync -a --delete ../Store6/store6-mutations/build/dokka/html/ public/reference/store6-mutations/
+
+      - name: Reject unresolved Dokka links
+        if: steps.drift.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set +e
+          grep -RIl --include='*.html' 'data-unresolved-link' public/reference/ > "$RUNNER_TEMP/dokka-unresolved-links.txt"
+          grep_status=$?
+          set -e
+          case "$grep_status" in
+            0)
+              echo "Dokka emitted unresolved KDoc links; fix the KDoc in Store6 (grep the HTML for data-unresolved-link)."
+              exit 1
+              ;;
+            1)
+              ;;
+            *)
+              echo "Failed to scan generated Dokka HTML for unresolved links."
+              exit "$grep_status"
+              ;;
+          esac
+
+      - name: Record release reference provenance
+        if: steps.drift.outputs.changed == 'true'
+        env:
+          MODE: ${{ steps.cadence.outputs.mode }}
+          RELEASE_TAG: ${{ steps.cadence.outputs.release_tag }}
+          STORE6_REVISION: ${{ steps.drift.outputs.head }}
+        shell: bash
+        run: |
+          [[ "$MODE" == "tag-only" ]] || exit 0
+          [[ -n "$RELEASE_TAG" && -n "$STORE6_REVISION" ]] || {
+            echo "Release reference provenance requires a tag and exact Store6 revision."
+            exit 1
+          }
+          node - <<'NODE'
+          const { readFileSync, writeFileSync } = require("node:fs");
+          const evidencePath = "evidence/T6b.md";
+          const marker = /^Last automated release refresh:.*$/m;
+          const releaseTag = process.env.RELEASE_TAG;
+          const revision = process.env.STORE6_REVISION;
+          const evidence = readFileSync(evidencePath, "utf8");
+          const matches = evidence.match(new RegExp(marker.source, "gm")) ?? [];
+          if (matches.length !== 1) {
+            throw new Error("evidence/T6b.md must contain exactly one release refresh marker");
+          }
+          writeFileSync(
+            evidencePath,
+            evidence.replace(marker, `Last automated release refresh: ${releaseTag} @ ${revision}.`),
+          );
+          NODE
 
       - name: Build the site
         if: steps.drift.outputs.changed == 'true'
@@ -119,13 +321,11 @@ jobs:
           status=${PIPESTATUS[0]}
           set -e
           classification="$(node scripts/repin-store6-lock.mjs --classify-reverification scripts/check-claims.mjs "$status" "$RUNNER_TEMP/store6-claims-report.txt")"
-          echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "classification=$classification" >> "$GITHUB_OUTPUT"
           if [[ "$classification" == "hard" ]]; then
             echo "Store6 claims verification failed with a hard integrity or operational error."
-            exit "$status"
+            exit 1
           fi
-          exit 0
 
       - name: Verify Store6 snippets
         if: steps.drift.outputs.changed == 'true'
@@ -137,13 +337,11 @@ jobs:
           status=${PIPESTATUS[0]}
           set -e
           classification="$(node scripts/repin-store6-lock.mjs --classify-reverification scripts/check-snippets.mjs "$status" "$RUNNER_TEMP/store6-snippets-report.txt")"
-          echo "status=$status" >> "$GITHUB_OUTPUT"
           echo "classification=$classification" >> "$GITHUB_OUTPUT"
           if [[ "$classification" == "hard" ]]; then
             echo "Store6 snippets verification failed with a hard integrity or operational error."
-            exit "$status"
+            exit 1
           fi
-          exit 0
 
       - name: Verify the built site
         if: steps.drift.outputs.changed == 'true'
@@ -176,11 +374,54 @@ jobs:
         if: steps.drift.outputs.changed == 'true'
         run: node scripts/test-t6b-reference.mjs
 
-      - name: Prepare the rolling re-pin branch
+      - name: Prepare validated publication artifact
         if: steps.drift.outputs.changed == 'true'
-        id: prepare
+        id: artifact
+        env:
+          ARTIFACT_DIR: ${{ runner.temp }}/store6-drift-artifact
+          TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
         shell: bash
         run: |
+          mkdir -p "$ARTIFACT_DIR"
+          mapfile -t trusted_targets < <(jq -r '.[]' "$TRUSTED_TARGETS")
+          allowed_paths=(
+            "${trusted_targets[@]}"
+            evidence/T4-store6-source-lock.json
+            evidence/T4-owned-targets.json
+            evidence/store6-claims.json
+            evidence/T6b.md
+            public/reference/store6-core
+            public/reference/store6-mutations
+          )
+          git add -A -- "${allowed_paths[@]}"
+          while IFS= read -r -d '' path; do
+            allowed=false
+            for target in "${trusted_targets[@]}"; do
+              [[ "$path" == "$target" ]] && allowed=true
+            done
+            case "$path" in
+              evidence/T4-store6-source-lock.json|evidence/T4-owned-targets.json|evidence/store6-claims.json|evidence/T6b.md|public/reference/store6-core/*|public/reference/store6-mutations/*)
+                allowed=true
+                ;;
+            esac
+            [[ "$allowed" == "true" ]] || {
+              echo "unexpected staged path: $path"
+              exit 1
+            }
+          done < <(git diff --cached --name-only -z)
+          if git diff --cached --quiet; then
+            echo "Store6 drift produced no publication changes."
+            exit 1
+          fi
+          if ! git diff --quiet; then
+            echo "Store6 drift left unstaged tracked residue outside the publication allowlist."
+            exit 1
+          fi
+          untracked="$(git ls-files --others --exclude-standard)"
+          if [[ -n "$untracked" ]]; then
+            echo "Store6 drift left untracked residue outside the publication allowlist: $untracked"
+            exit 1
+          fi
           source_changed="$(node - <<'NODE'
           const { readFileSync } = require("node:fs");
           const before = JSON.parse(readFileSync(process.env.RUNNER_TEMP + "/store6-lock-before.json", "utf8"));
@@ -193,46 +434,197 @@ jobs:
           );
           NODE
           )"
+          review_required=false
+          if [[ "${{ steps.cadence.outputs.mode }}" == "tag-only" || "${{ steps.claims.outputs.classification }}" == "review" || "${{ steps.snippets.outputs.classification }}" == "review" ]]; then
+            review_required=true
+          fi
           echo "source_changed=$source_changed" >> "$GITHUB_OUTPUT"
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin refs/heads/docs-sync/repin:refs/remotes/origin/docs-sync/repin || true
-          git switch -C docs-sync/repin
-          mapfile -t targets < <(node -e "for (const { target } of require('./evidence/T4-store6-source-lock.json').sources) console.log(target)")
-          git add evidence/T4-store6-source-lock.json evidence/T4-owned-targets.json evidence/store6-claims.json "${targets[@]}"
-          git commit -m "chore(docs): repin Store6 sources"
-          git push --force-with-lease origin HEAD:docs-sync/repin
+          echo "review_required=$review_required" >> "$GITHUB_OUTPUT"
+          git diff --cached --binary --full-index --no-ext-diff > "$ARTIFACT_DIR/changes.patch"
+          head -c 65536 "$RUNNER_TEMP/store6-claims-report.txt" > "$ARTIFACT_DIR/claims-report.txt"
+          head -c 65536 "$RUNNER_TEMP/store6-snippets-report.txt" > "$ARTIFACT_DIR/snippets-report.txt"
+          jq -n \
+            --arg base_revision "${{ steps.docs-base.outputs.revision }}" \
+            --arg locked_revision "${{ steps.drift.outputs.locked }}" \
+            --arg store6_revision "${{ steps.drift.outputs.head }}" \
+            --arg release_tag "${{ steps.cadence.outputs.release_tag }}" \
+            --arg source_changed "$source_changed" \
+            --arg review_required "$review_required" \
+            --argjson trusted_targets "$(cat "$TRUSTED_TARGETS")" \
+            '{schemaVersion:1, base_revision:$base_revision, locked_revision:$locked_revision, store6_revision:$store6_revision, release_tag:$release_tag, source_changed:$source_changed, review_required:$review_required, trusted_targets:$trusted_targets}' \
+            > "$ARTIFACT_DIR/metadata.json"
+          metadata_size="$(wc -c < "$ARTIFACT_DIR/metadata.json")"
+          [[ "$metadata_size" -le 65536 ]] || {
+            echo "publication metadata exceeds 65536 bytes"
+            exit 1
+          }
+          (
+            cd "$ARTIFACT_DIR"
+            sha256sum changes.patch claims-report.txt snippets-report.txt metadata.json > sha256
+          )
 
-      - name: Create or refresh the rolling re-pin pull request
+      - name: Upload validated publication artifact
         if: steps.drift.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          LOCKED_REVISION: ${{ steps.drift.outputs.locked }}
-          SOURCE_CHANGED: ${{ steps.prepare.outputs.source_changed }}
-          STORE6_REVISION: ${{ steps.drift.outputs.head }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: store6-drift-publication
+          if-no-files-found: error
+          path: ${{ runner.temp }}/store6-drift-artifact
+          retention-days: 1
+
+  publish:
+    needs: dokka-reference
+    if: >-
+      needs.dokka-reference.outputs.process == 'true' &&
+      needs.dokka-reference.outputs.changed == 'true'
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Require main workflow ref
         shell: bash
         run: |
+          [[ "$GITHUB_REF" == "refs/heads/main" ]] || {
+            echo "Store6 drift publication must run from refs/heads/main."
+            exit 1
+          }
+
+      - name: Check out documentation main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+          persist-credentials: false
+
+      - name: Download validated publication artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: store6-drift-publication
+          path: ${{ runner.temp }}/store6-drift-artifact
+
+      - name: Apply validated publication artifact
+        env:
+          ARTIFACT_DIR: ${{ runner.temp }}/store6-drift-artifact
+          BASE_TRUSTED_TARGETS: ${{ runner.temp }}/store6-publisher-targets.json
+          EXPECTED_BASE: ${{ needs.dokka-reference.outputs.base_revision }}
+          EXPECTED_LOCKED: ${{ needs.dokka-reference.outputs.locked_revision }}
+          EXPECTED_STORE6: ${{ needs.dokka-reference.outputs.store6_revision }}
+          RELEASE_TAG: ${{ needs.dokka-reference.outputs.release_tag }}
+        shell: bash
+        run: |
+          git fetch --force origin main:refs/remotes/origin/main
+          [[ "$(git rev-parse origin/main)" == "$EXPECTED_BASE" ]] || {
+            echo "Documentation main moved after artifact validation."
+            exit 1
+          }
+          git switch -C docs-sync/repin origin/main
+          jq -e \
+            '[.sources[].target] as $targets |
+             ($targets | length > 0) and
+             ($targets | all(type == "string" and length > 0)) and
+             (($targets | unique | length) == ($targets | length)) |
+             $targets' \
+            evidence/T4-store6-source-lock.json > "$BASE_TRUSTED_TARGETS"
+          (
+            cd "$ARTIFACT_DIR"
+            sha256sum --check sha256
+          )
+          expected_inventory="changes.patch claims-report.txt metadata.json sha256 snippets-report.txt"
+          actual_inventory="$(find "$ARTIFACT_DIR" -maxdepth 1 -type f -exec basename {} \; | sort | tr '\n' ' ' | sed 's/ $//')"
+          [[ "$actual_inventory" == "$expected_inventory" ]] || {
+            echo "validated artifact inventory differs"
+            exit 1
+          }
+          jq -e \
+            --arg base "$EXPECTED_BASE" \
+            --arg locked "$EXPECTED_LOCKED" \
+            --arg store6 "$EXPECTED_STORE6" \
+            --arg release_tag "$RELEASE_TAG" \
+            --slurpfile trusted "$BASE_TRUSTED_TARGETS" \
+            '.schemaVersion == 1 and .base_revision == $base and .locked_revision == $locked and .store6_revision == $store6 and .release_tag == $release_tag and .trusted_targets == $trusted[0]' \
+            "$ARTIFACT_DIR/metadata.json" > /dev/null
+          git apply --check --index --binary "$ARTIFACT_DIR/changes.patch"
+          git apply --index --binary "$ARTIFACT_DIR/changes.patch"
+          mapfile -t trusted_targets < <(jq -r '.[]' "$BASE_TRUSTED_TARGETS")
+          jq -e --slurpfile trusted "$BASE_TRUSTED_TARGETS" \
+            '[.sources[].target] == $trusted[0]' \
+            evidence/T4-store6-source-lock.json > /dev/null
+          while IFS= read -r -d '' path; do
+            allowed=false
+            for target in "${trusted_targets[@]}"; do
+              [[ "$path" == "$target" ]] && allowed=true
+            done
+            case "$path" in
+              evidence/T4-store6-source-lock.json|evidence/T4-owned-targets.json|evidence/store6-claims.json|evidence/T6b.md|public/reference/store6-core/*|public/reference/store6-mutations/*)
+                allowed=true
+                ;;
+            esac
+            [[ "$allowed" == "true" ]] || {
+              echo "unexpected staged path: $path"
+              exit 1
+            }
+          done < <(git diff --cached --name-only -z)
+          if git diff --cached --quiet; then
+            echo "Validated patch contains no changes."
+            exit 1
+          fi
+          if ! git diff --quiet; then
+            echo "Validated patch left an unstaged tracked residue."
+            exit 1
+          fi
+          untracked="$(git ls-files --others --exclude-standard)"
+          if [[ -n "$untracked" ]]; then
+            echo "Validated patch left untracked residue: $untracked"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(docs): repin Store6 sources"
+
+      - name: Push and create or refresh the rolling re-pin pull request
+        env:
+          ARTIFACT_DIR: ${{ runner.temp }}/store6-drift-artifact
+          GH_TOKEN: ${{ github.token }}
+          LOCKED_REVISION: ${{ needs.dokka-reference.outputs.locked_revision }}
+          RELEASE_TAG: ${{ needs.dokka-reference.outputs.release_tag }}
+          SOURCE_CHANGED: ${{ needs.dokka-reference.outputs.source_changed }}
+          STORE6_REVISION: ${{ needs.dokka-reference.outputs.store6_revision }}
+        shell: bash
+        run: |
+          gh auth setup-git
+          git fetch origin refs/heads/docs-sync/repin:refs/remotes/origin/docs-sync/repin || true
+          git push --force-with-lease origin HEAD:docs-sync/repin
           body="$RUNNER_TEMP/store6-repin-body.md"
           {
             echo "Re-pins the documentation site from Store6 \`$LOCKED_REVISION\` to \`$STORE6_REVISION\`."
             echo
             if [[ "$SOURCE_CHANGED" == "false" ]]; then
-              echo "Only the revision moved; no locked source hash changed."
+              echo "No mirrored Store6 source hash changed; generated reference output was refreshed."
+              echo
+            fi
+            if [[ -n "$RELEASE_TAG" ]]; then
+              echo "## Release editorial gate"
+              echo
+              echo "- [ ] Confirm the support matrix is current for \`$RELEASE_TAG\`."
+              echo "- [ ] Confirm \`T3_OVERVIEW_SHA256\` for this release refresh."
+              echo "- [ ] Record the \`/release-notes/overview\` decision."
               echo
             fi
             echo "## Claims re-verification"
             echo
             echo '```text'
-            cat "$RUNNER_TEMP/store6-claims-report.txt"
+            cat "$ARTIFACT_DIR/claims-report.txt"
             echo '```'
             echo
             echo "## Snippets re-verification"
             echo
             echo '```text'
-            cat "$RUNNER_TEMP/store6-snippets-report.txt"
+            cat "$ARTIFACT_DIR/snippets-report.txt"
             echo '```'
           } > "$body"
-          number="$(gh pr list --repo matt-ramotar/store-docs --head docs-sync/repin --state open --json number --jq '.[0].number')"
+          number="$(gh api --method GET repos/matt-ramotar/store-docs/pulls -f state=open -f head='matt-ramotar:docs-sync/repin' -f base='main' --jq '.[0].number')"
           if [[ -n "$number" ]]; then
             gh pr edit "$number" --repo matt-ramotar/store-docs --title "chore(docs): repin Store6 sources" --body-file "$body"
           else
@@ -240,10 +632,13 @@ jobs:
           fi
 
       - name: Fail when Store6 re-verification needs review
-        if: >-
-          steps.drift.outputs.changed == 'true' &&
-          (steps.claims.outputs.classification == 'review' ||
-          steps.snippets.outputs.classification == 'review')
+        if: needs.dokka-reference.outputs.review_required == 'true'
+        env:
+          RELEASE_TAG: ${{ needs.dokka-reference.outputs.release_tag }}
         run: |
-          echo "The rolling re-pin PR was created, but Store6 claims or snippets require human re-verification."
+          if [[ -n "$RELEASE_TAG" ]]; then
+            echo "The rolling re-pin PR was created, but the release-tag reference refresh requires the support matrix, overview hash, and release-notes decision."
+          else
+            echo "The rolling re-pin PR was created, but Store6 claims or snippets require human re-verification."
+          fi
           exit 1

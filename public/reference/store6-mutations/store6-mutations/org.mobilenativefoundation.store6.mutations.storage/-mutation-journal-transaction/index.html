@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MutationJournalTransaction</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    store6-mutations
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-mutations/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-mutations/commonMain"
+                                       data-filter=":store6-mutations/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-mutations
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="store6-mutations::org.mobilenativefoundation.store6.mutations.storage/MutationJournalTransaction///PointingToDeclaration//-2047478051">
+  <div class="breadcrumbs"><a href="../../../index.html">store6-mutations</a><span class="delimiter">/</span><a href="../index.html">org.mobilenativefoundation.store6.mutations.storage</a><span class="delimiter">/</span><span class="current">MutationJournalTransaction</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mutation</span><wbr></wbr><span>Journal</span><wbr></wbr><span><span>Transaction</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="index.html">MutationJournalTransaction</a></div><p class="paragraph">Scoped reads and mutations available only inside <a href="../-mutation-journal-storage/transaction.html">MutationJournalStorage.transaction</a>.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1680093833%2FFunctions%2F-2047478051" anchor-label="acks" id="-1680093833%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="acks.html"><span><span>acks</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1680093833%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="acks.html"><span class="token function">acks</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-ack-record/index.html">MutationAckRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns retained acknowledgements ordered by client sequence then generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1608331738%2FFunctions%2F-2047478051" anchor-label="advanceAlias" id="-1608331738%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-alias.html"><span>advance</span><wbr></wbr><span><span>Alias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1608331738%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="advance-alias.html"><span class="token function">advanceAlias</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-key-alias-record/index.html">MutationKeyAliasRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Activates a pending alias edge.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-68132039%2FFunctions%2F-2047478051" anchor-label="advanceClient" id="-68132039%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-client.html"><span>advance</span><wbr></wbr><span><span>Client</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-68132039%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="advance-client.html"><span class="token function">advanceClient</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-client-record/index.html">MutationClientRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Monotonically advances allocation and local retirement fields. The persisted server-confirmed field must remain unchanged; only <a href="confirm-retired-through.html">confirmRetiredThrough</a> may advance it.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1926313517%2FFunctions%2F-2047478051" anchor-label="advanceEffect" id="1926313517%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-effect.html"><span>advance</span><wbr></wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1926313517%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="advance-effect.html"><span class="token function">advanceEffect</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-effect-record/index.html">MutationEffectRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Advances one effect to a terminal disposition.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1419808039%2FFunctions%2F-2047478051" anchor-label="advanceExecution" id="-1419808039%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-execution.html"><span>advance</span><wbr></wbr><span><span>Execution</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1419808039%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="advance-execution.html"><span class="token function">advanceExecution</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-execution-record/index.html">MutationExecutionRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Applies an execution-state transition.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="854300188%2FFunctions%2F-2047478051" anchor-label="advanceTombstone" id="854300188%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="advance-tombstone.html"><span>advance</span><wbr></wbr><span><span>Tombstone</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="854300188%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="advance-tombstone.html"><span class="token function">advanceTombstone</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-key-tombstone-record/index.html">MutationKeyTombstoneRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Advances one tombstone generation forward.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1110589829%2FFunctions%2F-2047478051" anchor-label="aliases" id="1110589829%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="aliases.html"><span><span>aliases</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1110589829%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="aliases.html"><span class="token function">aliases</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-key-alias-record/index.html">MutationKeyAliasRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns every retained alias edge ordered by source identity.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="81125449%2FFunctions%2F-2047478051" anchor-label="appendFailure" id="81125449%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="append-failure.html"><span>append</span><wbr></wbr><span><span>Failure</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="81125449%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="append-failure.html"><span class="token function">appendFailure</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">generation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">kind<span class="token operator">: </span><a href="../../org.mobilenativefoundation.store6.mutations/-mutation-failure-kind/index.html">MutationFailureKind</a><span class="token punctuation">, </span></span><span class="parameter ">detail<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">occurredAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutation-failure-record/index.html">MutationFailureRecord</a></div><div class="brief "><p class="paragraph">Allocates an ID and appends normalized, UTF-8-bounded failure evidence.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1819671475%2FFunctions%2F-2047478051" anchor-label="attempts" id="1819671475%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="attempts.html"><span><span>attempts</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1819671475%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="attempts.html"><span class="token function">attempts</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-attempt-record/index.html">MutationAttemptRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns retained attempts ordered by client sequence then generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="288179704%2FFunctions%2F-2047478051" anchor-label="client" id="288179704%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="client.html"><span><span>client</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="288179704%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="client.html"><span class="token function">client</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutation-client-record/index.html">MutationClientRecord</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns the client row, or null when this journal has not initialized <a href="client.html">clientId</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="374540049%2FFunctions%2F-2047478051" anchor-label="confirmRetiredThrough" id="374540049%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="confirm-retired-through.html"><span>confirm</span><wbr></wbr><span>Retired</span><wbr></wbr><span><span>Through</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="374540049%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="confirm-retired-through.html"><span class="token function">confirmRetiredThrough</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">requestedThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">serverConfirmedThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutation-client-record/index.html">MutationClientRecord</a></div><div class="brief "><p class="paragraph">Monotonically records a checkpoint response without accepting a value greater than the exact <a href="confirm-retired-through.html">requestedThroughSequence</a> sent to the backend.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="907851427%2FFunctions%2F-2047478051" anchor-label="effects" id="907851427%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="effects.html"><span><span>effects</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="907851427%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="effects.html"><span class="token function">effects</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-effect-record/index.html">MutationEffectRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns effects ordered by client sequence then effect index.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1471826824%2FFunctions%2F-2047478051" anchor-label="executions" id="1471826824%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="executions.html"><span><span>executions</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1471826824%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="executions.html"><span class="token function">executions</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-execution-record/index.html">MutationExecutionRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns retained executions ordered by client sequence.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1339575722%2FFunctions%2F-2047478051" anchor-label="failures" id="-1339575722%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="failures.html"><span><span>failures</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1339575722%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="failures.html"><span class="token function">failures</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-failure-record/index.html">MutationFailureRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns append-only failures ordered by storage-local failure ID.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1519350358%2FFunctions%2F-2047478051" anchor-label="insertAck" id="1519350358%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-ack.html"><span>insert</span><wbr></wbr><span><span>Ack</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1519350358%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-ack.html"><span class="token function">insertAck</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-ack-record/index.html">MutationAckRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts a write-once acknowledgement. Its codec version identifies its own authoritative bytes and may differ from the referenced attempt version; an exact duplicate is idempotent.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1516806743%2FFunctions%2F-2047478051" anchor-label="insertAlias" id="-1516806743%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-alias.html"><span>insert</span><wbr></wbr><span><span>Alias</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1516806743%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-alias.html"><span class="token function">insertAlias</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-key-alias-record/index.html">MutationKeyAliasRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts a pending alias edge; an exact duplicate is idempotent.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-14960682%2FFunctions%2F-2047478051" anchor-label="insertAttempt" id="-14960682%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-attempt.html"><span>insert</span><wbr></wbr><span><span>Attempt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-14960682%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-attempt.html"><span class="token function">insertAttempt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-attempt-record/index.html">MutationAttemptRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts one immutable semantic attempt generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1874483030%2FFunctions%2F-2047478051" anchor-label="insertClient" id="1874483030%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-client.html"><span>insert</span><wbr></wbr><span><span>Client</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1874483030%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-client.html"><span class="token function">insertClient</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-client-record/index.html">MutationClientRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts a new version-1 client row with allocation and both retirement prefixes equal to zero. Later hydrated states are represented only by monotonic advances of that initial row.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-426038710%2FFunctions%2F-2047478051" anchor-label="insertEffect" id="-426038710%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-effect.html"><span>insert</span><wbr></wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-426038710%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-effect.html"><span class="token function">insertEffect</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-effect-record/index.html">MutationEffectRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts one initial <code class="lang-kotlin">PENDING</code> effect.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-755557066%2FFunctions%2F-2047478051" anchor-label="insertExecution" id="-755557066%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-execution.html"><span>insert</span><wbr></wbr><span><span>Execution</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-755557066%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-execution.html"><span class="token function">insertExecution</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-execution-record/index.html">MutationExecutionRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts the one execution row paired with an intent.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="656986416%2FFunctions%2F-2047478051" anchor-label="insertIntent" id="656986416%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-intent.html"><span>insert</span><wbr></wbr><span><span>Intent</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="656986416%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-intent.html"><span class="token function">insertIntent</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">recordVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter ">mutationId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">canonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">mutatorId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">mutatorVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">argsBlob<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter ">idempotencyRoot<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../-mutation-intent-record/index.html">MutationIntentRecord</a></div><div class="brief "><p class="paragraph">Allocates a storage-local row ID, inserts an immutable intent, and returns its copied row.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1654263137%2FFunctions%2F-2047478051" anchor-label="insertTombstone" id="-1654263137%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="insert-tombstone.html"><span>insert</span><wbr></wbr><span><span>Tombstone</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1654263137%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="insert-tombstone.html"><span class="token function">insertTombstone</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-key-tombstone-record/index.html">MutationKeyTombstoneRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Inserts one pending tombstone generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1282995000%2FFunctions%2F-2047478051" anchor-label="intents" id="1282995000%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="intents.html"><span><span>intents</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1282995000%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="intents.html"><span class="token function">intents</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-intent-record/index.html">MutationIntentRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns retained intents ordered by client sequence.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="790633637%2FFunctions%2F-2047478051" anchor-label="prune" id="790633637%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="prune.html"><span><span>prune</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="790633637%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="prune.html"><span class="token function">prune</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">serverConfirmedRetiredThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Removes eligible records at or below <a href="prune.html">serverConfirmedRetiredThroughSequence</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1270045385%2FFunctions%2F-2047478051" anchor-label="recordConflictReceipt" id="-1270045385%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="record-conflict-receipt.html"><span>record</span><wbr></wbr><span>Conflict</span><wbr></wbr><span><span>Receipt</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1270045385%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="record-conflict-receipt.html"><span class="token function">recordConflictReceipt</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">record<span class="token operator">: </span><a href="../-mutation-attempt-record/index.html">MutationAttemptRecord</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Writes the four conflict-receipt fields of an existing attempt exactly once.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-599317831%2FFunctions%2F-2047478051" anchor-label="tombstones" id="-599317831%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="tombstones.html"><span><span>tombstones</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-599317831%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">fun </span><a href="tombstones.html"><span class="token function">tombstones</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-mutation-key-tombstone-record/index.html">MutationKeyTombstoneRecord</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns every retained tombstone generation in deterministic identity order.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

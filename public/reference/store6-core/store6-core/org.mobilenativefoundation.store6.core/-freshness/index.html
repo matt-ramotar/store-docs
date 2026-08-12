@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>Freshness</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    store6-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-core/commonMain"
+                                       data-filter=":store6-core/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="store6-core::org.mobilenativefoundation.store6.core/Freshness///PointingToDeclaration//-1367340304">
+  <div class="breadcrumbs"><a href="../../../index.html">store6-core</a><span class="delimiter">/</span><a href="../index.html">org.mobilenativefoundation.store6.core</a><span class="delimiter">/</span><span class="current">Freshness</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Freshness</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="index.html">Freshness</a></div><p class="paragraph">A per-call policy describing how fresh a value must be before it is served.</p><p class="paragraph">Each read is planned from resident availability, invalidation state, typed metadata, and this policy. Concurrent requests for one key still share a single in-flight fetch even when their policies differ.</p><h4 class="tableheader">Inheritors</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-cached-or-fetch/index.html">CachedOrFetch</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-max-age/index.html">MaxAge</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-must-be-fresh/index.html">MustBeFresh</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-stale-if-error/index.html">StaleIfError</a></div></span></div><div></div></div></div><div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><a href="-local-only/index.html">LocalOnly</a></div></span></div><div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="1342779700%2FClasslikes%2F-1367340304" anchor-label="CachedOrFetch" id="1342779700%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-cached-or-fetch/index.html"><span>Cached</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Fetch</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1342779700%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-cached-or-fetch/index.html">CachedOrFetch</a> : <a href="index.html">Freshness</a></div><div class="brief "><p class="paragraph">The default policy: serve a locally available value immediately. Invalidated values and source-of-truth rows without freshness metadata are served as stale while one background revalidation runs; fetch when no local value exists.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1115378478%2FClasslikes%2F-1367340304" anchor-label="LocalOnly" id="-1115378478%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-local-only/index.html"><span>Local</span><wbr></wbr><span><span>Only</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1115378478%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-local-only/index.html">LocalOnly</a> : <a href="index.html">Freshness</a></div><div class="brief "><p class="paragraph">Never invoke the fetcher; serve only locally available data and report <a href="../-store-error/-missing/index.html">StoreError.Missing</a> when none exists.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1302550498%2FClasslikes%2F-1367340304" anchor-label="MaxAge" id="-1302550498%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-max-age/index.html"><span>Max</span><wbr></wbr><span><span>Age</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1302550498%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">class </span><a href="-max-age/index.html">MaxAge</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>notOlderThan<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.time/-duration/index.html">Duration</a></span></span><span class="token punctuation">)</span> : <a href="index.html">Freshness</a></div><div class="brief "><p class="paragraph">Serve a locally available value only when it has known freshness metadata, has not been invalidated, and its age does not exceed <code class="lang-kotlin">notOlderThan</code>; otherwise withhold it and fetch a fresh value.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1190621831%2FClasslikes%2F-1367340304" anchor-label="MustBeFresh" id="1190621831%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-must-be-fresh/index.html"><span>Must</span><wbr></wbr><span>Be</span><wbr></wbr><span><span>Fresh</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1190621831%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-must-be-fresh/index.html">MustBeFresh</a> : <a href="index.html">Freshness</a></div><div class="brief "><p class="paragraph">Never serve a cached value; block until a fresh fetch succeeds and fail when it does not. A source-of-truth row without freshness metadata is also withheld.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-165181977%2FClasslikes%2F-1367340304" anchor-label="StaleIfError" id="-165181977%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-stale-if-error/index.html"><span>Stale</span><wbr></wbr><span>If</span><wbr></wbr><span><span>Error</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-165181977%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">object </span><a href="-stale-if-error/index.html">StaleIfError</a> : <a href="index.html">Freshness</a></div><div class="brief "><p class="paragraph">Prefer fresh data after invalidation or when a local value has no freshness metadata, but fall back to that stale value when the fetch fails. A local value with current known metadata is served without fetching.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

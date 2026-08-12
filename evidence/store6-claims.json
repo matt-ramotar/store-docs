@@ -787,7 +787,7 @@
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "7ac3191486b01f169f16a990a9b6ae5438adbf42af6a2bbf29c0767d8ca76cb6",
+          "sha256": "0cf2ea66b39d351f607491a057865afe91b53352b83c55426e130b4931f2db3f",
           "lines": {
             "start": 24,
             "end": 141

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import test from "node:test";
 
 import * as cheerio from "cheerio";
@@ -725,9 +725,7 @@ test("same-origin migration links are healthy or rendered as unavailable", () =>
 });
 
 test("publishable tracked text excludes local paths and private publication vocabulary", () => {
-  const roots = ["app", "components", "content", "lib", "public", "scripts"]
-    .map((path) => resolve(ROOT, path));
-  const files = roots.flatMap((root) => walkFiles(root)).filter((file) => !file.endsWith(".DS_Store"));
+  const files = collectPublishableTrackedTextFiles(ROOT);
   const forbiddenWordHashes = new Set([
     "d0a0f664ab8bb431ddf2759d9431cb2c46dec139298569ecca525a82d4fdbde5",
     "132a0519893f35d86aafbf5cd9863a34867ef0c6595f32fb2e1d8c1e1951fdc5",
@@ -757,6 +755,40 @@ test("publishable tracked text excludes local paths and private publication voca
         `${relative(ROOT, file)}: forbidden phrase`,
       );
     }
+  }
+});
+
+test("publishable text census excludes only generated reference module artifacts", () => {
+  const fixtureRoot = mkdtempSync(join(tmpdir(), "store-docs-publishable-census-"));
+  const included = [
+    "app/page.tsx",
+    "components/Fixture.tsx",
+    "content/docs/fixture.mdx",
+    "lib/nav.ts",
+    "public/reference/store6-core-adjacent/index.html",
+    "public/reference/unexpected/index.html",
+    "public/robots.txt",
+    "scripts/fixture.mjs",
+  ];
+  const generated = [
+    "public/reference/store6-core/index.html",
+    "public/reference/store6-mutations/scripts/main.js",
+  ];
+  try {
+    for (const sourcePath of [...included, ...generated]) {
+      const target = resolve(fixtureRoot, sourcePath);
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, "fixture\n");
+    }
+
+    assert.deepEqual(
+      collectPublishableTrackedTextFiles(fixtureRoot)
+        .map((file) => relative(fixtureRoot, file).split(sep).join("/"))
+        .sort(),
+      included.sort(),
+    );
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
   }
 });
 
@@ -1907,6 +1939,26 @@ function walkFiles(root) {
     else files.push(path);
   }
   return files;
+}
+
+function collectPublishableTrackedTextFiles(root) {
+  return ["app", "components", "content", "lib", "public", "scripts"]
+    .flatMap((directory) => walkFiles(resolve(root, directory)))
+    .filter((file) => !file.endsWith(".DS_Store"))
+    .filter((file) => !isGeneratedReferenceArtifact(root, file));
+}
+
+function isGeneratedReferenceArtifact(root, file) {
+  return ["store6-core", "store6-mutations"].some((moduleName) => {
+    const moduleRoot = resolve(root, "public", "reference", moduleName);
+    const moduleRelative = relative(moduleRoot, file);
+    return (
+      moduleRelative === "" ||
+      (!isAbsolute(moduleRelative) &&
+        moduleRelative !== ".." &&
+        !moduleRelative.startsWith(`..${sep}`))
+    );
+  });
 }
 
 function findPublishedSurfaceViolations(root, patterns) {

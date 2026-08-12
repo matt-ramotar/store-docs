@@ -4,6 +4,7 @@ import {
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -212,13 +213,111 @@ test("route derivation rejects unexpected application page entrypoints for every
   }
 });
 
-test("route derivation rejects an unexpected public reference entrypoint", async () => {
+test("route derivation accepts generated files nested below the required public reference modules", async () => {
+  await withFixture(async (root) => {
+    const fixture = writeContractFixture(root);
+    const nestedSymbolRoute = "/reference/store6-core/symbol/index.html";
+    writeFixture(
+      root,
+      `public${nestedSymbolRoute}`,
+      "generated symbol page\n",
+    );
+    writeFixture(
+      root,
+      "public/reference/store6-mutations/scripts/navigation-loader.js",
+      "generated support file\n",
+    );
+
+    const contract = await deriveRouteContract({ root });
+
+    assert.deepEqual(contract.extras, fixture.extras);
+    assert.deepEqual(
+      contract.pageRoutes,
+      [...new Set([...fixture.inventoryPaths, ...fixture.extras])].sort(),
+    );
+    assert.equal(contract.extras.includes(nestedSymbolRoute), false);
+    assert.equal(contract.pageRoutes.includes(nestedSymbolRoute), false);
+    assert.deepEqual(contract.routeSources.publicReferencePages, [
+      "public/reference/store6-core/index.html",
+      "public/reference/store6-mutations/index.html",
+    ]);
+  });
+});
+
+test("route derivation rejects an unexpected third public reference module", async () => {
   await withFixture(async (root) => {
     writeContractFixture(root);
     writeFixture(root, "public/reference/unexpected/index.html", "fixture\n");
 
-    await assert.rejects(deriveRouteContract({ root }), /public reference entrypoints differ/);
+    await assert.rejects(deriveRouteContract({ root }), /public reference/);
   });
+});
+
+test("route derivation rejects a top-level file in the public reference root", async () => {
+  await withFixture(async (root) => {
+    writeContractFixture(root);
+    writeFixture(root, "public/reference/version.json", "{}\n");
+
+    await assert.rejects(deriveRouteContract({ root }), /public reference/);
+  });
+});
+
+test("route derivation rejects a missing required public reference module", async () => {
+  await withFixture(async (root) => {
+    writeContractFixture(root);
+    rmSync(resolve(root, "public/reference/store6-core"), { recursive: true });
+
+    await assert.rejects(
+      deriveRouteContract({ root }),
+      /public\/reference\/store6-core\/index\.html/,
+    );
+  });
+});
+
+test("route derivation rejects a missing required public reference index", async () => {
+  await withFixture(async (root) => {
+    writeContractFixture(root);
+    rmSync(resolve(root, "public/reference/store6-core/index.html"));
+
+    await assert.rejects(
+      deriveRouteContract({ root }),
+      /public\/reference\/store6-core\/index\.html/,
+    );
+  });
+});
+
+test("route derivation rejects public reference symlink escapes", async () => {
+  for (const symlinkKind of ["directory", "entrypoint", "nested"]) {
+    await withFixture(async (root) => {
+      writeContractFixture(root);
+      const escapeRoot = mkdtempSync(join(tmpdir(), "store-docs-t8-escape-"));
+      try {
+        writeFixture(escapeRoot, "index.html", "escaped fixture\n");
+        const modulePath = resolve(root, "public/reference/store6-core");
+        if (symlinkKind === "directory") {
+          rmSync(modulePath, { recursive: true });
+          symlinkSync(escapeRoot, modulePath, "dir");
+        } else if (symlinkKind === "entrypoint") {
+          const entrypointPath = resolve(modulePath, "index.html");
+          rmSync(entrypointPath);
+          symlinkSync(resolve(escapeRoot, "index.html"), entrypointPath, "file");
+        } else {
+          symlinkSync(
+            resolve(escapeRoot, "index.html"),
+            resolve(modulePath, "generated-link.html"),
+            "file",
+          );
+        }
+
+        await assert.rejects(
+          deriveRouteContract({ root }),
+          /public\/reference\/store6-core/,
+        );
+      } finally {
+        rmSync(escapeRoot, { force: true, recursive: true });
+      }
+    });
+  }
 });
 
 test("route derivation rejects an extras file that differs from computed routes", async () => {

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>org.mobilenativefoundation.store6.mutations.storage</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../index.html" tabindex="1">
+                    store6-mutations
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-mutations/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-mutations/commonMain"
+                                       data-filter=":store6-mutations/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-mutations
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="store6-mutations::org.mobilenativefoundation.store6.mutations.storage////PointingToDeclaration//-2047478051">
+  <div class="breadcrumbs"><a href="../../index.html">store6-mutations</a><span class="delimiter">/</span><span class="current">org.mobilenativefoundation.store6.mutations.storage</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-788254939%2FClasslikes%2F-2047478051" anchor-label="InMemoryMutationJournalStorage" id="-788254939%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-in-memory-mutation-journal-storage/index.html"><span>In</span><wbr></wbr><span>Memory</span><wbr></wbr><span>Mutation</span><wbr></wbr><span>Journal</span><wbr></wbr><span><span>Storage</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-788254939%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-in-memory-mutation-journal-storage/index.html">InMemoryMutationJournalStorage</a> : <a href="-mutation-journal-storage/index.html">MutationJournalStorage</a></div><div class="brief "><p class="paragraph">Process-local default <a href="-mutation-journal-storage/index.html">MutationJournalStorage</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2043909031%2FClasslikes%2F-2047478051" anchor-label="MutationAckRecord" id="-2043909031%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-ack-record/index.html"><span>Mutation</span><wbr></wbr><span>Ack</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2043909031%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-ack-record/index.html">MutationAckRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>authoritativePresence<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.mutations/-mutation-presence-state/index.html">MutationPresenceState</a><span class="token punctuation">, </span></span><span class="parameter ">authoritativeBlob<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>valueCodecVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>etag<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>canonicalTargetNamespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>canonicalTargetId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>receivedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Write-once durable acknowledgement for an exact attempt generation.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-979748274%2FClasslikes%2F-2047478051" anchor-label="MutationAliasState" id="-979748274%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-alias-state/index.html"><span>Mutation</span><wbr></wbr><span>Alias</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-979748274%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">enum </span><a href="-mutation-alias-state/index.html">MutationAliasState</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mutation-alias-state/index.html">MutationAliasState</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Stable persisted alias-edge state names.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-791254891%2FClasslikes%2F-2047478051" anchor-label="MutationAttemptRecord" id="-791254891%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-attempt-record/index.html"><span>Mutation</span><wbr></wbr><span>Attempt</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-791254891%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-attempt-record/index.html">MutationAttemptRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>effectiveNamespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>effectiveCanonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>valueCodecVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>basePresence<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.mutations/-mutation-presence-state/index.html">MutationPresenceState</a><span class="token punctuation">, </span></span><span class="parameter ">baseBlob<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>minePresence<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.mutations/-mutation-presence-state/index.html">MutationPresenceState</a><span class="token punctuation">, </span></span><span class="parameter ">mineBlob<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preconditionMetaPresent<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preconditionWrittenAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preconditionEtag<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>advertisedRetiredThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generationIdempotencyKey<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>preparedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>conflictMetaPresent<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>conflictWrittenAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>conflictEtag<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>conflictReceivedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Immutable semantic attempt generation with a write-once conflict receipt.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-224129197%2FClasslikes%2F-2047478051" anchor-label="MutationClientRecord" id="-224129197%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-client-record/index.html"><span>Mutation</span><wbr></wbr><span>Client</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-224129197%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-client-record/index.html">MutationClientRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>recordVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lastAllocatedSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>retiredThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>serverConfirmedRetiredThroughSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Durable allocation and retirement high-water state for one mutation client.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="295874733%2FClasslikes%2F-2047478051" anchor-label="MutationEffectDisposition" id="295874733%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-effect-disposition/index.html"><span>Mutation</span><wbr></wbr><span>Effect</span><wbr></wbr><span><span>Disposition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="295874733%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">enum </span><a href="-mutation-effect-disposition/index.html">MutationEffectDisposition</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mutation-effect-disposition/index.html">MutationEffectDisposition</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Stable persisted invalidation-effect disposition names.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-265620950%2FClasslikes%2F-2047478051" anchor-label="MutationEffectKind" id="-265620950%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-effect-kind/index.html"><span>Mutation</span><wbr></wbr><span>Effect</span><wbr></wbr><span><span>Kind</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-265620950%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">enum </span><a href="-mutation-effect-kind/index.html">MutationEffectKind</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mutation-effect-kind/index.html">MutationEffectKind</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Stable persisted invalidation-effect target names.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1012330291%2FClasslikes%2F-2047478051" anchor-label="MutationEffectRecord" id="-1012330291%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-effect-record/index.html"><span>Mutation</span><wbr></wbr><span>Effect</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1012330291%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-effect-record/index.html">MutationEffectRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>effectIndex<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kind<span class="token operator">: </span><a href="-mutation-effect-kind/index.html">MutationEffectKind</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>canonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>disposition<span class="token operator">: </span><a href="-mutation-effect-disposition/index.html">MutationEffectDisposition</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>completedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">One normalized durable invalidation effect.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-507668372%2FClasslikes%2F-2047478051" anchor-label="MutationExecutionPhase" id="-507668372%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-execution-phase/index.html"><span>Mutation</span><wbr></wbr><span>Execution</span><wbr></wbr><span><span>Phase</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-507668372%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">enum </span><a href="-mutation-execution-phase/index.html">MutationExecutionPhase</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mutation-execution-phase/index.html">MutationExecutionPhase</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Stable persisted execution-phase names. Storage implementations persist <code class="lang-kotlin">name</code>, never ordinal.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-710351254%2FClasslikes%2F-2047478051" anchor-label="MutationExecutionRecord" id="-710351254%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-execution-record/index.html"><span>Mutation</span><wbr></wbr><span>Execution</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-710351254%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-execution-record/index.html">MutationExecutionRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>phase<span class="token operator">: </span><a href="-mutation-execution-phase/index.html">MutationExecutionPhase</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>currentGeneration<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>attempt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lastAttemptAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>activeFailureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>retiredAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mutable durable execution state for exactly one <a href="-mutation-intent-record/index.html">MutationIntentRecord</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-49384904%2FClasslikes%2F-2047478051" anchor-label="MutationFailureRecord" id="-49384904%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-failure-record/index.html"><span>Mutation</span><wbr></wbr><span>Failure</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-49384904%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-failure-record/index.html">MutationFailureRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>failureId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>generation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>kind<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.mutations/-mutation-failure-kind/index.html">MutationFailureKind</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>detail<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>message<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>occurredAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Append-only normalized failure evidence.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1134448030%2FClasslikes%2F-2047478051" anchor-label="MutationIntentRecord" id="-1134448030%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-intent-record/index.html"><span>Mutation</span><wbr></wbr><span>Intent</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1134448030%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-intent-record/index.html">MutationIntentRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>rowId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>recordVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>clientSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mutationId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>canonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mutatorId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mutatorVersion<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">argsBlob<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-byte-array/index.html">ByteArray</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>idempotencyRoot<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Immutable durable intent. <code class="lang-kotlin">argsBlob</code> is copied on construction and every read.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="666073483%2FClasslikes%2F-2047478051" anchor-label="MutationJournalStorage" id="666073483%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-journal-storage/index.html"><span>Mutation</span><wbr></wbr><span>Journal</span><wbr></wbr><span><span>Storage</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="666073483%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-mutation-journal-storage/index.html">MutationJournalStorage</a></div><div class="brief "><p class="paragraph">Durable mutation-journal storage seam.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1663153144%2FClasslikes%2F-2047478051" anchor-label="MutationJournalTransaction" id="-1663153144%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-journal-transaction/index.html"><span>Mutation</span><wbr></wbr><span>Journal</span><wbr></wbr><span><span>Transaction</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1663153144%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-mutation-journal-transaction/index.html">MutationJournalTransaction</a></div><div class="brief "><p class="paragraph">Scoped reads and mutations available only inside <a href="-mutation-journal-storage/transaction.html">MutationJournalStorage.transaction</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1372093357%2FClasslikes%2F-2047478051" anchor-label="MutationKeyAliasRecord" id="1372093357%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-key-alias-record/index.html"><span>Mutation</span><wbr></wbr><span>Key</span><wbr></wbr><span>Alias</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1372093357%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-key-alias-record/index.html">MutationKeyAliasRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>sourceNamespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sourceCanonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>targetNamespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>targetCanonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>state<span class="token operator">: </span><a href="-mutation-alias-state/index.html">MutationAliasState</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdByClientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdBySequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>activatedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Durable same-namespace redirect edge.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-676183608%2FClasslikes%2F-2047478051" anchor-label="MutationKeyTombstoneRecord" id="-676183608%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-key-tombstone-record/index.html"><span>Mutation</span><wbr></wbr><span>Key</span><wbr></wbr><span>Tombstone</span><wbr></wbr><span><span>Record</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-676183608%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-mutation-key-tombstone-record/index.html">MutationKeyTombstoneRecord</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>namespace<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>canonicalId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdByClientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdBySequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>state<span class="token operator">: </span><a href="-mutation-tombstone-state/index.html">MutationTombstoneState</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>createdAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>activatedAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>supersededByClientId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>supersededBySequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>supersededAt<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">One durable tombstone generation for an effective identity.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1912037203%2FClasslikes%2F-2047478051" anchor-label="MutationTombstoneState" id="1912037203%2FClasslikes%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mutation-tombstone-state/index.html"><span>Mutation</span><wbr></wbr><span>Tombstone</span><wbr></wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1912037203%2FClasslikes%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">enum </span><a href="-mutation-tombstone-state/index.html">MutationTombstoneState</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mutation-tombstone-state/index.html">MutationTombstoneState</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Stable persisted tombstone-generation state names.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,503 +1,729 @@
 import assert from "node:assert/strict";
-import { lstat, readFile, readdir } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { lstat, readFile, readdir, realpath } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { load } from "cheerio";
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const referenceRoot = path.join(repoRoot, "public", "reference");
-const pages = [
+const defaultRepoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const canonicalSiteOrigin = "https://store.mobilenativefoundation.org";
+const localReferenceOrigin = "https://reference.invalid";
+const stockKotlinPlaygroundScript =
+  "https://unpkg.com/kotlin-playground@1/dist/playground.min.js";
+const approvedStockDokkaScriptSha256 = Object.freeze({
+  "store6-core/scripts/main.js": "f67b38f8e9805d566f137a37a95e2622aa7eb018ae24ddafdf3c7e05f9eed84e",
+  "store6-core/scripts/navigation-loader.js": "10880a206be17a3f5f2bb61af7fb2c83ba2ef1939477870badb08e02c3062868",
+  "store6-core/scripts/platform-content-handler.js": "62da13cd4807ecc5ff9b18cb9f5dbb7cb3c0f7f8681cf1651ff0a96b135cb987",
+  "store6-core/scripts/prism.js": "73995d49b765f3938d508a956eba6f74fead5133b78c2a351f6da226c8b93290",
+  "store6-core/scripts/safe-local-storage_blocking.js": "259d21ed2a2d01a0cb5ae9fb1fcc4ec0851c8950e19994f29aeb745b03bad294",
+  "store6-core/scripts/sourceset_dependencies.js": "1497ac56f2356ee91c594b05bd69ffdce2cecb3bf799e674e8845ee314d84eb7",
+  "store6-core/ui-kit/ui-kit.min.js": "850086e62c237c4137fb8cbda71662c3dabe886b4507cd862164bfe69103c914",
+  "store6-mutations/scripts/main.js": "f67b38f8e9805d566f137a37a95e2622aa7eb018ae24ddafdf3c7e05f9eed84e",
+  "store6-mutations/scripts/navigation-loader.js": "10880a206be17a3f5f2bb61af7fb2c83ba2ef1939477870badb08e02c3062868",
+  "store6-mutations/scripts/platform-content-handler.js": "62da13cd4807ecc5ff9b18cb9f5dbb7cb3c0f7f8681cf1651ff0a96b135cb987",
+  "store6-mutations/scripts/prism.js": "73995d49b765f3938d508a956eba6f74fead5133b78c2a351f6da226c8b93290",
+  "store6-mutations/scripts/safe-local-storage_blocking.js": "259d21ed2a2d01a0cb5ae9fb1fcc4ec0851c8950e19994f29aeb745b03bad294",
+  "store6-mutations/scripts/sourceset_dependencies.js": "864bcd3553260fe03a10bcc38b656464c81e7e89d8b53a6206698fe0663e27ae",
+  "store6-mutations/ui-kit/ui-kit.min.js": "850086e62c237c4137fb8cbda71662c3dabe886b4507cd862164bfe69103c914",
+});
+const approvedDokkaScriptPaths = new Set(
+  Object.keys(approvedStockDokkaScriptSha256).map((key) => key.slice(key.indexOf("/") + 1)),
+);
+const approvedDokkaScriptBasenames = new Set(
+  [...approvedDokkaScriptPaths].map((scriptPath) => path.posix.basename(scriptPath)),
+);
+const moduleContracts = [
   {
-    file: path.join(referenceRoot, "store6-core", "index.html"),
-    moduleName: "Store 6 Core",
-    task: ":store6-core:dokkaHtml",
-    output: "store6-core/build/dokka/html/",
-    destination: "public/reference/store6-core/",
-    currentHref: "/reference/store6-core/index.html",
+    siblingHref: "/reference/store6-mutations/index.html",
+    slug: "store6-core",
   },
   {
-    file: path.join(referenceRoot, "store6-mutations", "index.html"),
-    moduleName: "Store 6 Mutations",
-    task: ":store6-mutations:dokkaHtml",
-    output: "store6-mutations/build/dokka/html/",
-    destination: "public/reference/store6-mutations/",
-    currentHref: "/reference/store6-mutations/index.html",
+    siblingHref: "/reference/store6-core/index.html",
+    slug: "store6-mutations",
   },
 ];
-
-const expectedFiles = pages.map(({ file }) => path.relative(referenceRoot, file)).sort();
-const foundFiles = [];
-const expectedStylesheetManifest = [
-  ':root{color-scheme:light;--paper:#f7f4ef;--surface:#ffffff;--slate:#1a1f26;--muted:#4a5361;--border:#d9d2c7;--accent:#0d8577;--accent-strong:#0a6259;--code-surface:#0d141c;--code-foreground:#d7dee8}',
-  "*{box-sizing:border-box}",
-  'html{background:var(--paper);color:var(--slate);font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;line-height:1.6}',
-  "body{margin:0}",
-  "a{color:var(--accent-strong);font-weight:650;text-underline-offset:0.2em}",
-  "a:hover{color:var(--accent-strong)}",
-  "a:focus-visible{border-radius:0.2rem;outline:3px solid var(--accent);outline-offset:3px}",
-  ".skip-link{background:var(--slate);color:var(--surface);left:1rem;padding:0.65rem 0.9rem;position:fixed;top:1rem;transform:translateY(-200%);z-index:2}",
-  ".skip-link:hover{color:var(--surface)}",
-  ".skip-link:focus-visible{color:var(--surface)}",
-  ".skip-link:focus{transform:translateY(0)}",
-  "header{background:var(--surface);border-bottom:1px solid var(--border)}",
-  "header > div,main,footer > div{margin:0 auto;max-width:68rem;padding-left:clamp(1.25rem, 4vw, 3rem);padding-right:clamp(1.25rem, 4vw, 3rem)}",
-  "header > div{align-items:center;display:flex;flex-wrap:wrap;gap:1rem 2rem;justify-content:space-between;min-height:4.5rem;padding-bottom:0.75rem;padding-top:0.75rem}",
-  ".brand{color:var(--slate);font-weight:800;letter-spacing:-0.015em;text-decoration:none}",
-  "nav ul{display:flex;flex-wrap:wrap;gap:0.6rem 1.25rem;list-style:none;margin:0;padding:0}",
-  "main{padding-bottom:5rem;padding-top:clamp(3.5rem, 8vw, 6.5rem)}",
-  ".eyebrow{color:var(--accent-strong);font-size:0.75rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase}",
-  "h1,h2{letter-spacing:-0.035em;line-height:1.1;text-wrap:balance}",
-  "h1{font-size:clamp(2.5rem, 7vw, 5rem);margin:0.75rem 0 1.5rem;max-width:14ch}",
-  "h2{font-size:clamp(1.5rem, 3vw, 2rem);margin:0}",
-  ".lede{color:var(--muted);font-size:clamp(1.05rem, 2vw, 1.25rem);max-width:46rem}",
-  ".notice,.contracts{background:var(--surface);border:1px solid var(--border);margin-top:2.5rem;padding:clamp(1.25rem, 4vw, 2rem)}",
-  ".notice{border-left:0.3rem solid var(--accent)}",
-  ".notice p:last-child,.contracts p:last-child{margin-bottom:0}",
-  ".contract-grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit, minmax(min(100%, 19rem), 1fr));margin-top:1.5rem}",
-  "dl{border-top:1px solid var(--border);margin:0;padding-top:1rem}",
-  "dt{color:var(--muted);font-size:0.75rem;font-weight:800;letter-spacing:0.08em;margin-top:0.85rem;text-transform:uppercase}",
-  "dd{margin:0.2rem 0 0}",
-  "code{background:var(--code-surface);border-radius:0.25rem;color:var(--code-foreground);display:inline-block;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;font-size:0.84em;max-width:100%;overflow-wrap:anywhere;padding:0.15rem 0.35rem}",
-  ".module-links{border-top:1px solid var(--border);margin-top:2.5rem;padding-top:1.5rem}",
-  '[aria-current="page"]{color:var(--slate);text-decoration-thickness:0.2rem}',
-  "footer{border-top:1px solid var(--border);color:var(--muted)}",
-  "footer > div{padding-bottom:2rem;padding-top:2rem}",
+const internalTrackerPattern = new RegExp(
+  `\\b(?:${["ST", "ORE"].join("")}-\\d+|${["T", "6"].join("")}[ab]?|${[
+    "Lin",
+    "ear",
+  ].join("")})\\b`,
+);
+const durablePublicSurfacePatterns = [
+  internalTrackerPattern,
+  /\b(?:TD|FS|RISK|RD)-\d+\b/,
+  /\bD\d+\s*=\s*[A-Za-z]\b/,
+  /docs\/v6\//,
+  /\bIssue 0\d\d\b/,
 ];
-const anchorPaths = {
-  brand:
-    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > a:nth-of-type(1)",
-  core:
-    "html:nth-of-type(1) > body:nth-of-type(1) > main:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  docsHome:
-    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(1) > a:nth-of-type(1)",
-  mutations:
-    "html:nth-of-type(1) > body:nth-of-type(1) > main:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  overview:
-    "html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > div:nth-of-type(1) > nav:nth-of-type(1) > ul:nth-of-type(1) > li:nth-of-type(2) > a:nth-of-type(1)",
-  skip: "html:nth-of-type(1) > body:nth-of-type(1) > a:nth-of-type(1)",
-};
+const localPrivateFilesystemPathPattern =
+  /(?:\/(?:Users|private|tmp)\/|[A-Za-z]:[\\/]+Users[\\/]+|file:\/\/)/i;
+const executableAssetExtensionPattern =
+  /\.(?:js|mjs|cjs|jsx|ts|tsx|wasm|sh|bash|zsh|fish|command|bat|cmd|ps1|py|pyc|rb|pl|php|cgi|exe|com|dll|dylib|so|jar|class|dex|apk|ipa|app)$/i;
+const strictUtf8Decoder = new TextDecoder("utf-8", { fatal: true });
+const placeholderReferencePattern =
+  /API Reference Unavailable|This page is not generated API documentation|Generated API documentation is currently unavailable|replace its placeholder directory/i;
+const inlineDokkaBootstraps = [
+  /^\s*document\s*\.\s*documentElement\s*\.\s*classList\s*\.\s*replace\s*\(\s*"no-js"\s*,\s*"js"\s*\)\s*;?\s*$/,
+  /^\s*var\s+pathToRoot\s*=\s*"(?:\.\.\/)*"\s*;?\s*$/,
+];
+const stockDokkaDarkModeBootstrap = `const storage = localStorage.getItem("dokka-dark-mode")
+if (storage == null) {
+    const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (osDarkSchemePreferred === true) {
+        document.getElementsByTagName("html")[0].classList.add("theme-dark")
+    }
+} else {
+    const savedDarkMode = JSON.parse(storage)
+    if(savedDarkMode === true) {
+        document.getElementsByTagName("html")[0].classList.add("theme-dark")
+    }
+}`;
+const stockDokkaV2DarkModeBootstrap = `const storage = localStorage.getItem("dokka-dark-mode")
+if (storage == null) {
+    const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (osDarkSchemePreferred === true) {
+        document.getElementsByTagName("html")[0].classList.add("theme-dark")
+    }
+} else {
+    const savedDarkMode = JSON.parse(storage)
+    if (savedDarkMode === true) {
+        document.getElementsByTagName("html")[0].classList.add("theme-dark")
+    }
+}`;
+const normalizedStockInlineDokkaScripts = new Set([
+  normalizeInlineScript(stockDokkaDarkModeBootstrap),
+  normalizeInlineScript(stockDokkaV2DarkModeBootstrap),
+]);
 
-function expectedAnchorManifest(currentHref) {
-  const attributesFor = (href) =>
-    href === currentHref ? { "aria-current": "page", href } : { href };
+export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
+  const repoRoot = path.resolve(root);
+  const repoRootReal = await realpath(repoRoot);
+  const publicRoot = path.join(repoRoot, "public");
+  const publicRootReal = await assertOwnedDirectory({
+    containmentRoot: repoRootReal,
+    repoRoot,
+    target: publicRoot,
+  });
+  const referenceRoot = path.join(publicRoot, "reference");
+  const referenceRootReal = await assertOwnedDirectory({
+    containmentRoot: publicRootReal,
+    repoRoot,
+    target: referenceRoot,
+  });
+  let htmlFilesChecked = 0;
+  let referenceFiles = 0;
+  let scriptsChecked = 0;
 
-  return [
-    {
-      attributes: { class: "skip-link", href: "#main-content" },
-      path: anchorPaths.skip,
-      text: "Skip to main content",
-    },
-    {
-      attributes: { class: "brand", href: "/docs" },
-      path: anchorPaths.brand,
-      text: "Store Documentation",
-    },
-    {
-      attributes: { href: "/docs" },
-      path: anchorPaths.docsHome,
-      text: "Docs home",
-    },
-    {
-      attributes: { href: "/docs/store6/overview" },
-      path: anchorPaths.overview,
-      text: "Store 6 overview",
-    },
-    {
-      attributes: attributesFor("/reference/store6-core/index.html"),
-      path: anchorPaths.core,
-      text: "Core module",
-    },
-    {
-      attributes: attributesFor("/reference/store6-mutations/index.html"),
-      path: anchorPaths.mutations,
-      text: "Mutations module",
-    },
-  ];
+  for (const contract of moduleContracts) {
+    const moduleRoot = path.join(referenceRoot, contract.slug);
+    const moduleRootReal = await assertOwnedDirectory({
+      containmentRoot: referenceRootReal,
+      repoRoot,
+      target: moduleRoot,
+    });
+    await assertOwnedRegularFile({
+      containmentRoot: moduleRootReal,
+      repoRoot,
+      target: path.join(moduleRoot, "index.html"),
+    });
+    const files = await collectModuleFiles(moduleRoot, repoRoot);
+    referenceFiles += files.length;
+
+    const entrypoint = files.find(({ relative }) => relative === "index.html");
+    assert.notEqual(
+      entrypoint,
+      undefined,
+      `public/reference/${contract.slug}/index.html must be an existing regular file`,
+    );
+
+    let entrypointDetails;
+    for (const file of files.filter(({ relative }) => relative.endsWith(".html"))) {
+      const details = await verifyHtmlFile({
+        absoluteFile: file.absolute,
+        moduleRoot,
+        moduleRootReal,
+        moduleSlug: contract.slug,
+        relativeFile: file.relative,
+        repoRoot,
+      });
+      htmlFilesChecked += 1;
+      scriptsChecked += details.scriptsChecked;
+      if (file.relative === "index.html") entrypointDetails = details;
+    }
+
+    for (const file of files) {
+      await verifyGeneratedAsset({ file, moduleSlug: contract.slug, repoRoot });
+    }
+
+    assert.notEqual(entrypointDetails, undefined, `${contract.slug}/index.html must be HTML`);
+    verifyEntrypoint({ contract, details: entrypointDetails });
+  }
+
+  await verifyIntegrationInvariants(repoRoot);
+
+  return {
+    htmlFilesChecked,
+    moduleRootsChecked: moduleContracts.length,
+    referenceFiles,
+    scriptsChecked,
+  };
 }
 
-async function isDirectory(target) {
+async function assertOwnedDirectory({ containmentRoot, repoRoot, target }) {
+  const label = toRepoRelative(repoRoot, target);
+  const metadata = await lstatOrNull(target);
+  assert.notEqual(metadata, null, `${label} must be an existing directory`);
+  assert.equal(metadata.isSymbolicLink(), false, `${label} must not be a symlink`);
+  assert.equal(metadata.isDirectory(), true, `${label} must be a directory`);
+  const resolved = await realpath(target);
+  assertRealpathContained(containmentRoot, resolved, label);
+  return resolved;
+}
+
+async function assertOwnedRegularFile({ containmentRoot, repoRoot, target }) {
+  const label = toRepoRelative(repoRoot, target);
+  const metadata = await lstatOrNull(target);
+  assert.notEqual(metadata, null, `${label} must be an existing regular file`);
+  assert.equal(metadata.isSymbolicLink(), false, `${label} must not be a symlink`);
+  assert.equal(metadata.isFile(), true, `${label} must be a regular file`);
+  const resolved = await realpath(target);
+  assertRealpathContained(containmentRoot, resolved, label);
+  return resolved;
+}
+
+async function collectModuleFiles(moduleRoot, repoRoot) {
+  const files = [];
+
+  async function walk(directory, relativeDirectory = "") {
+    const entries = await readdir(directory, { withFileTypes: true });
+    entries.sort(({ name: left }, { name: right }) => left.localeCompare(right));
+
+    for (const entry of entries) {
+      const relative = path.posix.join(relativeDirectory, entry.name);
+      const absolute = path.join(directory, entry.name);
+      const label = toRepoRelative(repoRoot, absolute);
+      const metadata = await lstat(absolute);
+
+      assert.equal(metadata.isSymbolicLink(), false, `${label} must not be a symlink`);
+      if (metadata.isDirectory()) {
+        await walk(absolute, relative);
+        continue;
+      }
+
+      assert.equal(metadata.isFile(), true, `${label} must be a regular file`);
+      files.push({ absolute, mode: metadata.mode, relative });
+    }
+  }
+
+  await walk(moduleRoot);
+  return files;
+}
+
+async function verifyGeneratedAsset({ file, moduleSlug, repoRoot }) {
+  const label = toRepoRelative(repoRoot, file.absolute);
+  const bytes = await readFile(file.absolute);
+  assert.equal((file.mode & 0o111) === 0, true, `unexpected executable asset ${label}`);
+  if (file.relative.endsWith(".js")) {
+    verifyStockDokkaScript({ bytes, label, moduleSlug, relativePath: file.relative });
+  } else {
+    assert.equal(
+      executableAssetExtensionPattern.test(file.relative),
+      false,
+      `unexpected executable asset ${label}`,
+    );
+  }
+
+  let source;
   try {
-    return (await lstat(target)).isDirectory();
+    source = strictUtf8Decoder.decode(bytes);
+  } catch {
+    return;
+  }
+
+  assert.equal(
+    /\bdata-unresolved-link\b/i.test(source),
+    false,
+    `data-unresolved-link found in generated text asset ${label}`,
+  );
+  assert.equal(
+    placeholderReferencePattern.test(source),
+    false,
+    `placeholder reference notice found in generated text asset ${label}`,
+  );
+  for (const pattern of durablePublicSurfacePatterns) {
+    assert.equal(
+      pattern.test(source),
+      false,
+      `durable public-surface token ${pattern.source} found in ${label}`,
+    );
+  }
+  assert.equal(
+    localPrivateFilesystemPathPattern.test(source),
+    false,
+    `local or private filesystem path found in ${label}`,
+  );
+}
+
+function verifyStockDokkaScript({ bytes, label, moduleSlug, relativePath }) {
+  const expectedSha256 = approvedStockDokkaScriptSha256[`${moduleSlug}/${relativePath}`];
+  assert.notEqual(expectedSha256, undefined, `unexpected executable asset ${label}`);
+  const actualSha256 = createHash("sha256").update(bytes).digest("hex");
+  assert.equal(
+    actualSha256,
+    expectedSha256,
+    `stock Dokka script integrity mismatch in ${label}`,
+  );
+}
+
+async function verifyHtmlFile({
+  absoluteFile,
+  moduleRoot,
+  moduleRootReal,
+  moduleSlug,
+  relativeFile,
+  repoRoot,
+}) {
+  const label = toRepoRelative(repoRoot, absoluteFile);
+  const html = await readFile(absoluteFile, "utf8");
+  const $ = load(html);
+
+  assert.equal(
+    /\bdata-unresolved-link\b/i.test(html),
+    false,
+    `data-unresolved-link found in ${label}`,
+  );
+  assert.equal(
+    placeholderReferencePattern.test(html),
+    false,
+    `placeholder reference notice found in ${label}`,
+  );
+  assert.equal(
+    internalTrackerPattern.test(html),
+    false,
+    `internal tracker vocabulary found in ${label}`,
+  );
+  assert.equal($("base").length, 0, `base element is not allowed in ${label}`);
+
+  for (const element of $("*").toArray()) {
+    for (const [attribute, value] of Object.entries(element.attribs ?? {})) {
+      if (!/^on[a-z]/i.test(attribute)) continue;
+      assert.equal(
+        isApprovedDokkaEventHandler({ attribute, element, moduleSlug, relativeFile, value }),
+        true,
+        `inline event handler ${attribute} found in ${label}`,
+      );
+    }
+  }
+
+  const localAnchorPaths = new Set();
+  for (const element of $("a[href]").toArray()) {
+    const href = $(element).attr("href");
+    const localPath = await verifyAnchor({
+      href,
+      label,
+      moduleRoot,
+      moduleRootReal,
+      moduleSlug,
+      relativeFile,
+    });
+    if (localPath !== null) localAnchorPaths.add(localPath);
+  }
+
+  const scripts = $("script").toArray();
+  for (const element of scripts) {
+    await verifyScript({
+      $,
+      element,
+      label,
+      moduleRoot,
+      moduleRootReal,
+      moduleSlug,
+      relativeFile,
+    });
+  }
+
+  return {
+    localAnchorPaths,
+    scriptsChecked: scripts.length,
+    title: $("title").first().text().replace(/\s+/g, " ").trim(),
+  };
+}
+
+function isApprovedDokkaEventHandler({ attribute, element, moduleSlug, relativeFile, value }) {
+  if (attribute !== "onclick" || element.tagName !== "button" || relativeFile !== "navigation.html") {
+    return false;
+  }
+  const prefix = `window.handleTocButtonClick(event, '${moduleSlug}-nav-submenu`;
+  if (!value.startsWith(prefix) || !value.endsWith("')")) return false;
+  const suffix = value.slice(prefix.length, -2);
+  return suffix === "" || /^(?:-\d+)+$/.test(suffix);
+}
+
+function verifyEntrypoint({ contract, details }) {
+  const label = `public/reference/${contract.slug}/index.html`;
+  assert.notEqual(details.title, "", `${label} title must be nonempty`);
+  assert.equal(
+    normalizeModuleName(details.title).includes(normalizeModuleName(contract.slug)),
+    true,
+    `${label} title must identify ${contract.slug}`,
+  );
+
+  for (const requiredHref of [contract.siblingHref, "/docs", "/docs/store6/overview"]) {
+    assert.equal(
+      details.localAnchorPaths.has(requiredHref),
+      true,
+      `${label} must contain required link ${requiredHref}`,
+    );
+  }
+}
+
+async function verifyAnchor({
+  href,
+  label,
+  moduleRoot,
+  moduleRootReal,
+  moduleSlug,
+  relativeFile,
+}) {
+  const source = href.trim();
+  if (source.startsWith("#")) return null;
+
+  if (source.startsWith("//") || source.includes("\\")) {
+    assert.fail(`unsafe anchor href ${JSON.stringify(href)} in ${label}`);
+  }
+
+  if (hasExplicitScheme(source)) {
+    const target = parseUrl(source, `unsafe anchor href ${JSON.stringify(href)} in ${label}`);
+    assert.equal(
+      target.protocol,
+      "https:",
+      `unsafe anchor href ${JSON.stringify(href)} in ${label}; external anchors require https:`,
+    );
+    if (target.origin === canonicalSiteOrigin) {
+      assert.equal(
+        target.username === "" && target.password === "",
+        true,
+        `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+      );
+      const pathname = decodedNormalizedPathname(
+        target.pathname,
+        `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+      );
+      assert.equal(
+        pathname,
+        target.pathname,
+        `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+      );
+      assert.equal(
+        isAllowedSitePath(pathname),
+        true,
+        `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+      );
+      return pathname;
+    }
+    return null;
+  }
+
+  if (source.startsWith("/")) {
+    const target = parseUrl(
+      source,
+      `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+      `${localReferenceOrigin}/`,
+    );
+    const pathname = decodedNormalizedPathname(
+      target.pathname,
+      `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+    );
+    assert.equal(
+      pathname,
+      target.pathname,
+      `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+    );
+    assert.equal(
+      isAllowedSitePath(pathname),
+      true,
+      `unsafe anchor href ${JSON.stringify(href)} in ${label}`,
+    );
+    return pathname;
+  }
+
+  const target = await resolveRelativeTarget({
+    href: source,
+    kind: "relative anchor",
+    label,
+    moduleRoot,
+    moduleRootReal,
+    moduleSlug,
+    relativeFile,
+  });
+  if (target.metadata.isDirectory()) {
+    const indexFile = path.join(target.absolute, "index.html");
+    const indexMetadata = await lstatOrNull(indexFile);
+    assert.notEqual(
+      indexMetadata,
+      null,
+      `relative anchor directory target is missing index.html for ${JSON.stringify(href)} in ${label}`,
+    );
+    assert.equal(
+      indexMetadata.isSymbolicLink(),
+      false,
+      `relative anchor directory index must not be a symlink for ${JSON.stringify(href)} in ${label}`,
+    );
+    assert.equal(
+      indexMetadata.isFile(),
+      true,
+      `relative anchor directory index must be a regular file for ${JSON.stringify(href)} in ${label}`,
+    );
+  } else {
+    assert.equal(
+      target.metadata.isFile(),
+      true,
+      `relative anchor target must be a regular file for ${JSON.stringify(href)} in ${label}`,
+    );
+  }
+  return target.pathname;
+}
+
+async function verifyScript({
+  $,
+  element,
+  label,
+  moduleRoot,
+  moduleRootReal,
+  moduleSlug,
+  relativeFile,
+}) {
+  const sourceAttribute = $(element).attr("src");
+  const body = $(element).html() ?? "";
+
+  if (sourceAttribute === undefined) {
+    assert.equal(
+      inlineDokkaBootstraps.some((pattern) => pattern.test(body)) ||
+        normalizedStockInlineDokkaScripts.has(normalizeInlineScript(body)),
+      true,
+      `inline script in ${label} is not an approved Dokka bootstrap`,
+    );
+    return;
+  }
+
+  assert.equal(
+    body.trim(),
+    "",
+    `script with src ${JSON.stringify(sourceAttribute)} in ${label} must not have inline content`,
+  );
+  const source = sourceAttribute.trim();
+  if (hasExplicitScheme(source) || source.startsWith("//")) {
+    assert.equal(
+      source,
+      stockKotlinPlaygroundScript,
+      `external script ${JSON.stringify(sourceAttribute)} in ${label} is not approved`,
+    );
+    return;
+  }
+
+  assert.equal(
+    source.startsWith("/") || source.includes("\\"),
+    false,
+    `local script ${JSON.stringify(sourceAttribute)} in ${label} must use a relative source`,
+  );
+  const target = await resolveRelativeTarget({
+    href: source,
+    kind: "local script",
+    label,
+    moduleRoot,
+    moduleRootReal,
+    moduleSlug,
+    relativeFile,
+  });
+  assert.equal(
+    target.metadata.isFile(),
+    true,
+    `local script ${JSON.stringify(sourceAttribute)} in ${label} must resolve to a regular file`,
+  );
+  const basename = path.posix.basename(target.pathname);
+  assert.equal(
+    basename.endsWith(".js") && approvedDokkaScriptBasenames.has(basename),
+    true,
+    `local script basename ${JSON.stringify(basename)} in ${label} is not approved`,
+  );
+  const moduleRelativePath = target.pathname.slice(`/reference/${moduleSlug}/`.length);
+  assert.equal(
+    approvedDokkaScriptPaths.has(moduleRelativePath),
+    true,
+    `local script must resolve to an approved canonical module script path in ${label}`,
+  );
+  verifyStockDokkaScript({
+    bytes: await readFile(target.absolute),
+    label: `public/reference/${moduleSlug}/${moduleRelativePath}`,
+    moduleSlug,
+    relativePath: moduleRelativePath,
+  });
+}
+
+async function resolveRelativeTarget({
+  href,
+  kind,
+  label,
+  moduleRoot,
+  moduleRootReal,
+  moduleSlug,
+  relativeFile,
+}) {
+  const pageUrl = new URL(`${localReferenceOrigin}/`);
+  pageUrl.pathname = `/reference/${moduleSlug}/${relativeFile}`;
+  const target = parseUrl(href, `unsafe ${kind} ${JSON.stringify(href)} in ${label}`, pageUrl);
+  assert.equal(
+    target.origin,
+    localReferenceOrigin,
+    `unsafe ${kind} ${JSON.stringify(href)} in ${label}`,
+  );
+
+  const pathname = decodedNormalizedPathname(
+    target.pathname,
+    `unsafe ${kind} ${JSON.stringify(href)} in ${label}`,
+  );
+  const moduleUrlRoot = `/reference/${moduleSlug}`;
+  assert.equal(
+    pathname === moduleUrlRoot || pathname.startsWith(`${moduleUrlRoot}/`),
+    true,
+    `${kind} escapes ${moduleSlug}: ${JSON.stringify(href)} in ${label}`,
+  );
+
+  const relativeTarget = pathname.slice(moduleUrlRoot.length).replace(/^\/+/, "");
+  const absolute = path.resolve(moduleRoot, ...relativeTarget.split("/").filter(Boolean));
+  const filesystemRelative = path.relative(moduleRoot, absolute);
+  assert.equal(
+    filesystemRelative === ".." ||
+      filesystemRelative.startsWith(`..${path.sep}`) ||
+      path.isAbsolute(filesystemRelative),
+    false,
+    `${kind} escapes ${moduleSlug}: ${JSON.stringify(href)} in ${label}`,
+  );
+
+  const metadata = await lstatOrNull(absolute);
+  assert.notEqual(
+    metadata,
+    null,
+    `${kind} target is missing for ${JSON.stringify(href)} in ${label}`,
+  );
+  assert.equal(
+    metadata.isSymbolicLink(),
+    false,
+    `${kind} target must not be a symlink for ${JSON.stringify(href)} in ${label}`,
+  );
+  const resolved = await realpath(absolute);
+  assertRealpathContained(moduleRootReal, resolved, `${kind} target ${JSON.stringify(href)}`);
+  return { absolute, metadata, pathname };
+}
+
+function normalizeInlineScript(source) {
+  return source
+    .replace(/\r\n?/g, "\n")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
+function decodedNormalizedPathname(pathname, failureMessage) {
+  let decoded = pathname;
+  for (let pass = 0; pass < 5; pass += 1) {
+    let next;
+    try {
+      next = decodeURIComponent(decoded);
+    } catch {
+      assert.fail(failureMessage);
+    }
+    if (next === decoded) {
+      assert.equal(decoded.includes("\0"), false, failureMessage);
+      return path.posix.normalize(decoded);
+    }
+    decoded = next;
+  }
+  assert.fail(failureMessage);
+}
+
+function isAllowedSitePath(pathname) {
+  if (pathname === "/docs" || pathname.startsWith("/docs/")) return true;
+  return moduleContracts.some(({ slug }) => {
+    const root = `/reference/${slug}`;
+    return pathname === root || pathname.startsWith(`${root}/`);
+  });
+}
+
+function hasExplicitScheme(value) {
+  return /^[a-z][a-z\d+.-]*:/i.test(value);
+}
+
+function parseUrl(value, failureMessage, base) {
+  try {
+    return base === undefined ? new URL(value) : new URL(value, base);
+  } catch {
+    assert.fail(failureMessage);
+  }
+}
+
+function normalizeModuleName(value) {
+  return value
+    .normalize("NFKD")
+    .replace(/\p{Mark}/gu, "")
+    .toLowerCase()
+    .replace(/[^a-z\d]+/g, "");
+}
+
+function assertRealpathContained(containmentRoot, target, label) {
+  const relative = path.relative(containmentRoot, target);
+  assert.equal(
+    relative === ".." || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative),
+    false,
+    `${label} realpath must remain within ${containmentRoot}`,
+  );
+}
+
+async function verifyIntegrationInvariants(repoRoot) {
+  const navSource = await readFile(path.join(repoRoot, "lib", "nav.ts"), "utf8");
+  assert.match(
+    navSource,
+    /href:\s*["']\/reference\/store6-core\/index\.html["'],\s*label:\s*["']Reference["']/,
+    "lib/nav.ts must retain the Reference href",
+  );
+
+  for (const relativePath of [
+    "public/reference/index.html",
+    "app/reference",
+    "app/reference-note",
+  ]) {
+    const target = path.join(repoRoot, ...relativePath.split("/"));
+    assert.equal(
+      await lstatOrNull(target),
+      null,
+      `forbidden shadow route must remain absent: ${relativePath}`,
+    );
+  }
+
+  const nextConfig = await readFile(path.join(repoRoot, "next.config.mjs"), "utf8");
+  assert.equal(
+    /\bredirects\s*(?:\(|:)/.test(nextConfig),
+    false,
+    "reference integration must not add a redirect",
+  );
+}
+
+async function lstatOrNull(target) {
+  try {
+    return await lstat(target);
   } catch (error) {
-    if (error?.code === "ENOENT") return false;
+    if (error?.code === "ENOENT") return null;
     throw error;
   }
 }
 
-async function walk(directory, relative = "") {
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    const entryRelative = path.join(relative, entry.name);
-    const entryPath = path.join(directory, entry.name);
-    const metadata = await lstat(entryPath);
-
-    assert.equal(metadata.isSymbolicLink(), false, `${entryRelative} must not be a symlink`);
-    if (metadata.isDirectory()) {
-      await walk(entryPath, entryRelative);
-    } else {
-      assert.equal(metadata.isFile(), true, `${entryRelative} must be a regular file`);
-      foundFiles.push(entryRelative);
-    }
-  }
+function toRepoRelative(repoRoot, target) {
+  return path.relative(repoRoot, target).split(path.sep).join("/");
 }
 
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const invokedPath = process.argv[1] === undefined ? null : path.resolve(process.argv[1]);
+if (invokedPath === fileURLToPath(import.meta.url)) {
+  console.log(JSON.stringify(await verifyReferenceTree()));
 }
-
-function parseStyleRules(css) {
-  const rules = [];
-  const pattern = /([^{}]+)\{([^{}]*)\}/g;
-  let cursor = 0;
-
-  for (const match of css.matchAll(pattern)) {
-    assert.equal(css.slice(cursor, match.index).trim(), "", "unparsed CSS before rule");
-    const selectors = match[1]
-      .split(",")
-      .map((selector) => selector.trim())
-      .filter(Boolean);
-    assert.notEqual(selectors.length, 0, "CSS rule must have a selector");
-
-    const declarations = new Map();
-    for (const source of match[2].split(";").map((part) => part.trim()).filter(Boolean)) {
-      const colon = source.indexOf(":");
-      assert.notEqual(colon, -1, `unparsed CSS declaration: ${source}`);
-      const property = source.slice(0, colon).trim().toLowerCase();
-      const value = source.slice(colon + 1).trim();
-      assert.notEqual(property, "", `missing CSS property: ${source}`);
-      assert.notEqual(value, "", `missing CSS value: ${source}`);
-      assert.equal(declarations.has(property), false, `duplicate ${property} in one CSS rule`);
-      declarations.set(property, value);
-    }
-
-    rules.push({ declarations, order: rules.length, selectors });
-    cursor = match.index + match[0].length;
-  }
-
-  assert.equal(css.slice(cursor).trim(), "", "unparsed CSS after final rule");
-  return rules;
-}
-
-function elementPath(element) {
-  const segments = [];
-  let current = element;
-
-  while (current && current.type !== "root") {
-    if (current.type === "tag") {
-      const siblings = (current.parent?.children ?? []).filter(
-        (candidate) => candidate.type === "tag" && candidate.name === current.name,
-      );
-      segments.push(`${current.name}:nth-of-type(${siblings.indexOf(current) + 1})`);
-    }
-    current = current.parent;
-  }
-
-  return segments.reverse().join(" > ");
-}
-
-function anchorManifest($) {
-  return $("a")
-    .toArray()
-    .map((element) => ({
-      attributes: Object.fromEntries(
-        Object.entries(element.attribs).sort(([left], [right]) =>
-          left < right ? -1 : left > right ? 1 : 0,
-        ),
-      ),
-      path: elementPath(element),
-      text: $(element).text().replace(/\s+/g, " ").trim(),
-    }));
-}
-
-function stylesheetManifest(rules) {
-  return rules.map(
-    ({ declarations, selectors }) =>
-      `${selectors.join(",")}{${[...declarations]
-        .map(([property, value]) => `${property}:${value}`)
-        .join(";")}}`,
-  );
-}
-
-function assertFrozenStylesheet(rules) {
-  assert.deepEqual(
-    stylesheetManifest(rules),
-    expectedStylesheetManifest,
-    "stylesheet manifest changed; re-audit the complete contrast contract",
-  );
-}
-
-function ruleValue(rules, selector, property, fallback) {
-  const matches = rules.filter(
-    (rule) => rule.selectors.includes(selector) && rule.declarations.has(property),
-  );
-  if (matches.length === 0) {
-    if (fallback !== undefined) return fallback;
-    assert.fail(`missing ${property} declaration in ${selector}`);
-  }
-  assert.equal(
-    matches.length,
-    1,
-    `conflicting ${property} declarations in ${selector} at source orders ${matches
-      .map(({ order }) => order)
-      .join(", ")}`,
-  );
-
-  return matches[0].declarations.get(property);
-}
-
-function resolveColor(value, variables) {
-  const variable = value.match(/^var\((--[a-z0-9-]+)\)$/i)?.[1];
-  const resolved = variable ? variables.get(variable) : value;
-  assert.match(resolved ?? "", /^#[0-9a-f]{6}$/i, `unsupported CSS color: ${value}`);
-  return resolved;
-}
-
-function relativeLuminance(color) {
-  const channels = color
-    .slice(1)
-    .match(/.{2}/g)
-    .map((channel) => Number.parseInt(channel, 16) / 255)
-    .map((channel) =>
-      channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
-    );
-
-  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
-}
-
-function contrastRatio(foreground, background) {
-  const lighter = Math.max(relativeLuminance(foreground), relativeLuminance(background));
-  const darker = Math.min(relativeLuminance(foreground), relativeLuminance(background));
-  return (lighter + 0.05) / (darker + 0.05);
-}
-
-function assertLinkContrast(html, currentHref) {
-  const $ = load(html);
-  assert.equal($("style").length, 1, "reference page must have exactly one bounded stylesheet");
-  assert.deepEqual(
-    Object.entries($("style").get(0).attribs),
-    [],
-    "embedded style element attributes changed",
-  );
-  assert.equal($("style[media], style[disabled]").length, 0, "conditional stylesheets are not modeled");
-  assert.equal($("link[rel~='stylesheet']").length, 0, "external stylesheets are not modeled");
-  assert.equal($("[style], [color], [bgcolor]").length, 0, "inline presentation is not modeled");
-  assert.deepEqual(
-    anchorManifest($),
-    expectedAnchorManifest(currentHref),
-    "anchor manifest changed; re-audit the complete contrast contract",
-  );
-
-  const rules = parseStyleRules($("style").text());
-  assertFrozenStylesheet(rules);
-  const rootRules = rules.filter((rule) => rule.selectors.includes(":root"));
-  assert.equal(rootRules.length, 1, "reference page must have exactly one :root rule");
-  const variables = new Map(
-    [...rootRules[0].declarations].filter(([property]) => property.startsWith("--")),
-  );
-  const colors = {
-    brand: resolveColor(ruleValue(rules, ".brand", "color"), variables),
-    current: resolveColor(ruleValue(rules, '[aria-current="page"]', "color"), variables),
-    headerBackground: resolveColor(ruleValue(rules, "header", "background"), variables),
-    hover: resolveColor(ruleValue(rules, "a:hover", "color"), variables),
-    link: resolveColor(ruleValue(rules, "a", "color"), variables),
-    pageBackground: resolveColor(ruleValue(rules, "html", "background"), variables),
-    skip: resolveColor(ruleValue(rules, ".skip-link", "color"), variables),
-    skipBackground: resolveColor(ruleValue(rules, ".skip-link", "background"), variables),
-  };
-  const skipHover = resolveColor(
-    ruleValue(rules, ".skip-link:hover", "color", colors.hover),
-    variables,
-  );
-  const skipFocus = resolveColor(
-    ruleValue(rules, ".skip-link:focus-visible", "color", colors.skip),
-    variables,
-  );
-  const contrastCases = [
-    ["header link default", colors.link, colors.headerBackground],
-    ["header link hover", colors.hover, colors.headerBackground],
-    ["header link focus", colors.link, colors.headerBackground],
-    ["header brand default", colors.brand, colors.headerBackground],
-    ["header brand hover", colors.hover, colors.headerBackground],
-    ["header brand focus", colors.brand, colors.headerBackground],
-    ["main link default", colors.link, colors.pageBackground],
-    ["main link hover", colors.hover, colors.pageBackground],
-    ["main link focus", colors.link, colors.pageBackground],
-    ["current module default", colors.current, colors.pageBackground],
-    ["current module hover", colors.hover, colors.pageBackground],
-    ["current module focus", colors.current, colors.pageBackground],
-    ["skip link default", colors.skip, colors.skipBackground],
-    ["skip link hover", skipHover, colors.skipBackground],
-    ["skip link focus", skipFocus, colors.skipBackground],
-  ].map(([state, foreground, background]) => ({
-    background,
-    foreground,
-    ratio: contrastRatio(foreground, background),
-    state,
-  }));
-  const contrastFailures = contrastCases.filter(({ ratio }) => ratio < 4.5);
-  assert.deepEqual(
-    contrastFailures,
-    [],
-    `normal-size link contrast failures: ${contrastFailures
-      .map(
-        ({ background, foreground, ratio, state }) =>
-          `${state} ${foreground} on ${background} = ${ratio.toFixed(3)}:1`,
-      )
-      .join(", ")}`,
-  );
-}
-
-function injectStyleRule(html, rule) {
-  const fixture = html.replace("</style>", `${rule}</style>`);
-  assert.notEqual(fixture, html, "cascade fixture injection must succeed");
-  return fixture;
-}
-
-function replaceFixture(html, from, to) {
-  const fixture = html.replace(from, to);
-  assert.notEqual(fixture, html, "HTML fixture replacement must succeed");
-  return fixture;
-}
-
-assert.equal(await isDirectory(referenceRoot), true, "public/reference must exist");
-await walk(referenceRoot);
-assert.deepEqual(foundFiles.sort(), expectedFiles, "reference output must contain exactly two module pages");
-
-const requiredModuleHrefs = pages.map(({ currentHref }) => currentHref).sort();
-const cascadeFixtureSource = await readFile(pages[0].file, "utf8");
-assert.throws(
-  () =>
-    assertLinkContrast(
-      injectStyleRule(cascadeFixtureSource, "main a:hover { color: var(--accent); }"),
-      pages[0].currentHref,
-    ),
-  /stylesheet manifest changed/,
-  "a later, more-specific link rule must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      injectStyleRule(cascadeFixtureSource, "main a:hover, a:hover { color: var(--accent); }"),
-      pages[0].currentHref,
-    ),
-  /stylesheet manifest changed/,
-  "an unmodeled selector in a grouped rule must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      injectStyleRule(cascadeFixtureSource, "a:hover { color: var(--accent); }"),
-      pages[0].currentHref,
-    ),
-  /stylesheet manifest changed/,
-  "a later duplicate link rule must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      injectStyleRule(cascadeFixtureSource, "main { background: var(--surface); }"),
-      pages[0].currentHref,
-    ),
-  /stylesheet manifest changed/,
-  "an unmodeled link-background override must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      replaceFixture(cascadeFixtureSource, 'class="skip-link"', 'class="skip-link contracts"'),
-      pages[0].currentHref,
-    ),
-  /anchor manifest changed/,
-  "a skip link with an additional contracts class must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      replaceFixture(cascadeFixtureSource, 'class="skip-link"', 'class="skip-link brand"'),
-      pages[0].currentHref,
-    ),
-  /anchor manifest changed/,
-  "a skip link with an additional brand class must be rejected",
-);
-assert.throws(
-  () =>
-    assertLinkContrast(
-      injectStyleRule(cascadeFixtureSource, "header { opacity: .05; }"),
-      pages[0].currentHref,
-    ),
-  /stylesheet manifest changed/,
-  "an unmodeled opacity declaration must be rejected",
-);
-
-for (const page of pages) {
-  const metadata = await lstat(page.file);
-  assert.equal(metadata.isFile(), true, `${page.file} must be a regular file`);
-  assert.equal(metadata.isSymbolicLink(), false, `${page.file} must not be a symlink`);
-
-  const html = await readFile(page.file, "utf8");
-  const $ = load(html);
-  const bodyText = $("body").text().replace(/\s+/g, " ").trim();
-
-  assert.match(html, /^<!doctype html>/i, `${page.moduleName} must be standalone HTML`);
-  assert.equal($("html").attr("lang"), "en");
-  assert.equal($("meta[charset]").length, 1);
-  assert.equal($("meta[name='viewport']").length, 1);
-  assert.match($("title").text(), new RegExp(page.moduleName));
-  assert.equal($("main#main-content").length, 1);
-  assert.equal($("h1").length, 1);
-  assert.match($("h1").text(), new RegExp(page.moduleName));
-  assert.equal($("nav[aria-label]").length >= 1, true);
-  assert.equal($("a[href='#main-content']").length, 1);
-  assert.equal($("script").length, 0, "placeholder pages must not execute scripts");
-  assertLinkContrast(html, page.currentHref);
-
-  assert.match(bodyText, /This page is not generated API documentation\./);
-  assert.match(bodyText, /Generated API documentation is currently unavailable\./);
-  assert.match(bodyText, /Android SDK location/);
-  assert.match(bodyText, new RegExp(escapeRegExp(page.task)));
-  assert.match(bodyText, new RegExp(escapeRegExp(page.output)));
-  assert.match(bodyText, new RegExp(escapeRegExp(page.destination)));
-
-  const hrefs = $("a[href]")
-    .map((_index, element) => $(element).attr("href"))
-    .get();
-  const moduleHrefs = hrefs.filter((href) => href.startsWith("/reference/")).sort();
-  assert.deepEqual(moduleHrefs, requiredModuleHrefs);
-  assert.equal(hrefs.includes("/docs/store6/overview"), true);
-  assert.equal(hrefs.includes("/docs"), true);
-  assert.equal($("a[aria-current='page']").attr("href"), page.currentHref);
-
-  for (const href of hrefs) {
-    assert.equal(/^\/(?:docs(?:\/|$)|reference\/store6-(?:core|mutations)\/index\.html$)|^#main-content$/.test(href), true, `unsafe or unexpected href: ${href}`);
-  }
-
-  const trackerContextPattern = new RegExp(
-    `${["ST", "ORE"].join("")}-\\d+|${["T", "6"].join("")}[ab]?|${["Lin", "ear"].join("")}`,
-    "i",
-  );
-  assert.equal(trackerContextPattern.test(html), false, `${page.moduleName} must not expose tracker context`);
-  assert.equal(/data-unresolved-link/i.test(html), false);
-  assert.equal(/\bon(?:click|load|error|focus|mouseover)\s*=/i.test(html), false);
-}
-
-const navSource = await readFile(path.join(repoRoot, "lib", "nav.ts"), "utf8");
-assert.match(navSource, /href:\s*"\/reference\/store6-core\/index\.html",\s*label:\s*"Reference"/);
-
-for (const forbiddenPath of [
-  path.join(repoRoot, "public", "reference", "index.html"),
-  path.join(repoRoot, "app", "reference"),
-  path.join(repoRoot, "app", "reference-note"),
-]) {
-  await assert.rejects(lstat(forbiddenPath), { code: "ENOENT" });
-}
-
-const nextConfig = await readFile(path.join(repoRoot, "next.config.mjs"), "utf8");
-assert.equal(/redirects\s*\(/.test(nextConfig), false, "reference integration must not add a redirect");
-
-console.log(
-  JSON.stringify({
-    adversarialFixtures: 7,
-    pagesChecked: pages.length,
-    referenceFiles: foundFiles.length,
-  }),
-);

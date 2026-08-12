@@ -1,175 +1,169 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light">
-    <title>Store 6 Core API Reference Unavailable | Store</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --paper: #f7f4ef;
-        --surface: #ffffff;
-        --slate: #1a1f26;
-        --muted: #4a5361;
-        --border: #d9d2c7;
-        --accent: #0d8577;
-        --accent-strong: #0a6259;
-        --code-surface: #0d141c;
-        --code-foreground: #d7dee8;
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>store6-core</title>
+    <link href="images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
       }
-      * { box-sizing: border-box; }
-      html {
-        background: var(--paper);
-        color: var(--slate);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        line-height: 1.6;
-      }
-      body { margin: 0; }
-      a { color: var(--accent-strong); font-weight: 650; text-underline-offset: 0.2em; }
-      a:hover { color: var(--accent-strong); }
-      a:focus-visible { border-radius: 0.2rem; outline: 3px solid var(--accent); outline-offset: 3px; }
-      .skip-link {
-        background: var(--slate);
-        color: var(--surface);
-        left: 1rem;
-        padding: 0.65rem 0.9rem;
-        position: fixed;
-        top: 1rem;
-        transform: translateY(-200%);
-        z-index: 2;
-      }
-      .skip-link:hover { color: var(--surface); }
-      .skip-link:focus-visible { color: var(--surface); }
-      .skip-link:focus { transform: translateY(0); }
-      header { background: var(--surface); border-bottom: 1px solid var(--border); }
-      header > div, main, footer > div {
-        margin: 0 auto;
-        max-width: 68rem;
-        padding-left: clamp(1.25rem, 4vw, 3rem);
-        padding-right: clamp(1.25rem, 4vw, 3rem);
-      }
-      header > div {
-        align-items: center;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem 2rem;
-        justify-content: space-between;
-        min-height: 4.5rem;
-        padding-bottom: 0.75rem;
-        padding-top: 0.75rem;
-      }
-      .brand { color: var(--slate); font-weight: 800; letter-spacing: -0.015em; text-decoration: none; }
-      nav ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; list-style: none; margin: 0; padding: 0; }
-      main { padding-bottom: 5rem; padding-top: clamp(3.5rem, 8vw, 6.5rem); }
-      .eyebrow {
-        color: var(--accent-strong);
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-      }
-      h1, h2 { letter-spacing: -0.035em; line-height: 1.1; text-wrap: balance; }
-      h1 { font-size: clamp(2.5rem, 7vw, 5rem); margin: 0.75rem 0 1.5rem; max-width: 14ch; }
-      h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 0; }
-      .lede { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 46rem; }
-      .notice, .contracts {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        margin-top: 2.5rem;
-        padding: clamp(1.25rem, 4vw, 2rem);
-      }
-      .notice { border-left: 0.3rem solid var(--accent); }
-      .notice p:last-child, .contracts p:last-child { margin-bottom: 0; }
-      .contract-grid {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
-        margin-top: 1.5rem;
-      }
-      dl { border-top: 1px solid var(--border); margin: 0; padding-top: 1rem; }
-      dt {
-        color: var(--muted);
-        font-size: 0.75rem;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        margin-top: 0.85rem;
-        text-transform: uppercase;
-      }
-      dd { margin: 0.2rem 0 0; }
-      code {
-        background: var(--code-surface);
-        border-radius: 0.25rem;
-        color: var(--code-foreground);
-        display: inline-block;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 0.84em;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-        padding: 0.15rem 0.35rem;
-      }
-      .module-links { border-top: 1px solid var(--border); margin-top: 2.5rem; padding-top: 1.5rem; }
-      [aria-current="page"] { color: var(--slate); text-decoration-thickness: 0.2rem; }
-      footer { border-top: 1px solid var(--border); color: var(--muted); }
-      footer > div { padding-bottom: 2rem; padding-top: 2rem; }
-    </style>
-  </head>
-  <body>
-    <a class="skip-link" href="#main-content">Skip to main content</a>
-    <header>
-      <div>
-        <a class="brand" href="/docs">Store Documentation</a>
-        <nav aria-label="Documentation">
-          <ul>
-            <li><a href="/docs">Docs home</a></li>
-            <li><a href="/docs/store6/overview">Store 6 overview</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
-    <main id="main-content">
-      <span class="eyebrow">Reference</span>
-      <h1>Store 6 Core API reference unavailable</h1>
-      <p class="lede">
-        This page is not generated API documentation. Generated API documentation is
-        currently unavailable.
-      </p>
-      <section class="notice" aria-labelledby="build-status-heading">
-        <h2 id="build-status-heading">Build status</h2>
-        <p>
-          The local documentation build could not determine the Android SDK location needed
-          to resolve the Dokka task dependencies. No generated output was copied into this
-          directory.
-        </p>
-      </section>
-      <section class="contracts" aria-labelledby="replacement-heading">
-        <h2 id="replacement-heading">Future replacement contract</h2>
-        <p>
-          When the build environment provides a valid Android SDK location, generate each
-          module and replace its placeholder directory with the complete Dokka output.
-        </p>
-        <div class="contract-grid">
-          <dl>
-            <dt>Module</dt><dd>Store 6 Core</dd>
-            <dt>Gradle task</dt><dd><code>:store6-core:dokkaHtml</code></dd>
-            <dt>Generated output</dt><dd><code>store6-core/build/dokka/html/</code></dd>
-            <dt>Public destination</dt><dd><code>public/reference/store6-core/</code></dd>
-          </dl>
-          <dl>
-            <dt>Module</dt><dd>Store 6 Mutations</dd>
-            <dt>Gradle task</dt><dd><code>:store6-mutations:dokkaHtml</code></dd>
-            <dt>Generated output</dt><dd><code>store6-mutations/build/dokka/html/</code></dd>
-            <dt>Public destination</dt><dd><code>public/reference/store6-mutations/</code></dd>
-          </dl>
+    </script>
+<script type="text/javascript" src="scripts/sourceset_dependencies.js" async="async"></script>
+<link href="styles/style.css" rel="Stylesheet">
+<link href="styles/main.css" rel="Stylesheet">
+<link href="styles/prism.css" rel="Stylesheet">
+<link href="styles/logo-styles.css" rel="Stylesheet">
+<link href="ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="index.html" tabindex="1">
+                    store6-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
         </div>
-      </section>
-      <nav class="module-links" aria-label="Reference modules">
-        <ul>
-          <li><a aria-current="page" href="/reference/store6-core/index.html">Core module</a></li>
-          <li><a href="/reference/store6-mutations/index.html">Mutations module</a></li>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-core/commonMain"
+                                       data-filter=":store6-core/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
         </ul>
-      </nav>
-    </main>
-    <footer><div>Use the Store 6 overview for the current public guides and examples.</div></footer>
-  </body>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" id="content" pageIds="store6-core::////PointingToDeclaration//-1367340304">
+  <div class="breadcrumbs"></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>store6-core</span></span></h1>
+    <div class="platform-hinted UnderCoverText" data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><p class="paragraph">Store 6 is in development and nothing is published yet. This reference describes the API as it stands on <code class="lang-kotlin">main</code>; install coordinates begin with 6.0.0-alpha01.</p><h2 class="">Stability tier</h2><p class="paragraph"><code class="lang-kotlin">store6-core</code> is stable-track. Its API is not frozen until the beta01 freeze candidate.</p><p class="paragraph">The <code class="lang-kotlin">org.mobilenativefoundation.store6.core.seam</code> package is a freeze candidate, not frozen. Its types are currently marked <code class="lang-kotlin">@ExperimentalStoreApi</code>, so implementing a fetcher, source of truth, bookkeeper, clock, telemetry sink, or overlay is an explicit opt-in.</p><p class="paragraph">Return to <a href="https://store.mobilenativefoundation.org/docs">Docs home</a>, or use the <a href="https://store.mobilenativefoundation.org/docs/store6/overview">Store 6 overview</a> for guides and examples. Writing APIs are in the <a href="https://store.mobilenativefoundation.org/reference/store6-mutations/index.html">store6-mutations reference</a>.</p></div></div>
+  </div>
+  <h2 class="">Packages</h2>
+  <div class="table"><a data-name="-1476026270%2FPackages%2F-1367340304" anchor-label="org.mobilenativefoundation.store6.core" id="-1476026270%2FPackages%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="store6-core/org.mobilenativefoundation.store6.core/index.html">org.mobilenativefoundation.store6.core</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1476026270%2FPackages%2F-1367340304"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right platform-tags--wrapper">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1907779982%2FPackages%2F-1367340304" anchor-label="org.mobilenativefoundation.store6.core.seam" id="1907779982%2FPackages%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+    <div class="table-row table-row_platform-tagged" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="store6-core/org.mobilenativefoundation.store6.core.seam/index.html">org.mobilenativefoundation.store6.core.seam</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1907779982%2FPackages%2F-1367340304"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right platform-tags--wrapper">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
 </html>

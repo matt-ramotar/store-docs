@@ -12,6 +12,10 @@ const MINIMUM_REQUEST_START_GAP_MS = 1_000;
 const MAXIMUM_5XX_RETRIES = 2;
 const DEFAULT_REQUEST_TIMEOUT_MS = 30_000;
 const CONFIGURED_APPLICATION_PAGE_PATTERN = /\/page\.(?:mdx?|jsx?|tsx?)$/;
+const REQUIRED_PUBLIC_REFERENCE_MODULES = Object.freeze([
+  "store6-core",
+  "store6-mutations",
+]);
 
 const CONTRACT_SOURCES = Object.freeze({
   inventory: "evidence/live-url-inventory.txt",
@@ -282,11 +286,7 @@ export async function deriveRouteContract({ root = DEFAULT_ROOT } = {}) {
     throw new Error("application page entrypoints differ from the derived page census");
   }
 
-  const publicReferencePages = await collectMatchingTargets(
-    absoluteRoot,
-    "public/reference",
-    (target) => target.endsWith(".html"),
-  );
+  const publicReferencePages = await collectPublicReferenceEntrypoints(absoluteRoot);
   const expectedPublicReferencePages = FIXED_EXTRA_SOURCES.map(({ source }) => source)
     .filter((source) => source.startsWith("public/reference/") && source.endsWith(".html"))
     .sort();
@@ -725,6 +725,50 @@ async function readRequiredRegularFile(root, relativePath) {
 
 async function collectMdxTargets(root, relativeDirectory) {
   return collectMatchingTargets(root, relativeDirectory, (target) => target.endsWith(".mdx"));
+}
+
+async function collectPublicReferenceEntrypoints(root) {
+  const relativeDirectory = "public/reference";
+  const directory = resolve(root, relativeDirectory);
+  const stat = await lstat(directory);
+  if (stat.isSymbolicLink() || !stat.isDirectory()) {
+    throw new Error(`${relativeDirectory}: expected a non-symlink directory`);
+  }
+
+  const topLevelEntries = (await readdir(directory)).sort(compareStrings);
+  if (!sameOrderedValues(topLevelEntries, REQUIRED_PUBLIC_REFERENCE_MODULES)) {
+    throw new Error("public reference modules differ from the required top-level census");
+  }
+
+  const entrypoints = [];
+  for (const moduleName of REQUIRED_PUBLIC_REFERENCE_MODULES) {
+    const moduleDirectory = `${relativeDirectory}/${moduleName}`;
+    const moduleStat = await lstat(resolve(root, moduleDirectory));
+    if (moduleStat.isSymbolicLink() || !moduleStat.isDirectory()) {
+      throw new Error(`${moduleDirectory}: expected a non-symlink directory`);
+    }
+
+    const entrypoint = `${moduleDirectory}/index.html`;
+    await readRequiredRegularFile(root, entrypoint);
+    await assertNoPublicReferenceSymlinks(root, moduleDirectory);
+    entrypoints.push(entrypoint);
+  }
+  return entrypoints;
+}
+
+async function assertNoPublicReferenceSymlinks(root, relativeDirectory) {
+  const directory = resolve(root, relativeDirectory);
+  const entries = (await readdir(directory)).sort(compareStrings);
+  for (const entry of entries) {
+    const childRelative = `${relativeDirectory}/${entry}`;
+    const childStat = await lstat(resolve(root, childRelative));
+    if (childStat.isSymbolicLink()) {
+      throw new Error(`${childRelative}: public reference output cannot be a symlink`);
+    }
+    if (childStat.isDirectory()) {
+      await assertNoPublicReferenceSymlinks(root, childRelative);
+    }
+  }
 }
 
 async function collectMatchingTargets(root, relativeDirectory, matches) {

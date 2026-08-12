@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MutationStore</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    store6-mutations
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-mutations/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-mutations/commonMain"
+                                       data-filter=":store6-mutations/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-mutations
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="store6-mutations::org.mobilenativefoundation.store6.mutations/MutationStore///PointingToDeclaration//-2047478051">
+  <div class="breadcrumbs"><a href="../../../index.html">store6-mutations</a><span class="delimiter">/</span><a href="../index.html">org.mobilenativefoundation.store6.mutations</a><span class="delimiter">/</span><span class="current">MutationStore</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Mutation</span><wbr></wbr><span><span>Store</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="index.html">MutationStore</a><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token operator"> : </span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span> : <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store/index.html">Store</a><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token operator">&gt; </span></div><p class="paragraph">Narrows a <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store/index.html">Store</a> to journalled mutation writes while preserving Store reads and maintenance, and routes every key-taking operation through the canonical alias table.</p><p class="paragraph">This facade deliberately withholds the raw engine write handle. Calling <code class="lang-kotlin">runtime()</code> on it returns <code class="lang-kotlin">null</code>; <code class="lang-kotlin">keyEvents</code> is re-published so advisory access survives that narrowing, and it gains no <code class="lang-kotlin">Rekeyed</code> variant. <a href="close.html">close</a> marks the facade closed before closing its delegate, and mutation operations then fail with Store's exact closed-store contract.</p><p class="paragraph">Canonical routing: every key-taking method resolves the terminal identity of its key before delegating — a key whose identity no active alias redirects IS terminal and is used as given, without consulting the resolver. For an aliased identity the retained <a href="../-mutation-key-resolver/index.html">MutationKeyResolver</a> reconstructs the canonical <code class="lang-kotlin">K</code> (exact-pair validated); the suspending methods make ONE resolution attempt and throw a <code class="lang-kotlin">StoreResults.conversionError</code>-backed <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-exception/index.html">StoreException</a> on failure, while <a href="stream.html">stream</a> emits the sanctioned conversion error and stays live. Raw <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store/index.html">Store</a> references and foreign graphs do not follow the alias guarantee.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="1540756071%2FProperties%2F-2047478051" anchor-label="events" id="1540756071%2FProperties%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="events.html"><span><span>events</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1540756071%2FProperties%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">val </span><a href="events.html">events</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/index.html">SharedFlow</a><span class="token operator">&lt;</span><a href="../-mutation-event/index.html">MutationEvent</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Read-only, in-process advisory lifecycle events: replay <code class="lang-kotlin">0</code>, extra buffer capacity <code class="lang-kotlin">64</code>, overflow <code class="lang-kotlin">DROP_OLDEST</code>, non-blocking emission. Never a drain, acknowledgement, retry, or settlement protocol; durable truth remains inspection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-713574942%2FProperties%2F-2047478051" anchor-label="keyEvents" id="-713574942%2FProperties%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="key-events.html"><span>key</span><wbr></wbr><span><span>Events</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-713574942%2FProperties%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">val </span><a href="key-events.html">keyEvents</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/index.html">Flow</a><span class="token operator">&lt;</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core.seam/-key-events/index.html">KeyEvents</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The exact advisory event flow captured from the delegate runtime during construction.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1356441383%2FProperties%2F-2047478051" anchor-label="poisoned" id="-1356441383%2FProperties%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="poisoned.html"><span><span>poisoned</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1356441383%2FProperties%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">val </span><a href="poisoned.html">poisoned</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/index.html">SharedFlow</a><span class="token operator">&lt;</span><a href="../-poisoned-intent/index.html">PoisonedIntent</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The replay-buffered projection-failure containment stream owned by the mutation engine.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1063873531%2FFunctions%2F-2047478051" anchor-label="clear" id="-1063873531%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="clear.html"><span><span>clear</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1063873531%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="clear.html"><span class="token function">clear</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Destructively removes the value for the terminal canonical identity of <a href="clear.html">key</a>; one resolution attempt, throwing a <code class="lang-kotlin">StoreResults.conversionError</code>-backed <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-exception/index.html">StoreException</a> on failure.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1476276020%2FFunctions%2F-2047478051" anchor-label="clearAll" id="-1476276020%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-1476276020%2FFunctions%2F-2047478051"><span>clear</span><wbr></wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1476276020%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#-1476276020%2FFunctions%2F-2047478051"><span class="token function">clearAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="643797416%2FFunctions%2F-2047478051" anchor-label="clearNamespace" id="643797416%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#643797416%2FFunctions%2F-2047478051"><span>clear</span><wbr></wbr><span><span>Namespace</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="643797416%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#643797416%2FFunctions%2F-2047478051"><span class="token function">clearNamespace</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-namespace/index.html">StoreNamespace</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1556833598%2FFunctions%2F-2047478051" anchor-label="close" id="-1556833598%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="close.html"><span><span>close</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1556833598%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="close.html"><span class="token function">close</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1651275759%2FFunctions%2F-2047478051" anchor-label="deadLetters" id="-1651275759%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="dead-letters.html"><span>dead</span><wbr></wbr><span><span>Letters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1651275759%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="dead-letters.html"><span class="token function">deadLetters</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-dead-letter/index.html">DeadLetter</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns the durably parked intents. Dead letters contain only <code class="lang-kotlin">PARKED</code> entries; retired history never appears and post-acknowledgement work never parks.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1805943738%2FFunctions%2F-2047478051" anchor-label="drain" id="1805943738%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="drain.html"><span><span>drain</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1805943738%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="drain.html"><span class="token function">drain</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs one idempotent, scheduler-agnostic global foreground pass: every durable identity is enumerated from the journal and reconstructed through the required <a href="../-mutation-key-resolver/index.html">MutationKeyResolver</a> with exact-pair validation. An identity that fails to resolve parks its affected pre-ack head and does not block the others. Global processing is deterministic by durable client sequence within an effective identity and does not promise cross-key order. A post-transport owner resumes before another key in its client namespace; those nonowners wait for a later trigger, while every eligible different namespace remains able to progress. Without an owner, independent keys acquire authority by execution rather than by durable sequence.</p></div><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="drain.html"><span class="token function">drain</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Runs one idempotent, scheduler-agnostic foreground pass for the terminal canonical identity of <a href="drain.html">key</a>: the engine captures the unprojected confirmed base through the ordered <code class="lang-kotlin">status -&gt; LocalOnly</code> loop and pushes the pending FIFO prefix once, with no retry or backoff. This pass never fetches. A terminal pre-transport identity, codec, or projection failure durably parks and removes the affected head; push failure remains retryable and stops normally; adoption failure propagates; an alias-protocol violation records a normalized <code class="lang-kotlin">PROTOCOL</code> carrier until its later acknowledgement-validation rung. Terminal resolution makes one attempt and returns normally after parking an affected pre-ack head. Once transport becomes possible or uncertain, that durable execution owns its client namespace until it parks or retires: a keyed drain for another key in that namespace returns without transport. Different namespaces remain eligible to progress, and alias activation re-homes the owning pass before canonical adoption continues.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1338013542%2FFunctions%2F-2047478051" anchor-label="get" id="-1338013542%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get.html"><span><span>get</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1338013542%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="get.html"><span class="token function">get</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a><span class="token punctuation">, </span></span><span class="parameter ">freshness<span class="token operator">: </span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-freshness/index.html">Freshness</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">V</a></div><div class="brief "><p class="paragraph">Returns the value for the terminal canonical identity of <a href="get.html">key</a>; one resolution attempt, throwing a <code class="lang-kotlin">StoreResults.conversionError</code>-backed <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-exception/index.html">StoreException</a> on failure. This read is never projected by the overlay; overlays apply only to <a href="stream.html">stream</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-330012147%2FFunctions%2F-2047478051" anchor-label="invalidate" id="-330012147%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="invalidate.html"><span><span>invalidate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-330012147%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="invalidate.html"><span class="token function">invalidate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Marks the terminal canonical identity of <a href="invalidate.html">key</a> stale; one resolution attempt, throwing a <code class="lang-kotlin">StoreResults.conversionError</code>-backed <a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-exception/index.html">StoreException</a> on failure.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="976778068%2FFunctions%2F-2047478051" anchor-label="invalidateAll" id="976778068%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#976778068%2FFunctions%2F-2047478051"><span>invalidate</span><wbr></wbr><span><span>All</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="976778068%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#976778068%2FFunctions%2F-2047478051"><span class="token function">invalidateAll</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-752895456%2FFunctions%2F-2047478051" anchor-label="invalidateNamespace" id="-752895456%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="index.html#-752895456%2FFunctions%2F-2047478051"><span>invalidate</span><wbr></wbr><span><span>Namespace</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-752895456%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">suspend override </span><span class="token keyword">fun </span><a href="index.html#-752895456%2FFunctions%2F-2047478051"><span class="token function">invalidateNamespace</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">namespace<span class="token operator">: </span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-namespace/index.html">StoreNamespace</a></span></span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="520824259%2FFunctions%2F-2047478051" anchor-label="mutate" id="520824259%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mutate.html"><span><span>mutate</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="520824259%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="mutate.html">A</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="mutate.html"><span class="token function">mutate</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a><span class="token punctuation">, </span></span><span class="parameter ">ref<span class="token operator">: </span><a href="../-mutator-ref/index.html">MutatorRef</a><span class="token operator">&lt;</span><a href="index.html">K</a><span class="token punctuation">, </span><a href="index.html">V</a><span class="token punctuation">, </span><a href="mutate.html">A</a><span class="token operator">&gt;</span><span class="token punctuation">, </span></span><span class="parameter ">args<span class="token operator">: </span><a href="mutate.html">A</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Appends one typed intent to the journal and signals optimistic reprojection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="211023759%2FFunctions%2F-2047478051" anchor-label="pending" id="211023759%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="pending.html"><span><span>pending</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="211023759%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="pending.html"><span class="token function">pending</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-pending-intent/index.html">PendingIntent</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns the current pending intents for the terminal canonical identity of <a href="pending.html">key</a> in durable client-sequence FIFO order.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="486573615%2FFunctions%2F-2047478051" anchor-label="pendingWrites" id="486573615%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="pending-writes.html"><span>pending</span><wbr></wbr><span><span>Writes</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="486573615%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">suspend </span><span class="token keyword">fun </span><a href="pending-writes.html"><span class="token function">pendingWrites</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../-pending-intent/index.html">PendingIntent</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Returns a truthful snapshot of every nonterminal active intent across all durable identities, in durable client-sequence order. Retired history never appears.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="417926678%2FFunctions%2F-2047478051" anchor-label="stream" id="417926678%2FFunctions%2F-2047478051" data-filterable-set=":store6-mutations/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-mutations/commonMain" data-filterable-set=":store6-mutations/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="stream.html"><span><span>stream</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="417926678%2FFunctions%2F-2047478051"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-mutations/commonMain"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="stream.html"><span class="token function">stream</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">key<span class="token operator">: </span><a href="index.html">K</a><span class="token punctuation">, </span></span><span class="parameter ">freshness<span class="token operator">: </span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-freshness/index.html">Freshness</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/index.html">Flow</a><span class="token operator">&lt;</span><a href="https://store.mobilenativefoundation.org/reference/store6-core/store6-core/org.mobilenativefoundation.store6.core/-store-result/index.html">StoreResult</a><span class="token operator">&lt;</span><a href="index.html">V</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Observes retrieval state and values for the terminal canonical identity of <a href="stream.html">key</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

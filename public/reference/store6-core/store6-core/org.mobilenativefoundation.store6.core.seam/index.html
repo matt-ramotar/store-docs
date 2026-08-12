@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>org.mobilenativefoundation.store6.core.seam</title>
+    <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../index.html" tabindex="1">
+                    store6-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector common-like" data-active="" aria-pressed="true"
+                        data-filter=":store6-core/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":store6-core/commonMain"
+                                       data-filter=":store6-core/commonMain"/>
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    store6-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="store6-core::org.mobilenativefoundation.store6.core.seam////PointingToDeclaration//-1367340304">
+  <div class="breadcrumbs"><a href="../../index.html">store6-core</a><span class="delimiter">/</span><span class="current">org.mobilenativefoundation.store6.core.seam</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-846024077%2FClasslikes%2F-1367340304" anchor-label="Bookkeeper" id="-846024077%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-bookkeeper/index.html"><span><span>Bookkeeper</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-846024077%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-bookkeeper/index.html">Bookkeeper</a></div><div class="brief "><p class="paragraph">Tracks successful metadata, consecutive failures, and durable staleness for canonical keys.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1369008461%2FClasslikes%2F-1367340304" anchor-label="Fetcher" id="1369008461%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fetcher/index.html"><span><span>Fetcher</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1369008461%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-fetcher/index.html">Fetcher</a><span class="token operator">&lt;</span><a href="-fetcher/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-fetcher/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Retrieves remote values for a <a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a> without mutating Store state.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="196492976%2FClasslikes%2F-1367340304" anchor-label="FetcherResult" id="196492976%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fetcher-result/index.html"><span>Fetcher</span><wbr></wbr><span><span>Result</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="196492976%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fetcher-result/index.html">FetcherResult</a><span class="token operator">&lt;</span><span class="token keyword">out </span><a href="-fetcher-result/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">The result vocabulary for a fetcher registered with <a href="../org.mobilenativefoundation.store6.core/-store-builder/fetcher-of-result.html">StoreBuilder.fetcherOfResult</a> or the seam <a href="-fetcher/index.html">Fetcher</a> overload.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1664731151%2FClasslikes%2F-1367340304" anchor-label="FetchPlan" id="-1664731151%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-fetch-plan/index.html"><span>Fetch</span><wbr></wbr><span><span>Plan</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1664731151%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-fetch-plan/index.html">FetchPlan</a></div><div class="brief "><p class="paragraph">Fetch action selected by a <a href="-freshness-validator/index.html">FreshnessValidator</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1987418436%2FClasslikes%2F-1367340304" anchor-label="FreshnessContext" id="1987418436%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-freshness-context/index.html"><span>Freshness</span><wbr></wbr><span><span>Context</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1987418436%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-freshness-context/index.html">FreshnessContext</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>hasResidentValue<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>meta<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.core/-store-meta/index.html">StoreMeta</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>epochStale<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>freshness<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.core/-freshness/index.html">Freshness</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>nowEpochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>status<span class="token operator">: </span><a href="-key-status/index.html">KeyStatus</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">The value and bookkeeping facts used to plan a read.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="670195841%2FClasslikes%2F-1367340304" anchor-label="FreshnessValidator" id="670195841%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-freshness-validator/index.html"><span>Freshness</span><wbr></wbr><span><span>Validator</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="670195841%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-freshness-validator/index.html">FreshnessValidator</a></div><div class="brief "><p class="paragraph">Selects the fetch plan for one coherent <a href="-freshness-context/index.html">FreshnessContext</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1661803972%2FClasslikes%2F-1367340304" anchor-label="KeyEvents" id="-1661803972%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-key-events/index.html"><span>Key</span><wbr></wbr><span><span>Events</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1661803972%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-key-events/index.html">KeyEvents</a></div><div class="brief "><p class="paragraph">Advisory notifications produced at Store engine writer points.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-112449149%2FClasslikes%2F-1367340304" anchor-label="KeyStatus" id="-112449149%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-key-status/index.html"><span>Key</span><wbr></wbr><span><span>Status</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-112449149%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">class </span><a href="-key-status/index.html">KeyStatus</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>meta<span class="token operator">: </span><a href="../org.mobilenativefoundation.store6.core/-store-meta/index.html">StoreMeta</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lastSuccessSequence<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>lastFailureAtEpochMillis<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>consecutiveFailures<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>durablyStale<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Immutable bookkeeping state for one canonical key.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-884839932%2FClasslikes%2F-1367340304" anchor-label="Overlay" id="-884839932%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-overlay/index.html"><span><span>Overlay</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-884839932%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-overlay/index.html">Overlay</a><span class="token operator">&lt;</span><a href="-overlay/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-overlay/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Projects confirmed stream residence through one engine-owned writer per key.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1913498117%2FClasslikes%2F-1367340304" anchor-label="SourceOfTruth" id="-1913498117%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-source-of-truth/index.html"><span>Source</span><wbr></wbr><span>Of</span><wbr></wbr><span><span>Truth</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1913498117%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-source-of-truth/index.html">SourceOfTruth</a><span class="token operator">&lt;</span><a href="-source-of-truth/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-source-of-truth/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Persistence seam for the current nullable row associated with a <a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1963135929%2FClasslikes%2F-1367340304" anchor-label="StoreResults" id="1963135929%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-store-results/index.html"><span>Store</span><wbr></wbr><span><span>Results</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1963135929%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">object </span><a href="-store-results/index.html">StoreResults</a></div><div class="brief "><p class="paragraph">StoreResults is the sanctioned construction door for extensions, fakes, and tests; internal constructors remain internal.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="424886807%2FClasslikes%2F-1367340304" anchor-label="StoreRuntime" id="424886807%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-store-runtime/index.html"><span>Store</span><wbr></wbr><span><span>Runtime</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="424886807%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-store-runtime/index.html">StoreRuntime</a><span class="token operator">&lt;</span><a href="-store-runtime/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-store-runtime/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Optional engine-backed capabilities exposed to Store extensions without implementation downcasts.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1875650006%2FClasslikes%2F-1367340304" anchor-label="StoreTelemetry" id="1875650006%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-store-telemetry/index.html"><span>Store</span><wbr></wbr><span><span>Telemetry</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1875650006%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-store-telemetry/index.html">StoreTelemetry</a></div><div class="brief "><p class="paragraph">Observes Store lifecycle events without participating in Store correctness.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1837813016%2FClasslikes%2F-1367340304" anchor-label="StoreWriteHandle" id="-1837813016%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-store-write-handle/index.html"><span>Store</span><wbr></wbr><span>Write</span><wbr></wbr><span><span>Handle</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1837813016%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-store-write-handle/index.html">StoreWriteHandle</a><span class="token operator">&lt;</span><a href="-store-write-handle/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-store-write-handle/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Engine-backed acknowledgement path for committing and refreshing source-of-truth values.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="22785022%2FClasslikes%2F-1367340304" anchor-label="TransactionalSourceOfTruth" id="22785022%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-transactional-source-of-truth/index.html"><span>Transactional</span><wbr></wbr><span>Source</span><wbr></wbr><span>Of</span><wbr></wbr><span><span>Truth</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="22785022%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-transactional-source-of-truth/index.html">TransactionalSourceOfTruth</a><span class="token operator">&lt;</span><a href="-transactional-source-of-truth/index.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="-transactional-source-of-truth/index.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span> : <a href="-source-of-truth/index.html">SourceOfTruth</a><span class="token operator">&lt;</span><a href="-transactional-source-of-truth/index.html">K</a><span class="token punctuation">, </span><a href="-transactional-source-of-truth/index.html">V</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Optional atomicity capability for a <a href="-source-of-truth/index.html">SourceOfTruth</a>. Detectable via <code class="lang-kotlin">sot is TransactionalSourceOfTruth</code>; the engine never assumes it and there is deliberately no silent non-atomic default.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-629028944%2FClasslikes%2F-1367340304" anchor-label="WallClock" id="-629028944%2FClasslikes%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-wall-clock/index.html"><span>Wall</span><wbr></wbr><span><span>Clock</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-629028944%2FClasslikes%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-subclass-opt-in-required/index.html"><span class="token annotation builtin">SubclassOptInRequired</span></a><span class="token punctuation">(</span><span>markerClass<span class="token operator"> = </span><span class="token punctuation">[</span><span><a href="../org.mobilenativefoundation.store6.core/-delicate-store-api/index.html">DelicateStoreApi::class</a></span><wbr></wbr><span class="token punctuation">]</span></span><wbr></wbr><span class="token punctuation">)</span></div></div><span class="token keyword">interface </span><a href="-wall-clock/index.html">WallClock</a></div><div class="brief "><p class="paragraph">Supplies wall-clock time only for age and bounds calculations. Implementations must be cheap and non-blocking.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-1845658697%2FFunctions%2F-1367340304" anchor-label="runtime" id="-1845658697%2FFunctions%2F-1367340304" data-filterable-set=":store6-core/commonMain"></a>
+          <div class="table-row table-row_content" data-filterable-current=":store6-core/commonMain" data-filterable-set=":store6-core/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="runtime.html"><span><span>runtime</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1845658697%2FFunctions%2F-1367340304"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":store6-core/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="../org.mobilenativefoundation.store6.core/-experimental-store-api/index.html"><span class="token annotation builtin">ExperimentalStoreApi</span></a></div></div><span class="token keyword">fun </span><span class="token operator">&lt;</span><a href="runtime.html">K</a><span class="token operator"> : </span><a href="../org.mobilenativefoundation.store6.core/-store-key/index.html">StoreKey</a><span class="token punctuation">, </span><a href="runtime.html">V</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt; </span><a href="../org.mobilenativefoundation.store6.core/-store/index.html">Store</a><span class="token operator">&lt;</span><a href="runtime.html">K</a><span class="token punctuation">, </span><a href="runtime.html">V</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="runtime.html"><span class="token function">runtime</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-store-runtime/index.html">StoreRuntime</a><span class="token operator">&lt;</span><a href="runtime.html">K</a><span class="token punctuation">, </span><a href="runtime.html">V</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Returns this Store's engine-backed capability handle.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
