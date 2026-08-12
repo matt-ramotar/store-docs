@@ -1,0 +1,115 @@
+---
+title: "Migrating from Store 4"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+<Callout type="Note">
+
+**In progress.** This page ships thin and will grow before GA. The Store 4 to Store 6 guide is a
+launch gate for 6.0.0, and the roadmap names a “Store 4 → 6 in an afternoon” guide as a GA
+deliverable. Until that worked port lands, this page identifies the supported starting point,
+routes the applicable work through the Store 5 migration material, and names what remains.
+
+</Callout>
+
+## Where you are starting from
+
+Store 4 used `com.dropbox` packages. That history remains visible in Store 5's own
+`StoreReadRequest` KDoc, which references
+`com.dropbox.android.external.store4.impl.SourceOfTruth`.
+
+Two release facts keep this path bounded:
+
+- Store 5's early multiplatform release says concepts and usage were unchanged from Store 4.
+- The Store 5 stable release describes its additions over Store 4 as having no breaking changes.
+
+That means the Store 5 to Store 6 component map applies to a Store 4 codebase. You skip the Store
+5-only rows instead of first migrating the application to Store 5.
+
+## Rows of the Store 5 map that do not apply to you
+
+Store 5 added `MutableStore`, `Validator`, fallback mechanisms, write-conflict resolution, and
+`NoNewData` after Store 4. A Store 4 application has none of those additions to translate.
+
+For a Store 4 holdout, per-call freshness policies and the journalled mutation path are new
+capabilities to evaluate, not existing behaviors that must be ported. Use the
+[component map](/docs/store6/migration/component-map) for the rows that remain: Store, Fetcher,
+SourceOfTruth, and Converter.
+
+## The mapping that does apply
+
+| Store 4-era responsibility | Store 6 path | Detail |
+| --- | --- | --- |
+| Fetcher | `fetcher { }`, `fetcherOfResult { }`, or the experimental seam `Fetcher` | A fetcher is the one required Store 6 builder input. See [Fetchers](/docs/store6/guides/fetchers). |
+| Persister / SourceOfTruth | The two-parameter persistence seam or a Room/SQLDelight adapter | See [Persistence](/docs/store6/guides/persistence), [Room](/docs/store6/room), and [SQLDelight](/docs/store6/sqldelight). |
+| Converter | No direct Store 6 analog. Conversion lives in the fetcher and persistence adapter callbacks. | See the [component map](/docs/store6/migration/component-map). |
+| Read sites | `get(key, freshness)` for a point read, or `stream(key, freshness)` for an ongoing result flow | The request and response tables are in [Migrating from Store 5](/docs/store6/migration/from-store5). |
+
+Store 5's KDoc preserves two Store 4-era read spellings: `store.fresh(key)` and
+`store.cached(key, refresh = true)`. In Store 6:
+
+- `store.fresh(key)` maps to `get(key, Freshness.MustBeFresh)` when the caller needs one fresh
+  value.
+- `store.cached(key, refresh = true)` maps to an ongoing `stream(key)` plus deliberate
+  `invalidate(key)` when the caller requests a refresh. It is not a one-call mechanical rename.
+
+The Store 6 builder side starts with the compiled quickstart shape:
+
+{/* snippet: guides-fetchers-quickstart */}
+```kotlin
+val users = store<UserKey, User> {
+    fetcher { key -> FakeApi.getUser(key.id) }
+}
+```
+
+Inside the quickstart's stream collector, the result is handled exhaustively:
+
+{/* snippet: migration-store-result-when */}
+```kotlin
+when (result) {
+    is StoreResult.Loading -> println("Loading…")
+    is StoreResult.Data -> println("Data(name=${result.value.name}, origin=${result.origin})")
+    is StoreResult.Revalidated -> println("Revalidated(age=${result.age})")
+    is StoreResult.Error -> println("Error(${result.error})")
+}
+```
+
+This page does not invent a compilable Store 4 example before the worked migration is available.
+The two Store 4-era spellings above come from the retained Store KDoc; both Store 6 fences come
+from the repository's executable quickstart.
+
+## Coordinates and coexistence
+
+Store 6 artifacts use the existing group `org.mobilenativefoundation.store` and packages under
+`org.mobilenativefoundation.store6.*`. Nothing is published until 6.0.0-alpha01.
+
+Store 4 has no equivalent coexistence guarantee. If the existing Store 4 dependency still resolves
+in your build, keep it in place while adding the needed `store6-*` artifacts and moving one
+complete screen at a time.
+
+The formal 6.x coexistence and interop promise begins with Store 5: `store5.*` and `store6.*`
+coordinates live side by side for the whole 6.x major, and `store6-store5-interop` is supported for
+all of 6.x. No Store 4 artifact availability or Store 4 interop artifact is guaranteed. Plan each
+Store 4 to Store 6 move as a complete screen boundary.
+
+## What this page will grow into
+
+Before GA, this page still needs three concrete artifacts:
+
+1. A worked port of a small Store 4 setup covering its fetcher, persister, and read sites, sized to
+   the roadmap's “in an afternoon” promise.
+2. A symbol-level rename table verified against a real Store 4 project.
+3. A migration checklist that can be completed without consulting release history.
+
+Documentation is part of the GA gate. These items are named here so the current page does not imply
+that the thin path is the finished migration guide.
+
+Continue with [Migrating from Store 5](/docs/store6/migration/from-store5), the
+[component map](/docs/store6/migration/component-map), and the
+[Store 6 quickstart](/docs/store6/quickstart).
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6.0.0-alpha01*

@@ -144,9 +144,9 @@ Store 6 collapses the Store 5 write assembly into one factory and one journalled
 | `Updater.post`-driven transport | An app-owned `MutationServer`, invoked by `drain` |
 | Hand-assembled failed-sync bookkeeping or an outbox | The mutation journal plus `pendingWrites()` and `deadLetters()` inspection |
 
-Detailed migration steps are deferred to the later Migrating from Store 5 and Store 5 component
-map pages. The mutation path remains experimental even when it replaces a stable Store 5 write
-assembly.
+Detailed migration steps are in [Migrating from Store 5](/docs/store6/migration/from-store5) and
+the [Store 5 component map](/docs/store6/migration/component-map). The mutation path remains
+experimental even when it replaces a stable Store 5 write assembly.
 
 <Callout type="Tip">
 
@@ -157,4 +157,4 @@ intent registration through acknowledgement.
 
 ---
 
-*Last verified: 2026-08-12 · `main` @ `539614c0`, pre-6.0.0-alpha01*
+*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6.0.0-alpha01*

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "539614c06be1a8f20dead562585e47394551ebae",
+  "revision": "c67a94ed30460a35161c2cbc3e725f127caf055e",
   "claims": [
     {
       "id": "home/001",
@@ -251,7 +251,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 76,
             "end": 76
@@ -353,7 +353,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 72,
             "end": 72
@@ -438,7 +438,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 80,
             "end": 80
@@ -506,7 +506,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 28,
             "end": 28
@@ -557,7 +557,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 32,
             "end": 32
@@ -608,7 +608,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 12,
             "end": 12
@@ -693,7 +693,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "8b285e37e4901696675874cd58bdce066529836d0d4e1f3c57164dc6c1ca83b2",
+          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
           "lines": {
             "start": 16,
             "end": 16
@@ -772,16 +772,16 @@
     {
       "id": "tokens-demo/004",
       "page": "/tokens-demo",
-      "claim": "/tokens-demo is one of 29 fixed extra routes in the contract-locked route census; the 11 sync-owned Store6 routes are derived separately from the source lock.",
+      "claim": "/tokens-demo is one of 32 fixed extra routes in the contract-locked route census; the 11 sync-owned Store6 routes are derived separately from the source lock.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "15c2a04cdbd6a06a338620abae4e616db46e18c42b9ede9d5865d8fb7bfc5e4f",
+          "sha256": "7ac3191486b01f169f16a990a9b6ae5438adbf42af6a2bbf29c0767d8ca76cb6",
           "lines": {
             "start": 24,
-            "end": 85
+            "end": 141
           }
         }
       ]
@@ -1604,7 +1604,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 21,
             "end": 21
@@ -1706,7 +1706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 16,
             "end": 16
@@ -2488,7 +2488,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 50,
             "end": 54
@@ -2607,7 +2607,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 45,
             "end": 49
@@ -5126,6 +5126,41 @@
       ]
     },
     {
+      "id": "docs/store6/migration/from-store5/009",
+      "page": "/docs/store6/migration/from-store5",
+      "claim": "If a server accepts a push but Store fails or dies before the local acknowledgement-receipt transaction commits, the last durable phase remains INFLIGHT and a later drain may re-push the same immutable generation and idempotency key; replay across process restart requires journal storage that survives. Once ACKED is durable, recovery may repeat only local adoption, effects, and retirement and never re-pushes that generation, so the endpoint must remain idempotent.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 1857,
+            "end": 2013
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2904,
+            "end": 3132
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/MutationAckOrchestrationTest.kt",
+          "sha256": "cd297a09a5498b9d193b0aa1c0c29b9e1007a0c79fede59e0a4b014316649d6f",
+          "lines": {
+            "start": 355,
+            "end": 560
+          }
+        }
+      ]
+    },
+    {
       "id": "docs/store6/migration/component-map/001",
       "page": "/docs/store6/migration/component-map",
       "claim": "The Store 6 seam is the package for plugging in a fetcher, source of truth, bookkeeper, clock, telemetry, or overlay — there is no converter role among the seam files.",
@@ -5257,6 +5292,41 @@
           "lines": {
             "start": 9,
             "end": 19
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/migration/component-map/009",
+      "page": "/docs/store6/migration/component-map",
+      "claim": "If a server accepts a push but Store fails or dies before the local acknowledgement-receipt transaction commits, the last durable phase remains INFLIGHT and a later drain may re-push the same immutable generation and idempotency key; replay across process restart requires journal storage that survives. Once ACKED is durable, recovery may repeat only local adoption, effects, and retirement and never re-pushes that generation, so the endpoint must remain idempotent.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 1857,
+            "end": 2013
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
+          "sha256": "ea0e5f9b82f985f34f63b19a429850ecd3394415c812778619e4ff6e68bb0e1c",
+          "lines": {
+            "start": 2904,
+            "end": 3132
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/MutationAckOrchestrationTest.kt",
+          "sha256": "cd297a09a5498b9d193b0aa1c0c29b9e1007a0c79fede59e0a4b014316649d6f",
+          "lines": {
+            "start": 355,
+            "end": 560
           }
         }
       ]
@@ -5741,13 +5811,13 @@
     {
       "id": "docs/store6/contributing/005",
       "page": "/docs/store6/contributing",
-      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision 539614c0 with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
+      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision c67a94ed with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 3,
             "end": 3
@@ -5756,7 +5826,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "e0b1ac8703fc3334fe6bff8107e6b9e2c1c1bcb467d75bdf1ed7060ae4d25e11",
+          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
           "lines": {
             "start": 36,
             "end": 38

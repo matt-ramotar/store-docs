@@ -44,7 +44,11 @@
     {
       "name": "guides-fetchers-quickstart",
       "path": "store6-quickstart/src/main/kotlin/org/mobilenativefoundation/store6/quickstart/Main.kt",
-      "pages": ["/docs/store6/guides/fetchers"]
+      "pages": [
+        "/docs/store6/guides/fetchers",
+        "/docs/store6/migration/from-store4",
+        "/docs/store6/migration/from-store5"
+      ]
     },
     {
       "name": "guides-fetchers-seam-signature",
@@ -78,6 +82,14 @@
       "name": "guides-testing-policy-fixtures",
       "path": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/testing/docs/GuideTestingSnippets.kt",
       "pages": ["/docs/store6/guides/testing"]
+    },
+    {
+      "name": "migration-store-result-when",
+      "path": "store6-quickstart/src/main/kotlin/org/mobilenativefoundation/store6/quickstart/Main.kt",
+      "pages": [
+        "/docs/store6/migration/from-store4",
+        "/docs/store6/migration/from-store5"
+      ]
     },
     {
       "name": "mutations-alias-key-resolver",
@@ -122,7 +134,10 @@
     {
       "name": "mutations-overview-build-and-drain",
       "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationOverviewDocsSnippet.kt",
-      "pages": ["/docs/store6/mutations"]
+      "pages": [
+        "/docs/store6/migration/from-store5",
+        "/docs/store6/mutations"
+      ]
     },
     {
       "name": "mutations-pending-write-ui-badges",

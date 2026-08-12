@@ -38,6 +38,11 @@ const B3_MUTATION_ROUTES = [
   "/docs/store6/mutations/server",
   "/docs/store6/mutations/testing",
 ];
+const B4_MIGRATION_ROUTES = [
+  "/docs/store6/migration/component-map",
+  "/docs/store6/migration/from-store4",
+  "/docs/store6/migration/from-store5",
+];
 
 test("committed sources derive the inventory, separate exclusion, extras, and page census", async () => {
   const contract = await deriveRouteContract({ root: ROOT });
@@ -72,6 +77,15 @@ test("committed route contract includes all B3 mutation routes", async () => {
   assert.deepEqual(
     contract.extras.filter((route) => route === "/docs/store6/mutations" || route.startsWith("/docs/store6/mutations/")),
     B3_MUTATION_ROUTES,
+  );
+});
+
+test("committed route contract includes all B4 migration routes", async () => {
+  const contract = await deriveRouteContract({ root: ROOT });
+
+  assert.deepEqual(
+    contract.extras.filter((route) => route.startsWith("/docs/store6/migration/")),
+    B4_MIGRATION_ROUTES,
   );
 });
 
@@ -642,6 +656,7 @@ function writeContractFixture(root, options = {}) {
     "/docs/store6/guides/persistence",
     "/docs/store6/guides/swift",
     "/docs/store6/guides/testing",
+    ...B4_MIGRATION_ROUTES,
     ...B3_MUTATION_ROUTES,
     "/docs/store6/overview",
     "/docs/store6/quickstart",
@@ -719,6 +734,9 @@ function writeContractFixture(root, options = {}) {
     "content/docs/store6/guides/persistence.mdx",
     "content/docs/store6/guides/swift.mdx",
     "content/docs/store6/guides/testing.mdx",
+    "content/docs/store6/migration/component-map.mdx",
+    "content/docs/store6/migration/from-store4.mdx",
+    "content/docs/store6/migration/from-store5.mdx",
     "content/docs/store6/mutations/aliases.mdx",
     "content/docs/store6/mutations/conflicts.mdx",
     "content/docs/store6/mutations/drain-and-restart.mdx",

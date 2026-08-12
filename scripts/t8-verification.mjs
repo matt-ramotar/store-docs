@@ -74,6 +74,18 @@ const FIXED_EXTRA_SOURCES = Object.freeze([
     source: "content/docs/store6/guides/testing.mdx",
   },
   {
+    path: "/docs/store6/migration/component-map",
+    source: "content/docs/store6/migration/component-map.mdx",
+  },
+  {
+    path: "/docs/store6/migration/from-store4",
+    source: "content/docs/store6/migration/from-store4.mdx",
+  },
+  {
+    path: "/docs/store6/migration/from-store5",
+    source: "content/docs/store6/migration/from-store5.mdx",
+  },
+  {
     path: "/docs/store6/mutations",
     source: "content/docs/store6/mutations/index.mdx",
   },

@@ -1,0 +1,190 @@
+---
+title: "Store 5 component → Store 6 map"
+---
+
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
+Store 5 documents a Store, Fetcher, SourceOfTruth, Converter, Validator, and, for writes,
+MutableStore, Updater, and Bookkeeper. Store 6 keeps some names, absorbs some jobs into the engine,
+and replaces the write assembly with one journalled path. The seven translation rows below cover
+all eight Store 5 components because `MutableStore` and `Updater` move together.
+
+## How to read this map
+
+A Store 6 core store requires exactly one configured input: a fetcher. Persistence and the expert
+extension points are optional seams, while freshness, single-flight fetching, bounded idle
+residency, and invalidation are engine behavior.
+
+<Callout type="Note">
+
+The `org.mobilenativefoundation.store6.core.seam` implementation surface is a freeze candidate,
+not frozen. Implementing its fetcher, persistence, bookkeeping, clock, telemetry, or overlay seams
+is an explicit experimental opt-in. Result types used by stable builder members, such as
+`FetcherResult`, remain usable without that implementation opt-in. The mutation rows are in the
+separate experimental `store6-mutations` artifact, where every public symbol is experimental.
+
+</Callout>
+
+| Store 5 component | Store 6 replacement | Learn it here |
+| --- | --- | --- |
+| `Store` | `Store<K, V>` with `stream(key, freshness)`, suspending `get`, namespace-aware invalidation and clear, and explicit `close()` | [Read contract](/docs/store6/concepts/read-contract), [invalidate or clear](/docs/store6/invalidate-vs-clear) |
+| `Fetcher` | `fetcher { }`, `fetcherOfResult { }`, or the experimental seam `Fetcher` | [Fetchers](/docs/store6/guides/fetchers) |
+| `SourceOfTruth` | The two-parameter persistence seam, or a Room/SQLDelight adapter | [Persistence](/docs/store6/guides/persistence), [Room](/docs/store6/room), [SQLDelight](/docs/store6/sqldelight) |
+| `Converter` | **No direct analog.** Mapping lives in fetcher and persistence callbacks. | [Fetchers](/docs/store6/guides/fetchers), [Persistence](/docs/store6/guides/persistence) |
+| `Validator` | Native per-call `Freshness`, durable invalidation, and the expert `FreshnessValidator` read-planning seam | [Freshness](/docs/store6/concepts/freshness), [Important defaults](/docs/store6/important-defaults) |
+| `MutableStore` + `Updater` | `MutableStore` becomes `mutationStore` plus typed `mutate`. **Updater has no direct analog:** its transport job moves to an app-owned `MutationServer` invoked by foreground `drain`. | [Mutations](/docs/store6/mutations), [MutationServer](/docs/store6/mutations/server) |
+| Failed-sync `Bookkeeper` | **No direct analog.** Durable mutation-journal records and inspection replace the job. Store 6 core has a different `Bookkeeper` for freshness. | [Journal storage](/docs/store6/mutations/journal-storage), [Inspection](/docs/store6/mutations/inspection) |
+
+## Store to Store
+
+Store 5 centers reads on `stream(StoreReadRequest)`. Store 6 uses
+`stream(key, freshness)` and adds suspending `get(key, freshness)`. Both doors follow one failure
+channel:
+
+- `stream` emits `StoreResult.Error` and does not throw retrieval failures. A
+  `Freshness.MustBeFresh` initial-cycle failure emits one error and completes the flow.
+- `get` returns a value or throws `StoreException`; it never emits a result wrapper.
+
+Store 5's `clear(key)` and `clearAll()` become two namespace-aware operation families.
+`invalidate*` marks data stale and preserves it, while `clear*` destructively removes values and
+their associated per-key freshness records. Namespace and global watermarks remain conservative
+and are not reset by forget operations. Store 6 also makes lifecycle explicit through `close()`.
+
+The request and response translation tables are in
+[Migrating from Store 5](/docs/store6/migration/from-store5).
+
+## Fetcher to fetcher, fetcherOfResult, or the seam Fetcher
+
+Store 6 has three fetcher installation points. The last registration wins across all three:
+
+- `fetcher { key -> value }` is success-or-throw sugar.
+- `fetcherOfResult { key -> FetcherResult }` exposes the complete result vocabulary.
+- `fetcher(fetcher)` installs the experimental regular-interface seam, whose suspend function
+  receives the ETag selected for a conditional request.
+
+Store 5's `FetcherResult.Data` and three error shapes become Store 6
+`FetcherResult.Success(value, etag)` and `FetcherResult.Error(cause)`. Store 6 adds
+`NotModified`, which produces one `StoreResult.Revalidated` frame, and `Deleted`, which clears the
+resident value without an automatic refetch.
+
+There is no engine-level replacement for a Store 5 fallback fetcher chain. Store 6 performs zero
+retries and no fallback chain. Compose retry, backoff, or fallback endpoints inside your fetcher.
+
+## SourceOfTruth to the persistence seam
+
+Store 5's `SourceOfTruth<Key, Local, Output>` separates the `Local` value written to persistence
+from the `Output` value emitted by its reader. The fetcher's `Network` type is separate: a
+`Converter` maps `Network` into `Local` when those representations differ. Store 6's seam is
+`SourceOfTruth<K, V>`, with one value type and a nullable-row reader contract.
+
+A Store 6 implementation must immediately first-emit the current row or `null`; keep the reader
+live; publish changes made through that instance; provide read-your-writes on normal mutation
+return; and make mutations exception-atomic, including cancellation. `deleteNamespace` is new.
+
+Use the contract kit in `store6-testing` when implementing the seam. The Room and SQLDelight
+adapters implement it over an existing application database.
+
+## Converter to no seam: mapping lives in callbacks
+
+Store 5's `Converter<Network, Local, Output>` defines `fromNetworkToLocal` and
+`fromOutputToLocal`. Store 6 has no converter seam and no direct replacement component. A Store 6
+store is typed on one value type `V`.
+
+Map the network payload to `V` inside the fetcher before returning it. Map `V` to and from database
+rows inside the persistence adapter's callbacks. For example, `SqlDelightSourceOfTruth` takes
+`readQuery`, `writeRow`, and delete callbacks over generated queries. The conversion still exists;
+it is owned at the boundary where the representation changes instead of by a Store component.
+
+## Validator to native freshness
+
+Store 5's optional `Validator.isValid(item)` asks one per-item question. Store 6 absorbs the common
+job into per-call policies and durable state. A read is planned from resident availability,
+freshness metadata, durable staleness, and one of five policies:
+
+- `CachedOrFetch`
+- `MaxAge`
+- `MustBeFresh`
+- `StaleIfError`
+- `LocalOnly`
+
+Every `StoreResult.Data` reports `isStale`, and `invalidate`, `invalidateNamespace`, and
+`invalidateAll` record staleness directly.
+
+The seam still contains a `FreshnessValidator`, but it is not a Store 5-style per-item validity
+hook. Its pure `plan(context)` function returns one of the `FetchPlan` outcomes `Skip`, `Fetch`, or
+`Conditional` for one coherent read snapshot. Most applications should use the native policies.
+
+## MutableStore and Updater to mutationStore, mutate, and drain
+
+<Callout type="Note">
+
+This row is experimental. `store6-mutations` is a separate artifact, and every public symbol is
+`@ExperimentalStoreApi`.
+
+</Callout>
+
+There is no standalone Store 6 `Updater`. Store 5's `MutableStore.write(...)` and
+`Updater.post(...)` move into one journalled path:
+
+1. Register named, typed write shapes in a `MutatorRegistry`.
+2. Enqueue one with `mutate(key, ref, args)`.
+3. Push a foreground pass with `drain(key)` or `drain()`.
+4. Implement the app-owned `MutationServer` transport contract. It has exactly two methods:
+   `push(request): MutationAck` and `retire(request): MutationRetirementAck`.
+
+The Store 5 per-key write queue becomes a durable FIFO ordered by client sequence. Its current
+state is inspectable through `pending(key)`, `pendingWrites()`, and `deadLetters()`.
+
+Conflict handling moves into an optional `conflicts { precondition(...); merge(...) }` block.
+Without a registered merge, server-wins remains the non-removable terminal. Write shapes are
+registered once with `mutator`, `update`, `create`, `delete`, or `upsert`; no call-site closure
+becomes a durable intent. `update` declines when the confirmed base is absent, `delete` always
+applies `MutationPresence.Absent`, and `upsert` cannot decline.
+
+The remote endpoint must treat a repeated idempotency key as the same request. If remote acceptance
+happens before the local acknowledgement-receipt transaction commits, the durable phase remains
+`INFLIGHT` and a later drain may replay the same immutable generation. Once `ACKED` is durable,
+recovery may repeat local adoption, effects, and retirement, but it never calls
+`MutationServer.push` again for that generation.
+
+Continue with [Authoring mutators](/docs/store6/mutations/mutators),
+[Implementing a MutationServer](/docs/store6/mutations/server),
+[Conflict resolution](/docs/store6/mutations/conflicts), and
+[Draining and restart](/docs/store6/mutations/drain-and-restart).
+
+## Bookkeeper to the journal, with a name collision
+
+Store 5's `Bookkeeper` records failed-sync timestamps per key so later reads can detect unsynced
+local changes and resolve conflicts. There is no direct Store 6 component with that job.
+
+The mutation journal is the replacement system. It records durable intents, attempt generations,
+acknowledgement progress, normalized failures, and retirement. Its truthful inspection surfaces
+are `pending(key)`, `pendingWrites()`, and `deadLetters()`. The default journal is in-memory; use
+the SQLDelight adapter or another conforming durable implementation when queued work must survive
+process restart.
+
+<Callout type="Note">
+
+Store 6 core also has a type named `Bookkeeper`, but it performs a different job. It records
+freshness metadata, failures, per-key stale marks, and namespace/global watermarks using one
+monotone sequence. A key is durably stale exactly when
+`max(mark/ns/global) > (success ?: 0)`. Store installs an in-memory implementation by default. It
+does not track failed write synchronization.
+
+</Callout>
+
+## Not in the map
+
+Store 5 memory-cache configuration does not become another component. Store 6 uses
+`maxIdleKeys`, default 128, to bound quiescent per-key engine residency. Eviction discards derived
+engine state, not durable rows, metadata, stale marks, or watermarks.
+
+Store 5's builder `scope(...)` also has no counterpart. Store 6 stores own their work and release
+it through `close()`.
+
+Read [Memory and lifecycle](/docs/store6/concepts/memory-and-lifecycle) for both boundaries.
+
+---
+
+*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6.0.0-alpha01*
