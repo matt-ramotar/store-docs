@@ -218,6 +218,8 @@ export const topNavLinks: TopNavLink[] = [
 export const gitHubRepo = {
   href: "https://github.com/MobileNativeFoundation/Store",
   label: "MobileNativeFoundation/Store",
+  owner: "MobileNativeFoundation",
+  repo: "Store",
 };
 
 export type VersionSwitcherItem = VersionNavItem & {

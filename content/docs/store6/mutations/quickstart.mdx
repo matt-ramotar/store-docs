@@ -15,7 +15,7 @@ release. Read the [stability policy](/docs/store6/stability) before adopting it.
 **Your mutation endpoint must tolerate a re-sent push.** If the server accepts a push but Store fails
 or dies before the local acknowledgement-receipt transaction commits, the last durable phase remains
 `INFLIGHT`. A later explicit drain may replay the same immutable generation and `idempotencyKey`.
-Replay after process death requires journal storage that survives restart; this page's default
+Replay after process death requires journal storage that survives restart. This page's default
 in-memory journal does not. Once `ACKED` is durable, recovery may repeat adoption, invalidation
 effects, and retirement, but never the push. Keep the endpoint idempotent. The
 [server guide](/docs/store6/mutations/server) defines the full acknowledgement contract.

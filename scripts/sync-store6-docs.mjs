@@ -25,6 +25,45 @@ const CURRENT_QUICKSTART_MUTATIONS_BLOCK = [
   "> **The spelling below is the current API surface.** The module is still experimental — shapes",
   "> can change in any release — but the snippet below matches the implementation.",
 ].join("\n");
+const CURRENT_QUICKSTART_EXPERIMENTAL_BLOCK = [
+  "> **Experimental.** `store6-mutations` is a separate artifact and every public symbol is",
+  "> `@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+  ">",
+  CURRENT_QUICKSTART_MUTATIONS_BLOCK,
+].join("\n");
+const CURRENT_QUICKSTART_MUTATIONS_CALLOUT = [
+  '<Callout type="Warning">',
+  "",
+  "**Experimental.** `store6-mutations` is a separate artifact and every public symbol is",
+  "`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+  "",
+  "**The spelling below is the current API surface.** The module is still experimental — shapes",
+  "can change in any release — but the snippet below matches the implementation.",
+  "",
+  "</Callout>",
+].join("\n");
+const QUICKSTART_STATUS_QUOTE = [
+  "> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as",
+  "> it stands on `main`; the install coordinates land with 6.0.0-alpha01.",
+].join("\n");
+const IMPORTANT_DEFAULTS_EQUIVALENCE_QUOTE = [
+  "> **Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting",
+  "> the defaults by hand changes nothing observable: both sides produce the same trace and the same",
+  "> fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that",
+  "> guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle",
+  "> cap. It does not cover telemetry or overlay, which are unset on both sides.",
+].join("\n");
+const IMPORTANT_DEFAULTS_EQUIVALENCE_CALLOUT = [
+  '<Callout type="Info">',
+  "",
+  "**Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting",
+  "the defaults by hand changes nothing observable: both sides produce the same trace and the same",
+  "fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that",
+  "guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle",
+  "cap. It does not cover telemetry or overlay, which are unset on both sides.",
+  "",
+  "</Callout>",
+].join("\n");
 const LEGACY_STABILITY_CRASH_WINDOW_BLOCK = [
   `This is the same conservative crash-window stance already ${exactText("rati", "fied")} for reads: prefer doing work`,
   "twice over losing it.",
@@ -159,11 +198,28 @@ export function rewriteRepoUrl(rawTarget, sourcePath, sourceRootValue, routes) {
 
 export function applyLockedPublicationTransforms(source, sourceRelative) {
   if (sourceRelative === "docs/store6/quickstart.md") {
+    if (!source.includes(CURRENT_QUICKSTART_MUTATIONS_CALLOUT)) {
+      source = applyExactPublicationBlock(
+        source,
+        sourceRelative,
+        LEGACY_QUICKSTART_MUTATIONS_BLOCK,
+        CURRENT_QUICKSTART_MUTATIONS_BLOCK,
+      );
+    }
+    source = applyExactPublicationBlock(
+      source,
+      sourceRelative,
+      CURRENT_QUICKSTART_EXPERIMENTAL_BLOCK,
+      CURRENT_QUICKSTART_MUTATIONS_CALLOUT,
+    );
+    return stripExactBlockIfPresent(source, sourceRelative, QUICKSTART_STATUS_QUOTE);
+  }
+  if (sourceRelative === "docs/store6/important-defaults.md") {
     return applyExactPublicationBlock(
       source,
       sourceRelative,
-      LEGACY_QUICKSTART_MUTATIONS_BLOCK,
-      CURRENT_QUICKSTART_MUTATIONS_BLOCK,
+      IMPORTANT_DEFAULTS_EQUIVALENCE_QUOTE,
+      IMPORTANT_DEFAULTS_EQUIVALENCE_CALLOUT,
     );
   }
   if (sourceRelative === "STABILITY.md") {
@@ -221,6 +277,13 @@ function applyExactPublicationBlock(source, sourceRelative, legacyBlock, current
   const currentCount = source.split(currentBlock).length - 1;
   if (legacyCount === 1 && currentCount === 0) return source.replace(legacyBlock, currentBlock);
   if (legacyCount === 0 && currentCount === 1) return source;
+  throw new Error(`${sourceRelative}: publication transform boundary drift`);
+}
+
+function stripExactBlockIfPresent(source, sourceRelative, block) {
+  const count = source.split(block).length - 1;
+  if (count === 0) return source;
+  if (count === 1) return source.replace(block, "").replace(/\n{3,}/g, "\n\n");
   throw new Error(`${sourceRelative}: publication transform boundary drift`);
 }
 

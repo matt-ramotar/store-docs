@@ -6,27 +6,27 @@ description: "What @ExperimentalStoreApi, @DelicateStoreApi, and @InternalStoreA
 You are probably here because the compiler just refused an API and named an annotation. That is
 the system working as designed. Store 6 marks every API that carries less than the full stable
 guarantee with one of three opt-in markers, and all three are declared at
-`RequiresOptIn.Level.ERROR` — using a marked API without opting in is a compile error, not a
+`RequiresOptIn.Level.ERROR`. Using a marked API without opting in is a compile error, not a
 warning. Nothing in Store is usable by accident.
 
 The markers are real annotations in `store6-core`, in the
 `org.mobilenativefoundation.store6.core` package, and each one's meaning is carried in its own
-KDoc — the sections below restate them and show where you will meet each one. The full surface is
+KDoc. The sections below restate them and show where you will meet each one. The full surface is
 browsable in the [store6-core API reference](/reference/store6-core/index.html).
 
-## `@ExperimentalStoreApi` — may change in any release
+## `@ExperimentalStoreApi`: may change in any release
 
 Marks API that is under active development and **may change or be removed in any release**.
-Experimental API ships in separate artifacts wherever possible; this marker exists for the cases
+Experimental API ships in separate artifacts wherever possible. This marker exists for the cases
 where an experimental member must live beside stable API. The compiler says:
 
 > This Store API is experimental and may change or be removed in any release.
 
 Inside `store6-core` you will hit it in exactly two places:
 
-- **Every type in the seam package** — the interfaces you implement to plug in your own
+- **Every type in the seam package**: the interfaces you implement to plug in your own
   infrastructure. There is one deliberate exception, covered below.
-- **Every expert knob on the builder** — the regular-interface `fetcher(Fetcher)` overload,
+- **Every expert knob on the builder**: the regular-interface `fetcher(Fetcher)` overload,
   `persistence`, `telemetry`, `overlay`, `bookkeeper`, `wallClock`, and `freshnessValidator`.
 
 The zero-config path needs no opt-in. `store { }` itself, the lambda `fetcher { }`,
@@ -46,17 +46,17 @@ val users = store<UserKey, User> {
 
 `@OptIn(...)` at the use site is the form to prefer. Kotlin also accepts a module-wide
 `-opt-in=org.mobilenativefoundation.store6.core.ExperimentalStoreApi` compiler argument, but that
-blankets every file in the module and hides which call sites actually depend on unstable surface —
-keep the acknowledgment next to the code that makes it.
+blankets every file in the module and hides which call sites actually depend on unstable surface.
+Keep the acknowledgment next to the code that makes it.
 
-## `@DelicateStoreApi` — stable but easy to misuse
+## `@DelicateStoreApi`: stable but easy to misuse
 
-Marks API that is **stable but easy to misuse**. This is not a stability warning — the shape will
+Marks API that is **stable but easy to misuse**. This is not a stability warning. The shape will
 not change out from under you. Opting in asserts something about *you*: that you uphold the
 documented contract of the marked declaration. The compiler says:
 
 > This is a delicate Store API. Read the contract documentation of the declaration before opting
-> in; implementations must uphold every documented semantic.
+> in. Implementations must uphold every documented semantic.
 
 The canonical case is implementing `Store` directly instead of building one through the
 `store { }` DSL:
@@ -67,17 +67,17 @@ public interface Store<K : StoreKey, out V : Any>
 ```
 
 `@SubclassOptInRequired` gates only implementation, not use. Calling `stream` or `get` on a store
-you built through the DSL requires no opt-in at all; writing `class MyStore : Store<K, V>` does.
-Implementing the interface yourself is a deliberate act, not a default — and what the act declares
+you built through the DSL requires no opt-in at all. Writing `class MyStore : Store<K, V>` does.
+Implementing the interface yourself is a deliberate act, not a default, and what the act declares
 is that your implementation honors every semantic in the interface's KDoc, including the
 one-failure-channel rule described in [the read contract](/docs/store6/concepts/read-contract).
 
-The seam interfaces you implement carry the same subclass gate — `FreshnessValidator`, for
+The seam interfaces you implement carry the same subclass gate. `FreshnessValidator`, for
 example, is `@ExperimentalStoreApi` on the type and `@SubclassOptInRequired(DelicateStoreApi::class)`
 on implementation. Plugging in your own seam implementation is therefore a double opt-in:
 experimental because the seam is not frozen yet, delicate because the contract is yours to uphold.
 
-## `@InternalStoreApi` — never yours
+## `@InternalStoreApi`: never yours
 
 Marks API that is **internal to the Store libraries**. It may change or disappear without notice
 even in patch releases, and it must never be used outside `org.mobilenativefoundation.store`
@@ -85,8 +85,8 @@ artifacts. The compiler says:
 
 > This API is internal to Store and must not be used outside Store artifacts.
 
-There is no supported reason to opt into this one. If you find yourself wanting an internal type —
-usually to change how fetching, persistence, freshness, or observation works — the supported route
+There is no supported reason to opt into this one. If you find yourself wanting an internal type,
+usually to change how fetching, persistence, freshness, or observation works, the supported route
 is the seam: the extension surface exists precisely so that nobody needs the internals. The
 [extending guide](/docs/store6/guides/extending) covers that seam.
 
@@ -99,26 +99,26 @@ against.
 
 That placement is what scopes the compatibility promise. **SemVer applies to the stable tier.** A
 breaking change to an `@ExperimentalStoreApi` surface in a minor release is not a SemVer
-violation, because that surface never claimed the guarantee — the tier is stated on the tin.
+violation, because that surface never claimed the guarantee. The tier is stated on the tin.
 
 As of 6.0.0-alpha01 the split is:
 
-- **`store6-core`** — stable-track. The API is **not frozen** until the beta01 freeze candidate.
-- **Everything else with an API surface** — `store6-testing`, the `store6-sqldelight`,
-  `store6-room`, and `store6-compose` adapters, `store6-mutations`, and the devtools artifacts —
+- **`store6-core`**: stable-track. The API is **not frozen** until the beta01 freeze candidate.
+- **Everything else with an API surface** (`store6-testing`, the `store6-sqldelight`,
+  `store6-room`, and `store6-compose` adapters, `store6-mutations`, and the devtools artifacts)
   is experimental (`@ExperimentalStoreApi`). `store6-mutations` is an entire experimental
   artifact: every public symbol carries the marker, and its graduation criteria are
   [stated in the stability policy](/docs/store6/stability#mutations). The
   [mutations overview](/docs/store6/mutations) introduces its journalled write model.
 
 The [stability policy](/docs/store6/stability) carries the full artifact table, release targets,
-and the deprecation cycle; it is the synchronized authority and this page deliberately does not
+and the deprecation cycle. It is the synchronized authority and this page deliberately does not
 duplicate it.
 
 ## The seam: freeze candidate, not frozen
 
-Inside `store6-core`, the `org.mobilenativefoundation.store6.core.seam` package — the 13 files you
-implement to plug in your own fetcher, source of truth, bookkeeper, clock, telemetry, or overlay —
+Inside `store6-core`, the `org.mobilenativefoundation.store6.core.seam` package (the 13 files you
+implement to plug in your own fetcher, source of truth, bookkeeper, clock, telemetry, or overlay)
 is a **freeze candidate, not frozen**. Today those types are `@ExperimentalStoreApi`, so
 implementing one is an explicit opt-in. This is the stated exception to the
 separate-artifacts rule above, and it is why the seam sits inside a stable-track artifact rather
@@ -126,7 +126,7 @@ than shipping separately.
 
 The candidate-versus-frozen distinction is deliberate and staged. A real producer has to exercise
 a seam end to end before it is called a candidate. The `Overlay` and `StoreWriteHandle` surfaces
-become frozen only once the ack-path atomicity work and its test matrix are green; if that work
+become frozen only once the ack-path atomicity work and its test matrix are green. If that work
 misses beta01, those two ship `@ExperimentalStoreApi` outside the frozen tier and the rest of core
 freezes on schedule. The freeze timeline lives on the [roadmap](/docs/store6/roadmap).
 
@@ -134,7 +134,7 @@ CI enforces the 13-file list on every pull request, so the seam cannot grow quie
 
 One exception is worth naming: `FetcherResult` is the one seam type that carries no experimental
 marker. The stable `fetcherOfResult` builder member takes a lambda returning `FetcherResult<V>`,
-and a stable signature cannot require an experimental type — so `FetcherResult` is the one seam
+and a stable signature cannot require an experimental type, so `FetcherResult` is the one seam
 type reachable without any opt-in.
 
 ## What opting in commits you to
@@ -144,9 +144,9 @@ accordingly. An experimental surface changing under you in a minor release is th
 accepted, not a bug report.
 
 **`@DelicateStoreApi`**: read the contract KDoc of the declaration you are opting into, and uphold
-every documented semantic — the KDoc on these declarations is the contract, not commentary.
+every documented semantic. The KDoc on these declarations is the contract, not commentary.
 Custom source-of-truth and bookkeeper implementations should run the contract kits that ship in
-`store6-testing` (`SourceOfTruthContractKit`, `BookkeeperContractKit`); the
+`store6-testing` (`SourceOfTruthContractKit`, `BookkeeperContractKit`). The
 [testing guide](/docs/store6/guides/testing) and [extending guide](/docs/store6/guides/extending)
 cover that workflow.
 

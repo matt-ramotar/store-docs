@@ -6,12 +6,12 @@ description: "The six StoreError variants, the StoreException get path, renderin
 Store has one failure vocabulary and two delivery channels. On the observation path, `stream`
 never throws: failures arrive in the flow as `StoreResult.Error` values carrying a structured
 `StoreError`. On the value path, `get` throws a `StoreException` wrapping the same `StoreError`.
-That is the one-failure-channel rule of [the read contract](/docs/store6/concepts/read-contract) —
-`stream` emits and never throws; `get` throws and never emits — and the maintenance operations
+That is the one-failure-channel rule of [the read contract](/docs/store6/concepts/read-contract).
+`stream` emits and never throws. `get` throws and never emits. The maintenance operations
 (`invalidate`, `clear`, and their namespace and global forms) use the same exception for their own
 persistence failures. One vocabulary to learn, delivered the way each call shape demands.
 
-## The six variants — and no seventh
+## The six variants, and no seventh
 
 `StoreError` is a sealed class with exactly six variants:
 
@@ -27,7 +27,7 @@ persistence failures. One vocabulary to learn, delivered the way each call shape
 The variant set is frozen for the 6.x major. New failure kinds map into these categories through
 their structured detail payloads rather than as new subclasses, which is what lets the hierarchy
 bridge to an exhaustive Swift enum. The consequence is worth spelling out: an exhaustive `when`
-over `StoreError` is safe to write — no `else` branch — on Kotlin and on the bridged Swift side.
+over `StoreError` is safe to write, with no `else` branch, on Kotlin and on the bridged Swift side.
 (The [Swift bridge guide](/docs/store6/guides/swift) covers that side.)
 
 ```kotlin
@@ -53,7 +53,7 @@ upgrade will not break them.
 
 One stream nuance to know before writing that collect: an `Error` frame terminates the observed
 flow only in the `Freshness.MustBeFresh` initial cycle. Every other failure leaves the flow live,
-and later results — including a successful refetch after invalidation — keep arriving. See
+and later results, including a successful refetch after invalidation, keep arriving. See
 [Freshness policies](/docs/store6/concepts/freshness).
 
 ## The message contract
@@ -65,10 +65,10 @@ so a message that reaches your logs is designed to be actionable without reprodu
 Two variants carry structure beyond the message:
 
 - `Conflict.serverMeta` is the server-side `StoreMeta` describing the conflicting state, when the
-  server provided one — `null` otherwise.
+  server provided one, and `null` otherwise.
 - `Missing.key` is the `StoreKey` for which no value exists.
 
-Match on those properties rather than parsing message text. The messages are for humans; the
+Match on those properties rather than parsing message text. The messages are for humans. The
 structure is for code.
 
 ## The get path: StoreException
@@ -89,8 +89,8 @@ try {
 ```
 
 The method contract on `get` names the cases in which it throws `StoreException`: fetching or
-source-of-truth access failed; a concurrent `clear` removed the key while its fetch was in flight
-(its waiters observe `StoreError.Missing`); `Freshness.LocalOnly` found no local value; or the
+source-of-truth access failed, a concurrent `clear` removed the key while its fetch was in flight
+(its waiters observe `StoreError.Missing`), `Freshness.LocalOnly` found no local value, or the
 server reported deletion (`StoreError.Missing`).
 
 One boundary deliberately sits outside this vocabulary: calling any operation on a closed store
@@ -102,17 +102,17 @@ categories separate. See [Memory, eviction, and store lifecycle](/docs/store6/co
 
 `StoreError.Missing` has four producers, each pinned by the API contracts:
 
-1. **`Freshness.LocalOnly` with nothing local.** `LocalOnly` never invokes the fetcher; when no
-   value is resident and the source-of-truth probe finds nothing, the read fails `Missing` —
+1. **`Freshness.LocalOnly` with nothing local.** `LocalOnly` never invokes the fetcher. When no
+   value is resident and the source-of-truth probe finds nothing, the read fails `Missing`,
    without a `Loading` frame and without a fetcher call.
 2. **A `clear` racing an in-flight fetch.** After `clear(key)` returns, an in-flight fetch that
-   started before the clear can no longer commit; its waiters observe `Missing`.
+   started before the clear can no longer commit. Its waiters observe `Missing`.
 3. **A fetcher returning `FetcherResult.Deleted`.** A destructive remote deletion: the resident
    value is cleared, its freshness forgotten, streams and waiters receive `Missing`, and the
    deletion does not trigger an automatic refetch.
 4. **An expert validator returning `Skip` with no resident value.** If you install a custom
    `FreshnessValidator` through the seam (an experimental surface), a `FetchPlan.Skip` decision
-   with no resident value yields `Missing` — `get` throws, `stream` emits `Error`.
+   with no resident value yields `Missing`: `get` throws, `stream` emits `Error`.
 
 The first is a policy choice, the second a race resolved conservatively, the third a server
 statement of fact, and the fourth an expert configuration. In every case the meaning is the same:
@@ -122,10 +122,10 @@ no value exists and none could be produced.
 
 `StoreResult.Error` carries a second field, `servedStale`. It is `true` when an invalidated
 resident value was served and its refresh failed under `Freshness.CachedOrFetch` or
-`Freshness.StaleIfError`; it is `false` when no resident was served or the policy withheld it.
+`Freshness.StaleIfError`. It is `false` when no resident was served or the policy withheld it.
 
 `servedStale = true` means your user still has usable content on screen. Render an error
-affordance over that content — a banner, a toast, a retry chip. Do not blank the screen; the
+affordance over that content (a banner, a toast, a retry chip). Do not blank the screen. The
 stale value was served precisely so you would not have to.
 
 ```kotlin
@@ -142,19 +142,19 @@ is StoreResult.Error -> {
 ```
 
 This is the visible half of the stale-while-revalidate asymmetry: after `invalidate`, a failed
-refresh leaves the old content plus an error; after `clear`, it leaves an empty screen plus an
+refresh leaves the old content plus an error. After `clear`, it leaves an empty screen plus an
 error, because you declared the old value unsafe to show. The full decision guide is
 [Invalidate or clear](/docs/store6/invalidate-vs-clear).
 
 ## Retries are yours, deliberately
 
 The engine does not retry your fetcher. Zero retries, zero backoff, at zero configuration. One
-demand cycle invokes the fetcher exactly once; a failure schedules no background retry; a later
+demand cycle invokes the fetcher exactly once. A failure schedules no background retry. A later
 call is new demand, not a continuation of the failed one.
 [Important defaults](/docs/store6/important-defaults) names the conformance test that pins all
 three of those statements.
 
-If you want retries — backoff, jitter, a circuit breaker — build them inside your fetcher, where
+If you want retries (backoff, jitter, a circuit breaker), build them inside your fetcher, where
 you control the policy and can see the transport-level failure that Store deliberately does not
 interpret. From the engine's perspective a retrying fetcher is still exactly one fetch per demand
 cycle, so deduplication and single-flighting are unaffected. The
@@ -165,8 +165,8 @@ cycle, so deduplication and single-flighting are unaffected. The
 <Callout type="Note">
 
 The constructors of `StoreError`, `StoreResult`, and `StoreException` are `internal`. The
-sanctioned construction door is the seam's `StoreResults` object, marked `@ExperimentalStoreApi`;
-for tests, `store6-testing` wraps the same door in `TestStoreResults` with test-friendly
+sanctioned construction door is the seam's `StoreResults` object, marked `@ExperimentalStoreApi`.
+For tests, `store6-testing` wraps the same door in `TestStoreResults` with test-friendly
 defaults. See [API tiers](/docs/store6/concepts/api-tiers) for what the experimental marker
 commits to.
 
@@ -182,8 +182,8 @@ val result = TestStoreResults.error(error, servedStale = false)
 
 Both objects cover every `StoreResult` state and every `StoreError` variant: `loading()`,
 `data(...)`, `revalidated(...)`, `error(...)`, and `exception(...)`, plus one factory per error
-variant — `fetchError`, `persistenceError`, `conversionError`, `freshnessUnsatisfiable`,
-`conflict`, and `missing`. The [testing guide](/docs/store6/guides/testing) shows them at work
+variant (`fetchError`, `persistenceError`, `conversionError`, `freshnessUnsatisfiable`,
+`conflict`, and `missing`). The [testing guide](/docs/store6/guides/testing) shows them at work
 alongside the fakes and contract kits.
 
 ---

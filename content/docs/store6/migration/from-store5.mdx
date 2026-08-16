@@ -22,7 +22,7 @@ persistence, and read sites across the two versions.
 <Callout type="Note">
 
 This migration guide is a launch gate for 6.0.0, not a post-release follow-up. It will continue to
-grow before GA. The Store 6 coordinates described here are not published yet; they begin with
+grow before GA. The Store 6 coordinates described here are not published yet. They begin with
 6.0.0-alpha01.
 
 </Callout>
@@ -41,7 +41,7 @@ is demand for a dedicated path.
 Store 5 models read failures as `StoreReadResponse.Error` values so a flow can keep observing its
 source of truth. Store 6 keeps that split: `stream` emits `StoreResult.Error` and does not throw
 retrieval failures to the collector. A `Freshness.MustBeFresh` failure in the initial cycle emits
-one error and completes the flow; other retrieval failures leave the flow live.
+one error and completes the flow. Other retrieval failures leave the flow live.
 
 The fetcher-to-persistence round trip also remains. When persistence is installed, fetched values
 are written through it and delivered back to collectors through its reader. Store 6 makes the

@@ -9,7 +9,7 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
   </p>
 
   <Callout type="Info">
-    Store 6 is in development targeting 6.0.0-alpha01; nothing is published yet. The `store6-core`
+    Store 6 is in development targeting 6.0.0-alpha01. Nothing is published yet. The `store6-core`
     API is not frozen until the beta01 freeze candidate.
   </Callout>
 
@@ -33,12 +33,12 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
 
 ## Why Store 6?
 
-Data that lives in more than one place — a network, a local database, and memory — has to be
+Data that lives in more than one place (a network, a local database, and memory) has to be
 coordinated: which copy is fresh, which boundary failed, and what a screen should render while a
 fetch is in flight. Store 6 standardizes that coordination behind one typed read contract, so
 application code stops re-implementing it around every endpoint.
 
-You describe a key and a fetcher; Store handles single-flighting concurrent demand, staleness,
+You describe a key and a fetcher. Store handles single-flighting concurrent demand, staleness,
 invalidation, and bounded memory. Every zero-config behavior is named and covered by a conformance
 test. The `store6-*` coordinates publish side by side with Store 5 for the whole 6.x major, so you
 can migrate one screen at a time.
