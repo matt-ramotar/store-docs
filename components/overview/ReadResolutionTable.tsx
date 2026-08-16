@@ -1,6 +1,8 @@
-import { Chip, Link, Table } from "@heroui/react";
+import { Chip } from "@heroui/react/chip";
+import { Link } from "@heroui/react/link";
+import { Table } from "@heroui/react/table";
 
-import { Callout } from "@/components/docs/MigratedWidgets";
+import { Callout } from "@/components/docs/Callout";
 
 const origins = [
   {

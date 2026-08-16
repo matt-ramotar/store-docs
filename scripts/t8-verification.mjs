@@ -30,6 +30,10 @@ const FIXED_EXTRA_SOURCES = Object.freeze([
   { path: "/docs", source: "content/docs/index.mdx" },
   { path: "/docs/store6/overview", source: "content/docs/store6/overview.mdx" },
   {
+    path: "/docs/store6/paging",
+    source: "content/docs/store6/paging.mdx",
+  },
+  {
     path: "/docs/store6/concepts/api-tiers",
     source: "content/docs/store6/concepts/api-tiers.mdx",
   },

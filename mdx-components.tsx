@@ -1,7 +1,9 @@
 import type { MDXComponents } from "mdx/types";
 
-import { Button, Link, Typography } from "@heroui/react";
-import { Segment } from "@heroui-pro/react";
+import { Button } from "@heroui/react/button";
+import { Link } from "@heroui/react/link";
+import { Segment } from "@heroui-pro/react/segment";
+import { MdxH2, MdxH3, MdxH4, MdxH5, MdxH6 } from "@/components/docs/MdxHeroPrimitives";
 
 import { ReadResolutionTable } from "@/components/overview/ReadResolutionTable";
 import { StartHereList } from "@/components/overview/StartHereList";
@@ -12,15 +14,17 @@ import {
   Danger,
   Info,
   Note,
+  Tip,
+  Warning,
+} from "@/components/docs/Callout";
+import {
   ParamField,
   ParamList,
   StepItem,
   StepsGroup,
   TabGroup,
   TabPanel,
-  Tip,
   UnavailableDestination,
-  Warning,
 } from "@/components/docs/MigratedWidgets";
 import {
   Accordion,
@@ -117,41 +121,11 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
       />
     ),
     em: EmWithVerifiedCommit,
-    h2: ({ className, ...props }) => (
-      <Typography.Heading
-        {...props}
-        className={mergeClassName("mt-12 mb-4 scroll-mt-24 text-foreground", className)}
-        level={2}
-      />
-    ),
-    h3: ({ className, ...props }) => (
-      <Typography.Heading
-        {...props}
-        className={mergeClassName("mt-10 mb-3 scroll-mt-24 text-foreground", className)}
-        level={3}
-      />
-    ),
-    h4: ({ className, ...props }) => (
-      <Typography.Heading
-        {...props}
-        className={mergeClassName("mt-8 mb-3 scroll-mt-24 text-foreground", className)}
-        level={4}
-      />
-    ),
-    h5: ({ className, ...props }) => (
-      <Typography.Heading
-        {...props}
-        className={mergeClassName("mt-8 mb-2 scroll-mt-24 text-foreground", className)}
-        level={5}
-      />
-    ),
-    h6: ({ className, ...props }) => (
-      <Typography.Heading
-        {...props}
-        className={mergeClassName("mt-6 mb-2 scroll-mt-24 text-foreground", className)}
-        level={6}
-      />
-    ),
+    h2: MdxH2,
+    h3: MdxH3,
+    h4: MdxH4,
+    h5: MdxH5,
+    h6: MdxH6,
     hr: ({ className, ...props }) => (
       <hr {...props} className={mergeClassName("my-10 h-px border-0 bg-separator", className)} />
     ),

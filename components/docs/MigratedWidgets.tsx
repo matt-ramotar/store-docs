@@ -1,4 +1,3 @@
-import { Alert } from "@heroui/react";
 import {
   Children,
   cloneElement,
@@ -9,29 +8,9 @@ import {
 
 import { Step, Tab, Tabs } from "@/components/docs/mintlify-runtime";
 
+export { Callout, Check, Danger, Info, Note, Tip, Warning } from "@/components/docs/Callout";
+
 type ChildrenProps = { children?: ReactNode };
-
-type CalloutType = "Info" | "Note" | "Tip" | "Warning" | "Check" | "Danger";
-type CalloutVariant = "info" | "warning" | "note" | "tip" | "check" | "danger";
-
-const calloutVariants: Record<CalloutType, CalloutVariant> = {
-  Check: "check",
-  Danger: "danger",
-  Info: "info",
-  Note: "note",
-  Tip: "tip",
-  Warning: "warning",
-};
-
-/** Maps callout variants onto the HeroUI Alert status palette. */
-const calloutStatuses: Record<CalloutVariant, "accent" | "danger" | "default" | "success" | "warning"> = {
-  check: "success",
-  danger: "danger",
-  info: "accent",
-  note: "default",
-  tip: "success",
-  warning: "warning",
-};
 
 export function StepsGroup({ children, nested = "false" }: ChildrenProps & { nested?: string }) {
   const items = Children.toArray(children).filter(isValidElement) as ReactElement<StepItemProps>[];
@@ -58,6 +37,14 @@ type StepItemProps = ChildrenProps & {
 };
 
 export function StepItem({ children, isLast = false, label, title }: StepItemProps) {
+  const childArray = Children.toArray(children);
+  const nestedGroups = childArray.filter(
+    (child) => isValidElement(child) && (child.props as { nested?: string }).nested === "true",
+  );
+  const body = childArray.filter(
+    (child) => !(isValidElement(child) && (child.props as { nested?: string }).nested === "true"),
+  );
+
   return (
     <li className="list-none" data-step-item="" data-step-label={label} role="listitem">
       <div className="sr-only" data-step-title="">
@@ -66,8 +53,9 @@ export function StepItem({ children, isLast = false, label, title }: StepItemPro
       </div>
       <div data-step-body="">
         <Step isLast={isLast} title={title} {...stepMarker(label)}>
-          {children}
+          {body}
         </Step>
+        {nestedGroups}
       </div>
     </li>
   );
@@ -106,57 +94,6 @@ export function TabPanel({ children, id, label, language }: TabPanelProps) {
     </section>
   );
 }
-
-export function Callout({
-  children,
-  title,
-  type = "Note",
-  variant,
-}: ChildrenProps & {
-  title?: string;
-  type?: CalloutType;
-  variant?: CalloutVariant;
-}) {
-  const resolved = variant ?? calloutVariants[type];
-
-  return (
-    <aside aria-label={`${type} callout`} className="my-6" data-callout-type={resolved} role="note">
-      <p className="sr-only" data-callout-label="">
-        {type}
-      </p>
-      <div data-callout-body="">
-        <Alert status={calloutStatuses[resolved]}>
-          <Alert.Indicator />
-          <Alert.Content>
-            {title ? <Alert.Title>{title}</Alert.Title> : null}
-            {/* Alert.Description renders a span; MDX bodies are block content, so
-                reuse the slot class on a div instead. */}
-            <div className="alert__description w-full min-w-0 [&>:first-child]:mt-0 [&>:last-child]:mb-0">
-              {children}
-            </div>
-          </Alert.Content>
-        </Alert>
-      </div>
-    </aside>
-  );
-}
-
-function namedCallout(type: CalloutType) {
-  return function NamedCallout({ children, title }: ChildrenProps & { title?: string }) {
-    return (
-      <Callout title={title} type={type}>
-        {children}
-      </Callout>
-    );
-  };
-}
-
-export const Check = namedCallout("Check");
-export const Danger = namedCallout("Danger");
-export const Info = namedCallout("Info");
-export const Note = namedCallout("Note");
-export const Tip = namedCallout("Tip");
-export const Warning = namedCallout("Warning");
 
 export function ParamList({ children }: ChildrenProps) {
   return (

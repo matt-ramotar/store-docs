@@ -1,0 +1,191 @@
+---
+title: "Paging: androidx PagingSource and RemoteMediator"
+---
+
+`store6-paging-androidx` is the androidx paging adapter for Store 6. It maps one Store key per
+page onto `PagingSource` or `RemoteMediator` loads. Everything here is `@ExperimentalStoreApi`.
+The Store seams it consumes are freeze candidates, not frozen — see
+[STABILITY.md](/docs/store6/stability).
+
+The artifact ships the canonical Store 6 target set minus `iosX64`. androidx paging dropped Intel
+targets at 3.4.0-rc01; every other canonical Store 6 target is published upstream.
+
+<Callout type="Note">
+
+`store6-paging-androidx` joins the Store 6 line in the first release it is green for. Until then
+the coordinates below are snapshots. See the [stability policy](/docs/store6/stability) for how
+promised artifacts enter a train.
+
+</Callout>
+
+## Install
+
+Until the snapshot is published remotely, publish `store6-core` and `store6-paging-androidx` to
+Maven Local:
+
+```shell
+./gradlew :store6-core:publishToMavenLocal :store6-paging-androidx:publishToMavenLocal
+```
+
+```kotlin
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.mobilenativefoundation.store:store6-paging-androidx:6.0.0-SNAPSHOT")
+}
+```
+
+The adapter depends on `androidx.paging:paging-common`. Types from that artifact
+(`PagingSource`, `LoadParams`, `LoadResult`, `PagingState`, `InvalidatingPagingSourceFactory`,
+`RemoteMediator`) appear in public signatures.
+
+## Two interop paths
+
+There are two ways to drive androidx paging from a Store. They do not compose; pick one.
+
+| Path | What it is | How it reads Store |
+|---|---|---|
+| `Store.pagingSourceFactory { }` | An `InvalidatingPagingSourceFactory` over `Store.stream` | Each load consumes at most one terminal stream outcome. Overlay-projected values remain visible because loads never call `Store.get`. |
+| `StoreRemoteMediator` | A `RemoteMediator` that drives freshness from paging boundary signals | Refresh invalidates the initial page key, then `Store.get`. Append and prepend `get` under `Freshness.CachedOrFetch`. |
+
+`pagingSourceFactory` is the path that keeps a generation's stream collectors alive so later
+Store writes invalidate the pager. `StoreRemoteMediator` is the path that treats paging as a
+boundary that asks Store for a value and lets your local `PagingSource` own the item list.
+
+## `pagingSourceFactory`: builder doors
+
+`Store.pagingSourceFactory { }` is an extension on `Store<K, V>`. The builder has three required
+doors. Omitting any of them throws `IllegalStateException` at factory construction:
+
+- `pageKey { paginationKey, loadSize -> K }` maps a pagination key and load size to the Store
+  key for that page. A `null` pagination key is the initial refresh. Page parameters belong in
+  the returned key's canonical ID.
+- `items { value -> List<Item> }` extracts the page's items from the Store value.
+- `nextKey { key, value -> PK? }` extracts the next pagination key, or `null` at the terminal
+  edge.
+
+Optional doors and their defaults:
+
+- `prevKey { key, value -> PK? }` — previous pagination key. The default returns `null`
+  (forward-only paging).
+- `freshness { loadType -> Freshness }` — Store freshness for each `LoadType`. The default is
+  `Freshness.CachedOrFetch` for every load type.
+- `refreshKey { state -> PK? }` — refresh key from the current `PagingState`. By default the
+  page closest to the anchor contributes its previous key when present and its next key
+  otherwise. A state without an anchor or closest page returns `null`.
+- `itemsBefore` / `itemsAfter` — unloaded item counts. Both default to
+  `PagingSource.LoadResult.Page.COUNT_UNDEFINED`.
+
+The compiled sample wires a `Pager` like this:
+
+```kotlin
+Pager(
+    PagingConfig(
+        pageSize = PAGE_SIZE,
+        initialLoadSize = PAGE_SIZE,
+        enablePlaceholders = false,
+    ),
+    pagingSourceFactory =
+        pagingSourceFactory {
+            pageKey { paginationKey, loadSize ->
+                PageKey(index = paginationKey ?: 0, limit = loadSize)
+            }
+            items { value -> value.items }
+            nextKey { _, value -> value.next }
+            prevKey { _, value -> value.prev }
+            freshness { loadType ->
+                when (loadType) {
+                    LoadType.APPEND -> appendFreshness
+                    LoadType.PREPEND,
+                    LoadType.REFRESH,
+                    -> Freshness.CachedOrFetch
+                }
+            }
+        },
+)
+```
+
+`PageKey` is a `StoreKey` whose canonical ID includes both the page index and the load size, so
+a refresh that asks for a different `initialLoadSize` is a different Store identity than an
+append of `pageSize`.
+
+## Invalidation and lifecycle
+
+Each load consumes at most one terminal outcome from `Store.stream`. After a page is ready, that
+generation keeps the same stream collection active. Any later `Data` frame — including an equal
+or stale rewrite — and any absent-value `Loading` transition invalidates the paging source.
+`Revalidated` and `Error` frames do not.
+
+Calling `invalidate()` on the returned factory invalidates every paging source previously
+created by that factory. When the pager is no longer used, call `invalidate()` on the factory or
+close the Store. Either releases the generation's active stream collectors.
+
+`Store.invalidate(key)` on a page that a generation is watching drives that invalidation. A
+namespace watermark covers pages that generation has never fetched: `invalidateNamespace` marks
+those keys stale, so the next append `get`s them under the configured freshness instead of
+serving a never-written local row.
+
+Jumping is not supported (`PagingSource.jumpingSupported` is `false`).
+
+## `StoreRemoteMediator`
+
+`StoreRemoteMediator` is an abstract `RemoteMediator` that you subclass. Three members describe
+the page space; one selects refresh freshness:
+
+- `pageKey(paginationKey, loadSize)` — required. A `null` pagination key is the initial
+  refresh. Refresh receives `PagingConfig.initialLoadSize`; append and prepend receive
+  `PagingConfig.pageSize`.
+- `nextKey(key, value)` — required. `null` is the terminal edge.
+- `prevKey(key, value)` — optional. The default returns `null` for forward-only paging.
+- `refreshFreshness()` — optional. The default is `Freshness.MustBeFresh`.
+
+Refresh loads invalidate the mapped initial page key, then `Store.get` it under
+`refreshFreshness()`. Append and prepend `get` the boundary page under
+`Freshness.CachedOrFetch`. A `null` directional key ends pagination without reading the Store.
+
+Refresh invalidates only that mapped initial page key. Call `Store.invalidateNamespace` before
+triggering a paging refresh when the whole query must be invalidated. Typed `StoreException`
+failures become `RemoteMediator.MediatorResult.Error`.
+
+This path uses `Store.get`, so overlay-projected pending writes are not visible to the
+mediator. The `pagingSourceFactory` path is the one that sees `Origin.OVERLAY` frames, because
+it collects `stream`.
+
+## Freshness defaults
+
+The two paths default differently on purpose:
+
+- `pagingSourceFactory` defaults every `LoadType` to `Freshness.CachedOrFetch`. A cold pager
+  serves resident pages without refetching, and a later `Data` frame still invalidates the
+  generation so the pager reloads.
+- `StoreRemoteMediator` defaults refresh to `Freshness.MustBeFresh` and uses
+  `Freshness.CachedOrFetch` for append and prepend. Refresh is a network-confirming boundary;
+  scrolling onto an already-fetched neighbor is not.
+
+Override `freshness { }` on the factory, or `refreshFreshness()` on the mediator, when a screen
+needs a different split. The [freshness contract](/docs/store6/concepts/freshness) is unchanged:
+these adapters select a `Freshness` per load; they do not add a paging-specific policy.
+
+## Sample
+
+`./gradlew :store6-paging-androidx-sample:run` is a headless JVM sample. It asserts four scenes
+over an in-process backend: cold page 0 plus append of page 1, per-key invalidation regenerating
+page 0, a namespace watermark that forces a never-fetched page 2 to fetch rather than serve an
+older local row, and a `MutationStore` pager that observes an `Origin.OVERLAY` frame then SOT
+adoption with no ack-path fetch.
+
+## Where next
+
+- [Fetcher guide](/docs/store6/guides/fetchers) — the network side of each page load.
+- [Persistence guide](/docs/store6/guides/persistence) — the source-of-truth contract page
+  values round-trip through.
+- [Room adapter](/docs/store6/room) — persist pages in an existing Room database.
+- [SQLDelight adapter](/docs/store6/sqldelight) — persist pages with generated queries and one
+  synchronous driver.
+
+---
+
+*Last verified: 2026-08-16 · `main` @ `5a8c956b`, pre-6.0.0-alpha01*

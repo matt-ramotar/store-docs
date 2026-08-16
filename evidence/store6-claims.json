@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "c67a94ed30460a35161c2cbc3e725f127caf055e",
+  "revision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
   "claims": [
     {
       "id": "home/001",
@@ -122,7 +122,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 106,
             "end": 106
@@ -139,7 +139,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 109,
             "end": 109
@@ -173,7 +173,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 47,
             "end": 47
@@ -190,7 +190,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 52,
             "end": 52
@@ -207,7 +207,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
+          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
           "lines": {
             "start": 24,
             "end": 24
@@ -260,7 +260,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 76,
             "end": 76
@@ -294,7 +294,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
+          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
           "lines": {
             "start": 15,
             "end": 15
@@ -362,7 +362,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 72,
             "end": 72
@@ -447,7 +447,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 80,
             "end": 80
@@ -515,7 +515,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 28,
             "end": 28
@@ -549,7 +549,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
+          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
           "lines": {
             "start": 20,
             "end": 20
@@ -566,7 +566,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 32,
             "end": 32
@@ -617,7 +617,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 12,
             "end": 12
@@ -668,7 +668,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 98,
             "end": 98
@@ -685,7 +685,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 129,
             "end": 129
@@ -702,7 +702,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "a64ce5eb2bdcf1eba933237b4859008ce5b6c7563d43dd1b03bbf355dd2bc45a",
+          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
           "lines": {
             "start": 16,
             "end": 16
@@ -781,16 +781,16 @@
     {
       "id": "tokens-demo/004",
       "page": "/tokens-demo",
-      "claim": "/tokens-demo is one of 32 fixed extra routes in the contract-locked route census; the 11 sync-owned Store6 routes are derived separately from the source lock.",
+      "claim": "/tokens-demo is one of 33 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "0cf2ea66b39d351f607491a057865afe91b53352b83c55426e130b4931f2db3f",
+          "sha256": "b3a24c49faf5a9637d29e54819275d7f4a66cd13c0b090c2e272705ad67c0e0d",
           "lines": {
-            "start": 24,
-            "end": 141
+            "start": 20,
+            "end": 149
           }
         }
       ]
@@ -804,7 +804,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
+          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
           "lines": {
             "start": 14,
             "end": 14
@@ -889,7 +889,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 47,
             "end": 47
@@ -906,7 +906,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 52,
             "end": 52
@@ -957,7 +957,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 54,
             "end": 55
@@ -1025,7 +1025,7 @@
         {
           "repository": "store6",
           "path": ".github/workflows/store6.yml",
-          "sha256": "2bbf1666e70395310f26641b589999db2567756c6ce9ab62478aac7c05110b53",
+          "sha256": "9aa6f3b3e88bf65424f8d10a9366e92701fb586108af5425cc90d5edca6a4bb5",
           "lines": {
             "start": 105,
             "end": 106
@@ -1076,7 +1076,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 189,
             "end": 189
@@ -1392,7 +1392,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 189,
             "end": 189
@@ -1664,7 +1664,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 21,
             "end": 21
@@ -1766,7 +1766,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 16,
             "end": 16
@@ -2106,7 +2106,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 36,
             "end": 36
@@ -2123,7 +2123,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 57,
             "end": 57
@@ -2548,7 +2548,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 50,
             "end": 54
@@ -2667,7 +2667,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 45,
             "end": 49
@@ -2773,6 +2773,471 @@
           "lines": {
             "start": 11,
             "end": 13
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/001",
+      "page": "/docs/store6/paging",
+      "claim": "There are two interop paths: pagingSourceFactory builds an InvalidatingPagingSourceFactory over Store.stream, and StoreRemoteMediator drives freshness from Paging boundary signals through Store.get.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/PagingSourceFactory.kt",
+          "sha256": "2916e046973b609dfa989a6a69d424dbae54600c7c45d7a2b61f427f60bf932e",
+          "lines": {
+            "start": 8,
+            "end": 18
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/StoreRemoteMediator.kt",
+          "sha256": "ce814986ce86f7eb8dc972cd137e4d456ae9d7aa2ac3b6d3b3950efe8ee71f9e",
+          "lines": {
+            "start": 13,
+            "end": 21
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/002",
+      "page": "/docs/store6/paging",
+      "claim": "pagingSourceFactory requires three builder doors — pageKey, items, and nextKey — and throws IllegalStateException if any is omitted; prevKey defaults to null (forward-only) and freshness defaults to CachedOrFetch for every LoadType.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/StorePagingBuilder.kt",
+          "sha256": "1a743776d990a2266b8c8d3426b231735bb7ba05e6c1c6421c223c435499f152",
+          "lines": {
+            "start": 30,
+            "end": 63
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/StorePagingBuilder.kt",
+          "sha256": "1a743776d990a2266b8c8d3426b231735bb7ba05e6c1c6421c223c435499f152",
+          "lines": {
+            "start": 91,
+            "end": 101
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/003",
+      "page": "/docs/store6/paging",
+      "claim": "Each pagingSourceFactory load consumes at most one terminal Store.stream outcome; later Data frames (including equal or stale) and absent-value Loading transitions invalidate the generation, while Revalidated and Error frames do not, and loads never call Store.get so overlay-projected values remain visible.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/PagingSourceFactory.kt",
+          "sha256": "2916e046973b609dfa989a6a69d424dbae54600c7c45d7a2b61f427f60bf932e",
+          "lines": {
+            "start": 11,
+            "end": 18
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/GenerationWatcher.kt",
+          "sha256": "5e79015b21183592a473ce9be5dc8a3f4ad17d4ca9ffe178a74f656a17c93e33",
+          "lines": {
+            "start": 104,
+            "end": 111
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/004",
+      "page": "/docs/store6/paging",
+      "claim": "Calling invalidate() on the returned factory invalidates every paging source previously created by that factory; when the pager is no longer used, factory.invalidate() or closing the Store releases the generation's active stream collectors.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/PagingSourceFactory.kt",
+          "sha256": "2916e046973b609dfa989a6a69d424dbae54600c7c45d7a2b61f427f60bf932e",
+          "lines": {
+            "start": 15,
+            "end": 18
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/005",
+      "page": "/docs/store6/paging",
+      "claim": "StoreRemoteMediator refresh invalidates the mapped initial page key then Store.get under refreshFreshness() (default MustBeFresh); append and prepend get under CachedOrFetch; a null directional key ends pagination without reading the Store; refresh invalidates only that initial page key.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/StoreRemoteMediator.kt",
+          "sha256": "ce814986ce86f7eb8dc972cd137e4d456ae9d7aa2ac3b6d3b3950efe8ee71f9e",
+          "lines": {
+            "start": 13,
+            "end": 21
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/src/commonMain/kotlin/org/mobilenativefoundation/store6/paging/StoreRemoteMediator.kt",
+          "sha256": "ce814986ce86f7eb8dc972cd137e4d456ae9d7aa2ac3b6d3b3950efe8ee71f9e",
+          "lines": {
+            "start": 49,
+            "end": 84
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/006",
+      "page": "/docs/store6/paging",
+      "claim": "store6-paging-androidx ships the canonical Store 6 12-target set minus iosX64, matching the androidx.paging:paging-common 3.5.1 subset after Intel targets were dropped at 3.4.0-rc01.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-paging-androidx/build.gradle.kts",
+          "sha256": "282a7f6e92d18a0bef6c636cbf8003e47d34e601e6f78bed9938cdd2b3cc007b",
+          "lines": {
+            "start": 22,
+            "end": 42
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/paging/007",
+      "page": "/docs/store6/paging",
+      "claim": "store6-paging-androidx is promised and joins the Store 6 line in the first release it is green for.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "STABILITY.md",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
+          "lines": {
+            "start": 70,
+            "end": 71
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/001",
+      "page": "/docs/store6/realtime",
+      "claim": "store6-realtime maps application-owned realtime frames onto Store operations; the application supplies a Flow of RealtimeMessage (or calls apply per frame), and the artifact does not open a WebSocket or SSE connection or choose a wire format.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 3,
+            "end": 5
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-realtime/src/commonMain/kotlin/org/mobilenativefoundation/store6/realtime/RealtimeMessage.kt",
+          "sha256": "f8cf4d41ff5911794a99ae93a3d53e75eb87d551046c014dbcdd12d7578b6faa",
+          "lines": {
+            "start": 7,
+            "end": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/002",
+      "page": "/docs/store6/realtime",
+      "claim": "realtimeBinding requires store.runtime() and throws IllegalArgumentException with a message naming FakeStore, decorators, and MutationStore when it is null; invalidatingRealtimeBinding works on any Store, turning Upsert into Store.invalidate(key) and ignoring Unchanged.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/src/commonMain/kotlin/org/mobilenativefoundation/store6/realtime/RealtimeBindings.kt",
+          "sha256": "8cfb873822e145252f231a8db2974d121c37b0ac1621768caee744f977c68c73",
+          "lines": {
+            "start": 8,
+            "end": 38
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 33,
+            "end": 44
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/003",
+      "page": "/docs/store6/realtime",
+      "claim": "The message vocabulary is Upsert, Unchanged, Changed, ChangedNamespace, ChangedAll, and Deleted; adopting bindings commit Upsert through StoreWriteHandle.apply then confirmFresh, while invalidating bindings map Upsert to Store.invalidate and ignore Unchanged.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 51,
+            "end": 58
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-realtime/src/commonMain/kotlin/org/mobilenativefoundation/store6/realtime/RealtimeBinding.kt",
+          "sha256": "7194672031905b447a38dcb7b5a3e17ac71112b290a5a2a92da2dd395b0467f3",
+          "lines": {
+            "start": 46,
+            "end": 56
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/004",
+      "page": "/docs/store6/realtime",
+      "claim": "The module uses Store6's full 12-target convention: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 27,
+            "end": 29
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/005",
+      "page": "/docs/store6/realtime",
+      "claim": "MutationStore withholds store.runtime() so realtimeBinding cannot adopt; use invalidatingRealtimeBinding, and on reconnect still call MutationStore.drain() / drain(key) as a separate pass.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 92,
+            "end": 97
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/006",
+      "page": "/docs/store6/realtime",
+      "claim": "An adopting Upsert pair is not atomic: cancelling apply after StoreWriteHandle.apply and before confirmFresh can leave the value committed without bookkeeping success; a fetch already in flight is not cancelled.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-realtime/README.md",
+          "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+          "lines": {
+            "start": 87,
+            "end": 90
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-realtime/src/commonMain/kotlin/org/mobilenativefoundation/store6/realtime/RealtimeBinding.kt",
+          "sha256": "7194672031905b447a38dcb7b5a3e17ac71112b290a5a2a92da2dd395b0467f3",
+          "lines": {
+            "start": 20,
+            "end": 24
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/realtime/007",
+      "page": "/docs/store6/realtime",
+      "claim": "store6-realtime/README.md is pinned in the source lock and generates content/docs/store6/realtime.mdx, so Realtime is sync-owned.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store-docs",
+          "path": "evidence/T4-store6-source-lock.json",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "lines": {
+            "start": 55,
+            "end": 59
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/001",
+      "page": "/docs/store6/graphql",
+      "claim": "A store built with store6-graphql is a document cache: each execution of one GraphQL operation, identified by operation name plus canonical variables, caches one decoded response value, and everything in the module is @ExperimentalStoreApi.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 3,
+            "end": 6
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-graphql/src/commonMain/kotlin/org/mobilenativefoundation/store6/graphql/GraphQlOperationKey.kt",
+          "sha256": "c3a4a32754b04c49762dc9f53d242e41bb228467c64e3f45b9f5a55c8e7a19b6",
+          "lines": {
+            "start": 7,
+            "end": 14
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/002",
+      "page": "/docs/store6/graphql",
+      "claim": "The module has no dependency beyond store6-core; the caller implements GraphQlExecutor on their HTTP client, and the kit never parses GraphQL documents and never normalizes responses into entities.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 8,
+            "end": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/003",
+      "page": "/docs/store6/graphql",
+      "claim": "GraphQlOperationKey.canonicalId() is <operationName>(<canonical variables>) with JSON-shaped rendering, UTF-16-sorted object keys, significant list order, and explicit null distinct from an absent variable; FloatValue rendering differs across Kotlin targets.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/src/commonMain/kotlin/org/mobilenativefoundation/store6/graphql/GraphQlOperationKey.kt",
+          "sha256": "c3a4a32754b04c49762dc9f53d242e41bb228467c64e3f45b9f5a55c8e7a19b6",
+          "lines": {
+            "start": 34,
+            "end": 45
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 77,
+            "end": 86
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/004",
+      "page": "/docs/store6/graphql",
+      "claim": "GraphQlPartialDataPolicy.FailOnErrors is the default so a cached value never contains error-substituted nulls; AdoptPartialData keeps partial data as Success and the store caches that partial value as if it were complete.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/src/commonMain/kotlin/org/mobilenativefoundation/store6/graphql/GraphQlPartialDataPolicy.kt",
+          "sha256": "3bfc42d0ef793559667899517cff30de31ab52e04cdaaabfedb1df143ba978c2",
+          "lines": {
+            "start": 11,
+            "end": 24
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 105,
+            "end": 107
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/005",
+      "page": "/docs/store6/graphql",
+      "claim": "The module ships the same Kotlin Multiplatform target set as store6-core.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 8,
+            "end": 9
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/006",
+      "page": "/docs/store6/graphql",
+      "claim": "A GraphQlOperationKey whose operationName is not the fetcher's operation fails with FetcherResult.Error naming both operations, without executing.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store6",
+          "path": "store6-graphql/src/commonMain/kotlin/org/mobilenativefoundation/store6/graphql/GraphQlFetcher.kt",
+          "sha256": "2f385226a69c3cf7b343ede62313b5f59d32b0cd7f2d4afb03c1cd52d1789430",
+          "lines": {
+            "start": 65,
+            "end": 73
+          }
+        },
+        {
+          "repository": "store6",
+          "path": "store6-graphql/README.md",
+          "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+          "lines": {
+            "start": 103,
+            "end": 103
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/graphql/007",
+      "page": "/docs/store6/graphql",
+      "claim": "store6-graphql/README.md is pinned in the source lock and generates content/docs/store6/graphql.mdx, so GraphQL is sync-owned.",
+      "verdict": "UNSAMPLED",
+      "anchors": [
+        {
+          "repository": "store-docs",
+          "path": "evidence/T4-store6-source-lock.json",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "lines": {
+            "start": 60,
+            "end": 64
           }
         }
       ]
@@ -3398,7 +3863,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 123,
             "end": 126
@@ -3449,7 +3914,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 52,
             "end": 52
@@ -3466,7 +3931,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 144,
             "end": 144
@@ -3824,7 +4289,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 186,
             "end": 186
@@ -3841,7 +4306,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 189,
             "end": 189
@@ -3858,7 +4323,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 195,
             "end": 195
@@ -4460,7 +4925,7 @@
         {
           "repository": "store6",
           "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/MutationAliasFacadeTest.kt",
-          "sha256": "b1dd05f79d94d9e078d8672cf6798d1168836e16e76da3a542ec19d2779d4103",
+          "sha256": "3a81f5f7f3d5b9f6d5fcb49ee486629cd3c033b4cf8e9c225ad74bc658296d0f",
           "lines": {
             "start": 111,
             "end": 144
@@ -5058,7 +5523,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 106,
             "end": 107
@@ -5177,7 +5642,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 186,
             "end": 198
@@ -5229,7 +5694,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 57,
             "end": 58
@@ -5400,7 +5865,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 109,
             "end": 110
@@ -5502,7 +5967,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 70,
             "end": 71
@@ -5519,7 +5984,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 28,
             "end": 28
@@ -5536,7 +6001,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 47,
             "end": 47
@@ -5553,7 +6018,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 80,
             "end": 80
@@ -5570,7 +6035,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 106,
             "end": 106
@@ -5622,7 +6087,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 189,
             "end": 189
@@ -5639,7 +6104,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 195,
             "end": 195
@@ -5656,7 +6121,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 201,
             "end": 201
@@ -5871,13 +6336,13 @@
     {
       "id": "docs/store6/contributing/005",
       "page": "/docs/store6/contributing",
-      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision c67a94ed with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
+      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision 5a8c956b with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 3,
             "end": 3
@@ -5886,7 +6351,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "3988bbd566b5f3e80bce6e8b2e3bc9650447cb023636bb77a06c8bb95453a5e8",
+          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
           "lines": {
             "start": 36,
             "end": 38
@@ -5916,7 +6381,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 57,
             "end": 57
@@ -6018,7 +6483,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 119,
             "end": 119
@@ -6035,7 +6500,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 52,
             "end": 52
@@ -6151,7 +6616,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 145,
             "end": 145
@@ -6219,7 +6684,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 106,
             "end": 106
@@ -7258,7 +7723,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 189,
             "end": 189
@@ -7598,7 +8063,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 106,
             "end": 106
@@ -7615,7 +8080,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 109,
             "end": 109
@@ -7694,16 +8159,16 @@
     {
       "id": "docs/use-cases/store5/pagination-and-infinite-scrolling/002",
       "page": "/docs/use-cases/store5/pagination-and-infinite-scrolling",
-      "claim": "A Store 6 paging artifact (store6-paging-androidx) is promised but not in the alpha01 line, tracking to 6.0.0.",
+      "claim": "A Store 6 paging artifact (store6-paging-androidx) is promised and joins the line in the first release it is green for.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 70,
-            "end": 70
+            "end": 71
           }
         }
       ]
@@ -7853,7 +8318,7 @@
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+          "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
           "lines": {
             "start": 48,
             "end": 48

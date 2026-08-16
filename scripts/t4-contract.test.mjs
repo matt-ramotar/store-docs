@@ -39,6 +39,8 @@ const STORE6_TARGETS = [
   "content/docs/store6/compose.mdx",
   "content/docs/store6/sqldelight.mdx",
   "content/docs/store6/room.mdx",
+  "content/docs/store6/realtime.mdx",
+  "content/docs/store6/graphql.mdx",
 ];
 const T3_OVERVIEW_SHA256 = "318c2bd1c6ae33bc642694c36763f1ad491a0e83ca9816231df4f44e366ca2d2";
 
@@ -1421,6 +1423,8 @@ function compiledDirectWidgetBody($, item) {
   body.find("[data-component-part='step-title']").remove();
   body.find("[data-component-part='step-number']").remove();
   body.find("[data-component-part='step-line']").remove();
+  body.find("[data-component-part='tabs-list']").remove();
+  body.find("[role='tablist']").remove();
   return normalizeWidgetBody(body.text());
 }
 

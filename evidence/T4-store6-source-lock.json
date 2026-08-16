@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "c67a94ed30460a35161c2cbc3e725f127caf055e",
+  "revision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
   "sources": [
     {
       "path": "docs/store6/quickstart.md",
@@ -24,7 +24,7 @@
     },
     {
       "path": "STABILITY.md",
-      "sha256": "3184f2e014820fbeef84307a99428515aeac6d30b29d9646b779a38d90498234",
+      "sha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
       "target": "content/docs/store6/stability.mdx"
     },
     {
@@ -51,6 +51,16 @@
       "path": "store6-room/README.md",
       "sha256": "5183db2e0515d8e4d177834ddb30fd3fadb9e9c108c2c679e885f624fa582d03",
       "target": "content/docs/store6/room.mdx"
+    },
+    {
+      "path": "store6-realtime/README.md",
+      "sha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+      "target": "content/docs/store6/realtime.mdx"
+    },
+    {
+      "path": "store6-graphql/README.md",
+      "sha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+      "target": "content/docs/store6/graphql.mdx"
     },
     {
       "path": "llms.txt",

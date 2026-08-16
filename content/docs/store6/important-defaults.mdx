@@ -9,15 +9,11 @@ every one of them, so you can find out here rather than in production.
 Each line ends in the conformance test that guarantees it. Those tests are the specification — if a
 line here and its test ever disagree, the test is right and this page is a bug.
 
-<Callout type="Info">
-
-**Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting
-the defaults by hand changes nothing observable: both sides produce the same trace and the same
-fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that
-guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle
-cap. It does not cover telemetry or overlay, which are unset on both sides.
-
-</Callout>
+> **Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting
+> the defaults by hand changes nothing observable: both sides produce the same trace and the same
+> fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that
+> guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle
+> cap. It does not cover telemetry or overlay, which are unset on both sides.
 
 ## Freshness
 
