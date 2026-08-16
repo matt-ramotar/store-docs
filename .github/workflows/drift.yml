@@ -122,6 +122,8 @@ jobs:
 
       - name: Install dependencies
         if: steps.cadence-gate.outputs.process == 'true'
+        env:
+          HEROUI_AUTH_TOKEN: ${{ secrets.HEROUI_AUTH_TOKEN }}
         run: pnpm install --frozen-lockfile
 
       - name: Verify the mirrored source list

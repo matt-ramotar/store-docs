@@ -28,6 +28,8 @@ jobs:
           corepack install
 
       - name: Install dependencies
+        env:
+          HEROUI_AUTH_TOKEN: ${{ secrets.HEROUI_AUTH_TOKEN }}
         run: pnpm install --frozen-lockfile
 
       - name: Check out the pinned Store6 revision

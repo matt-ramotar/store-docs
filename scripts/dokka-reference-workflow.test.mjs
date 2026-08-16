@@ -141,6 +141,17 @@ test("Store6 checkout rejects refspecs before fetching origin tags", () => {
   }
 });
 
+test("pnpm install in CI receives HEROUI_AUTH_TOKEN from Actions secrets", () => {
+  for (const relative of [".github/workflows/verify.yml", ".github/workflows/drift.yml"]) {
+    const workflow = readFileSync(resolve(ROOT, relative), "utf8");
+    assert.match(
+      workflow,
+      /HEROUI_AUTH_TOKEN:\s*\$\{\{\s*secrets\.HEROUI_AUTH_TOKEN\s*\}\}/,
+      relative,
+    );
+  }
+});
+
 test("every workflow step has exactly one executable form", () => {
   const program = [
     'require "yaml"',
