@@ -25,8 +25,29 @@ same token backs CI. Without it, `pnpm install` still succeeds (the postinstall
 prints a "sign in" notice and exits 0) but leaves `@heroui-pro/react` with no
 usable entry, so `pnpm build`, `pnpm dev`, and `pnpm start` fail with
 `Can't resolve '@heroui-pro/react'` / `@heroui-pro/react/css`. Add `HEROUI_AUTH_TOKEN`
-as a secret; after it is present a fresh `pnpm install --frozen-lockfile` re-runs the
-postinstall and downloads the components. (Alternative for a human: `npx heroui-pro login`.)
+as a **Cursor secret** (a GitHub repository secret only reaches CI, not the Cloud Agent
+VM); it is injected into new Cloud Agent VMs at boot, so it takes effect on a fresh run,
+not a VM that booted before it was added. Once present, a fresh
+`pnpm install --frozen-lockfile` re-runs the postinstall and downloads the components
+(verified: real dist with `css/index.css` resolving `@heroui-pro/react/css`, homepage
+renders HTTP 200). (Alternative for a human: `npx heroui-pro login`.)
+
+### Known pre-existing build blocker — `@mintlify/components` + Turbopack `dayjs`
+
+Even with `HEROUI_AUTH_TOKEN` present, `pnpm build` currently fails during static
+prerender and every `/docs/*` route 500s (the homepage `/` still renders fine). Root
+cause: `@mintlify/components@1.0.18` pre-bundles its own `dayjs` through a CJS-interop
+shim whose `default` resolves to a non-function under Next 16 Turbopack, so evaluating
+`components/docs/mintlify-runtime.tsx` throws (surfaces as `g is not a function` /
+`digest 63475866` in build, `{...dayjs.min.js}.default is not a function` in dev). It
+reproduces deterministically across Node 22.14/22.22 and clean installs, so it is an
+application/dependency bug, not an environment issue. `next.config.mjs` already ships a
+`lib/mintlify-cjs-require-loader.cjs` workaround for the `require` transform, but the
+`dayjs` default-export interop still breaks. Fixing it needs an app/dependency change
+(e.g. patch the Mintlify dayjs interop or build that surface with webpack); it is not
+resolvable through environment setup alone. Note CI has never validated a green build —
+`verify.yml` runs unauthenticated (no token) and stops at the Store6-checkout step
+before `pnpm build`.
 
 ### Node version — contract tests need Node ≥ 22.18
 
@@ -46,9 +67,10 @@ app itself runs on the default Node once the license token is present.
 ### Tests
 
 - Contract/verification suite: `node --test scripts/*.test.mjs` (run under Node ≥ 22.18 as above).
-- CI (`.github/workflows/verify.yml`) runs `pnpm build` **before** the suite: seven
-  tests assert against `.next/server/app/**` static HTML, so build first or they fail
-  with `ENOENT ... no static HTML` — these are not real failures, just a missing build.
+- CI (`.github/workflows/verify.yml`) runs `pnpm build` **before** the suite: several
+  tests assert against `.next/server/app/**` static HTML, so they fail with
+  `ENOENT ... no static HTML` whenever the docs pages were not prerendered — today that
+  happens because of the Mintlify/`dayjs` build blocker above, not the test itself.
 - Two workflow-parsing tests shell out to `ruby` (installed in this environment; not
   on the base image by default — it is a test-only system dependency, kept out of the
   update script).
