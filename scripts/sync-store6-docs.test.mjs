@@ -5,27 +5,103 @@ import { applyLockedPublicationTransforms } from "./sync-store6-docs.mjs";
 
 const exactText = (...parts) => parts.join("");
 
-test("quickstart publication transform accepts only the legacy or current safe block", () => {
-  const legacy = [
-    "before",
+test("quickstart publication transform publishes the mutations block as a Warning callout", () => {
+  const experimentalPrefix = [
+    "> **Experimental.** `store6-mutations` is a separate artifact and every public symbol is",
+    "> `@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+    ">",
+  ].join("\n");
+  const legacySpelling = [
     `> **The spelling below is the ${exactText("rati", "fied")} surface.** The mutations API review ran and ${exactText("ru", "led")} the`,
     `> factory signature, presence algebra, and drain spelling (twenty ${exactText("rul", "ings")}, 2026-08-01). The`,
     "> module is still experimental — shapes can change in any release — but the snippet below now",
     `> matches the ${exactText("land", "ed")} artifact.`,
-    "after",
   ].join("\n");
-  const safe = [
-    "before",
+  const currentSpelling = [
     "> **The spelling below is the current API surface.** The module is still experimental — shapes",
     "> can change in any release — but the snippet below matches the implementation.",
-    "after",
   ].join("\n");
+  const callout = [
+    '<Callout type="Warning">',
+    "",
+    "**Experimental.** `store6-mutations` is a separate artifact and every public symbol is",
+    "`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+    "",
+    "**The spelling below is the current API surface.** The module is still experimental — shapes",
+    "can change in any release — but the snippet below matches the implementation.",
+    "",
+    "</Callout>",
+  ].join("\n");
+  const wrap = (block) => ["before", block, "after"].join("\n");
+  const published = wrap(callout);
 
-  assert.equal(applyLockedPublicationTransforms(legacy, "docs/store6/quickstart.md"), safe);
-  assert.equal(applyLockedPublicationTransforms(safe, "docs/store6/quickstart.md"), safe);
+  assert.equal(
+    applyLockedPublicationTransforms(wrap(`${experimentalPrefix}\n${legacySpelling}`), "docs/store6/quickstart.md"),
+    published,
+  );
+  assert.equal(
+    applyLockedPublicationTransforms(wrap(`${experimentalPrefix}\n${currentSpelling}`), "docs/store6/quickstart.md"),
+    published,
+  );
+  assert.equal(applyLockedPublicationTransforms(published, "docs/store6/quickstart.md"), published);
   assert.throws(
     () => applyLockedPublicationTransforms("before\n> an unreviewed third shape\nafter", "docs/store6/quickstart.md"),
     /docs\/store6\/quickstart\.md: publication transform boundary drift/,
+  );
+});
+
+test("quickstart publication transform drops the in-page status quote", () => {
+  const statusQuote = [
+    "> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as",
+    "> it stands on `main`; the install coordinates land with 6.0.0-alpha01.",
+  ].join("\n");
+  const experimental = [
+    "> **Experimental.** `store6-mutations` is a separate artifact and every public symbol is",
+    "> `@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+    ">",
+    "> **The spelling below is the current API surface.** The module is still experimental — shapes",
+    "> can change in any release — but the snippet below matches the implementation.",
+  ].join("\n");
+  const input = ["# Quickstart", "", statusQuote, "", "intro", "", experimental, ""].join("\n");
+  const output = applyLockedPublicationTransforms(input, "docs/store6/quickstart.md");
+
+  assert.doesNotMatch(output, /nothing is published yet\. This page is the shape of the API/);
+  assert.match(output, /<Callout type="Warning">/);
+  assert.match(output, /^# Quickstart\n\nintro\n/m);
+});
+
+test("important-defaults publication transform wraps the zero-config quote as an Info callout", () => {
+  const quote = [
+    "> **Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting",
+    "> the defaults by hand changes nothing observable: both sides produce the same trace and the same",
+    "> fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that",
+    "> guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle",
+    "> cap. It does not cover telemetry or overlay, which are unset on both sides.",
+  ].join("\n");
+  const callout = [
+    '<Callout type="Info">',
+    "",
+    "**Zero configuration and explicit expert configuration are byte-identical in behavior.** Setting",
+    "the defaults by hand changes nothing observable: both sides produce the same trace and the same",
+    "fetch count (`zeroConfig_and_expertConfig_observeIdenticalDefaults`). One honest limit on that",
+    "guarantee: the equivalence is asserted over persistence, bookkeeper, freshness validator, and idle",
+    "cap. It does not cover telemetry or overlay, which are unset on both sides.",
+    "",
+    "</Callout>",
+  ].join("\n");
+  const wrap = (block) => ["# Important defaults", "", "intro", "", block, "", "## Freshness", ""].join("\n");
+
+  assert.equal(
+    applyLockedPublicationTransforms(wrap(quote), "docs/store6/important-defaults.md"),
+    wrap(callout),
+  );
+  assert.equal(
+    applyLockedPublicationTransforms(wrap(callout), "docs/store6/important-defaults.md"),
+    wrap(callout),
+  );
+  assert.throws(
+    () => applyLockedPublicationTransforms("# Important defaults\n\n> unreviewed\n", "docs/store6/important-defaults.md"),
+    /docs\/store6\/important-defaults\.md: publication transform boundary drift/,
   );
 });
 
