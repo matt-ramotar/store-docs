@@ -1,14 +1,49 @@
 "use client";
 
 import type { TOCItemType } from "fumadocs-core/toc";
-import { Link } from "@heroui/react";
-import { FloatingToc } from "@heroui-pro/react";
-import { useEffect, useId, useState } from "react";
+import { isValidElement, useEffect, useState, type ReactNode } from "react";
 
-export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
+export function OnThisPage({ items }: { items: TOCItemType[] }) {
+  const activeUrl = useActiveSection(items);
+
+  if (items.length === 0) return null;
+
+  return (
+    <nav aria-labelledby="on-this-page-heading">
+      <h2 id="on-this-page-heading" className="text-sm font-semibold">
+        On this page
+      </h2>
+      <ul className="mt-3 space-y-2 text-sm">
+        {items.map((item) => {
+          const isActive = activeUrl === item.url;
+
+          return (
+            <li
+              key={item.url}
+              style={{ paddingInlineStart: `${Math.max(0, item.depth - 2) * 0.75}rem` }}
+            >
+              <a
+                aria-current={isActive ? "location" : undefined}
+                className={`block leading-5 no-underline transition-colors ${
+                  isActive
+                    ? "text-accent-strong font-medium"
+                    : "text-muted hover:text-foreground"
+                }`}
+                href={item.url}
+              >
+                {/* Headings can contain inline links; render text only to avoid nested anchors. */}
+                {toPlainText(item.title)}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+function useActiveSection(items: TOCItemType[]): string | null {
   const [activeUrl, setActiveUrl] = useState<string | null>(null);
-  const [open, setOpen] = useState(false);
-  const contentId = useId();
 
   useEffect(() => {
     const sections = items.flatMap((item) => {
@@ -19,7 +54,9 @@ export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
 
     function selectFromViewport() {
       const readingLine = 112;
-      const passed = sections.filter(({ element }) => element.getBoundingClientRect().top <= readingLine);
+      const passed = sections.filter(
+        ({ element }) => element.getBoundingClientRect().top <= readingLine,
+      );
       const visible = sections.find(({ element }) => {
         const bounds = element.getBoundingClientRect();
         return bounds.bottom > readingLine && bounds.top < window.innerHeight * 0.45;
@@ -58,48 +95,14 @@ export function ActiveFloatingToc({ items }: { items: TOCItemType[] }) {
     };
   }, [items]);
 
-  return (
-    <FloatingToc
-      open={open}
-      onOpenChange={setOpen}
-      placement="right"
-      triggerMode="press"
-    >
-      <FloatingToc.Trigger
-        aria-controls={contentId}
-        aria-expanded={open}
-        aria-label={open ? "Close table of contents" : "Open table of contents"}
-      >
-        {items.map((item) => (
-          <FloatingToc.Bar
-            key={item.url}
-            active={activeUrl === item.url}
-            level={Math.max(1, item.depth - 1)}
-          />
-        ))}
-      </FloatingToc.Trigger>
-      <FloatingToc.Content className="w-64 p-2">
-        <div id={contentId} className="flex flex-col gap-1">
-          {items.map((item) => {
-            const isActive = activeUrl === item.url;
+  return activeUrl;
+}
 
-            return (
-              <Link
-                key={item.url}
-                aria-current={isActive ? "location" : undefined}
-                className={`hover:bg-default block rounded-xl px-3 py-2 text-sm no-underline ${
-                  isActive ? "bg-default text-accent" : "text-foreground"
-                }`}
-                href={item.url}
-              >
-                {item.title}
-              </Link>
-            );
-          })}
-        </div>
-      </FloatingToc.Content>
-    </FloatingToc>
-  );
+function toPlainText(value: ReactNode): string {
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (Array.isArray(value)) return value.map(toPlainText).join("");
+  if (isValidElement<{ children?: ReactNode }>(value)) return toPlainText(value.props.children);
+  return "";
 }
 
 function getSectionId(url: string): string | null {

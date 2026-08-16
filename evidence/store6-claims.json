@@ -207,7 +207,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
+          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
           "lines": {
             "start": 24,
             "end": 24
@@ -288,13 +288,13 @@
     {
       "id": "docs/intro/001",
       "page": "/docs/intro",
-      "claim": "The primary-nav Start item targets /docs/store6/overview.",
+      "claim": "The primary-nav Docs item targets /docs/store6/overview.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
+          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
           "lines": {
             "start": 15,
             "end": 15
@@ -543,13 +543,13 @@
     {
       "id": "docs/community/overview/002",
       "page": "/docs/community/overview",
-      "claim": "The page is the current 'Project' primary-nav destination.",
+      "claim": "The page is the current 'Community' primary-nav destination.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
+          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
           "lines": {
             "start": 20,
             "end": 20
@@ -804,7 +804,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "956fdd74a436b1b1ddc13a37fec8a40634d85f07349a73d90164c2bf3e8dfb0b",
+          "sha256": "3cf9f06b89434fc923184e2868d691fc77ab264d94837d507d954e34b00fa93b",
           "lines": {
             "start": 14,
             "end": 14

@@ -1,69 +1,105 @@
-import type { ReactNode } from "react";
+import { Alert } from "@heroui/react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
+
+import { Step, Tab, Tabs } from "@/components/docs/mintlify-runtime";
 
 type ChildrenProps = { children?: ReactNode };
 
+type CalloutType = "Info" | "Note" | "Tip" | "Warning" | "Check" | "Danger";
+type CalloutVariant = "info" | "warning" | "note" | "tip" | "check" | "danger";
+
+const calloutVariants: Record<CalloutType, CalloutVariant> = {
+  Check: "check",
+  Danger: "danger",
+  Info: "info",
+  Note: "note",
+  Tip: "tip",
+  Warning: "warning",
+};
+
+/** Maps callout variants onto the HeroUI Alert status palette. */
+const calloutStatuses: Record<CalloutVariant, "accent" | "danger" | "default" | "success" | "warning"> = {
+  check: "success",
+  danger: "danger",
+  info: "accent",
+  note: "default",
+  tip: "success",
+  warning: "warning",
+};
+
 export function StepsGroup({ children, nested = "false" }: ChildrenProps & { nested?: string }) {
+  const items = Children.toArray(children).filter(isValidElement) as ReactElement<StepItemProps>[];
+
   return (
     <ol
+      aria-label={nested === "true" ? "Step branches" : "Steps"}
+      className={nested === "true" ? "mt-4 mb-2 ml-3.5 list-none p-0" : "mt-10 mb-6 ml-3.5 list-none p-0"}
       data-step-group=""
       data-step-nested={nested}
-      aria-label={nested === "true" ? "Step branches" : "Steps"}
-      className={nested === "true" ? "my-4 space-y-3 ps-5" : "my-8 space-y-5 ps-0"}
+      role="list"
     >
-      {children}
+      {items.map((child, index) =>
+        cloneElement(child, { isLast: index === items.length - 1 }),
+      )}
     </ol>
   );
 }
 
-export function StepItem({
-  children,
-  label,
-  title,
-}: ChildrenProps & { label: string; title: string }) {
+type StepItemProps = ChildrenProps & {
+  isLast?: boolean;
+  label: string;
+  title: string;
+};
+
+export function StepItem({ children, isLast = false, label, title }: StepItemProps) {
   return (
-    <li data-step-item="" data-step-label={label} className="list-none rounded-2xl border border-border bg-surface p-5">
-      <div data-step-title="" className="flex items-baseline gap-2 font-semibold text-foreground">
-        <span aria-hidden="true" className="text-muted">
-          {label}.
-        </span>
+    <li className="list-none" data-step-item="" data-step-label={label} role="listitem">
+      <div className="sr-only" data-step-title="">
+        <span aria-hidden="true">{label}.</span>
         <strong>{title}</strong>
       </div>
-      <div data-step-body="" className="mt-3 min-w-0">
-        {children}
+      <div data-step-body="">
+        <Step isLast={isLast} title={title} {...stepMarker(label)}>
+          {children}
+        </Step>
       </div>
     </li>
   );
 }
 
 export function TabGroup({ children, label }: ChildrenProps & { label: string }) {
+  const panels = Children.toArray(children).filter(isValidElement) as ReactElement<TabPanelProps>[];
+
   return (
-    <section
-      role="group"
-      aria-label={label}
-      data-tab-group=""
-      className="my-6 space-y-5 rounded-2xl border border-border bg-surface p-4"
-    >
-      {children}
+    <section aria-label={label} className="my-6" data-tab-group="" role="group">
+      <Tabs ariaLabel={label}>
+        {panels.map((panel) => (
+          <Tab key={panel.props.id} title={panel.props.label}>
+            {panel}
+          </Tab>
+        ))}
+      </Tabs>
     </section>
   );
 }
 
-export function TabPanel({
-  children,
-  id,
-  label,
-  language,
-}: ChildrenProps & { id: string; label: string; language: string }) {
+type TabPanelProps = ChildrenProps & {
+  id: string;
+  label: string;
+  language: string;
+};
+
+export function TabPanel({ children, id, label, language }: TabPanelProps) {
   const labelId = `${id}-label`;
   return (
-    <section
-      id={id}
-      aria-labelledby={labelId}
-      data-tab-panel=""
-      data-language={language}
-      className="min-w-0 border-t border-separator pt-4 first:border-t-0 first:pt-0"
-    >
-      <p id={labelId} data-tab-panel-label="" className="mb-3 text-base text-foreground">
+    <section aria-labelledby={labelId} data-language={language} data-tab-panel="" id={id}>
+      <p className="sr-only" data-tab-panel-label="" id={labelId}>
         <strong>{label}</strong>
       </p>
       {children}
@@ -71,27 +107,63 @@ export function TabPanel({
   );
 }
 
-export function Callout({ children, type }: ChildrenProps & { type: "Info" | "Note" | "Tip" }) {
-  const normalizedType = type.toLowerCase();
+export function Callout({
+  children,
+  title,
+  type = "Note",
+  variant,
+}: ChildrenProps & {
+  title?: string;
+  type?: CalloutType;
+  variant?: CalloutVariant;
+}) {
+  const resolved = variant ?? calloutVariants[type];
+
   return (
-    <aside
-      role="note"
-      aria-label={`${type} callout`}
-      data-callout-type={normalizedType}
-      className="my-6 rounded-2xl border-s-4 border-accent bg-surface-secondary px-5 py-4 text-foreground-secondary"
-    >
-      <p data-callout-label="" className="my-0 font-semibold text-foreground">
+    <aside aria-label={`${type} callout`} className="my-6" data-callout-type={resolved} role="note">
+      <p className="sr-only" data-callout-label="">
         {type}
       </p>
-      <div data-callout-body="" className="mt-2 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">
-        {children}
+      <div data-callout-body="">
+        <Alert status={calloutStatuses[resolved]}>
+          <Alert.Indicator />
+          <Alert.Content>
+            {title ? <Alert.Title>{title}</Alert.Title> : null}
+            {/* Alert.Description renders a span; MDX bodies are block content, so
+                reuse the slot class on a div instead. */}
+            <div className="alert__description w-full min-w-0 [&>:first-child]:mt-0 [&>:last-child]:mb-0">
+              {children}
+            </div>
+          </Alert.Content>
+        </Alert>
       </div>
     </aside>
   );
 }
 
+function namedCallout(type: CalloutType) {
+  return function NamedCallout({ children, title }: ChildrenProps & { title?: string }) {
+    return (
+      <Callout title={title} type={type}>
+        {children}
+      </Callout>
+    );
+  };
+}
+
+export const Check = namedCallout("Check");
+export const Danger = namedCallout("Danger");
+export const Info = namedCallout("Info");
+export const Note = namedCallout("Note");
+export const Tip = namedCallout("Tip");
+export const Warning = namedCallout("Warning");
+
 export function ParamList({ children }: ChildrenProps) {
-  return <dl data-param-list="" className="my-6 divide-y divide-separator rounded-2xl border border-border bg-surface">{children}</dl>;
+  return (
+    <dl className="border-border bg-surface my-6 divide-y divide-separator rounded-2xl border" data-param-list="">
+      {children}
+    </dl>
+  );
 }
 
 export function ParamField({
@@ -101,15 +173,23 @@ export function ParamField({
   type,
 }: ChildrenProps & { name: string; required: "false" | "true"; type: string }) {
   return (
-    <div data-param-field="" data-required={required} className="grid gap-x-4 gap-y-2 p-5 sm:grid-cols-[8rem_minmax(0,1fr)]">
-      <dt className="font-semibold text-foreground">Parameter</dt>
-      <dd className="min-w-0 text-foreground-secondary"><code>{name}</code></dd>
-      <dt className="font-semibold text-foreground">Type</dt>
-      <dd className="min-w-0 text-foreground-secondary"><code>{type}</code></dd>
-      <dt className="font-semibold text-foreground">Required</dt>
+    <div
+      className="grid gap-x-4 gap-y-2 p-5 sm:grid-cols-[8rem_minmax(0,1fr)]"
+      data-param-field=""
+      data-required={required}
+    >
+      <dt className="text-foreground font-semibold">Parameter</dt>
+      <dd className="text-foreground-secondary min-w-0">
+        <code>{name}</code>
+      </dd>
+      <dt className="text-foreground font-semibold">Type</dt>
+      <dd className="text-foreground-secondary min-w-0">
+        <code>{type}</code>
+      </dd>
+      <dt className="text-foreground font-semibold">Required</dt>
       <dd className="text-foreground-secondary">{required === "true" ? "Required" : "Optional"}</dd>
-      <dt className="font-semibold text-foreground">Description</dt>
-      <dd className="min-w-0 text-foreground-secondary [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{children}</dd>
+      <dt className="text-foreground font-semibold">Description</dt>
+      <dd className="text-foreground-secondary min-w-0 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0">{children}</dd>
     </div>
   );
 }
@@ -121,13 +201,21 @@ export function UnavailableDestination({
 }: ChildrenProps & { destination: string; status: string }) {
   return (
     <aside
-      role="note"
       aria-label="Unavailable documentation destination"
+      className="border-warning bg-warning-soft text-warning-soft-foreground my-3 rounded-xl border px-4 py-3"
       data-unavailable-destination={destination}
       data-unavailable-status={status}
-      className="my-3 rounded-xl border border-warning bg-warning-soft px-4 py-3 text-warning-soft-foreground"
+      role="note"
     >
       {children}
     </aside>
   );
+}
+
+function stepMarker(label: string): { icon?: ReactNode; stepNumber?: number } {
+  const numeric = Number(label);
+  if (Number.isFinite(numeric) && String(numeric) === label) return { stepNumber: numeric };
+  return {
+    icon: <span className="text-xs font-semibold">{label}</span>,
+  };
 }

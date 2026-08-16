@@ -2,6 +2,7 @@
 
 import { Button, Chip, Kbd } from "@heroui/react";
 import { Command } from "@heroui-pro/react";
+import { Icon } from "@iconify/react";
 import { useDocsSearch } from "fumadocs-core/search/client";
 import { oramaStaticClient } from "fumadocs-core/search/client/orama-static";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -86,11 +87,14 @@ export function CommandSearch() {
         {...getSearchTriggerAria(isOpen, SEARCH_DIALOG_ID)}
         aria-keyshortcuts="Meta+K Control+K"
         aria-label="Search documentation"
+        className="text-muted w-full justify-start gap-2 font-normal"
+        fullWidth
         onPress={() => setOpen(true)}
         ref={exposeKeyboardShortcut}
         variant="outline"
       >
-        <span className="hidden sm:inline">Search</span>
+        <Icon aria-hidden className="size-4 shrink-0" icon="gravity-ui:magnifier" />
+        <span className="hidden flex-1 text-start sm:inline">Search...</span>
         <Kbd className="text-xs">
           <Kbd.Abbr keyValue="command" />
           <Kbd.Content>K</Kbd.Content>

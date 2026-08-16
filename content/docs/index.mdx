@@ -1,9 +1,18 @@
 ---
-title: Store Documentation
+title: Introduction
+description: Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place.
 ---
 
-Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place: a network, a local database, and memory.
-Store 6 is the next major line; Store 5 continues under its own coordinates for the whole 6.x major.
+Store reads and writes data that lives in more than one place: a network, a local database, and
+memory. Store 6 is the next major line; Store 5 continues under its own coordinates for the whole
+6.x major.
+
+## Why Store?
+
+Reading data across those boundaries means coordinating freshness, failures, deduplicated fetches,
+and cache bounds by hand around every endpoint. Store gives your application one typed contract for
+those reads and writes on every Kotlin platform, so that coordination is written once and tested
+once.
 
 ## Store 6 — start here
 
@@ -13,7 +22,7 @@ Store 6 is in development targeting 6.0.0-alpha01; nothing is published yet. The
 
 </Callout>
 
-- [Store 6 overview](/docs/store6/overview): What Store 6 is and where to start.
+- [Store 6 introduction](/docs/store6/overview): What Store 6 is and where to start.
 - [Store 6 quickstart](/docs/store6/quickstart): Build the five-line store and run the full program.
 - [Important defaults](/docs/store6/important-defaults): See every zero-config behavior, each traced to a named conformance test.
 - [Migrate from Store 5](/docs/store6/migration/from-store5): Move one screen at a time while both coordinate lines live side by side.
@@ -22,14 +31,14 @@ Store 6 is in development targeting 6.0.0-alpha01; nothing is published yet. The
 
 Store 5 documentation remains available. `store5.*` and `store6.*` coordinates live side by side for the whole 6.x major, and `store6-store5-interop` is supported for all of 6.x.
 
-- [Store 5 landing](/docs/meet-store): Meet Store and find its core resources.
+- [Meet Store](/docs/meet-store): Meet Store and find its core resources.
 - [Why Store?](/docs/intro): Understand the Store 5 model and capabilities.
 - [Store 5 quickstart](/docs/quickstart): Build your first Store 5 store.
-- [Store 5 component reference](/docs/concepts/store5/overview): Browse the Store 5 components and their roles.
+- [Store 5 concepts](/docs/concepts/store5/overview): Browse the Store 5 components and their roles.
 
 ### Which track am I on?
 
-- **New project:** Start with the [Store 6 overview](/docs/store6/overview).
+- **New project:** Start with the [Store 6 introduction](/docs/store6/overview).
 - **Existing Store 5 app:** Keep the Store 5 documentation and read [Migrating from Store 5](/docs/store6/migration/from-store5) when you are ready. The Store 5 to Store 6 and Store 4 to Store 6 migration guides are launch gates for 6.0.0.
 
 ## Project

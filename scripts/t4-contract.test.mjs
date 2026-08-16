@@ -40,7 +40,7 @@ const STORE6_TARGETS = [
   "content/docs/store6/sqldelight.mdx",
   "content/docs/store6/room.mdx",
 ];
-const T3_OVERVIEW_SHA256 = "edc17abef2a6aeb3ce1d6ca89462d23fb0c975ac3084f9c5d854ae11637d3d07";
+const T3_OVERVIEW_SHA256 = "7d5c9bd85b530431b0c4d1ce808be0a5a3da67e7260a20550520c851a32cbfe6";
 
 const inventory = readLines(INVENTORY_PATH);
 const docsInventory = inventory.filter((url) => new URL(url).pathname.startsWith("/docs/"));
@@ -65,8 +65,9 @@ test("inventory defines direct docs targets and two exact outside routes", () =>
 test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
   const document = readFrontmatterDocument(DOCS_HOME_PATH);
   const expectedIntro = [
-    "Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place: a network, a local database, and memory.",
-    "Store 6 is the next major line; Store 5 continues under its own coordinates for the whole 6.x major.",
+    "Store reads and writes data that lives in more than one place: a network, a local database, and",
+    "memory. Store 6 is the next major line; Store 5 continues under its own coordinates for the whole",
+    "6.x major.",
   ].join("\n");
   const expectedLinks = [
     "/docs/store6/overview",
@@ -84,11 +85,15 @@ test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
     "/docs/community/overview",
   ];
 
-  assert.equal(document.title, "Store Documentation");
-  assert.equal(document.description, "");
+  assert.equal(document.title, "Introduction");
+  assert.equal(
+    document.description,
+    "Store is a Kotlin Multiplatform library for reading and writing data that lives in more than one place.",
+  );
   assert.equal(document.body.trimStart().startsWith(expectedIntro), true);
   assert.doesNotMatch(document.body, /^#\s+/m, "docs home must not contain a body H1");
   assert.deepEqual(markdownHeadings(document.body), [
+    { depth: 2, title: "Why Store?" },
     { depth: 2, title: "Store 6 — start here" },
     { depth: 2, title: "Store 5 — maintained legacy" },
     { depth: 3, title: "Which track am I on?" },
@@ -103,7 +108,10 @@ test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
   for (const target of expectedLinks) assertLocalTargetExists(target, "content/docs/index.mdx");
   assert.match(document.body, /^## Store 5 — maintained legacy$/m);
   assert.match(document.body, /Store 5 documentation remains available\./);
-  assert.match(document.body, /Store 5 continues under its own coordinates for the whole 6\.x major\./);
+  assert.match(
+    document.body,
+    /Store 5 continues under its own coordinates for the whole\s+6\.x major\./,
+  );
   assert.doesNotMatch(document.body, /(?:snippet:|\bSTORE-\d+\b|\bLinear\b|\borchestrator\b|\bbatch B5\b)/i);
 });
 
@@ -113,17 +121,22 @@ test("B5 docs root metadata presents Store 6 before the maintained legacy shelf"
   assert.deepEqual(meta, {
     pages: [
       "store6",
-      "---Store 5 (legacy)---",
-      "concepts/store5",
-      "use-cases/store5",
-      "best-practices/store5",
+      "index",
+      "---Getting Started---",
       "meet-store",
       "intro",
       "quickstart",
+      "concepts/store5",
+      "use-cases/store5",
+      "best-practices/store5",
+      "---Resources---",
       "community/overview",
+      "[Migrate to Store 6](/docs/store6/migration/from-store5)",
     ],
   });
-  for (const entry of meta.pages.filter((page) => !page.startsWith("---"))) {
+  for (const entry of meta.pages.filter(
+    (page) => !page.startsWith("---") && !page.startsWith("["),
+  )) {
     assert.equal(
       existsSync(resolve(ROOT, `content/docs/${entry}.mdx`)) ||
         existsSync(resolve(ROOT, `content/docs/${entry}/index.mdx`)) ||
@@ -145,12 +158,12 @@ test("B5 legacy shelves render with distinct page-tree names", async () => {
     },
     {
       folder: "use-cases/store5",
-      name: "Use cases",
+      name: "Use Cases",
       overviewTitle: "Store5",
     },
     {
       folder: "best-practices/store5",
-      name: "Best practices",
+      name: "Best Practices",
       overviewTitle: "Store5",
     },
   ];
@@ -190,7 +203,7 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
   const readResolution = readFileSync(READ_RESOLUTION_TABLE_PATH, "utf8");
   const supportMatrix = readFileSync(SUPPORT_MATRIX_PATH, "utf8");
 
-  assert.equal(document.title, "Store 6");
+  assert.equal(document.title, "Introduction");
   assert.equal(
     document.description,
     "Typed Kotlin Multiplatform reads with explicit origins, freshness, and failure states.",
@@ -201,11 +214,22 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     /Store 6 coordinates network, persistence, and memory through one read contract\. Start with a fetcher, then add only the persistence and projection seams your application needs\./,
   );
   assert.deepEqual(markdownHeadings(document.body), [
+    { depth: 2, title: "Why Store 6?" },
     { depth: 2, title: "Start here" },
-    { depth: 2, title: "Read resolution" },
     { depth: 2, title: "Modules and targets" },
+    { depth: 2, title: "Community" },
+    { depth: 2, title: "llms.txt" },
   ]);
   assert.deepEqual(markdownAndHtmlTargets(document.body), [
+    "/docs/store6/concepts/read-contract",
+    "/docs/store6/mutations",
+    "/docs/store6/room",
+    "/docs/store6/sqldelight",
+    "/docs/store6/compose",
+    "/docs/store6/migration/from-store5",
+    "/docs/community/overview",
+    "https://github.com/MobileNativeFoundation/Store",
+    "/llms.txt",
     "/docs/store6/quickstart",
     "/docs/store6/important-defaults",
   ]);
@@ -353,12 +377,9 @@ test("B5 primary navigation points at Store6 while version navigation remains st
       ([, href, label]) => ({ href, label }),
     ),
     [
-      { href: "/docs/store6/overview", label: "Start" },
-      { href: "/docs/store6/guides/fetchers", label: "Use Store" },
-      { href: "/docs/store6/room", label: "Integrations" },
-      { href: "/docs/store6/guides/testing", label: "Test" },
+      { href: "/docs/store6/overview", label: "Docs" },
       { href: "/reference/store6-core/index.html", label: "Reference" },
-      { href: "/docs/community/overview", label: "Project" },
+      { href: "/docs/community/overview", label: "Community" },
     ],
   );
 
@@ -570,10 +591,9 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
       });
     });
     $("#content [data-tab-group]").each((_, group) => {
-      const panels = $(group).children("[data-tab-panel]");
+      const panels = $(group).find("[data-tab-panel]");
       assert.equal(group.tagName, "section", `${pathname}: tab group element`);
       assert.equal($(group).attr("role"), "group", `${pathname}: tab group role`);
-      assert.equal($(group).children().length, panels.length, `${pathname}: tab group direct children`);
       panels.each((__, panel) => {
         assert.equal(panel.tagName, "section", `${pathname}: tab panel element`);
         const labelledBy = $(panel).attr("aria-labelledby");
@@ -1398,6 +1418,9 @@ function compiledDirectWidgetBody($, item) {
   body.find("[data-step-group]").remove();
   body.find("[data-callout-label]").remove();
   body.find("[data-tab-panel-label]").remove();
+  body.find("[data-component-part='step-title']").remove();
+  body.find("[data-component-part='step-number']").remove();
+  body.find("[data-component-part='step-line']").remove();
   return normalizeWidgetBody(body.text());
 }
 

@@ -1,4 +1,6 @@
-import { Alert, Chip, Link, Table } from "@heroui/react";
+import { Chip, Link, Table } from "@heroui/react";
+
+import { Callout } from "@/components/docs/MigratedWidgets";
 
 const origins = [
   {
@@ -72,20 +74,14 @@ export function ReadResolutionTable() {
         </Table.ScrollContainer>
       </Table>
 
-      <Alert className="my-6" status="accent">
-        <Alert.Indicator />
-        <Alert.Content>
-          <Alert.Title>Important default</Alert.Title>
-          <Alert.Description>
-            With Store 6&apos;s default freshness validator, wall-clock age alone never makes
-            <code> Freshness.CachedOrFetch</code> fetch. It fetches when no resident value exists,
-            freshness metadata is missing, the resident is invalidated, or durable status marks it
-            stale. Use <code>Freshness.MaxAge</code> when elapsed age should participate. A custom
-            <code> FreshnessValidator</code> may plan differently, and
-            <code> Freshness.MustBeFresh</code> follows different serving and failure rules.
-          </Alert.Description>
-        </Alert.Content>
-      </Alert>
+      <Callout title="Important default" type="Info">
+        With Store 6&apos;s default freshness validator, wall-clock age alone never makes
+        <code> Freshness.CachedOrFetch</code> fetch. It fetches when no resident value exists,
+        freshness metadata is missing, the resident is invalidated, or durable status marks it
+        stale. Use <code>Freshness.MaxAge</code> when elapsed age should participate. A custom
+        <code> FreshnessValidator</code> may plan differently, and
+        <code> Freshness.MustBeFresh</code> follows different serving and failure rules.
+      </Callout>
 
       <div className="my-6 space-y-3 text-sm leading-6 text-foreground-secondary">
         <p>

@@ -3,9 +3,6 @@ title: "Errors and failure handling"
 description: "The six StoreError variants, the StoreException get path, rendering served-stale failures, and why retries belong in your fetcher."
 ---
 
-> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
-> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
-
 Store has one failure vocabulary and two delivery channels. On the observation path, `stream`
 never throws: failures arrive in the flow as `StoreResult.Error` values carrying a structured
 `StoreError`. On the value path, `get` throws a `StoreException` wrapping the same `StoreError`.

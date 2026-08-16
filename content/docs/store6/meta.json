@@ -1,24 +1,29 @@
 {
   "pages": [
     "overview",
+    "---Getting Started---",
     "quickstart",
     "important-defaults",
-    "---Concepts---",
-    "concepts",
+    "---Foundations---",
+    "...concepts",
     "key-design",
     "invalidate-vs-clear",
     "---Guides---",
-    "guides",
+    "...guides",
+    "---Mutations---",
+    "...mutations",
+    "---Integrations---",
+    "compose",
     "room",
     "sqldelight",
-    "compose",
-    "---Mutations (experimental)---",
-    "mutations",
     "---Migration---",
-    "migration",
+    "...migration",
+    "---Reference---",
+    "[Store 6 API (Dokka)](/reference/store6-core/index.html)",
     "---Project---",
     "stability",
     "roadmap",
-    "contributing"
+    "contributing",
+    "[Community](/docs/community/overview)"
   ]
 }

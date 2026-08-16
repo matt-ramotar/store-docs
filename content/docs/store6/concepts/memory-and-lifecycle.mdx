@@ -3,9 +3,6 @@ title: "Memory, eviction, and store lifecycle"
 description: "What keeps a per-key engine alive, how maxIdleKeys bounds the idle ones, and why eviction never changes what a read returns."
 ---
 
-> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
-> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
-
 A store keeps one engine per active key — the unit of state that tracks demand, runs the fetch
 pipeline, and feeds collectors for that key. This page explains what keeps an engine resident, what
 bounds the idle ones, why eviction never changes what a read returns, and how a store's life ends.

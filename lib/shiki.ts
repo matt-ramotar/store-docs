@@ -1,7 +1,7 @@
 import type { BundledLanguage } from "shiki";
 import { bundledLanguages, codeToHtml } from "shiki";
 
-const storeCodeTheme = {
+export const storeCodeTheme = {
   name: "store-code",
   type: "dark" as const,
   colors: {

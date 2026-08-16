@@ -1,3 +1,14 @@
 {
-  "title": "Concepts"
+  "title": "Concepts",
+  "pages": [
+    "overview",
+    "store",
+    "source-of-truth",
+    "fetcher",
+    "updater",
+    "bookkeeper",
+    "validator",
+    "converter",
+    "mutable-store"
+  ]
 }

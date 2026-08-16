@@ -23,6 +23,7 @@
     "@heroui/react": "^3.2.4",
     "@heroui/styles": "^3.2.4",
     "@iconify/react": "^6.0.2",
+    "@mintlify/components": "^1.0.18",
     "@orama/core": "^1.2.19",
     "cheerio": "^1.2.0",
     "fumadocs-core": "16.12.1",

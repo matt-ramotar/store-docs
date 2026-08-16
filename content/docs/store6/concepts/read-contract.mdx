@@ -3,9 +3,6 @@ title: "The read contract: stream, get, and origins"
 description: "One failure rule, four result kinds, honest origin attribution, and the lifecycle of a Store stream."
 ---
 
-> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
-> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
-
 A Store has exactly two read doors — `stream` and `get` — and one failure rule that splits them:
 `stream` emits failures as values and never throws them at your collector; `get` returns a value or
 throws, and never emits partial states. Everything on this page is the contract of the `Store`
@@ -180,6 +177,13 @@ collector lifecycle interact is covered in
 value requests waiting on in-flight work are cancelled. Every subsequent call to any operation
 fails with `IllegalStateException` and the exact message `Store is closed.` Calling `close()` more
 than once has no additional effect.
+
+## Read resolution at a glance
+
+Every data result names the boundary that supplied the value. Origin and freshness are independent:
+read `origin` to identify provenance, then read `isStale` and `refreshing` for lifecycle state.
+
+<ReadResolutionTable />
 
 ## Where next
 

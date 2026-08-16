@@ -8,14 +8,46 @@ import { StartHereList } from "@/components/overview/StartHereList";
 import { SupportMatrix } from "@/components/overview/SupportMatrix";
 import {
   Callout,
+  Check,
+  Danger,
+  Info,
+  Note,
   ParamField,
   ParamList,
   StepItem,
   StepsGroup,
   TabGroup,
   TabPanel,
+  Tip,
   UnavailableDestination,
+  Warning,
 } from "@/components/docs/MigratedWidgets";
+import {
+  Accordion,
+  AccordionGroup,
+  Badge,
+  Card,
+  CardGroup,
+  CodeBlock,
+  CodeGroup,
+  Color,
+  Columns,
+  Expandable,
+  Frame,
+  Icon,
+  Mermaid,
+  Panel,
+  Property,
+  Step,
+  Steps,
+  Tab,
+  Tabs,
+  Tile,
+  Tooltip,
+  Tree,
+  Update,
+} from "@/components/docs/mintlify-runtime";
+import { EmWithVerifiedCommit } from "@/components/docs/LastVerified";
 import { CodeSlab } from "@/components/shell/CodeSlab";
 
 function mergeClassName(base: string, className?: string) {
@@ -25,9 +57,38 @@ function mergeClassName(base: string, className?: string) {
 /** Shared component map for every MDX rendering surface. */
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
+    Accordion,
+    AccordionGroup,
+    Badge,
     Button,
     Callout,
+    Card,
+    CardGroup,
+    Check,
+    CodeBlock,
+    CodeGroup,
     CodeSlab,
+    Color,
+    Columns,
+    Danger,
+    Expandable,
+    Frame,
+    Icon,
+    Info,
+    Mermaid,
+    Note,
+    Panel,
+    Property,
+    Step,
+    Steps,
+    Tab,
+    Tabs,
+    Tile,
+    Tip,
+    Tooltip,
+    Tree,
+    Update,
+    Warning,
     a: ({ className, ...props }) => (
       <a
         {...props}
@@ -55,6 +116,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
         )}
       />
     ),
+    em: EmWithVerifiedCommit,
     h2: ({ className, ...props }) => (
       <Typography.Heading
         {...props}
@@ -121,7 +183,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
       <pre
         {...props}
         className={mergeClassName(
-          "my-6 overflow-x-auto rounded-2xl border border-border bg-store-code-surface p-4 font-mono text-sm leading-6 text-store-code-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&>code]:rounded-none [&>code]:bg-transparent [&>code]:p-0 [&>code]:text-inherit",
+          "not-prose my-6 overflow-x-auto rounded-2xl border border-border bg-store-code-surface p-4 font-mono text-sm leading-6 text-store-code-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&>code]:rounded-none [&>code]:bg-transparent [&>code]:p-0 [&>code]:text-inherit",
           className,
         )}
       />

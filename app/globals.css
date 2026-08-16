@@ -1,4 +1,5 @@
-/* CSS import order: Tailwind CSS v4, HeroUI base styles, then HeroUI Pro styles. */
+@layer restore, mintlify;
+@import "@mintlify/components/styles.css" layer(mintlify);
 @import "tailwindcss";
 @import "@heroui/styles";
 @import "@heroui-pro/react/css";
@@ -70,3 +71,71 @@
   --color-store-code-foreground: oklch(0.898202 0.015641 257.2); /* #D7DEE8 */
 }
 /* STORE TOKENS END */
+
+:root {
+  --color-primary: var(--accent);
+  --color-primary-light: var(--accent);
+  --color-primary-dark: var(--accent-strong);
+  --color-codeblock: var(--color-store-code-surface);
+}
+
+#content {
+  --shiki-background: var(--color-store-code-surface);
+  --shiki-color-background: var(--color-store-code-surface);
+  --shiki-color-text: var(--color-store-code-foreground);
+  --shiki-foreground: var(--color-store-code-foreground);
+  --shiki-token-comment: var(--color-store-origin-memory-on-dark);
+  --shiki-token-constant: var(--color-store-origin-overlay-on-dark);
+  --shiki-token-function: var(--color-store-origin-fetcher-on-dark);
+  --shiki-token-keyword: var(--color-store-origin-overlay-on-dark);
+  --shiki-token-link: var(--color-store-origin-sot-on-dark);
+  --shiki-token-parameter: var(--color-store-code-foreground);
+  --shiki-token-punctuation: var(--color-store-code-foreground);
+  --shiki-token-string: var(--color-store-origin-sot-on-dark);
+  --shiki-token-string-expression: var(--color-store-origin-sot-on-dark);
+  --color-stone-50: var(--surface-secondary);
+  --color-stone-100: var(--surface-tertiary);
+  --color-stone-200: var(--border);
+  --color-stone-300: var(--border);
+  --color-stone-400: var(--muted);
+  --color-stone-500: var(--muted);
+  --color-stone-600: var(--foreground-secondary);
+  --color-stone-700: var(--foreground-secondary);
+  --color-stone-800: var(--foreground);
+  --color-stone-900: var(--foreground);
+  --color-stone-950: var(--foreground);
+}
+
+@layer restore {
+  #content pre.shiki.bg-store-code-surface {
+    background-color: var(--color-store-code-surface) !important;
+    color: var(--color-store-code-foreground) !important;
+  }
+
+  #content .code-block,
+  #content .code-group {
+    background-color: var(--color-store-code-surface) !important;
+    border-color: var(--border) !important;
+    color: var(--color-store-code-foreground) !important;
+  }
+
+  #content [data-component-part="code-block-root"],
+  #content .code-block-background {
+    background-color: var(--color-store-code-surface) !important;
+  }
+
+  #content .tab-container {
+    align-items: stretch !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+  }
+
+  #content .tab-container [data-component-part="tabs-list"] {
+    height: auto !important;
+    min-height: 2.75rem;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    width: 100% !important;
+  }
+}

@@ -3,9 +3,6 @@ title: "Freshness policies"
 description: "The five per-call Freshness policies, exactly what triggers a fetch, stale-while-revalidate, typed StoreMeta, and the expert read-planning seam."
 ---
 
-> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
-> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
-
 Freshness is a **per-call parameter**, not store-level configuration. Every `stream` and every
 `get` takes a `Freshness` policy describing how fresh a value must be before it is served, and
 each read is planned from resident availability, invalidation state, typed metadata, and that
@@ -151,10 +148,14 @@ and `MustBeFresh` — whose contracts require *known* freshness — withhold it 
 
 ## Advanced: the read-planning seam
 
-> **Experimental.** Everything in this section is `@ExperimentalStoreApi` and lives in the
-> `seam` package, which is a freeze candidate — not frozen. Implementing a seam interface is an
-> explicit opt-in, and shapes can change in any release. See
-> [the stability policy](/docs/store6/stability) for what candidate-versus-frozen means.
+<Callout type="Warning">
+
+**Experimental.** Everything in this section is `@ExperimentalStoreApi` and lives in the
+`seam` package, which is a freeze candidate — not frozen. Implementing a seam interface is an
+explicit opt-in, and shapes can change in any release. See
+[the stability policy](/docs/store6/stability) for what candidate-versus-frozen means.
+
+</Callout>
 
 You will probably never touch this seam — the five policies absorb the cases that needed custom
 validation logic in earlier Store versions. It exists for the rare read-planning decision the

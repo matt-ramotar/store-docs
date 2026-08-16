@@ -1,270 +1,260 @@
 "use client";
 
 import type * as PageTree from "fumadocs-core/page-tree";
-import { Sheet, Sidebar, type SidebarMenuProps } from "@heroui-pro/react";
+import { Icon } from "@iconify/react";
+import Link from "next/link";
 import {
   isValidElement,
-  type ReactNode,
-  useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
+  type ReactNode,
 } from "react";
-
-import { VersionSwitcher } from "@/components/shell/VersionSwitcher";
-import { primaryNavItems, type DocsVersion } from "@/lib/nav";
-import { normalizeExpandedKeys } from "@/lib/sidebar-expansion";
-
-type SidebarExpandedChangeHandler = NonNullable<
-  SidebarMenuProps<object>["onExpandedChange"]
->;
-type SidebarExpandedKeys = Parameters<SidebarExpandedChangeHandler>[0];
-type SidebarExpandedKey = SidebarExpandedKeys extends Set<infer Key> ? Key : never;
 
 export type SideTreeProps = {
   currentPath: string;
   tree: PageTree.Root;
-  version: DocsVersion;
 };
 
-export function SideTree(props: SideTreeProps) {
-  return (
-    <>
-      <Sidebar aria-label="Documentation">
-        <TreeContents {...props} scope="desktop" />
-      </Sidebar>
-      <Sidebar.Mobile aria-label="Documentation">
-        <Sheet.Heading className="sr-only">Documentation navigation</Sheet.Heading>
-        <TreeContents {...props} scope="mobile" />
-      </Sidebar.Mobile>
-    </>
-  );
-}
+const itemBaseClass =
+  "flex w-full items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm transition-colors";
+const itemIdleClass = "text-foreground-secondary hover:bg-default hover:text-foreground";
+const itemActiveClass = "bg-accent-soft font-semibold text-accent-soft-foreground";
 
-function TreeContents({ currentPath, tree, version, scope }: SideTreeProps & { scope: string }) {
-  const expansionKeys = useMemo(
-    () => getExpansionKeys(tree.children, currentPath, scope),
-    [currentPath, scope, tree.children],
+/**
+ * Docs navigation tree modeled on store.mobilenativefoundation.org: bold group
+ * headers with always-visible pages, and collapsible category rows (chevron)
+ * for secondary sections and nested folders.
+ */
+export function SideTree({ currentPath, tree }: SideTreeProps) {
+  const pathFolderIds = useMemo(
+    () => getFolderIdsContaining(tree.children, currentPath),
+    [tree.children, currentPath],
   );
-  const [expandedKeys, setExpandedKeys] = useState<SidebarExpandedKeys>(() =>
-    normalizeExpandedKeys<SidebarExpandedKey>(
-      [...expansionKeys.defaultOpenKeys, ...expansionKeys.currentKeys],
-      expansionKeys.lockedKeys,
-    ),
-  );
-  const previousDefaultOpenKeys = useRef(new Set(expansionKeys.defaultOpenKeys));
+  const [expandedIds, setExpandedIds] = useState<ReadonlySet<string>>(pathFolderIds);
 
   useEffect(() => {
-    const newlyDefaultOpenKeys = [...expansionKeys.defaultOpenKeys].filter(
-      (key) => !previousDefaultOpenKeys.current.has(key),
-    );
-    previousDefaultOpenKeys.current = new Set(expansionKeys.defaultOpenKeys);
+    setExpandedIds((previous) => {
+      const merged = new Set(previous);
+      for (const id of pathFolderIds) merged.add(id);
+      return merged;
+    });
+  }, [pathFolderIds]);
 
-    setExpandedKeys((currentKeys) =>
-      normalizeExpandedKeys<SidebarExpandedKey>(
-        [...currentKeys, ...expansionKeys.currentKeys, ...newlyDefaultOpenKeys],
-        expansionKeys.lockedKeys,
-      ),
-    );
-  }, [expansionKeys]);
-
-  const handleExpandedChange = useCallback<SidebarExpandedChangeHandler>(
-    (proposedKeys) => {
-      setExpandedKeys(
-        normalizeExpandedKeys<SidebarExpandedKey>(proposedKeys, expansionKeys.lockedKeys),
-      );
-    },
-    [expansionKeys.lockedKeys],
-  );
+  const toggle = (id: string) => {
+    setExpandedIds((previous) => {
+      const next = new Set(previous);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   return (
-    <>
-      <Sidebar.Header className="gap-4 px-4 pb-2 pt-5">
-        <div>
-          <p className="text-sm font-semibold">Store</p>
-          <p className="text-muted text-xs">Kotlin Multiplatform data</p>
-        </div>
-        <VersionSwitcher version={version} />
-      </Sidebar.Header>
-      <Sidebar.Content
-        hideScrollBar
-        className="max-h-[calc(100svh-7rem)] overflow-y-auto px-2 pb-5"
-      >
-        <Sidebar.Group>
-          <Sidebar.GroupLabel>Sections</Sidebar.GroupLabel>
-          <Sidebar.Menu aria-label="Primary documentation sections" showGuideLines={false}>
-            {primaryNavItems.map((item) => (
-              <Sidebar.MenuItem
-                key={item.href}
-                href={item.href}
-                id={`${scope}:primary:${item.href}`}
-                isCurrent={isCurrentPath(currentPath, item.href)}
-                textValue={item.label}
-              >
-                <Sidebar.MenuItemContent>
-                  <Sidebar.MenuLabel>{item.label}</Sidebar.MenuLabel>
-                </Sidebar.MenuItemContent>
-              </Sidebar.MenuItem>
-            ))}
-          </Sidebar.Menu>
-        </Sidebar.Group>
-        {tree.children.length > 0 ? (
-          <Sidebar.Group>
-            <Sidebar.GroupLabel>{tree.name}</Sidebar.GroupLabel>
-            {tree.description ? (
-              <p className="text-muted px-2 pb-1 text-xs">{tree.description}</p>
-            ) : null}
-            <Sidebar.Menu
-              aria-label={`${toText(tree.name, "Documentation")} pages`}
-              expandedKeys={expandedKeys}
-              onExpandedChange={handleExpandedChange}
-              showGuideLines="hover"
-            >
-              {renderNodes(tree.children, currentPath, scope)}
-            </Sidebar.Menu>
-          </Sidebar.Group>
-        ) : null}
-      </Sidebar.Content>
-    </>
+    <nav aria-label="Documentation" className="flex flex-col gap-6">
+      {renderTopLevel(tree.children, { currentPath, expandedIds, toggle })}
+    </nav>
   );
 }
 
-function renderNodes(
-  nodes: PageTree.Node[],
-  currentPath: string,
-  scope: string,
-  ancestry: number[] = [],
-): ReactNode[] {
-  return nodes.map((node, index) => {
-    const path = [...ancestry, index];
-    const id = getNodeId(node, scope, path);
-
-    if (node.type === "separator") {
-      return (
-        <Sidebar.MenuItem
-          key={id}
-          id={id}
-          isDisabled
-          textValue={toText(node.name, "Documentation section separator")}
-        >
-          <Sidebar.MenuItemContent>
-            {node.icon ? <Sidebar.MenuIcon>{node.icon}</Sidebar.MenuIcon> : null}
-            {node.name ? <Sidebar.MenuLabel>{node.name}</Sidebar.MenuLabel> : null}
-            <Sidebar.Separator
-              aria-label={node.name ? toText(node.name, "Documentation section") : undefined}
-              className={node.name ? "ml-2 flex-1" : "w-full"}
-            />
-          </Sidebar.MenuItemContent>
-        </Sidebar.MenuItem>
-      );
-    }
-
-    if (node.type === "page") {
-      return renderPage(node, currentPath, id);
-    }
-
-    return (
-      <Sidebar.MenuItem
-        key={id}
-        href={node.index?.url}
-        id={id}
-        isCurrent={node.index?.url === currentPath}
-        rel={node.index?.external ? "noopener noreferrer" : undefined}
-        target={node.index?.external ? "_blank" : undefined}
-        textValue={toText(node.name, node.index?.url ?? id)}
-      >
-        <Sidebar.MenuItemContent>
-          {node.icon ? <Sidebar.MenuIcon>{node.icon}</Sidebar.MenuIcon> : null}
-          <NodeLabel description={node.description} name={node.name} />
-          <Sidebar.MenuTrigger
-            aria-label={
-              node.collapsible === false
-                ? `${toText(node.name, "Folder")} is always expanded`
-                : `Toggle ${toText(node.name, "folder")}`
-            }
-            isDisabled={node.collapsible === false}
-          >
-            <Sidebar.MenuIndicator />
-          </Sidebar.MenuTrigger>
-        </Sidebar.MenuItemContent>
-        <Sidebar.Submenu>
-          {renderNodes(node.children, currentPath, scope, path)}
-        </Sidebar.Submenu>
-      </Sidebar.MenuItem>
-    );
-  });
-}
-
-function renderPage(page: PageTree.Item, currentPath: string, id: string): ReactNode {
-  return (
-    <Sidebar.MenuItem
-      key={id}
-      href={page.url}
-      id={id}
-      isCurrent={currentPath === page.url}
-      rel={page.external ? "noopener noreferrer" : undefined}
-      target={page.external ? "_blank" : undefined}
-      textValue={toText(page.name, page.url)}
-    >
-      <Sidebar.MenuItemContent>
-        {page.icon ? <Sidebar.MenuIcon>{page.icon}</Sidebar.MenuIcon> : null}
-        <NodeLabel description={page.description} name={page.name} />
-      </Sidebar.MenuItemContent>
-    </Sidebar.MenuItem>
-  );
-}
-
-function NodeLabel({ description, name }: { description?: ReactNode; name: ReactNode }) {
-  return (
-    <span className="min-w-0 flex-1">
-      <Sidebar.MenuLabel>{name}</Sidebar.MenuLabel>
-      {description ? (
-        <span className="text-muted mt-0.5 block truncate text-xs">{description}</span>
-      ) : null}
-    </span>
-  );
-}
-
-type ExpansionKeys = {
-  currentKeys: Set<string>;
-  defaultOpenKeys: Set<string>;
-  lockedKeys: Set<string>;
+type RenderContext = {
+  currentPath: string;
+  expandedIds: ReadonlySet<string>;
+  toggle: (id: string) => void;
 };
 
-function getExpansionKeys(
-  nodes: PageTree.Node[],
-  currentPath: string,
-  scope: string,
-  ancestry: number[] = [],
-): ExpansionKeys {
-  const keys: ExpansionKeys = {
-    currentKeys: new Set(),
-    defaultOpenKeys: new Set(),
-    lockedKeys: new Set(),
+function renderTopLevel(nodes: PageTree.Node[], context: RenderContext): ReactNode[] {
+  const sections: ReactNode[] = [];
+  let looseItems: ReactNode[] = [];
+  let looseKey = "";
+
+  const flushLoose = () => {
+    if (looseItems.length === 0) return;
+    sections.push(
+      <ul key={`loose-${looseKey}`} className="flex flex-col gap-0.5">
+        {looseItems}
+      </ul>,
+    );
+    looseItems = [];
   };
 
   nodes.forEach((node, index) => {
-    if (node.type !== "folder") return;
+    const id = getNodeId(node, [index]);
 
-    const path = [...ancestry, index];
-    const id = getNodeId(node, scope, path);
+    if (node.type === "folder" && node.defaultOpen) {
+      flushLoose();
+      sections.push(
+        <section key={id}>
+          <h3 className="text-foreground px-2.5 pb-1.5 text-sm font-semibold">
+            {node.name}
+          </h3>
+          <ul className="flex flex-col gap-0.5">
+            {node.children.map((child, childIndex) =>
+              renderNode(child, [index, childIndex], context),
+            )}
+          </ul>
+        </section>,
+      );
+      return;
+    }
 
-    if (node.defaultOpen) keys.defaultOpenKeys.add(id);
-    if (node.collapsible === false) keys.lockedKeys.add(id);
-    if (containsCurrentPage(node, currentPath)) keys.currentKeys.add(id);
-
-    const childKeys = getExpansionKeys(node.children, currentPath, scope, path);
-    addKeys(keys.currentKeys, childKeys.currentKeys);
-    addKeys(keys.defaultOpenKeys, childKeys.defaultOpenKeys);
-    addKeys(keys.lockedKeys, childKeys.lockedKeys);
+    looseKey = id;
+    looseItems.push(renderNode(node, [index], context));
   });
 
-  return keys;
+  flushLoose();
+  return sections;
 }
 
-function addKeys(target: Set<string>, source: Set<string>) {
-  for (const key of source) target.add(key);
+function renderNode(
+  node: PageTree.Node,
+  path: number[],
+  context: RenderContext,
+): ReactNode {
+  const id = getNodeId(node, path);
+
+  if (node.type === "separator") return null;
+
+  if (node.type === "page") {
+    return (
+      <li key={id}>
+        <PageLink currentPath={context.currentPath} page={node} />
+      </li>
+    );
+  }
+
+  return <FolderRow key={id} context={context} folder={node} id={id} path={path} />;
+}
+
+function FolderRow({
+  context,
+  folder,
+  id,
+  path,
+}: {
+  context: RenderContext;
+  folder: PageTree.Folder;
+  id: string;
+  path: number[];
+}) {
+  const isExpanded = context.expandedIds.has(id);
+  const chevron = (
+    <Icon
+      className={`size-3.5 shrink-0 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+      icon="gravity-ui:chevron-right"
+    />
+  );
+  const isIndexCurrent = folder.index?.url === context.currentPath;
+
+  return (
+    <li>
+      {folder.index ? (
+        <span className="flex items-center gap-0.5">
+          <PageLink
+            className="flex-1"
+            currentPath={context.currentPath}
+            page={folder.index}
+            label={folder.name}
+          />
+          <button
+            aria-expanded={isExpanded}
+            aria-label={`Toggle ${toText(folder.name, "section")}`}
+            className={`text-muted hover:bg-default hover:text-foreground rounded-lg p-1.5 transition-colors ${isIndexCurrent ? "text-accent-soft-foreground" : ""}`}
+            onClick={() => context.toggle(id)}
+            type="button"
+          >
+            {chevron}
+          </button>
+        </span>
+      ) : (
+        <button
+          aria-expanded={isExpanded}
+          className={`${itemBaseClass} ${itemIdleClass} justify-between`}
+          onClick={() => context.toggle(id)}
+          type="button"
+        >
+          <span className="min-w-0 flex-1 truncate text-start">{folder.name}</span>
+          {chevron}
+        </button>
+      )}
+      {isExpanded ? (
+        <ul className="border-separator ms-3.5 mt-0.5 flex flex-col gap-0.5 border-s ps-2">
+          {folder.children.map((child, childIndex) =>
+            renderNode(child, [...path, childIndex], context),
+          )}
+        </ul>
+      ) : null}
+    </li>
+  );
+}
+
+function PageLink({
+  className,
+  currentPath,
+  label,
+  page,
+}: {
+  className?: string;
+  currentPath: string;
+  label?: ReactNode;
+  page: PageTree.Item;
+}) {
+  const isCurrent = page.url === currentPath;
+  const linkClass = `${itemBaseClass} ${isCurrent ? itemActiveClass : itemIdleClass} ${className ?? ""}`;
+  const content = (
+    <>
+      <span className="min-w-0 flex-1 truncate">{label ?? page.name}</span>
+      {page.external ? (
+        <Icon aria-hidden className="text-muted size-3 shrink-0" icon="gravity-ui:arrow-up-right" />
+      ) : null}
+    </>
+  );
+
+  // Only /docs routes live in this app; Dokka reference pages and external
+  // sites need a full navigation.
+  if (page.external || !page.url.startsWith("/docs")) {
+    return (
+      <a
+        className={linkClass}
+        href={page.url}
+        rel={page.external ? "noopener noreferrer" : undefined}
+        target={page.external ? "_blank" : undefined}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      aria-current={isCurrent ? "page" : undefined}
+      className={linkClass}
+      href={page.url}
+    >
+      {content}
+    </Link>
+  );
+}
+
+function getFolderIdsContaining(
+  nodes: PageTree.Node[],
+  currentPath: string,
+  ancestry: number[] = [],
+): Set<string> {
+  const ids = new Set<string>();
+
+  nodes.forEach((node, index) => {
+    if (node.type !== "folder") return;
+    const path = [...ancestry, index];
+
+    if (containsCurrentPage(node, currentPath)) ids.add(getNodeId(node, path));
+
+    for (const id of getFolderIdsContaining(node.children, currentPath, path)) {
+      ids.add(id);
+    }
+  });
+
+  return ids;
 }
 
 function containsCurrentPage(folder: PageTree.Folder, currentPath: string): boolean {
@@ -277,12 +267,12 @@ function containsCurrentPage(folder: PageTree.Folder, currentPath: string): bool
   });
 }
 
-function getNodeId(node: PageTree.Node, scope: string, path: number[]): string {
-  if (node.$id) return `${scope}:${node.$id}`;
-  if (node.type === "page") return `${scope}:page:${node.url}`;
-  if (node.type === "folder" && node.$ref?.folder) return `${scope}:folder:${node.$ref.folder}`;
-  if (node.type === "folder" && node.index) return `${scope}:folder:${node.index.url}`;
-  return `${scope}:${node.type}:${path.join(".")}`;
+function getNodeId(node: PageTree.Node, path: number[]): string {
+  if (node.$id) return node.$id;
+  if (node.type === "page") return `page:${node.url}`;
+  if (node.type === "folder" && node.$ref?.folder) return `folder:${node.$ref.folder}`;
+  if (node.type === "folder" && node.index) return `folder:${node.index.url}`;
+  return `${node.type}:${path.join(".")}`;
 }
 
 function toText(name: ReactNode, fallback: string): string {
@@ -295,8 +285,4 @@ function extractText(value: ReactNode): string {
   if (Array.isArray(value)) return value.map(extractText).join(" ");
   if (isValidElement<{ children?: ReactNode }>(value)) return extractText(value.props.children);
   return "";
-}
-
-function isCurrentPath(currentPath: string, href: string): boolean {
-  return currentPath === href || (href !== "/docs" && currentPath.startsWith(`${href}/`));
 }

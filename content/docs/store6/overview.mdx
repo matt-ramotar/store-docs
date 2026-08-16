@@ -1,5 +1,5 @@
 ---
-title: Store 6
+title: Introduction
 description: Typed Kotlin Multiplatform reads with explicit origins, freshness, and failure states.
 ---
 
@@ -29,15 +29,38 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
       <Link.Icon />
     </Link>
   </div>
+</div>
 
-  <CodeSlab
-    code={`val users = store<UserKey, User> {
+## Why Store 6?
+
+Data that lives in more than one place — a network, a local database, and memory — has to be
+coordinated: which copy is fresh, which boundary failed, and what a screen should render while a
+fetch is in flight. Store 6 standardizes that coordination behind one typed read contract, so
+application code stops re-implementing it around every endpoint.
+
+You describe a key and a fetcher; Store handles single-flighting concurrent demand, staleness,
+invalidation, and bounded memory. Every zero-config behavior is named and covered by a conformance
+test. The `store6-*` coordinates publish side by side with Store 5 for the whole 6.x major, so you
+can migrate one screen at a time.
+
+<CodeSlab
+  code={`val users = store<UserKey, User> {
     fetcher { key -> FakeApi.getUser(key.id) }
 }`}
-    lang="kotlin"
-    title="Fetcher-only Store"
-  />
-</div>
+  lang="kotlin"
+  title="Fetcher-only Store"
+/>
+
+Store 6 has these primary areas:
+
+- **Core reads** (`store6-core`): the `stream` and `get` read contract, with explicit
+  [origins, freshness, and failure states](/docs/store6/concepts/read-contract).
+- **Mutations** (`store6-mutations`, experimental): the
+  [journalled write path](/docs/store6/mutations) with optimistic overlays and acknowledgements.
+- **Integrations**: [Room](/docs/store6/room) and [SQLDelight](/docs/store6/sqldelight)
+  persistence adapters, and the [Compose](/docs/store6/compose) extensions.
+- **Migration**: [Store 5 interop and screen-by-screen migration](/docs/store6/migration/from-store5)
+  while both coordinate lines coexist.
 
 ## Start here
 
@@ -45,19 +68,24 @@ Choose the guide that matches the next boundary you need to add.
 
 <StartHereList />
 
-## Read resolution
-
-Every data result names the boundary that supplied the value. Origin and freshness are independent:
-read `origin` to identify provenance, then read `isStale` and `refreshing` for lifecycle state.
-
-<ReadResolutionTable />
-
 ## Modules and targets
 
 API tier and target coverage are separate. Experimental modules can still publish broad target
 matrices, while adapter execution depends on the database runtime available on each target.
 
 <SupportMatrix />
+
+## Community
+
+- [Community resources](/docs/community/overview): Talks and interviews spanning both Store
+  generations.
+- [GitHub](https://github.com/MobileNativeFoundation/Store): Issues and discussions for the Store
+  project.
+
+## llms.txt
+
+The Store 6 documentation is available in Markdown format at [/llms.txt](/llms.txt). Paste it into
+a large-context LLM to ask questions grounded in the most up-to-date documentation.
 
 ---
 

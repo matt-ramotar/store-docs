@@ -1,13 +1,16 @@
 {
   "pages": [
     "store6",
-    "---Store 5 (legacy)---",
-    "concepts/store5",
-    "use-cases/store5",
-    "best-practices/store5",
+    "index",
+    "---Getting Started---",
     "meet-store",
     "intro",
     "quickstart",
-    "community/overview"
+    "concepts/store5",
+    "use-cases/store5",
+    "best-practices/store5",
+    "---Resources---",
+    "community/overview",
+    "[Migrate to Store 6](/docs/store6/migration/from-store5)"
   ]
 }
