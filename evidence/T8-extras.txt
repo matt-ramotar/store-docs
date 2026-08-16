@@ -7,6 +7,7 @@
 /docs/store6/concepts/memory-and-lifecycle
 /docs/store6/concepts/read-contract
 /docs/store6/contributing
+/docs/store6/graphql
 /docs/store6/guides/devtools
 /docs/store6/guides/extending
 /docs/store6/guides/fetchers
@@ -32,7 +33,9 @@
 /docs/store6/mutations/server
 /docs/store6/mutations/testing
 /docs/store6/overview
+/docs/store6/paging
 /docs/store6/quickstart
+/docs/store6/realtime
 /docs/store6/roadmap
 /docs/store6/room
 /docs/store6/sqldelight

@@ -2,6 +2,9 @@
 title: "Quickstart"
 ---
 
+> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+
 Store needs two things from you: a **key** that identifies what you want, and a **fetcher** that
 knows how to go get it. Everything else — sharing one in-flight request across concurrent callers,
 serving what is already resident, tracking staleness, bounding memory — is what Store does with
@@ -124,15 +127,11 @@ uses resident and fetched data.
 
 ## Write path (experimental)
 
-<Callout type="Warning">
-
-**Experimental.** `store6-mutations` is a separate artifact and every public symbol is
-`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.
-
-**The spelling below is the current API surface.** The module is still experimental — shapes
-can change in any release — but the snippet below matches the implementation.
-
-</Callout>
+> **Experimental.** `store6-mutations` is a separate artifact and every public symbol is
+> `@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.
+>
+> **The spelling below is the current API surface.** The module is still experimental — shapes
+> can change in any release — but the snippet below matches the implementation.
 
 Optimistic writes go through a journal, so they survive being offline and survive process death.
 You get a mutation store instead of a plain one, and it is a `Store` — everything above still works.

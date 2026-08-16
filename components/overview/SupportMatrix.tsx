@@ -1,4 +1,6 @@
-import { Chip, Link, Table } from "@heroui/react";
+import { Chip } from "@heroui/react/chip";
+import { Link } from "@heroui/react/link";
+import { Table } from "@heroui/react/table";
 
 const canonicalTargets =
   "Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64.";

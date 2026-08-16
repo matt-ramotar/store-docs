@@ -62,6 +62,9 @@ const navLabels: Record<string, string> = {
   "/docs/store6/compose": "Compose",
   "/docs/store6/room": "Room",
   "/docs/store6/sqldelight": "SQLDelight",
+  "/docs/store6/paging": "Paging",
+  "/docs/store6/realtime": "Realtime",
+  "/docs/store6/graphql": "GraphQL",
   "/docs/store6/migration/from-store5": "From Store 5",
   "/docs/store6/migration/component-map": "Component Map",
   "/docs/store6/migration/from-store4": "From Store 4",
@@ -218,6 +221,8 @@ export const topNavLinks: TopNavLink[] = [
 export const gitHubRepo = {
   href: "https://github.com/MobileNativeFoundation/Store",
   label: "MobileNativeFoundation/Store",
+  owner: "MobileNativeFoundation",
+  repo: "Store",
 };
 
 export type VersionSwitcherItem = VersionNavItem & {

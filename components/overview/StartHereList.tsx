@@ -1,4 +1,5 @@
-import { Chip, Link } from "@heroui/react";
+import { Chip } from "@heroui/react/chip";
+import { Link } from "@heroui/react/link";
 
 const startHereItems = [
   {

@@ -171,6 +171,10 @@
         "sha256": "341130c484dc74832ec45f05775ff6a38a1ccf70bcc2e76cd7ccfcef7f4e109c"
       },
       {
+        "path": "content/docs/store6/graphql.mdx",
+        "sha256": "934620b68fc81ef2dee41b909e9994095a3adcb67bb8ffa143b8ba8812a28aa3"
+      },
+      {
         "path": "content/docs/store6/important-defaults.mdx",
         "sha256": "8ecfcc1e0634459b0f8f1a9205238124c2599ed37b98ebc4160b4e597c8a6800"
       },
@@ -187,6 +191,10 @@
         "sha256": "97a4ead0b1aa58245b5ebe823ea289ed552e8807def6a8c3e8da59d49c3a21b7"
       },
       {
+        "path": "content/docs/store6/realtime.mdx",
+        "sha256": "35df93b5670b858762cb3cd863e77c2138f78a1a3394a456831ae76caea4d1a4"
+      },
+      {
         "path": "content/docs/store6/roadmap.mdx",
         "sha256": "a60ea77d53b25418d8c14d48dea1d4e85e5583041ddd2581fd9afc85da30173f"
       },
@@ -200,7 +208,7 @@
       },
       {
         "path": "content/docs/store6/stability.mdx",
-        "sha256": "4c0bbd463a7cad5be08b9036905857c814c48913b8269c4c49d39b11de79630a"
+        "sha256": "446226a9bf47e7d1315fc454dde9e648fdd7d7102b30078835cfe3595fe8552c"
       },
       {
         "path": "public/llms.txt",

@@ -11,7 +11,13 @@ export default withMDX({
   turbopack: {
     root,
     rules: {
-      "**/@mintlify/components/dist/_virtual/*.js": {
+      "*.js": {
+        condition: {
+          all: [
+            { path: /@mintlify\/components\// },
+            { content: /import\s*\{\s*__require\s+as/ },
+          ],
+        },
         loaders: [mintlifyCjsLoader],
         as: "*.js",
       },
