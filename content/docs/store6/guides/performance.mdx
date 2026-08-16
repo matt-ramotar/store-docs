@@ -28,7 +28,7 @@ Run one of its three profiles from the Store 6 repository root:
 
 | Profile | Intended use | Evidence boundary |
 | --- | --- | --- |
-| `benchmark` | Default local profile | Local measurement; it cannot support a target proposal. |
+| `benchmark` | Default local profile | Local measurement. It cannot support a target proposal. |
 | `smokeBenchmark` | Short, report-only CI shape | Execution and result-shape evidence, not a performance target. |
 | `calibrateBenchmark` | Longer local profile with three forks | The only profile whose results may support a target proposal, and only on a documented, quiet, plugged-in machine. |
 
@@ -36,7 +36,7 @@ Result JSON is discovered recursively beneath
 `store6-benchmarks/build/reports/benchmarks/`. The timestamped layout observed with the current
 benchmark tooling is evidence from that run, not a stable path contract.
 
-## What the ratio means — and what it does not
+## What the ratio means, and what it does not
 
 The headline metric is the `storeStream` / `rawSotFlow` average-time ratio for one complete timed
 invocation. Both sides use the same `FakeSourceOfTruth` and the same write schedule. The 1,000-write
@@ -47,16 +47,16 @@ inside the timed operation.
 The reported score therefore includes collector launch, attachment, readiness, the write schedule,
 and final observation. It is not pure write-only latency, per-emission latency, or a guarantee that
 every intermediate write was observed. Both sides may conflate intermediate writes.
-`paced=true` cooperatively yields the writer; it is not an acknowledgement protocol.
+`paced=true` cooperatively yields the writer. It is not an acknowledgement protocol.
 `paced=false` is the burst/conflation schedule.
 
 | Cell | What it compares | How to read it |
 | --- | --- | --- |
 | `collectors=1` | One Store collector and one raw reader over the same fake source of truth | The engine-overhead headline because reader multiplicity and write cost match. |
-| `collectors=8` | Store shares one upstream and fans out; raw opens eight reader chains | Fan-out and topology data, not an isolated engine-overhead ratio. |
+| `collectors=8` | Store shares one upstream and fans out. Raw opens eight reader chains | Fan-out and topology data, not an isolated engine-overhead ratio. |
 
 Store's `Dispatchers.Default` engine hops are included in Store cost. The raw side cooperates on the
-`runBlocking` thread; the ratio does not normalize away that asymmetry.
+`runBlocking` thread. The ratio does not normalize away that asymmetry.
 
 ## Evidence grades
 
@@ -65,7 +65,7 @@ results, but they may not support a performance target. Only the local calibrati
 a documented quiet machine, may support a target proposal.
 
 There is no numeric CI performance gate. The blocking benchmark build compiles the harness and runs
-each benchmark body once through smoke tests. That protects the harness from code rot; it does not
+each benchmark body once through smoke tests. That protects the harness from code rot. It does not
 judge performance. A separate report-only workflow runs `smokeBenchmark`, validates the result
 schema, and uploads the JSON outside release gating. Neither workflow asserts a timing or allocation
 threshold.

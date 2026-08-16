@@ -40,7 +40,7 @@ const modules = [
     tier: "Experimental",
     release: "alpha01, may slip one alpha",
     targets:
-      "Canonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows; JS and Wasm are compile-only.",
+      "Canonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows. JS and Wasm are compile-only.",
     detail: undefined,
   },
   {

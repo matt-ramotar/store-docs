@@ -40,7 +40,7 @@ const STORE6_TARGETS = [
   "content/docs/store6/sqldelight.mdx",
   "content/docs/store6/room.mdx",
 ];
-const T3_OVERVIEW_SHA256 = "7d5c9bd85b530431b0c4d1ce808be0a5a3da67e7260a20550520c851a32cbfe6";
+const T3_OVERVIEW_SHA256 = "318c2bd1c6ae33bc642694c36763f1ad491a0e83ca9816231df4f44e366ca2d2";
 
 const inventory = readLines(INVENTORY_PATH);
 const docsInventory = inventory.filter((url) => new URL(url).pathname.startsWith("/docs/"));
@@ -66,7 +66,7 @@ test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
   const document = readFrontmatterDocument(DOCS_HOME_PATH);
   const expectedIntro = [
     "Store reads and writes data that lives in more than one place: a network, a local database, and",
-    "memory. Store 6 is the next major line; Store 5 continues under its own coordinates for the whole",
+    "memory. Store 6 is the next major line. Store 5 continues under its own coordinates for the whole",
     "6.x major.",
   ].join("\n");
   const expectedLinks = [
@@ -94,19 +94,19 @@ test("B5 docs home is the two-track Store 6 and Store 5 router", () => {
   assert.doesNotMatch(document.body, /^#\s+/m, "docs home must not contain a body H1");
   assert.deepEqual(markdownHeadings(document.body), [
     { depth: 2, title: "Why Store?" },
-    { depth: 2, title: "Store 6 — start here" },
-    { depth: 2, title: "Store 5 — maintained legacy" },
+    { depth: 2, title: "Store 6: start here" },
+    { depth: 2, title: "Store 5: maintained legacy" },
     { depth: 3, title: "Which track am I on?" },
     { depth: 2, title: "Project" },
   ]);
   assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 1);
   assert.match(
     document.body,
-    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01; nothing is published yet\. The `store6-core` API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
+    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01\. Nothing is published yet\. The `store6-core` API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
   );
   assert.deepEqual(markdownAndHtmlTargets(document.body), expectedLinks);
   for (const target of expectedLinks) assertLocalTargetExists(target, "content/docs/index.mdx");
-  assert.match(document.body, /^## Store 5 — maintained legacy$/m);
+  assert.match(document.body, /^## Store 5: maintained legacy$/m);
   assert.match(document.body, /Store 5 documentation remains available\./);
   assert.match(
     document.body,
@@ -236,7 +236,7 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
   assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 1);
   assert.match(
     document.body,
-    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01; nothing is published yet\. The `store6-core`\s+API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
+    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01\. Nothing is published yet\. The `store6-core`\s+API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
   );
   assert.match(
     document.body,

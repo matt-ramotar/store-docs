@@ -3,8 +3,8 @@ title: "The read contract: stream, get, and origins"
 description: "One failure rule, four result kinds, honest origin attribution, and the lifecycle of a Store stream."
 ---
 
-A Store has exactly two read doors — `stream` and `get` — and one failure rule that splits them:
-`stream` emits failures as values and never throws them at your collector; `get` returns a value or
+A Store has exactly two read doors (`stream` and `get`) and one failure rule that splits them.
+`stream` emits failures as values and never throws them at your collector. `get` returns a value or
 throws, and never emits partial states. Everything on this page is the contract of the `Store`
 interface in `store6-core`. It holds for every store you build, from a five-line memory-only store
 to one backed by persistence and optimistic writes.
@@ -18,7 +18,7 @@ public suspend fun get(key: K, freshness: Freshness = Freshness.CachedOrFetch): 
 <Callout type="Note">
 
 `store6-core` is stable-track, but the API is **not frozen** until the beta01 freeze candidate.
-Nothing on this page needs an experimental opt-in — `stream`, `get`, `close`, `StoreResult`, and
+Nothing on this page needs an experimental opt-in. `stream`, `get`, `close`, `StoreResult`, and
 `Origin` are plain public API. Implementing `Store` yourself is different: the interface requires a
 `DelicateStoreApi` opt-in to subclass, because an implementation must uphold every semantic this
 page describes.
@@ -29,8 +29,8 @@ page describes.
 
 **`stream` never throws retrieval failures.** Fetcher and source-of-truth failures encountered
 while retrieving a key are emitted as `StoreResult.Error` values rather than thrown to the
-collector. Your collector sees the failure as data, decides how to render it, and — with one
-exception covered below — keeps collecting a live flow.
+collector. Your collector sees the failure as data, decides how to render it, and (with one
+exception covered below) keeps collecting a live flow.
 
 **`get` never emits.** It returns the resolved value or throws `StoreException`. There is no
 partial state on this path: `get` throws when fetching or source-of-truth access failed, when a
@@ -39,7 +39,7 @@ no local value, or when the server reported deletion.
 
 The one exception on both doors is not a retrieval failure at all: any operation on a closed store
 throws `IllegalStateException` with the message `Store is closed.` That is a usage error in your
-code — you kept a reference past `close()` — not something a fetcher did. The structured error
+code (you kept a reference past `close()`), not something a fetcher did. The structured error
 vocabulary behind `StoreResult.Error` and `StoreException` has its own page:
 [Errors and failure handling](/docs/store6/concepts/errors).
 
@@ -48,21 +48,21 @@ vocabulary behind `StoreResult.Error` and `StoreException` has its own page:
 `StoreResult` is a sealed interface with exactly four kinds. There is no fifth case, so an
 exhaustive `when` is safe to write and will stay safe:
 
-- **`Loading`** — the store has no servable resident value under the policy in effect. This is
+- **`Loading`**: the store has no servable resident value under the policy in effect. This is
   policy-relative, not merely "empty cache": a resident value that `Freshness.MustBeFresh` withholds
   produces `Loading` even though bytes are sitting in memory.
-- **`Data(value, origin, age, isStale, refreshing)`** — a value, with the source it came from, the
+- **`Data(value, origin, age, isStale, refreshing)`**: a value, with the source it came from, the
   elapsed time since it was committed, whether it was invalidated or exceeds the age bound of the
   freshness policy in effect, and whether a fetch was in flight for the key when the result was
   emitted.
-- **`Revalidated(age)`** — the not-modified signal of a conditional fetch. The server confirmed the
+- **`Revalidated(age)`**: the not-modified signal of a conditional fetch. The server confirmed the
   current value is still fresh, metadata was refreshed, and `age` is the elapsed time since the last
   commit, measured at revalidation. No new `Data` frame is produced, because no new value exists.
-- **`Error(error, servedStale)`** — a retrieval failure, carrying a structured `StoreError` and
+- **`Error(error, servedStale)`**: a retrieval failure, carrying a structured `StoreError` and
   whether a stale value was served alongside it.
 
-Collectors that only handle `Loading`/`Data`/`Error` silently miss the "nothing changed" signal —
-after a conditional fetch returns not-modified, the store emits one `Revalidated`, not a redundant
+Collectors that only handle `Loading`/`Data`/`Error` silently miss the "nothing changed" signal.
+After a conditional fetch returns not-modified, the store emits one `Revalidated`, not a redundant
 `Data`. Handle all four. This is the exhaustive `when` from the quickstart program that compiles
 and runs in CI:
 
@@ -97,30 +97,30 @@ test would be right and this page would be a bug.
 Two facts about `OVERLAY` frames are worth learning before you ever use the write path:
 
 - **Overlay frames are fresh by definition.** They are stamped `age = Duration.ZERO` and
-  `isStale = false` unconditionally, because an optimistic value genuinely is new — the user just
+  `isStale = false` unconditionally, because an optimistic value genuinely is new. The user just
   wrote it. Only `refreshing` is live on an overlay frame. A pending-write affordance therefore
-  keys on `origin == Origin.OVERLAY`, never on `isStale`; a spinner driven by `isStale` will never
+  keys on `origin == Origin.OVERLAY`, never on `isStale`. A spinner driven by `isStale` will never
   fire for a pending write, and that is intended. The full consumer guidance lives in
   [the stability policy](/docs/store6/stability#9-reading-pending-writes-and-staleness), and the
   [pending-write UI guide](/docs/store6/mutations/pending-write-ui) covers the consumer pattern in
   depth.
 - **`get` is never projected by a configured overlay.** Overlays apply only to `stream`, so an
-  optimistic write is invisible to `get` — it is a point read of committed truth. To observe your
+  optimistic write is invisible to `get`. It is a point read of committed truth. To observe your
   own optimistic write, observe `stream`.
 
 ## Conflation: lifecycle signals are never dropped
 
 A slow collector never blocks a fast one, and never blocks the engine. When a collector falls
-behind, the store conflates — but conflation is **per result kind**:
+behind, the store conflates, but conflation is **per result kind**:
 
 - A newer `Data` supersedes an older queued `Data`. The slow collector skips intermediate values
   and observes the latest row.
 - A queued `Loading`, `Error`, or `Revalidated` is **never displaced by another kind**. Lifecycle
-  signals survive backpressure; only a newer signal of the same kind can supersede an older queued
+  signals survive backpressure. Only a newer signal of the same kind can supersede an older queued
   one, so the kind itself is never lost.
 
 The consequence for UI code: you may not see every intermediate value, but you will never miss the
-fact that a load started, a fetch failed, or the server confirmed freshness — and every collector
+fact that a load started, a fetch failed, or the server confirmed freshness, and every collector
 eventually observes the latest row. Each of these claims is pinned by a named conformance test on
 [Important defaults](/docs/store6/important-defaults).
 
@@ -128,11 +128,11 @@ eventually observes the latest row. Each of these claims is pinned by a named co
 
 `StoreResult.Error` carries `servedStale`, and its meaning is exact: `true` when an invalidated
 resident value was served and its refresh failed under `Freshness.CachedOrFetch` or
-`Freshness.StaleIfError`; `false` when no resident was served or the policy withheld it.
+`Freshness.StaleIfError`. `false` when no resident was served or the policy withheld it.
 
 The rendering rule follows directly. When `servedStale` is `true`, the user is still looking at
-usable content — the stale value was emitted before the failure arrived. Show an error affordance
-over that content; do not blank the screen. When `servedStale` is `false`, there is nothing on
+usable content. The stale value was emitted before the failure arrived. Show an error affordance
+over that content. Do not blank the screen. When `servedStale` is `false`, there is nothing on
 screen to preserve, and a full error state is honest. The `StoreError` vocabulary that tells you
 *what* failed is covered in [Errors and failure handling](/docs/store6/concepts/errors).
 
@@ -141,14 +141,14 @@ screen to preserve, and a full error state is honest. The `StoreError` vocabular
 Exactly one failure completes a stream: a `Freshness.MustBeFresh` initial-cycle fetch or
 revalidation failure emits one `Error` and completes the flow. `MustBeFresh` promises never to
 serve residence, so when the fresh fetch fails there is nothing left for the stream to do. Every
-other failure — under every other policy — leaves the flow live: the error arrives as a value and
+other failure, under every other policy, leaves the flow live: the error arrives as a value and
 collection continues.
 
 <Callout type="Tip">
 
 Do not wrap stream collection in `try`/`catch` expecting thrown retrieval errors. Errors arrive as
 `StoreResult.Error` values, and the stream usually stays live after one. A `catch` block around
-`collect` sees the closed-store `IllegalStateException` and cancellation — never retrieval
+`collect` sees the closed-store `IllegalStateException` and cancellation, never retrieval
 failures. Handling failures there means your UI never renders them.
 
 </Callout>
@@ -161,12 +161,12 @@ is closed, and it continues to report later values:
 - **Refetches triggered by invalidation.** After `invalidate(key)`, an active stream observes the
   refetched data.
 - **The absent-value transition after a clear.** After `clear(key)`, an active stream observes
-  `Loading` — the value is gone — and then refetched data.
+  `Loading` (the value is gone) and then refetched data.
 
 What each maintenance verb makes streams observe is the subject of
 [Invalidate or clear](/docs/store6/invalidate-vs-clear).
 
-Concurrent collectors and callers for one key share a single fetch — fifty getters and fifty
+Concurrent collectors and callers for one key share a single fetch. Fifty getters and fifty
 collectors of one key cost one fetch, and all of them observe its outcome. How sharing, eviction, and
 collector lifecycle interact is covered in
 [Memory, eviction, and store lifecycle](/docs/store6/concepts/memory-and-lifecycle).
@@ -187,14 +187,14 @@ read `origin` to identify provenance, then read `isStale` and `refreshing` for l
 
 ## Where next
 
-- [Freshness policies](/docs/store6/concepts/freshness) — how each read is planned, and what does
+- [Freshness policies](/docs/store6/concepts/freshness): how each read is planned, and what does
   and does not trigger a fetch.
-- [Errors and failure handling](/docs/store6/concepts/errors) — the structured `StoreError`
+- [Errors and failure handling](/docs/store6/concepts/errors): the structured `StoreError`
   vocabulary behind `Error` and `StoreException`.
-- [Invalidate or clear](/docs/store6/invalidate-vs-clear) — what streams observe after each
+- [Invalidate or clear](/docs/store6/invalidate-vs-clear): what streams observe after each
   maintenance verb.
-- [Compose integration](/docs/store6/compose) — collecting this contract in UI.
-- [Quickstart](/docs/store6/quickstart) — the runnable program this page's snippet comes from.
+- [Compose integration](/docs/store6/compose): collecting this contract in UI.
+- [Quickstart](/docs/store6/quickstart): the runnable program this page's snippet comes from.
 
 ---
 

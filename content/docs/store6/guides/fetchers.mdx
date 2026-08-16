@@ -33,7 +33,7 @@ val users = store<UserKey, User> {
 `StoreBuilder` exposes three ways to install the one fetcher a store will use:
 
 - `fetcher { key -> value }` is success-or-throw sugar. A returned value becomes
-  `FetcherResult.Success`; a thrown exception follows the store's fetch-failure path.
+  `FetcherResult.Success`. A thrown exception follows the store's fetch-failure path.
 - `fetcherOfResult { key -> result }` lets the lambda return any `FetcherResult`. Its name follows
   the Store 5 `Fetcher.ofResult` form.
 - `fetcher(fetcher)` installs the regular-interface `Fetcher<K, V>` seam. This overload is
