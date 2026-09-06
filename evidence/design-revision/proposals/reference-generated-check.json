@@ -1,0 +1,86 @@
+{
+  "base": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+  "source": "uncommitted-proposal",
+  "modules": [
+    {
+      "name": "store6-core",
+      "html": 186,
+      "files": 242,
+      "scripts": 7,
+      "scriptsDifferentFromCurrentPublic": [],
+      "styleSha256": "4ef8bbdd7f9e10add671f7e625c3e615c9e802d32b338699b1edf2d5484e2d9a"
+    },
+    {
+      "name": "store6-mutations",
+      "html": 415,
+      "files": 471,
+      "scripts": 7,
+      "scriptsDifferentFromCurrentPublic": [],
+      "styleSha256": "4ef8bbdd7f9e10add671f7e625c3e615c9e802d32b338699b1edf2d5484e2d9a"
+    }
+  ],
+  "failures": [],
+  "fragmentExclusions": [
+    {
+      "file": "navigation.html",
+      "issue": "guide return",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "theme stylesheet",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "#theme-toggle-button",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "#searchBar",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": ".library-name--link",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "guide return",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "theme stylesheet",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "#theme-toggle-button",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": "#searchBar",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    },
+    {
+      "file": "navigation.html",
+      "issue": ".library-name--link",
+      "status": "not-applicable",
+      "reason": "Dokka navigation HTML fragment has no page header"
+    }
+  ],
+  "exhaustiveVerifierRoot": "/private/tmp/store-reference-proposal-proof-jORu04"
+}

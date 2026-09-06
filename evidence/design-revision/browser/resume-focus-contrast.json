@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T12:25:52.349Z",
+  "source": {
+    "path": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/browser/resume-focus-samples.json",
+    "sha256": "6e112a2ad175abc171b36396dd3e24805c775aeceb6f914d334b5a43deb995b8",
+    "bytes": 11006
+  },
+  "counts": {
+    "samples": 7,
+    "pass": 7,
+    "fail": 0,
+    "indeterminate": 0,
+    "inactive": 0,
+    "authoredExceptions": 0
+  },
+  "rows": [
+    {
+      "id": "focus-status-client-callbacks",
+      "fixture": "status-client-callbacks",
+      "label": "Run Badge callback",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.0510305871998975,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-c2-accordion",
+      "fixture": "c2-accordion",
+      "label": "▾\nRepeated title\nLegacy string initial state",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.46890933427717,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-c2-tabs",
+      "fixture": "c2-tabs",
+      "label": "Persistent database with a deliberately long label",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.0510305871998975,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-c2-tree",
+      "fixture": "c2-tree",
+      "label": "src",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.46890933427717,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-layout-card-navigation",
+      "fixture": "layout-card-navigation",
+      "label": "Internal route\nLocal navigation",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.0510305871998975,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-code-copy-contract",
+      "fixture": "code-copy-contract",
+      "label": "Copy exact fixture",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.6078431372549019,
+        "g": 0.8392156862745098,
+        "b": 0.8156862745098039,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.14901960784313725,
+        "b": 0.1411764705882353,
+        "a": 1
+      },
+      "ratio": 9.650251233484013,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "focus-c6-pan-zoom",
+      "fixture": "c6-pan-zoom",
+      "label": "Zoom in",
+      "kind": "focus",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.46890933427717,
+      "threshold": 3,
+      "contrastStatus": "pass",
+      "status": "pass"
+    }
+  ]
+}

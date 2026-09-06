@@ -1,0 +1,10 @@
+file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/generated-output-transaction.mjs:217
+    if (!actual.equals(Buffer.from(content))) throw new Error(`${path}: generated output differs`);
+                                                    ^
+
+Error: content/docs/store6/important-defaults.mdx: generated output differs
+    at verifyOwnedOutputs (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/generated-output-transaction.mjs:217:53)
+    at async run (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/sync-store6-docs.mjs:85:5)
+    at async file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/sync-store6-docs.mjs:77:3
+
+Node.js v22.22.0

@@ -1,0 +1,9 @@
+file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/port-page.mjs:1352
+    throw new Error("usage: port-page.mjs --acquire | --generate");
+          ^
+
+Error: usage: port-page.mjs --acquire | --generate
+    at parseMode (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/port-page.mjs:1352:11)
+    at file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/port-page.mjs:1397:16
+
+Node.js v22.22.0

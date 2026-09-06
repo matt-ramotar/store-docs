@@ -1129,7 +1129,7 @@ function renderMdx(title, description, body) {
 
 function renderTitleOnlyRoute(title, pathname) {
   return `import type { TOCItemType } from "fumadocs-core/toc";
-import { Separator } from "@heroui/react";
+import { SeparatorRoot as Separator } from "@heroui/react/separator";
 import type { Metadata } from "next";
 
 import { AppShell } from "@/components/shell/AppShell";

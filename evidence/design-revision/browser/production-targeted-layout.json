@@ -1,0 +1,310 @@
+[
+  {
+    "ctas": [
+      {
+        "bottom": 517.1171875,
+        "text": "Build your first store",
+        "top": 469.1171875
+      }
+    ],
+    "h1": 108,
+    "matrix": [],
+    "path": "/",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 488.390625,
+        "text": "Build your first store",
+        "top": 440.390625
+      }
+    ],
+    "h1": 108,
+    "matrix": [],
+    "path": "/",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 700.109375,
+        "text": "Build your first store",
+        "top": 652.109375
+      }
+    ],
+    "h1": 181.890625,
+    "matrix": [],
+    "path": "/",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 700.109375,
+        "text": "Build your first store",
+        "top": 652.109375
+      }
+    ],
+    "h1": 181.890625,
+    "matrix": [],
+    "path": "/",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 959,
+        "text": "Build your first store",
+        "top": 911
+      }
+    ],
+    "h1": 209,
+    "matrix": [
+      {
+        "id": "store6-core",
+        "right": 366,
+        "text": "store6-coreStable trackThe API is not frozen until the beta01 freeze candidate.Release targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-testing",
+        "right": 366,
+        "text": "store6-testingExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-mutations",
+        "right": 366,
+        "text": "store6-mutationsExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-compose",
+        "right": 366,
+        "text": "store6-composeExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12"
+      },
+      {
+        "id": "store6-sqldelight",
+        "right": 366,
+        "text": "store6-sqldelightExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12 artifacts. Drivers run on Andr"
+      },
+      {
+        "id": "store6-room",
+        "right": 366,
+        "text": "store6-roomExperimentalRelease targetalpha01, may slip one alphaTargetsAndroid, JVM, iosArm64, iosSimulatorArm64, macosA"
+      },
+      {
+        "id": "store6-devtools",
+        "right": 366,
+        "text": "store6-devtoolsExperimentalRelease targetalpha02 (target)TargetsCanonical 12"
+      },
+      {
+        "id": "store6-devtools-inspector",
+        "right": 366,
+        "text": "store6-devtools-inspectorExperimentalRelease targetalpha02 (target)TargetsInspector 8"
+      }
+    ],
+    "path": "/docs/store6/overview",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 803,
+        "text": "Build your first store",
+        "top": 755
+      }
+    ],
+    "h1": 209,
+    "matrix": [
+      {
+        "id": "store6-core",
+        "right": 744,
+        "text": "store6-coreStable trackThe API is not frozen until the beta01 freeze candidate.Release targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-testing",
+        "right": 744,
+        "text": "store6-testingExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-mutations",
+        "right": 744,
+        "text": "store6-mutationsExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-compose",
+        "right": 744,
+        "text": "store6-composeExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12"
+      },
+      {
+        "id": "store6-sqldelight",
+        "right": 744,
+        "text": "store6-sqldelightExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12 artifacts. Drivers run on Andr"
+      },
+      {
+        "id": "store6-room",
+        "right": 744,
+        "text": "store6-roomExperimentalRelease targetalpha01, may slip one alphaTargetsAndroid, JVM, iosArm64, iosSimulatorArm64, macosA"
+      },
+      {
+        "id": "store6-devtools",
+        "right": 744,
+        "text": "store6-devtoolsExperimentalRelease targetalpha02 (target)TargetsCanonical 12"
+      },
+      {
+        "id": "store6-devtools-inspector",
+        "right": 744,
+        "text": "store6-devtools-inspectorExperimentalRelease targetalpha02 (target)TargetsInspector 8"
+      }
+    ],
+    "path": "/docs/store6/overview",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 781,
+        "text": "Build your first store",
+        "top": 733
+      }
+    ],
+    "h1": 217,
+    "matrix": [
+      {
+        "id": "store6-core",
+        "right": 952,
+        "text": "store6-coreStable trackThe API is not frozen until the beta01 freeze candidate.Release targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-testing",
+        "right": 952,
+        "text": "store6-testingExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-mutations",
+        "right": 952,
+        "text": "store6-mutationsExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-compose",
+        "right": 952,
+        "text": "store6-composeExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12"
+      },
+      {
+        "id": "store6-sqldelight",
+        "right": 952,
+        "text": "store6-sqldelightExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12 artifacts. Drivers run on Andr"
+      },
+      {
+        "id": "store6-room",
+        "right": 952,
+        "text": "store6-roomExperimentalRelease targetalpha01, may slip one alphaTargetsAndroid, JVM, iosArm64, iosSimulatorArm64, macosA"
+      },
+      {
+        "id": "store6-devtools",
+        "right": 952,
+        "text": "store6-devtoolsExperimentalRelease targetalpha02 (target)TargetsCanonical 12"
+      },
+      {
+        "id": "store6-devtools-inspector",
+        "right": 952,
+        "text": "store6-devtools-inspectorExperimentalRelease targetalpha02 (target)TargetsInspector 8"
+      }
+    ],
+    "path": "/docs/store6/overview",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "ctas": [
+      {
+        "bottom": 749,
+        "text": "Build your first store",
+        "top": 701
+      }
+    ],
+    "h1": 217,
+    "matrix": [
+      {
+        "id": "store6-core",
+        "right": 1088,
+        "text": "store6-coreStable trackThe API is not frozen until the beta01 freeze candidate.Release targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-testing",
+        "right": 1088,
+        "text": "store6-testingExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-mutations",
+        "right": 1088,
+        "text": "store6-mutationsExperimentalRelease targetalpha01TargetsCanonical 12"
+      },
+      {
+        "id": "store6-compose",
+        "right": 1088,
+        "text": "store6-composeExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12"
+      },
+      {
+        "id": "store6-sqldelight",
+        "right": 1088,
+        "text": "store6-sqldelightExperimentalRelease targetalpha01, may slip one alphaTargetsCanonical 12 artifacts. Drivers run on Andr"
+      },
+      {
+        "id": "store6-room",
+        "right": 1088,
+        "text": "store6-roomExperimentalRelease targetalpha01, may slip one alphaTargetsAndroid, JVM, iosArm64, iosSimulatorArm64, macosA"
+      },
+      {
+        "id": "store6-devtools",
+        "right": 1088,
+        "text": "store6-devtoolsExperimentalRelease targetalpha02 (target)TargetsCanonical 12"
+      },
+      {
+        "id": "store6-devtools-inspector",
+        "right": 1088,
+        "text": "store6-devtools-inspectorExperimentalRelease targetalpha02 (target)TargetsInspector 8"
+      }
+    ],
+    "path": "/docs/store6/overview",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "ctas": [],
+    "h1": 209,
+    "matrix": [],
+    "path": "/docs/store6/quickstart",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "ctas": [],
+    "h1": 209,
+    "matrix": [],
+    "path": "/docs/store6/quickstart",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "ctas": [],
+    "h1": 217,
+    "matrix": [],
+    "path": "/docs/store6/quickstart",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "ctas": [],
+    "h1": 217,
+    "matrix": [],
+    "path": "/docs/store6/quickstart",
+    "scrollWidth": 1440,
+    "width": 1440
+  }
+]

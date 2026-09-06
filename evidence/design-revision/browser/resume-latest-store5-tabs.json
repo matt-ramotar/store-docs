@@ -1,0 +1,841 @@
+{
+  "buildId": "2nwz4DunLZkUkvn38eITs",
+  "records": [
+    {
+      "copies": [
+        {
+          "index": 3,
+          "exact": true,
+          "expectedLength": 468,
+          "actualLength": 468,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-network-model-0",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Network Model",
+      "width": 320,
+      "group": 0,
+      "label": "Network Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 4,
+          "exact": true,
+          "expectedLength": 570,
+          "actualLength": 570,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-local-database-model-1",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Local Database Model",
+      "width": 320,
+      "group": 0,
+      "label": "Local Database Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 5,
+          "exact": true,
+          "expectedLength": 444,
+          "actualLength": 444,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-domain-model-2",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Domain Model",
+      "width": 320,
+      "group": 0,
+      "label": "Domain Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 7,
+          "exact": true,
+          "expectedLength": 238,
+          "actualLength": 238,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-apis-0",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "APIs",
+      "width": 320,
+      "group": 1,
+      "label": "APIs"
+    },
+    {
+      "copies": [
+        {
+          "index": 8,
+          "exact": true,
+          "expectedLength": 961,
+          "actualLength": 961,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-implementations-1",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Implementations",
+      "width": 320,
+      "group": 1,
+      "label": "Implementations"
+    },
+    {
+      "copies": [
+        {
+          "index": 9,
+          "exact": true,
+          "expectedLength": 811,
+          "actualLength": 811,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-network-to-domain-0",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Network to Domain",
+      "width": 320,
+      "group": 2,
+      "label": "Network to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 10,
+          "exact": true,
+          "expectedLength": 897,
+          "actualLength": 897,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-local-database-to-domain-1",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Local Database to Domain",
+      "width": 320,
+      "group": 2,
+      "label": "Local Database to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 11,
+          "exact": true,
+          "expectedLength": 876,
+          "actualLength": 876,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-local-database-2",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Domain to Local Database",
+      "width": 320,
+      "group": 2,
+      "label": "Domain to Local Database"
+    },
+    {
+      "copies": [
+        {
+          "index": 12,
+          "exact": true,
+          "expectedLength": 825,
+          "actualLength": 825,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-network-3",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Domain to Network",
+      "width": 320,
+      "group": 2,
+      "label": "Domain to Network"
+    },
+    {
+      "copies": [
+        {
+          "index": 21,
+          "exact": true,
+          "expectedLength": 388,
+          "actualLength": 388,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-api-0",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "API",
+      "width": 320,
+      "group": 3,
+      "label": "API"
+    },
+    {
+      "copies": [
+        {
+          "index": 22,
+          "exact": true,
+          "expectedLength": 1282,
+          "actualLength": 1282,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-implementation-1",
+      "scrollWidth": 320,
+      "selected": "true",
+      "tab": "Implementation",
+      "width": 320,
+      "group": 3,
+      "label": "Implementation"
+    },
+    {
+      "copies": [
+        {
+          "index": 3,
+          "exact": true,
+          "expectedLength": 468,
+          "actualLength": 468,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-network-model-0",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Network Model",
+      "width": 390,
+      "group": 0,
+      "label": "Network Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 4,
+          "exact": true,
+          "expectedLength": 570,
+          "actualLength": 570,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-local-database-model-1",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Local Database Model",
+      "width": 390,
+      "group": 0,
+      "label": "Local Database Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 5,
+          "exact": true,
+          "expectedLength": 444,
+          "actualLength": 444,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-domain-model-2",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Domain Model",
+      "width": 390,
+      "group": 0,
+      "label": "Domain Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 7,
+          "exact": true,
+          "expectedLength": 238,
+          "actualLength": 238,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-apis-0",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "APIs",
+      "width": 390,
+      "group": 1,
+      "label": "APIs"
+    },
+    {
+      "copies": [
+        {
+          "index": 8,
+          "exact": true,
+          "expectedLength": 961,
+          "actualLength": 961,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-implementations-1",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Implementations",
+      "width": 390,
+      "group": 1,
+      "label": "Implementations"
+    },
+    {
+      "copies": [
+        {
+          "index": 9,
+          "exact": true,
+          "expectedLength": 811,
+          "actualLength": 811,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-network-to-domain-0",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Network to Domain",
+      "width": 390,
+      "group": 2,
+      "label": "Network to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 10,
+          "exact": true,
+          "expectedLength": 897,
+          "actualLength": 897,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-local-database-to-domain-1",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Local Database to Domain",
+      "width": 390,
+      "group": 2,
+      "label": "Local Database to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 11,
+          "exact": true,
+          "expectedLength": 876,
+          "actualLength": 876,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-local-database-2",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Domain to Local Database",
+      "width": 390,
+      "group": 2,
+      "label": "Domain to Local Database"
+    },
+    {
+      "copies": [
+        {
+          "index": 12,
+          "exact": true,
+          "expectedLength": 825,
+          "actualLength": 825,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-network-3",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Domain to Network",
+      "width": 390,
+      "group": 2,
+      "label": "Domain to Network"
+    },
+    {
+      "copies": [
+        {
+          "index": 21,
+          "exact": true,
+          "expectedLength": 388,
+          "actualLength": 388,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-api-0",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "API",
+      "width": 390,
+      "group": 3,
+      "label": "API"
+    },
+    {
+      "copies": [
+        {
+          "index": 22,
+          "exact": true,
+          "expectedLength": 1282,
+          "actualLength": 1282,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-implementation-1",
+      "scrollWidth": 390,
+      "selected": "true",
+      "tab": "Implementation",
+      "width": 390,
+      "group": 3,
+      "label": "Implementation"
+    },
+    {
+      "copies": [
+        {
+          "index": 3,
+          "exact": true,
+          "expectedLength": 468,
+          "actualLength": 468,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-network-model-0",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Network Model",
+      "width": 768,
+      "group": 0,
+      "label": "Network Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 4,
+          "exact": true,
+          "expectedLength": 570,
+          "actualLength": 570,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-local-database-model-1",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Local Database Model",
+      "width": 768,
+      "group": 0,
+      "label": "Local Database Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 5,
+          "exact": true,
+          "expectedLength": 444,
+          "actualLength": 444,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-domain-model-2",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Domain Model",
+      "width": 768,
+      "group": 0,
+      "label": "Domain Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 7,
+          "exact": true,
+          "expectedLength": 238,
+          "actualLength": 238,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-apis-0",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "APIs",
+      "width": 768,
+      "group": 1,
+      "label": "APIs"
+    },
+    {
+      "copies": [
+        {
+          "index": 8,
+          "exact": true,
+          "expectedLength": 961,
+          "actualLength": 961,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-implementations-1",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Implementations",
+      "width": 768,
+      "group": 1,
+      "label": "Implementations"
+    },
+    {
+      "copies": [
+        {
+          "index": 9,
+          "exact": true,
+          "expectedLength": 811,
+          "actualLength": 811,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-network-to-domain-0",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Network to Domain",
+      "width": 768,
+      "group": 2,
+      "label": "Network to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 10,
+          "exact": true,
+          "expectedLength": 897,
+          "actualLength": 897,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-local-database-to-domain-1",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Local Database to Domain",
+      "width": 768,
+      "group": 2,
+      "label": "Local Database to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 11,
+          "exact": true,
+          "expectedLength": 876,
+          "actualLength": 876,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-local-database-2",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Domain to Local Database",
+      "width": 768,
+      "group": 2,
+      "label": "Domain to Local Database"
+    },
+    {
+      "copies": [
+        {
+          "index": 12,
+          "exact": true,
+          "expectedLength": 825,
+          "actualLength": 825,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-network-3",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Domain to Network",
+      "width": 768,
+      "group": 2,
+      "label": "Domain to Network"
+    },
+    {
+      "copies": [
+        {
+          "index": 21,
+          "exact": true,
+          "expectedLength": 388,
+          "actualLength": 388,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-api-0",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "API",
+      "width": 768,
+      "group": 3,
+      "label": "API"
+    },
+    {
+      "copies": [
+        {
+          "index": 22,
+          "exact": true,
+          "expectedLength": 1282,
+          "actualLength": 1282,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-implementation-1",
+      "scrollWidth": 768,
+      "selected": "true",
+      "tab": "Implementation",
+      "width": 768,
+      "group": 3,
+      "label": "Implementation"
+    },
+    {
+      "copies": [
+        {
+          "index": 3,
+          "exact": true,
+          "expectedLength": 468,
+          "actualLength": 468,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-network-model-0",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Network Model",
+      "width": 1440,
+      "group": 0,
+      "label": "Network Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 4,
+          "exact": true,
+          "expectedLength": 570,
+          "actualLength": 570,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-local-database-model-1",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Local Database Model",
+      "width": 1440,
+      "group": 0,
+      "label": "Local Database Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 5,
+          "exact": true,
+          "expectedLength": 444,
+          "actualLength": 444,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar18qhbsnpfivb_-domain-model-2",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Domain Model",
+      "width": 1440,
+      "group": 0,
+      "label": "Domain Model"
+    },
+    {
+      "copies": [
+        {
+          "index": 7,
+          "exact": true,
+          "expectedLength": 238,
+          "actualLength": 238,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-apis-0",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "APIs",
+      "width": 1440,
+      "group": 1,
+      "label": "APIs"
+    },
+    {
+      "copies": [
+        {
+          "index": 8,
+          "exact": true,
+          "expectedLength": 961,
+          "actualLength": 961,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_er28qhbsnpfivb_-implementations-1",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Implementations",
+      "width": 1440,
+      "group": 1,
+      "label": "Implementations"
+    },
+    {
+      "copies": [
+        {
+          "index": 9,
+          "exact": true,
+          "expectedLength": 811,
+          "actualLength": 811,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-network-to-domain-0",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Network to Domain",
+      "width": 1440,
+      "group": 2,
+      "label": "Network to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 10,
+          "exact": true,
+          "expectedLength": 897,
+          "actualLength": 897,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-local-database-to-domain-1",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Local Database to Domain",
+      "width": 1440,
+      "group": 2,
+      "label": "Local Database to Domain"
+    },
+    {
+      "copies": [
+        {
+          "index": 11,
+          "exact": true,
+          "expectedLength": 876,
+          "actualLength": 876,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-local-database-2",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Domain to Local Database",
+      "width": 1440,
+      "group": 2,
+      "label": "Domain to Local Database"
+    },
+    {
+      "copies": [
+        {
+          "index": 12,
+          "exact": true,
+          "expectedLength": 825,
+          "actualLength": 825,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_ar38qhbsnpfivb_-domain-to-network-3",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Domain to Network",
+      "width": 1440,
+      "group": 2,
+      "label": "Domain to Network"
+    },
+    {
+      "copies": [
+        {
+          "index": 21,
+          "exact": true,
+          "expectedLength": 388,
+          "actualLength": 388,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-api-0",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "API",
+      "width": 1440,
+      "group": 3,
+      "label": "API"
+    },
+    {
+      "copies": [
+        {
+          "index": 22,
+          "exact": true,
+          "expectedLength": 1282,
+          "actualLength": 1282,
+          "announcement": "Code copied."
+        }
+      ],
+      "focusVisible": true,
+      "panelId": "panel-_R_9dhbqhbsnpfivb_-implementation-1",
+      "scrollWidth": 1440,
+      "selected": "true",
+      "tab": "Implementation",
+      "width": 1440,
+      "group": 3,
+      "label": "Implementation"
+    }
+  ]
+}

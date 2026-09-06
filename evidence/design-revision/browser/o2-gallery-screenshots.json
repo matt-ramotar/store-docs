@@ -1,0 +1,432 @@
+[
+  {
+    "id": "status-badge-enums",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-badge-enums-390.png"
+  },
+  {
+    "id": "status-callout-variants",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-callout-variants-390.png"
+  },
+  {
+    "id": "status-property-states",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-property-states-390.png"
+  },
+  {
+    "id": "status-client-callbacks",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-client-callbacks-390.png"
+  },
+  {
+    "id": "c2-accordion",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-accordion-390.png"
+  },
+  {
+    "id": "c2-expandable",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-expandable-390.png"
+  },
+  {
+    "id": "c2-steps",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-steps-390.png"
+  },
+  {
+    "id": "c2-tabs",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-tabs-390.png"
+  },
+  {
+    "id": "c2-tree",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-tree-390.png"
+  },
+  {
+    "id": "layout-card-navigation",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-card-navigation-390.png"
+  },
+  {
+    "id": "layout-columns-enum",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-columns-enum-390.png"
+  },
+  {
+    "id": "layout-long-empty-nested",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-long-empty-nested-390.png"
+  },
+  {
+    "id": "layout-frame-media",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-frame-media-390.png"
+  },
+  {
+    "id": "layout-panel-responsive",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-panel-responsive-390.png"
+  },
+  {
+    "id": "layout-tile-links",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-tile-links-390.png"
+  },
+  {
+    "id": "layout-update-visibility-callbacks",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-update-visibility-callbacks-390.png"
+  },
+  {
+    "id": "layout-view-registry",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-view-registry-390.png"
+  },
+  {
+    "id": "layout-color-variants",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-color-variants-390.png"
+  },
+  {
+    "id": "layout-icon-enums-overrides",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-icon-enums-overrides-390.png"
+  },
+  {
+    "id": "code-clipboard-denied",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-clipboard-denied-390.png"
+  },
+  {
+    "id": "code-copy-contract",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-copy-contract-390.png"
+  },
+  {
+    "id": "code-line-states",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-line-states-390.png"
+  },
+  {
+    "id": "code-base-props",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-base-props-390.png"
+  },
+  {
+    "id": "code-theme-states",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-theme-states-390.png"
+  },
+  {
+    "id": "code-group-tabs",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-tabs-390.png"
+  },
+  {
+    "id": "code-group-dropdown",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-dropdown-390.png"
+  },
+  {
+    "id": "code-group-select",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-select-390.png"
+  },
+  {
+    "id": "code-select-empty-audio",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-select-empty-audio-390.png"
+  },
+  {
+    "id": "code-snippet",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-snippet-390.png"
+  },
+  {
+    "id": "code-dropdown-primitives",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-dropdown-primitives-390.png"
+  },
+  {
+    "id": "code-fence-tree",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-fence-tree-390.png"
+  },
+  {
+    "id": "code-hidden-action",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-hidden-action-390.png"
+  },
+  {
+    "id": "overlays-tooltip",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-tooltip-390.png"
+  },
+  {
+    "id": "overlays-search-closed",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-closed-390.png"
+  },
+  {
+    "id": "overlays-search-loading",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-loading-390.png"
+  },
+  {
+    "id": "overlays-search-empty",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-empty-390.png"
+  },
+  {
+    "id": "overlays-search-results",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-results-390.png"
+  },
+  {
+    "id": "overlays-search-provider",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-provider-390.png"
+  },
+  {
+    "id": "c6-diagrams-default",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-default-390.png"
+  },
+  {
+    "id": "c6-diagrams-actions",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-actions-390.png"
+  },
+  {
+    "id": "c6-diagrams-authored",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-authored-390.png"
+  },
+  {
+    "id": "c6-diagrams-invalid",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-invalid-390.png"
+  },
+  {
+    "id": "c6-pan-zoom",
+    "width": 390,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-pan-zoom-390.png"
+  },
+  {
+    "id": "status-badge-enums",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-badge-enums-1440.png"
+  },
+  {
+    "id": "status-callout-variants",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-callout-variants-1440.png"
+  },
+  {
+    "id": "status-property-states",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-property-states-1440.png"
+  },
+  {
+    "id": "status-client-callbacks",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-status-client-callbacks-1440.png"
+  },
+  {
+    "id": "c2-accordion",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-accordion-1440.png"
+  },
+  {
+    "id": "c2-expandable",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-expandable-1440.png"
+  },
+  {
+    "id": "c2-steps",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-steps-1440.png"
+  },
+  {
+    "id": "c2-tabs",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-tabs-1440.png"
+  },
+  {
+    "id": "c2-tree",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c2-tree-1440.png"
+  },
+  {
+    "id": "layout-card-navigation",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-card-navigation-1440.png"
+  },
+  {
+    "id": "layout-columns-enum",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-columns-enum-1440.png"
+  },
+  {
+    "id": "layout-long-empty-nested",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-long-empty-nested-1440.png"
+  },
+  {
+    "id": "layout-frame-media",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-frame-media-1440.png"
+  },
+  {
+    "id": "layout-panel-responsive",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-panel-responsive-1440.png"
+  },
+  {
+    "id": "layout-tile-links",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-tile-links-1440.png"
+  },
+  {
+    "id": "layout-update-visibility-callbacks",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-update-visibility-callbacks-1440.png"
+  },
+  {
+    "id": "layout-view-registry",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-view-registry-1440.png"
+  },
+  {
+    "id": "layout-color-variants",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-color-variants-1440.png"
+  },
+  {
+    "id": "layout-icon-enums-overrides",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-layout-icon-enums-overrides-1440.png"
+  },
+  {
+    "id": "code-clipboard-denied",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-clipboard-denied-1440.png"
+  },
+  {
+    "id": "code-copy-contract",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-copy-contract-1440.png"
+  },
+  {
+    "id": "code-line-states",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-line-states-1440.png"
+  },
+  {
+    "id": "code-base-props",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-base-props-1440.png"
+  },
+  {
+    "id": "code-theme-states",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-theme-states-1440.png"
+  },
+  {
+    "id": "code-group-tabs",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-tabs-1440.png"
+  },
+  {
+    "id": "code-group-dropdown",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-dropdown-1440.png"
+  },
+  {
+    "id": "code-group-select",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-group-select-1440.png"
+  },
+  {
+    "id": "code-select-empty-audio",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-select-empty-audio-1440.png"
+  },
+  {
+    "id": "code-snippet",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-snippet-1440.png"
+  },
+  {
+    "id": "code-dropdown-primitives",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-dropdown-primitives-1440.png"
+  },
+  {
+    "id": "code-fence-tree",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-fence-tree-1440.png"
+  },
+  {
+    "id": "code-hidden-action",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-code-hidden-action-1440.png"
+  },
+  {
+    "id": "overlays-tooltip",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-tooltip-1440.png"
+  },
+  {
+    "id": "overlays-search-closed",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-closed-1440.png"
+  },
+  {
+    "id": "overlays-search-loading",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-loading-1440.png"
+  },
+  {
+    "id": "overlays-search-empty",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-empty-1440.png"
+  },
+  {
+    "id": "overlays-search-results",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-results-1440.png"
+  },
+  {
+    "id": "overlays-search-provider",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-overlays-search-provider-1440.png"
+  },
+  {
+    "id": "c6-diagrams-default",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-default-1440.png"
+  },
+  {
+    "id": "c6-diagrams-actions",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-actions-1440.png"
+  },
+  {
+    "id": "c6-diagrams-authored",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-authored-1440.png"
+  },
+  {
+    "id": "c6-diagrams-invalid",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-diagrams-invalid-1440.png"
+  },
+  {
+    "id": "c6-pan-zoom",
+    "width": 1440,
+    "file": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/screenshots/o2-c6-pan-zoom-1440.png"
+  }
+]

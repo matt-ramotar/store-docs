@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { lstat, readFile, readdir, realpath } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseArgs } from "node:util";
 
 import { load } from "cheerio";
 
@@ -96,7 +97,15 @@ const normalizedStockInlineDokkaScripts = new Set([
   normalizeInlineScript(stockDokkaV2DarkModeBootstrap),
 ]);
 
-export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
+// Candidate resource contract from the supported Store6 Dokka customization proposal.
+// Updating these hashes requires reviewing regenerated CSS/logo against that source.
+const tidalAssetSha256 = Object.freeze({
+  "styles/store-reference.css": "4ef8bbdd7f9e10add671f7e625c3e615c9e802d32b338699b1edf2d5484e2d9a",
+  "images/logo-icon.svg": "db0f47312813ca7786d5e05b63035495b654dfd3275ed95b28c40d9fd4f481c6",
+});
+
+export async function verifyReferenceTree({ root = defaultRepoRoot, theme = "legacy" } = {}) {
+  assert.ok(["legacy", "tidal"].includes(theme), `unsupported reference theme: ${theme}`);
   const repoRoot = path.resolve(root);
   const repoRootReal = await realpath(repoRoot);
   const publicRoot = path.join(repoRoot, "public");
@@ -114,6 +123,7 @@ export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
   let htmlFilesChecked = 0;
   let referenceFiles = 0;
   let scriptsChecked = 0;
+  let customThemePagesChecked = 0;
 
   for (const contract of moduleContracts) {
     const moduleRoot = path.join(referenceRoot, contract.slug);
@@ -140,6 +150,7 @@ export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
     let entrypointDetails;
     for (const file of files.filter(({ relative }) => relative.endsWith(".html"))) {
       const details = await verifyHtmlFile({
+        theme,
         absoluteFile: file.absolute,
         moduleRoot,
         moduleRootReal,
@@ -149,6 +160,7 @@ export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
       });
       htmlFilesChecked += 1;
       scriptsChecked += details.scriptsChecked;
+      customThemePagesChecked += details.customThemeChecked ? 1 : 0;
       if (file.relative === "index.html") entrypointDetails = details;
     }
 
@@ -163,6 +175,8 @@ export async function verifyReferenceTree({ root = defaultRepoRoot } = {}) {
   await verifyIntegrationInvariants(repoRoot);
 
   return {
+    verificationMode: theme === "tidal" ? "tidal-customization" : "legacy-integrity",
+    customThemePagesChecked,
     htmlFilesChecked,
     moduleRootsChecked: moduleContracts.length,
     referenceFiles,
@@ -277,6 +291,7 @@ function verifyStockDokkaScript({ bytes, label, moduleSlug, relativePath }) {
 }
 
 async function verifyHtmlFile({
+  theme,
   absoluteFile,
   moduleRoot,
   moduleRootReal,
@@ -343,11 +358,94 @@ async function verifyHtmlFile({
     });
   }
 
+  let customThemeChecked = false;
+  if (theme === "tidal") {
+    if (relativeFile === "navigation.html") {
+      assert.doesNotMatch(html, /<(?:html|head|body)(?:\s|>)/i,
+        `Tidal navigation fragment must not contain a full document in ${label}`);
+    } else {
+      await verifyTidalPage({ $, label, moduleRoot, moduleRootReal, moduleSlug, relativeFile });
+      customThemeChecked = true;
+    }
+  }
+
   return {
+    customThemeChecked,
     localAnchorPaths,
     scriptsChecked: scripts.length,
     title: $("title").first().text().replace(/\s+/g, " ").trim(),
   };
+}
+
+async function verifyTidalPage({ $, label, moduleRoot, moduleRootReal, moduleSlug, relativeFile }) {
+  const fail = detail => `Tidal ${detail} in ${label}`;
+  function required(selector) {
+    const element = $(selector);
+    assert.equal(element.length, 1, fail(`requires one ${selector}`));
+    for (const ancestor of element.parents().addBack().toArray()) {
+      const node = $(ancestor);
+      assert.equal(node.is("[hidden], [inert], [disabled], [aria-hidden=true], [aria-disabled=true]"),
+        false, fail(`hidden or disabled ${selector}`));
+      assert.doesNotMatch(node.attr("style") ?? "",
+        /(?:display\s*:\s*none|visibility\s*:\s*(?:hidden|collapse)|opacity\s*:\s*0(?:[;\s]|$))/i,
+        fail(`hidden ${selector}`));
+    }
+    return element;
+  }
+  required('header#navigation-wrapper[role="banner"]');
+  const guide = required("#navigation-wrapper a#homepage-link");
+  assert.equal(guide.attr("href"), "/docs/store6/overview", fail("guide target must be exact /docs/store6/overview"));
+  assert.equal(guide.attr("aria-label"), "Store 6 guide", fail("guide accessible name"));
+  assert.equal(guide.text().trim(), "Store guide", fail("guide visible text"));
+  assert.equal(guide.attr("target") ?? "_self", "_self", fail("guide must stay in the current browsing context"));
+  assert.equal(guide.is("[download], [tabindex='-1']"), false, fail("guide must remain navigable"));
+
+  const identity = required("#navigation-wrapper a.library-name--link");
+  assert.equal(identity.text().trim(), moduleSlug, fail("module identity"));
+  const expectedRoot = path.posix.relative(path.posix.dirname(relativeFile), "index.html");
+  assert.equal(identity.attr("href"), expectedRoot, fail("module identity root target"));
+  required('#navigation-wrapper button#theme-toggle-button[type="button"]');
+  required('#navigation-wrapper #searchBar[role="button"]');
+  required('#navigation-wrapper button#toc-toggle[type="button"]');
+  required('#navigation-wrapper #filter-section');
+  assert.ok($('#filter-section button.platform-selector[data-filter][aria-pressed]').length > 0,
+    fail("platform selectors missing"));
+  required('#filter-section [role="combobox"][aria-controls="platform-tags-listbox"][aria-haspopup="listbox"]');
+  required('#filter-section #platform-tags-listbox[role="listbox"]');
+  assert.ok($('#platform-tags-listbox input[type="checkbox"][data-filter]').length > 0,
+    fail("platform filter inputs missing"));
+  required('nav#leftColumn');
+  required('#leftColumn #toc-listbox[role="listbox"]');
+  required('#leftColumn #sideMenu');
+  required('#main[role="main"]');
+  required('#main .breadcrumbs');
+  assert.ok(required('.footer--content').text().includes("Store 6 API reference"), fail("Store footer identity"));
+
+  const context = { label, moduleRoot, moduleRootReal, moduleSlug, relativeFile };
+  async function assetTarget(href, expected) {
+    assert.ok(href && !href.includes("?") && !href.includes("#"), fail(`asset target ${expected}`));
+    const target = await resolveRelativeTarget({ ...context, href, kind: "Tidal asset" });
+    assert.equal(target.pathname, `/reference/${moduleSlug}/${expected}`, fail(`asset must resolve to ${expected}`));
+    assert.ok(target.metadata.isFile(), fail(`asset must be a regular file: ${expected}`));
+    return target;
+  }
+  for (const asset of ["styles/style.css", "styles/main.css", "ui-kit/ui-kit.min.css", "styles/store-reference.css"]) {
+    const stylesheet = required(`head link[href$="${asset}"]`);
+    assert.equal(stylesheet.attr("rel")?.toLowerCase(), "stylesheet", fail(`stylesheet is not loaded: ${asset}`));
+    assert.equal(stylesheet.attr("media") ?? "all", "all", fail(`stylesheet must apply to all media: ${asset}`));
+    const target = await assetTarget(stylesheet.attr("href"), asset);
+    if (asset in tidalAssetSha256) {
+      assert.equal(createHash("sha256").update(await readFile(target.absolute)).digest("hex"),
+        tidalAssetSha256[asset], fail(`asset integrity mismatch: ${asset}`));
+    }
+  }
+  const icon = required('head link[rel="icon"]');
+  const logo = await assetTarget(icon.attr("href"), "images/logo-icon.svg");
+  assert.equal(createHash("sha256").update(await readFile(logo.absolute)).digest("hex"),
+    tidalAssetSha256["images/logo-icon.svg"], fail("asset integrity mismatch: images/logo-icon.svg"));
+  for (const scriptPath of approvedDokkaScriptPaths) {
+    assert.equal($(`script[src$="${scriptPath}"]`).length, 1, fail(`stock script must remain loaded: ${scriptPath}`));
+  }
 }
 
 function isApprovedDokkaEventHandler({ attribute, element, moduleSlug, relativeFile, value }) {
@@ -725,5 +823,10 @@ function toRepoRelative(repoRoot, target) {
 
 const invokedPath = process.argv[1] === undefined ? null : path.resolve(process.argv[1]);
 if (invokedPath === fileURLToPath(import.meta.url)) {
-  console.log(JSON.stringify(await verifyReferenceTree()));
+  const { values } = parseArgs({
+    options: { root: { type: "string" }, theme: { type: "string" } },
+    strict: true,
+    allowPositionals: false,
+  });
+  console.log(JSON.stringify(await verifyReferenceTree(values)));
 }

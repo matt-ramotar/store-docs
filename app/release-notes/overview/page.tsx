@@ -1,8 +1,9 @@
 import type { TOCItemType } from "fumadocs-core/toc";
-import { Separator } from "@heroui/react";
+import { SeparatorRoot as Separator } from "@heroui/react/separator";
 import type { Metadata } from "next";
 
 import { AppShell } from "@/components/shell/AppShell";
+import { OnThisPage } from "@/components/shell/OnThisPage";
 import { source } from "@/lib/source";
 
 const title = "Coming soon";
@@ -18,6 +19,7 @@ export default function Page() {
           <h1 id="page-title" className="text-4xl font-semibold tracking-tight">
             {title}
           </h1>
+          <OnThisPage items={toc} compact />
           <Separator />
         </header>
         <div id="content" />

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T12:58:30.560Z",
+  "source": {
+    "path": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/browser/resume-last-gallery.json",
+    "sha256": "1111a0844a8b55aaf06002ad45e59081850c97f46cb816493f2c7fcfd4599766",
+    "bytes": 3590
+  },
+  "counts": {
+    "samples": 1,
+    "pass": 1,
+    "fail": 0,
+    "indeterminate": 0,
+    "inactive": 0,
+    "authoredExceptions": 0
+  },
+  "rows": [
+    {
+      "id": "SearchButton hidden shortcut:0",
+      "fixture": "SearchButton hidden shortcut",
+      "label": "Inspect hidden shortcut",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    }
+  ]
+}

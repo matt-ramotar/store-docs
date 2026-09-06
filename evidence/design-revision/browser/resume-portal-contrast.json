@@ -1,0 +1,669 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T12:30:41.775Z",
+  "source": {
+    "path": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/browser/resume-portal-samples.json",
+    "sha256": "de7cfbe08237af70928f22ba29451a3e5a80ee74e377cfda7aea430c538a188a",
+    "bytes": 49136
+  },
+  "counts": {
+    "samples": 26,
+    "pass": 23,
+    "fail": 2,
+    "indeterminate": 0,
+    "inactive": 1,
+    "authoredExceptions": 0
+  },
+  "rows": [
+    {
+      "id": "tooltip-hover-390:0",
+      "fixture": "tooltip-hover-390",
+      "label": "Cached response",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 14.68389793561718,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "tooltip-hover-390:1",
+      "fixture": "tooltip-hover-390",
+      "label": "The latest StoreResponse remains readable while a refresh is in flight.",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:0",
+      "fixture": "search-results-390",
+      "label": "Store",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 14.68389793561718,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:1",
+      "fixture": "search-results-390",
+      "label": "ESC",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.31111552017591226,
+        "g": 0.31233937735419853,
+        "b": 0.3184930668122711,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.954511796154944,
+        "g": 0.9586269218336346,
+        "b": 0.9582345825197035,
+        "a": 1
+      },
+      "ratio": 7.380700285605504,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:2",
+      "fixture": "search-results-390",
+      "label": "Store 6",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:3",
+      "fixture": "search-results-390",
+      "label": ">",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:4",
+      "fixture": "search-results-390",
+      "label": "Responses",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:5",
+      "fixture": "search-results-390",
+      "label": "StoreResponse.Data",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 13.561902946033527,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:6",
+      "fixture": "search-results-390",
+      "label": "Fresh data emitted by the Store pipeline.",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.9686274509803922,
+        "g": 0.9647058823529412,
+        "b": 0.9411764705882353,
+        "a": 1
+      },
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:7",
+      "fixture": "search-results-390",
+      "label": "↻",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:8",
+      "fixture": "search-results-390",
+      "label": "Store 6",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:9",
+      "fixture": "search-results-390",
+      "label": ">",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:10",
+      "fixture": "search-results-390",
+      "label": "Fetching",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:11",
+      "fixture": "search-results-390",
+      "label": "Network fallback",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 14.68389793561718,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:12",
+      "fixture": "search-results-390",
+      "label": "Continue showing cached data while a remote refresh is unavailable.",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 5.715374182802389,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:13",
+      "fixture": "search-results-390",
+      "label": "Store 6",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:14",
+      "fixture": "search-results-390",
+      "label": ">",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:15",
+      "fixture": "search-results-390",
+      "label": "Reference",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:16",
+      "fixture": "search-results-390",
+      "label": ">",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:17",
+      "fixture": "search-results-390",
+      "label": "Long content",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:18",
+      "fixture": "search-results-390",
+      "label": "A deliberately long search result heading that verifies narrow viewport wrapping without hiding the destination",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 12.627867560629898,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "search-results-390:19",
+      "fixture": "search-results-390",
+      "label": "A deliberately long description preserves readable wrapping for nested Store response, converter, validator, and updater guidance.",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.34901960784313724,
+        "g": 0.41568627450980394,
+        "b": 0.396078431372549,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933176,
+        "a": 1
+      },
+      "ratio": 4.915110998205013,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "dropdown-open-390:0",
+      "fixture": "dropdown-open-390",
+      "label": "Read",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.927216,
+        "g": 0.933804,
+        "b": 0.933177,
+        "a": 1
+      },
+      "ratio": 12.627869656493061,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "dropdown-open-390:1",
+      "fixture": "dropdown-open-390",
+      "label": "Write",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.5451179615494405,
+        "g": 0.5862692183363463,
+        "b": 0.5823458251970356,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 3.0615495122789014,
+      "threshold": 4.5,
+      "contrastStatus": "fail",
+      "status": "fail"
+    },
+    {
+      "id": "dropdown-open-390:2",
+      "fixture": "dropdown-open-390",
+      "label": "Unavailable operation",
+      "kind": "text",
+      "inactive": true,
+      "authoredException": null,
+      "applicability": "inactive",
+      "foregroundPixel": {
+        "r": 0.7725589807747202,
+        "g": 0.7931346091681731,
+        "b": 0.7911729125985179,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 1.654032728102452,
+      "threshold": 4.5,
+      "contrastStatus": "fail",
+      "status": "inactive"
+    },
+    {
+      "id": "dropdown-open-390:3",
+      "fixture": "dropdown-open-390",
+      "label": "Inspect mounted menu refs",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.5451179615494405,
+        "g": 0.5862692183363463,
+        "b": 0.5823458251970356,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 3.0615495122789014,
+      "threshold": 4.5,
+      "contrastStatus": "fail",
+      "status": "fail"
+    }
+  ]
+}

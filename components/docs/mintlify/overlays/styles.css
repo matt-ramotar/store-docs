@@ -1,0 +1,101 @@
+.store-docs .store-mintlify-tooltip-trigger:focus-visible,
+.store-docs .store-mintlify-search-button:focus-visible,
+.store-docs .store-mintlify-search input[type="search"]:focus-visible,
+.store-docs .store-mintlify-search [role="option"]:focus-visible,
+.store-docs [data-component-part="tooltip-cta"]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.store-docs .store-mintlify-search-button {
+  border-color: var(--muted);
+  background: var(--field-background);
+  color: var(--field-placeholder);
+}
+
+.store-docs .store-mintlify-search-button:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--field-background) 92%, var(--foreground) 8%);
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-search {
+  color: var(--overlay-foreground);
+}
+
+.store-docs .store-mintlify-search > div:first-child {
+  background: color-mix(in srgb, var(--foreground) 32%, transparent);
+}
+
+.store-docs .store-mintlify-search[role="dialog"],
+.store-docs .store-mintlify-search > div:last-child > div {
+  border-color: var(--border);
+  background: var(--overlay);
+  color: var(--overlay-foreground);
+}
+
+.store-docs .store-mintlify-search input[type="search"] {
+  background: var(--field-background);
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-search input[type="search"]::placeholder {
+  color: var(--field-placeholder);
+}
+
+.store-docs .store-mintlify-search [role="listbox"] {
+  scrollbar-color: var(--muted) var(--background);
+}
+
+.store-docs .store-mintlify-search [role="option"] {
+  color: var(--muted);
+}
+
+.store-docs .store-mintlify-search [role="option"][data-focus],
+.store-docs .store-mintlify-search [role="option"]:hover {
+  background: color-mix(in srgb, var(--overlay) 92%, var(--foreground) 8%);
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-search [role="option"] :where(div, span),
+.store-docs [data-component-part="tooltip-content"] :where(p, a) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.store-docs .store-mintlify-search [role="option"] .truncate {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.store-docs [data-component-part="tooltip-content"] {
+  z-index: 50;
+  max-width: min(16rem, calc(100vw - 2rem));
+  border-color: var(--border);
+  background: var(--overlay);
+  color: var(--overlay-foreground);
+}
+
+.store-docs [data-component-part="tooltip-title"] {
+  color: var(--overlay-foreground);
+}
+
+.store-docs [data-component-part="tooltip-description"] {
+  color: var(--muted);
+}
+
+.store-docs [data-component-part="tooltip-cta"] {
+  color: var(--accent);
+}
+
+.store-docs [data-component-part="tooltip-cta"]:hover {
+  color: var(--accent-strong);
+}
+
+@media (pointer: coarse) {
+  .store-docs .store-mintlify-tooltip-trigger {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}

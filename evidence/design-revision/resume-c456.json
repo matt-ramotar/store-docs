@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-06T11:35:05Z",
+  "sourceRevision": "a1df36996934d8286240b02a9ec5b311d9207bf6",
+  "scope": ["C4", "C5", "C6"],
+  "fixtureRoute": "/design-review/components",
+  "automated": {
+    "status": "pass",
+    "command": "PATH=/opt/homebrew/opt/node@22/bin:$PATH node --test scripts/mintlify-code.test.mjs scripts/mintlify-overlays.test.mjs scripts/mintlify-diagrams.test.mjs",
+    "tests": 33,
+    "passed": 33,
+    "failed": 0,
+    "proves": [
+      "fixture modules render through the real adapters",
+      "C4 native and authored refs are assigned and cleaned up together",
+      "C5 adapters preserve callbacks, refs, supplied states, positions and Tooltip props",
+      "C6 controls preserve seven action names and callback direction values",
+      "fixture metadata and stable selectors cover every browser action below"
+    ],
+    "doesNotProve": [
+      "hydrated browser state transitions",
+      "portal dismissal and focus movement",
+      "touch input behavior",
+      "zoom clamping after repeated browser input",
+      "live prefers-reduced-motion changes"
+    ]
+  },
+  "coverage": [
+    {"export":"BaseCodeBlock","meaningfulStates":["collapsed","expanded","collapsed-after-toggle","line-numbers","highlight-line-2","focus-lines-2-3","wrap","plain","forceExtract","small-text","malformed-metadata"],"fixtureIds":["code-line-states","code-base-props"],"browserCheckIds":["C4-EXPAND"]},
+    {"export":"CodeBlock","meaningfulStates":["copy-success","copy-error","exact-source","custom-actions","anchor-ref","wrapped-source","default-theme","system-light-theme","dark-theme","css-variable-theme","dual-theme","hidden-action"],"fixtureIds":["code-copy-contract","code-clipboard-denied","code-line-states","code-theme-states","code-hidden-action"],"browserCheckIds":["C4-EXPAND"]},
+    {"export":"CodeGroup","meaningfulStates":["initial-tab","ArrowLeft","ArrowRight","Home","End","selection-callback","active-copy-source","anchor-ref","dropdown-selection","Escape-dismissal"],"fixtureIds":["code-group-tabs","code-group-dropdown"],"browserCheckIds":["C4-MENU"]},
+    {"export":"CodeGroupSelect","meaningfulStates":["language-selection","example-selection","controlled-syncedLabel-change","selected-index-callback","language-reset","empty-registry","audio"],"fixtureIds":["code-group-select","code-select-empty-audio"],"browserCheckIds":["C4-SYNC"]},
+    {"export":"CodeSnippet","meaningfulStates":["string-child","React-element-child","default-theme","named-light-theme"],"fixtureIds":["code-snippet"],"browserCheckIds":[]},
+    {"export":"DropdownMenu","meaningfulStates":["controlled-closed","controlled-open","selection-dismissal","Escape-dismissal","outside-press-dismissal"],"fixtureIds":["code-dropdown-primitives"],"browserCheckIds":["C4-MENU"]},
+    {"export":"DropdownMenuTrigger","meaningfulStates":["open-state-class","closed-state-class","authored-render","native-and-authored-ref-composition","focus-restoration"],"fixtureIds":["code-dropdown-primitives"],"browserCheckIds":["C4-MENU"]},
+    {"export":"DropdownMenuContent","meaningfulStates":["portal-open","align-end","sideOffset-8","authored-render","native-and-authored-ref-composition"],"fixtureIds":["code-dropdown-primitives"],"browserCheckIds":["C4-MENU"]},
+    {"export":"DropdownMenuItem","meaningfulStates":["selected","unselected","disabled","onSelect","onClick","authored-render","native-and-authored-ref-composition"],"fixtureIds":["code-dropdown-primitives"],"browserCheckIds":["C4-MENU"]},
+    {"export":"Tooltip","meaningfulStates":["closed","keyboard-open","hover-open","touch-open","Escape-close","outside-close","aria-describedby-link","side-top","side-bottom","side-left","side-right","side-inline-start","side-inline-end","align-start","align-center","align-end","CTA-internal","CTA-external","CTA-incomplete-absent","long-content"],"fixtureIds":["overlays-tooltip"],"browserCheckIds":["C5-TOOLTIP-KEYBOARD","C5-TOOLTIP-TOUCH-PLACEMENT-CTA"]},
+    {"export":"Search","meaningfulStates":["closed","open","top","center","recent","loading-supplied","empty-supplied","results","onSearch","onSelectResult","Escape","Tab-caret","ArrowDown-Enter","Control-or-Meta-Enter","input-ref-attached","input-ref-cleared","input-focused","trigger-focus-restored"],"fixtureIds":["overlays-search-closed","overlays-search-loading","overlays-search-empty","overlays-search-results","overlays-search-provider"],"browserCheckIds":["C5-SEARCH-CLOSE-REF","C5-SEARCH-SUPPLIED-STATES","C5-SEARCH-KEYBOARD"]},
+    {"export":"SearchButton","meaningfulStates":["shortcut-visible","shortcut-hidden","native-button-props","click-callback","forwarded-ref","provider-open"],"fixtureIds":["overlays-search-closed","overlays-search-provider"],"browserCheckIds":["C5-SEARCH-CLOSE-REF","C5-PROVIDER"]},
+    {"export":"SearchProvider","meaningfulStates":["open","close","toggle","unmodified-shortcut","editable-target-suppression","supplied-onSearch","supplied-onSelectResult"],"fixtureIds":["overlays-search-provider"],"browserCheckIds":["C5-PROVIDER"]},
+    {"export":"Mermaid","meaningfulStates":["actions-true","actions-false","actions-automatic","placement-top-left","placement-top-right","placement-bottom-left","placement-bottom-right","default-theme","authored-dark-theme","authored-forest-theme","authored-colors","valid","invalid","repeated-instance"],"fixtureIds":["c6-diagrams-default","c6-diagrams-actions","c6-diagrams-authored","c6-diagrams-invalid"],"browserCheckIds":[]},
+    {"export":"ZoomControls","meaningfulStates":["Pan-up","Zoom-in","Pan-left","Reset-view","Pan-right","Pan-down","Zoom-out","Enter","Space","scale-max-4","scale-min-0.25","panStep-50","reduced-motion-live-on","reduced-motion-live-off"],"fixtureIds":["c6-pan-zoom"],"browserCheckIds":["C6-SEVEN-KEYS","C6-LIMITS-MOTION"]}
+  ],
+  "browserChecks": [
+    {
+      "id": "C4-EXPAND",
+      "status": "pending-root-browser",
+      "fixtureId": "code-line-states",
+      "actions": [
+        "Scope to [data-fixture=code-line-states] and locate the See all 24 lines button.",
+        "Assert aria-expanded=false and its aria-controls region has inline max-height:190px and overflow-y:hidden.",
+        "Activate the button with Enter.",
+        "Assert the same control is named Collapse, aria-expanded=true, and the controlled region has no inline max-height or overflow-y.",
+        "Activate Collapse with Space."
+      ],
+      "assertions": ["The control returns to See all 24 lines with aria-expanded=false.", "The controlled region returns to max-height:190px and overflow-y:hidden."]
+    },
+    {
+      "id": "C4-SYNC",
+      "status": "pending-root-browser",
+      "fixtureId": "code-group-select",
+      "actions": [
+        "Assert [data-code-output=example] is Read:0.",
+        "Open Snippet example and select Write.",
+        "Assert output Write:1 and visible source store.write(1, value).",
+        "Open Snippet language and select TypeScript.",
+        "Assert output Read:0 and visible source store.get(1);.",
+        "Activate Sync Write example and wait for the effect."
+      ],
+      "assertions": ["Output becomes Write:1.", "Visible TypeScript source becomes store.write(1, value);."]
+    },
+    {
+      "id": "C4-MENU",
+      "status": "pending-root-browser",
+      "fixtureId": "code-dropdown-primitives",
+      "actions": [
+        "Open Code operations and assert output open:Read:0.",
+        "Focus Unavailable operation and activate it; assert selection and click count do not change.",
+        "Press Escape; assert output closed:Read:0 and activeElement is the authored Code operations trigger.",
+        "Reopen, select Write, and assert output closed:Write:1.",
+        "Reopen, then pointer-activate Inspect composed refs and dismiss outside."
+      ],
+      "assertions": ["The final output is closed:Write:1 | refs:trigger,content,item.", "The trigger remains mounted with data-authored-menu-part=trigger.", "The focused unit test separately proves native and authored ref assignment plus cleanup."]
+    },
+    {
+      "id": "C5-TOOLTIP-KEYBOARD",
+      "status": "pending-root-browser",
+      "fixtureId": "overlays-tooltip",
+      "actions": [
+        "Focus [data-tooltip-case=keyboard-top-start].",
+        "Resolve its aria-describedby ID and the matching body-mounted element.",
+        "Press Escape."
+      ],
+      "assertions": ["The open popup has role=tooltip, data-side=top and data-align=start.", "The trigger aria-describedby names that popup.", "After Escape the popup and this adapter-owned description ID are absent and focus remains on the trigger."]
+    },
+    {
+      "id": "C5-TOOLTIP-TOUCH-PLACEMENT-CTA",
+      "status": "pending-root-browser",
+      "fixtureId": "overlays-tooltip",
+      "precondition": "Use a touch-capable browser context for the touch toggle, then a hover-capable context for placement checks.",
+      "actions": [
+        "In the touch context, tap [data-tooltip-case=touch-bottom-end], assert a bottom/end tooltip, then tap it again and assert closure.",
+        "In the hover context, hover each placement-left, placement-right, placement-inline-start and placement-inline-end trigger and record the popup data-side/data-align.",
+        "Open placement-left and inspect the CTA link.",
+        "Open placement-right and inspect the popup for an incomplete CTA."
+      ],
+      "assertions": ["Touch click toggles the popup without hover.", "The requested left, right, inline-start and inline-end placements and start, center and end alignments are represented, allowing collision adjustment to be recorded separately.", "The external CTA text is Open external API reference with target=_blank and rel=noreferrer.", "Incomplete CTA is absent when href is missing.", "The bottom CTA is Read the retry policy with the internal docs href."]
+    },
+    {
+      "id": "C5-SEARCH-CLOSE-REF",
+      "status": "pending-root-browser",
+      "fixtureId": "overlays-search-closed",
+      "actions": ["Activate Search supplied documentation data.", "Inspect the named Search documentation dialog, search input, fixture data-search-input-ref and activeElement.", "Press Escape and wait one animation frame."],
+      "assertions": ["While open, data-search-input-ref=attached and activeElement is the portal search input.", "After Escape, the dialog is absent, data-search-input-ref=detached and activeElement is the Search supplied documentation data trigger."]
+    },
+    {
+      "id": "C5-SEARCH-SUPPLIED-STATES",
+      "status": "pending-root-browser",
+      "fixtureIds": ["overlays-search-loading", "overlays-search-empty"],
+      "actions": ["Open overlays-search-loading and type loading.", "Open overlays-search-empty and type absent."],
+      "assertions": ["Loading output reports query:loading and the supplied Loading supplied results… content is visible.", "Empty output reports query:absent and the supplied No supplied results match this query. content is visible."]
+    },
+    {
+      "id": "C5-SEARCH-KEYBOARD",
+      "status": "pending-root-browser",
+      "fixtureId": "overlays-search-results",
+      "actions": ["Open and type Store.", "Press Tab and inspect activeElement plus selectionStart/selectionEnd.", "Press ArrowDown then Enter and inspect the callback output.", "Reload the fixture, type Store, then press Control+Enter on non-macOS or Meta+Enter on macOS."],
+      "assertions": ["Tab keeps focus on the input and moves both caret endpoints to 5.", "ArrowDown/Enter reports a result ID with query Store and closes.", "Control+Enter or Meta+Enter reports store-response:Store and closes."]
+    },
+    {
+      "id": "C5-PROVIDER",
+      "status": "pending-root-browser",
+      "fixtureId": "overlays-search-provider",
+      "actions": ["Focus Provider shortcut suppression probe and type /.", "Assert provider output remains closed and the input contains /, then blur it and press / on the document.", "Close with the useSearch Close search control, reopen with Toggle search, close, then activate Search fixture data."],
+      "assertions": ["The shortcut is ignored in the editable input and opens outside it.", "Open, close and toggle operate one provider state.", "SearchButton activation opens the provider and changes button-clicks from 0 to 1.", "Typing and selecting a result update provider-callbacks with the query and result ID."]
+    },
+    {
+      "id": "C6-SEVEN-KEYS",
+      "status": "pending-root-browser",
+      "fixtureId": "c6-pan-zoom",
+      "actions": ["From the reset state activate Pan up with Enter, Zoom in with Space, Pan left with Enter, Reset view with Space, Pan right with Enter, Pan down with Space and Zoom out with Enter."],
+      "assertions": ["The exposed transforms after each action are translate(0px, 50px) scale(1), translate(0px, 50px) scale(1.15), translate(50px, 50px) scale(1.15), translate(0px, 0px) scale(1), translate(-50px, 0px) scale(1), translate(-50px, -50px) scale(1), and translate(-50px, -50px) scale(0.85).", "Every activation retains visible keyboard focus on its named button."]
+    },
+    {
+      "id": "C6-LIMITS-MOTION",
+      "status": "pending-root-browser",
+      "fixtureId": "c6-pan-zoom",
+      "actions": ["Reset, focus Zoom in and press Enter 30 times.", "Focus Zoom out and press Space 30 times.", "Assert the initial transition output, change prefers-reduced-motion to reduce, then change it back to no-preference."],
+      "assertions": ["Repeated zoom in clamps at scale(4).", "Repeated zoom out clamps at scale(0.25).", "Transition changes from transform 0.15s ease-out to none and back to transform 0.15s ease-out without remounting the fixture."]
+    }
+  ]
+}

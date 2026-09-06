@@ -1,0 +1,149 @@
+Starting a Gradle Daemon, 1 busy and 1 incompatible Daemons could not be reused, use --status for details
+Warning: truncated output (original token count: 6213)
+Total output lines: 253
+
+Configuration on demand is an incubating feature.
+Type-safe project accessors is an incubating feature.
+> Task :tooling:plugins:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :tooling:plugins:pluginDescriptors
+> Task :tooling:plugins:processResources
+
+> Task :tooling:plugins:compileKotlin
+w: file:///private/tmp/store6-design-revision-reference-20260906/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/AndroidConventionPlugin.kt:29:17 'targetSdk: Int?' is deprecated. Will be removed from library DSL in v9.0. Use testOptions.targetSdk or/and lint.targetSdk instead
+w: file:///private/tmp/store6-design-revision-reference-20260906/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt:87:21 'compilerOptions: HasCompilerOptions<*>' is deprecated. To configure compilation compiler options use 'compileTaskProvider':
+compilation.compileTaskProvider.configure{
+    compilerOptions {}
+}
+w: file:///private/tmp/store6-design-revision-reference-20260906/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt:95:21 'compilerOptions: NativeCompilerOptions' is deprecated. To configure compilation compiler options use 'compileTaskProvider':
+compilation.compileTaskProvider.configure{
+    compilerOptions {}
+}
+w: file:///private/tmp/store6-design-revision-reference-20260906/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt:167:13 'targetSdk: Int?' is deprecated. Will be removed from library DSL in v9.0. Use testOptions.targetSdk or/and lint.targetSdk instead
+
+> Task :tooling:plugins:compileJava NO-SOURCE
+> Task :tooling:plugins:classes
+> Task :tooling:plugins:jar
+
+> Configure project :store6-core
+w: [33m[1m⚠️ Deprecated Gradle Property 'kotlin.js.compiler' Used[0m[0m
+The `kotlin.js.compiler` deprecated property is used in your build.
+[32m[1mSolution:[0m[0m
+[32m[3mIt is unsupported, please stop using it.[0m[0m
+
+w: [33m[1m⚠️ Deprecated Gradle Property 'kotlin.mpp.androidGradlePluginCompatibility.nowarn' Used[0m[0m
+The `kotlin.mpp.androidGradlePluginCompatibility.nowarn` deprecated property is used in your build.
+[32m[1mSolution:[0m[0m
+[32m[3mIt is unsupported, please stop using it.[0m[0m
+
+w: [33m[1m⚠️ Kotlin targets do not support Configuration on Demand[0m[0m
+Gradle Configuration on Demand is enabled, but project ':store6-core' has Kotlin targets that do not support this feature.
+This may lead to unpredictable and inconsistent behaviour during a Gradle build.
+
+Unsupported targets: [js, wasmJs]
+
+See https://youtrack.jetbrains.com/issue/KT-52074 for the status of Configuration on Demand support.
+[32m[1mSolution:[0m[0m
+[32m[3mDo not enable Configuration on Demand[0m[0m
+[36mSee [0m[34mhttps://docs.gradle.org/current/userguide/configuration_on_demand.html[0m[36m for more details.[0m
+
+
+> Configure project :store6-mutations
+w: [33m[1m⚠️ Kotlin targets do not support Configuration on Demand[0m[0m
+Gradle Configuration on Demand is enabled, but project ':store6-mutations' has Kotlin targets that do not support this feature.
+This may lead to unpredictable and inconsistent behaviour during a Gradle build.
+
+Unsupported targets: [js, wasmJs]
+
+See https://youtrack.jetbrains.com/issue/KT-52074 for the status of Configuration on Demand support.
+[32m[1mSolution:[0m[0m
+[32m[3mDo not enable Configuration on Demand[0m[0m
+[36mSee [0m[34mhttps://docs.gradle.org/current/userguide/configuration_on_demand.html[0m[36m for more details.[0m
+
+[Incubating] Problems report is available at: file:///private/tmp/store6-design-revision-reference-20260906/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Could not determine the dependencies of task ':store6-core:dokkaGeneratePublicationHtml'.
+> SDK location not found. Define a valid SDK location with an ANDROID_HOME environment variable or by setting the sdk.dir path in your project's local properties file at '/private/tmp/store6-design-revision-reference-20260906/local.properties'.
+
+* Try:
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+* Exception is:
+org.gradle.api.internal.tasks.TaskDependencyResolveException: Could not determine the dependencies of task ':store6-core:dokkaGeneratePublicationHtml'.
+	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:70)
+	at org.gradle.execution.plan.TaskDependencyResolver.resolveDependenciesFor(TaskDependencyResolver.java:49)
+	at org.gradle.execution.plan.LocalTaskNode.getDependencies(LocalTaskNode.java:148)
+	at org.gradle.execution.plan.LocalTaskNode.resolveDependencies(LocalTaskNode.java:122)
+	at org.gradle.execution.plan.DefaultExecutionPlan.discoverNodeRelationships(DefaultExecutionPlan.java:182)
+	at org.gradle.execution.plan.DefaultExecutionPlan.doAddEntryNodes(DefaultExecutionPlan.java:154)
+	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:129)
+	at org.gradle.execution.plan.DefaultExecutionPlan.addEntryTasks(DefaultExecutionPlan.java:121)
+	at org.gradle.execution.TaskNameResolvingBuildTaskScheduler.scheduleRequestedTasks(TaskNameResolvingBuildTaskScheduler.java:54)
+	at org.gradle.execution.DefaultTasksBuildTaskScheduler.scheduleRequestedTasks(DefaultTasksBuildTaskScheduler.java:72)
+	at org.gradle.initialization.DefaultTaskExecutionPreparer.lambda$scheduleRequestedTasks$0(DefaultTaskExecutionPreparer.java:48)
+	at org.gradle.internal.Factories$1.create(Factories.java:31)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withReplacedLocks(DefaultWorkerLeaseService.java:359)
+	at org.gradle.api.internal.project.DefaultProjectStateRegistry$DefaultBuildProjectRegistry.withMutableS…3213 tokens truncated…StopIfSingleUsedDaemon.execute(RequestStopIfSingleUsedDaemon.java:35)
+	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.lambda$execute$0(ForwardClientInput.java:40)
+	at org.gradle.internal.daemon.clientinput.ClientInputForwarder.forwardInput(ClientInputForwarder.java:80)
+	at org.gradle.launcher.daemon.server.exec.ForwardClientInput.execute(ForwardClientInput.java:37)
+	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+	at org.gradle.launcher.daemon.server.exec.LogAndCheckHealth.execute(LogAndCheckHealth.java:64)
+	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+	at org.gradle.launcher.daemon.server.exec.LogToClient.doBuild(LogToClient.java:63)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+	at org.gradle.launcher.daemon.server.exec.EstablishBuildEnvironment.doBuild(EstablishBuildEnvironment.java:84)
+	at org.gradle.launcher.daemon.server.exec.BuildCommandOnly.execute(BuildCommandOnly.java:37)
+	at org.gradle.launcher.daemon.server.api.DaemonCommandExecution.proceed(DaemonCommandExecution.java:104)
+	at org.gradle.launcher.daemon.server.exec.StartBuildOrRespondWithBusy$1.run(StartBuildOrRespondWithBusy.java:52)
+	at org.gradle.launcher.daemon.server.DaemonStateCoordinator.lambda$runCommand$0(DaemonStateCoordinator.java:321)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: com.android.builder.errors.EvalIssueException: SDK location not found. Define a valid SDK location with an ANDROID_HOME environment variable or by setting the sdk.dir path in your project's local properties file at '/private/tmp/store6-design-revision-reference-20260906/local.properties'.
+	at com.android.builder.errors.IssueReporter.reportError(IssueReporter.kt:118)
+	at com.android.builder.errors.IssueReporter.reportError$default(IssueReporter.kt:113)
+	at com.android.build.gradle.internal.SdkLocator.getSdkLocation(SdkLocator.kt:322)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy.loadSdkComponents(SdkDirectLoadingStrategy.kt:106)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy.init(SdkDirectLoadingStrategy.kt:98)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy.access$init(SdkDirectLoadingStrategy.kt:51)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy$components$2.invoke(SdkDirectLoadingStrategy.kt:77)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy$components$2.invoke(SdkDirectLoadingStrategy.kt:76)
+	at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:74)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy.getComponents(SdkDirectLoadingStrategy.kt:76)
+	at com.android.build.gradle.internal.SdkDirectLoadingStrategy.loadedSuccessfully(SdkDirectLoadingStrategy.kt:194)
+	at com.android.build.gradle.internal.SdkLoadingStrategy.getTargetBootClasspath(SdkLoadingStrategy.kt:36)
+	at com.android.build.gradle.internal.SdkComponentsBuildService$VersionedSdkLoader$targetBootClasspathProvider$1.call(SdkComponents.kt:193)
+	at com.android.build.gradle.internal.SdkComponentsBuildService$VersionedSdkLoader$targetBootClasspathProvider$1.call(SdkComponents.kt:192)
+	at org.gradle.api.internal.provider.DefaultProvider.calculateOwnValue(DefaultProvider.java:72)
+	at org.gradle.api.internal.provider.AbstractMinimalProvider.calculateValue(AbstractMinimalProvider.java:115)
+	at org.gradle.api.internal.provider.FlatMapProvider.calculateOwnValue(FlatMapProvider.java:53)
+	at org.gradle.api.internal.provider.AbstractMinimalProvider.calculateValue(AbstractMinimalProvider.java:115)
+	at org.gradle.api.internal.provider.FlatMapProvider.backingProvider(FlatMapProvider.java:72)
+	at org.gradle.api.internal.provider.FlatMapProvider.getProducer(FlatMapProvider.java:82)
+	at org.gradle.api.internal.provider.Collectors$ElementsFromCollectionProvider.getProducer(Collectors.java:300)
+	at org.gradle.api.internal.provider.AbstractCollectionProperty$CollectingSupplier.getProducer(AbstractCollectionProperty.java:574)
+	at org.gradle.api.internal.provider.AbstractProperty.getProducer(AbstractProperty.java:218)
+	at org.gradle.api.internal.provider.Collectors$ElementsFromCollectionProvider.getProducer(Collectors.java:300)
+	at org.gradle.api.internal.provider.AbstractCollectionProperty$AbstractPlusCollector.getProducer(AbstractCollectionProperty.java:642)
+	at org.gradle.api.internal.provider.AbstractCollectionProperty$CollectingSupplier.getProducer(AbstractCollectionProperty.java:574)
+	at org.gradle.api.internal.provider.AbstractProperty.getProducer(AbstractProperty.java:218)
+	at org.gradle.api.internal.provider.TransformBackedProvider.getProducer(TransformBackedProvider.java:59)
+	at org.gradle.api.internal.provider.FlatMapProvider.getProducer(FlatMapProvider.java:82)
+	at org.gradle.api.internal.file.collections.ProviderBackedFileCollection.visitDependencies(ProviderBackedFileCollection.java:51)
+4 actionable tasks: 4 executed
+	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext$TaskGraphImpl.getNodeValues(CachingTaskDependencyResolveContext.java:108)
+	at org.gradle.internal.graph.CachingDirectedGraphWalker$GraphWithEmptyEdges.getNodeValues(CachingDirectedGraphWalker.java:213)
+	at org.gradle.internal.graph.CachingDirectedGraphWalker.doSearch(CachingDirectedGraphWalker.java:121)
+	at org.gradle.internal.graph.CachingDirectedGraphWalker.findValues(CachingDirectedGraphWalker.java:73)
+	at org.gradle.api.internal.tasks.CachingTaskDependencyResolveContext.getDependencies(CachingTaskDependencyResolveContext.java:67)
+	... 139 more
+
+
+BUILD FAILED in 15s
+

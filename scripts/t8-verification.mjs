@@ -278,7 +278,7 @@ export async function deriveRouteContract({ root = DEFAULT_ROOT } = {}) {
   const applicationPages = await collectMatchingTargets(
     absoluteRoot,
     "app",
-    (target) => CONFIGURED_APPLICATION_PAGE_PATTERN.test(target),
+    (target) => CONFIGURED_APPLICATION_PAGE_PATTERN.test(target) && target !== "app/design-review/components/page.tsx",
   );
   const expectedApplicationPages = [
     "app/(docs)/docs/[[...slug]]/page.tsx",

@@ -1,0 +1,433 @@
+{
+  "buildId": "LS3ID3Zjjw8-MFyH5ZsgG",
+  "samples": [
+    {
+      "fixture": "status-client-callbacks",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-status-client-callbacks",
+      "kind": "focus",
+      "label": "Run Badge callback",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "c2-accordion",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-c2-accordion",
+      "kind": "focus",
+      "label": "▾\nRepeated title\nLegacy string initial state",
+      "layers": [
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "c2-tabs",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-c2-tabs",
+      "kind": "focus",
+      "label": "Persistent database with a deliberately long label",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "c2-tree",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-c2-tree",
+      "kind": "focus",
+      "label": "src",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "layout-card-navigation",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-layout-card-navigation",
+      "kind": "focus",
+      "label": "Internal route\nLocal navigation",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "code-copy-contract",
+      "foreground": "rgb(155, 214, 208)",
+      "id": "focus-code-copy-contract",
+      "kind": "focus",
+      "label": "Copy exact fixture",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(23, 38, 36)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(23, 38, 36)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    },
+    {
+      "fixture": "c6-pan-zoom",
+      "foreground": "rgb(19, 118, 109)",
+      "id": "focus-c6-pan-zoom",
+      "kind": "focus",
+      "label": "Zoom in",
+      "layers": [
+        {
+          "backgroundColor": "transparent",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(255, 255, 255)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgb(247, 246, 240)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        },
+        {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "backgroundImage": "none",
+          "opacity": "1"
+        }
+      ]
+    }
+  ],
+  "records": [
+    {
+      "fixture": "status-client-callbacks",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "BUTTON",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "c2-accordion",
+      "focusVisible": true,
+      "offset": "-3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "SUMMARY",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "c2-tabs",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "LI",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "c2-tree",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "DIV",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "layout-card-navigation",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "A",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "code-copy-contract",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(155, 214, 208) solid 2px",
+      "tag": "BUTTON",
+      "viewport": 390,
+      "width": "2px"
+    },
+    {
+      "fixture": "c6-pan-zoom",
+      "focusVisible": true,
+      "offset": "3px",
+      "outline": "rgb(19, 118, 109) solid 2px",
+      "tag": "BUTTON",
+      "viewport": 390,
+      "width": "2px"
+    }
+  ]
+}

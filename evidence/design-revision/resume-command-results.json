@@ -1,0 +1,24 @@
+{
+  "buildId": "2nwz4DunLZkUkvn38eITs",
+  "runtime": "Node 22.22.0, pnpm 10.30.3",
+  "commands": [
+    {"command": "pnpm build", "exitCode": 0, "log": "commands/resume-fallback-final-build.log"},
+    {"command": "pnpm exec tsc --noEmit --incremental false", "exitCode": 0, "log": "commands/resume-fallback-final-types.log"},
+    {"command": "env -u T4_VERIFY_LIVE node --test scripts/*.test.mjs", "exitCode": 0, "log": "commands/resume-fallback-final-contracts.log", "pass": 325, "fail": 0, "skipped": 1},
+    {"command": "env -u T4_VERIFY_LIVE node --test scripts/*.test.mjs", "phase": "after evidence-only claim reconciliation", "exitCode": 0, "log": "commands/resume-post-claims-final-contracts.log", "pass": 325, "fail": 0, "skipped": 1},
+    {"command": "node scripts/verify-search-index.mjs", "exitCode": 0, "log": "commands/resume-fallback-final-search.log"},
+    {"command": "node scripts/test-t6b-reference.mjs", "exitCode": 0, "log": "commands/resume-fallback-final-reference.log", "mode": "legacy-integrity"},
+    {"command": "node scripts/t8-verification.mjs --local", "exitCode": 0, "log": "commands/resume-fallback-final-t8.log"},
+    {"command": "node evidence/design-revision/check-route-links.mjs", "exitCode": 0, "log": "commands/resume-fallback-final-route-links.log"},
+    {"command": "node scripts/port-page.mjs --generate", "exitCode": 0, "log": "commands/resume-fallback-regenerate-corrected.log"}
+  ],
+  "sourceChecks": "Exact commands, first failure, correction, and exit codes are recorded in resume-protected-ownership-audit.md.",
+  "cleanup": {
+    "time": "2026-09-06 13:59:19 UTC",
+    "productionServer": {"sessionId": 50510, "port": 3222, "stopped": true, "signalExitCode": 130},
+    "acceptanceProxy": {"sessionId": 71602, "port": 3223, "stopped": true, "signalExitCode": 130},
+    "finalOwnedBrowserTabClosed": "23",
+    "viewportReset": true,
+    "visibilityOverrideReset": true
+  }
+}

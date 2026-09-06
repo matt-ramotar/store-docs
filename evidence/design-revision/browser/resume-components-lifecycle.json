@@ -1,0 +1,437 @@
+{
+  "buildId": "kXJOswpw_R1-of6LTBmtz",
+  "defaultViewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "records": [
+    {
+      "id": "C4-MENU",
+      "open": "open:Read:0 | refs:unchecked",
+      "disabled": {
+        "align": "end",
+        "background": "rgb(255, 255, 255)",
+        "color": "rgb(23, 44, 42)",
+        "disabled": "true",
+        "side": "bottom",
+        "tabIndex": "-1"
+      },
+      "keyboardEnd": "Unavailable operation",
+      "escape": {
+        "active": "Code operations",
+        "out": "closed:Read:0 | refs:unchecked"
+      },
+      "final": "closed:Write:1 | refs:unchecked"
+    },
+    {
+      "id": "C4-COPY-ACTIONS-REF",
+      "exactCopied": "#172C2A",
+      "copyAnnounce": [
+        "Code copied."
+      ],
+      "copyOutputs": [
+        "anchor attached",
+        "2"
+      ],
+      "denied": "Clipboard rejection feedback\n\nA deterministic denied writer exercises the production copy failure path without changing browser permissions.\n\ntext\nCopy failed\nCopy failed. Select the code and copy it manually.\nPreserved source\nerror:Preserved source"
+    },
+    {
+      "id": "C5-SEARCH-CLOSE-REF",
+      "open": {
+        "dialog": "Search documentation",
+        "inputFocused": true,
+        "inputPadding": "0px 56px 0px 44px",
+        "ref": "attached"
+      },
+      "closed": {
+        "active": "BODY (immediate, before ref/focus settlement)",
+        "ref": "attached"
+      }
+    },
+    {
+      "id": "C4-COPY-SETTLED",
+      "clipboard": "\n  const title = \"Tidal\";\n  // Keep indentation and the final newline.\n",
+      "output": "success: exact source"
+    },
+    {
+      "id": "C5-SEARCH-CLOSE-REF-SETTLED",
+      "closed": {
+        "activeTag": "BUTTON",
+        "activeText": "Search supplied documentation data\n⌘K",
+        "dialogs": 0,
+        "ref": "detached"
+      }
+    },
+    {
+      "id": "C5-overlays-search-loading",
+      "dialog": "ESC\n\nLoading supplied results…",
+      "output": "query:loading | selected:None"
+    },
+    {
+      "id": "C5-overlays-search-empty",
+      "dialog": "ESC\n\nNo supplied results match this query.",
+      "output": "query:absent | selected:None"
+    },
+    {
+      "id": "C5-SEARCH-KEYBOARD",
+      "caret": {
+        "end": 5,
+        "focused": true,
+        "start": 5,
+        "value": "Store"
+      },
+      "arrowSelection": "query:Store | selected:network-fallback:Store",
+      "metaSelection": "query:Store | selected:store-response:Store"
+    },
+    {
+      "id": "C5-PROVIDER",
+      "editableSuppression": "closed | button-clicks:0",
+      "shortcut": "open | button-clicks:0",
+      "final": "closed | button-clicks:1",
+      "callbacks": "query:Store | selected:store-response:Store"
+    },
+    {
+      "id": "C6-SEVEN-KEYS",
+      "sequence": [
+        {
+          "button": "Pan up",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(0px, 50px) scale(1)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Zoom in",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(0px, 50px) scale(1.15)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Pan left",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(50px, 50px) scale(1.15)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Reset view",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(0px, 0px) scale(1)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Pan right",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(-50px, 0px) scale(1)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Pan down",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(-50px, -50px) scale(1)",
+            "transform 0.15s ease-out"
+          ]
+        },
+        {
+          "button": "Zoom out",
+          "offset": "3px",
+          "outline": "rgb(19, 118, 109) solid 2px",
+          "outputs": [
+            "translate(-50px, -50px) scale(0.85)",
+            "transform 0.15s ease-out"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C6-LIMITS",
+      "max": [
+        "translate(0px, 0px) scale(4)",
+        "transform 0.15s ease-out"
+      ],
+      "min": [
+        "translate(0px, 0px) scale(0.25)",
+        "transform 0.15s ease-out"
+      ]
+    },
+    {
+      "id": "c2-steps-lifecycle-copy-scroll",
+      "initial": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks",
+      "clipboard": "http://127.0.0.1:3222/design-review/components#c2-step-callbacks",
+      "unmount": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | copied:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks",
+      "remount": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | copied:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | scrolled:c2-step-callbacks | registered:c2-step-callbacks"
+    },
+    {
+      "id": "c3-update-ref-callbacks",
+      "initial": "Ref: attached | registered:layout-update-callbacks | unregistered:layout-update-callbacks | registered:layout-update-callbacks",
+      "clipboard": "http://127.0.0.1:3222/design-review/components#layout-update-callbacks",
+      "unmount": "Ref: detached | registered:layout-update-callbacks | unregistered:layout-update-callbacks | registered:layout-update-callbacks | copied:layout-update-callbacks | unregistered:layout-update-callbacks",
+      "remount": "Ref: attached | registered:layout-update-callbacks | unregistered:layout-update-callbacks | registered:layout-update-callbacks | copied:layout-update-callbacks | unregistered:layout-update-callbacks | registered:layout-update-callbacks"
+    },
+    {
+      "id": "c2-expandable-session-reload",
+      "initial": [
+        {
+          "expanded": "false",
+          "open": false,
+          "summary": "Inspect response fields"
+        },
+        {
+          "expanded": "true",
+          "open": true,
+          "summary": "Collapse session fields"
+        },
+        {
+          "expanded": "true",
+          "open": true,
+          "summary": "Hide anchored fields"
+        }
+      ],
+      "stored": "Stored session state: false",
+      "reloaded": [
+        {
+          "expanded": "false",
+          "open": false,
+          "summary": "Inspect response fields"
+        },
+        {
+          "expanded": "false",
+          "open": false,
+          "summary": "Inspect session fields"
+        },
+        {
+          "expanded": "true",
+          "open": true,
+          "summary": "Hide anchored fields"
+        }
+      ],
+      "lazyOpened": "Expandable\n\nLazy content, custom labels, lifecycle callbacks, supplied anchor and local session memory.\n\nReset session fixture and reloadReload session fixture\n\nCollapse response fields\n\nLazy response fields mount on first expansion and remain mounted.\n\nInspect session fields\n\nHide anchored fields\n\nAnchor opens the matching fields until the supplied scrolled ref is set.\n\nmounted | change:true | openedStored session state: false",
+      "closed": "mounted | change:true | opened"
+    },
+    {
+      "id": "c2-expandable-close-settled",
+      "output": "mounted | change:true | opened | change:false | closed"
+    },
+    {
+      "id": "C5-TOOLTIP-KEYBOARD",
+      "open": {
+        "align": "start",
+        "focus": true,
+        "id": "store-tooltip-_R_3od2npfivb_-description",
+        "linked": true,
+        "rect": {
+          "bottom": 400,
+          "height": 78,
+          "left": 148,
+          "right": 404,
+          "top": 322,
+          "width": 256,
+          "x": 148,
+          "y": 322
+        },
+        "role": "tooltip",
+        "side": "top",
+        "text": "Cached response\n\nThe latest StoreResponse remains readable while a refresh is in flight."
+      },
+      "closed": {
+        "describedby": null,
+        "focus": true
+      }
+    },
+    {
+      "id": "C5-TOOLTIP-PLACEMENT-CTA",
+      "input": "keyboard focus",
+      "placements": [
+        {
+          "align": "end",
+          "id": "store-tooltip-_R_5od2npfivb_-description",
+          "links": [
+            {
+              "href": "/docs/store6/concepts/errors",
+              "rel": "",
+              "target": "",
+              "text": "Read the retry policy"
+            }
+          ],
+          "name": "touch-bottom-end",
+          "side": "bottom",
+          "text": "A deliberately long tooltip title that must remain readable on narrow touch screens\n\nThis deliberately long description checks wrapping in a body-mounted portal without clipping the call to action or obscuring focus rings.\n\nRead the retry policy",
+          "width": 256
+        },
+        {
+          "align": "start",
+          "id": "store-tooltip-_R_fod2npfivb_-description",
+          "links": [
+            {
+              "href": "https://example.com/store-api",
+              "rel": "noreferrer",
+              "target": "_blank",
+              "text": "Open external API reference"
+            }
+          ],
+          "name": "placement-left",
+          "side": "left",
+          "text": "left placement\n\nPlacement fixture\n\nOpen external API reference",
+          "width": 210.453125
+        },
+        {
+          "align": "center",
+          "id": "store-tooltip-_R_nod2npfivb_-description",
+          "links": [],
+          "name": "placement-right",
+          "side": "right",
+          "text": "right placement\n\nPlacement fixture",
+          "width": 133.09375
+        },
+        {
+          "align": "end",
+          "id": "store-tooltip-_R_vod2npfivb_-description",
+          "links": [],
+          "name": "placement-inline-start",
+          "side": "inline-start",
+          "text": "inline-start placement\n\nPlacement fixture",
+          "width": 161.625
+        },
+        {
+          "align": "start",
+          "id": "store-tooltip-_R_17od2npfivb_-description",
+          "links": [],
+          "name": "placement-inline-end",
+          "side": "inline-end",
+          "text": "inline-end placement\n\nPlacement fixture",
+          "width": 156.0859375
+        }
+      ]
+    },
+    {
+      "id": "C5-TOOLTIP-NARROW",
+      "text": "A deliberately long tooltip title that must remain readable on narrow touch screens\n\nThis deliberately long description checks wrapping in a body-mounted portal without clipping the call to action or obscuring focus rings.\n\nRead the retry policy",
+      "tooltip": {
+        "bottom": 664,
+        "clientWidth": 254,
+        "left": 8,
+        "right": 264,
+        "scrollWidth": 254,
+        "top": 494
+      },
+      "width": 390
+    },
+    {
+      "id": "C4-GROUP-KEYBOARD-COPY-REF",
+      "keys": [
+        {
+          "output": "2",
+          "selected": "Store.swift",
+          "source": "",
+          "tabs": [
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "true",
+              "tabIndex": 0
+            }
+          ]
+        },
+        {
+          "output": "0",
+          "selected": "Store.kt",
+          "source": "val store = Store()",
+          "tabs": [
+            {
+              "selected": "true",
+              "tabIndex": 0
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            }
+          ]
+        },
+        {
+          "output": "2",
+          "selected": "Store.swift",
+          "source": "",
+          "tabs": [
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "true",
+              "tabIndex": 0
+            }
+          ]
+        },
+        {
+          "output": "0",
+          "selected": "Store.kt",
+          "source": "val store = Store()",
+          "tabs": [
+            {
+              "selected": "true",
+              "tabIndex": 0
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            }
+          ]
+        },
+        {
+          "output": "2",
+          "selected": "Store.swift",
+          "source": "",
+          "tabs": [
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "false",
+              "tabIndex": -1
+            },
+            {
+              "selected": "true",
+              "tabIndex": 0
+            }
+          ]
+        }
+      ],
+      "clipboard": "let store = Store()",
+      "anchor": "42"
+    }
+  ]
+}

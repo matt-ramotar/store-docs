@@ -1,0 +1,30 @@
+claim docs/006 on /docs anchors store-docs/lib/nav.ts, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/006
+  claim: /docs is the Store5 entry of the version switcher, so the revised page must keep serving Store 5 readers as the store5 tree root.
+claim docs/meet-store/003 on /docs/meet-store anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/meet-store/003
+  claim: The file's bytes are owned by the port-page:generate ledger, so hand edits are detected and block the generator's reconciliation.
+claim docs/intro/001 on /docs/intro anchors store-docs/lib/nav.ts, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/intro/001
+  claim: The primary-nav Docs item targets /docs/store6/overview.
+claim docs/intro/005 on /docs/intro anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/intro/005
+  claim: The file's bytes are owned by the port-page:generate ledger.
+claim docs/quickstart/005 on /docs/quickstart anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/quickstart/005
+  claim: The file's bytes are owned by the port-page:generate ledger.
+claim docs/challenges-at-scale/004 on /docs/challenges-at-scale anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/challenges-at-scale/004
+  claim: The file's bytes are owned by the port-page:generate ledger.
+claim docs/community/overview/002 on /docs/community/overview anchors store-docs/lib/nav.ts, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/community/overview/002
+  claim: The page is the current 'Community' primary-nav destination.
+claim docs/community/overview/003 on /docs/community/overview anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile docs/community/overview/003
+  claim: The file's bytes are owned by the port-page:generate ledger.
+claim developer-newsletter/overview/001 on /developer-newsletter/overview anchors store-docs/app/developer-newsletter/overview/page.tsx, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile developer-newsletter/overview/001
+  claim: The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.
+claim developer-newsletter/overview/002 on /developer-newsletter/overview anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile developer-newsletter/overview/002
+  claim: The page entrypoint is owned by the port-page:generate ledger, so it is regenerable only through the port pipeline.
+claim release-notes/overview/001 on /release-notes/overview anchors store-docs/app/release-notes/overview/page.tsx, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile release-notes/overview/001
+  claim: The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.
+claim release-notes/overview/004 on /release-notes/overview anchors store-docs/evidence/T4-owned-targets.json, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile release-notes/overview/004
+  claim: The page entrypoint is owned by the port-page:generate ledger.
+claim tokens-demo/002 on /tokens-demo anchors store-docs/app/tokens-demo/page.tsx, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile tokens-demo/002
+  claim: The page renders the origin token set (soft-surface chips, dots, and on-dark variants) plus Supported/Experimental semantic status chips as separate palettes.
+claim tokens-demo/004 on /tokens-demo anchors store-docs/scripts/t8-verification.mjs, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile tokens-demo/004
+  claim: /tokens-demo is one of 33 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.
+claim tokens-demo/005 on /tokens-demo anchors store-docs/lib/nav.ts, whose whole-file hash no longer matches store6-claims.json; re-verify the claim, then run check-claims.mjs --reconcile tokens-demo/005
+  claim: The page appears nowhere in the site's navigation definition (no primaryNavItems or docsVersions entry).

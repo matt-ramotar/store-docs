@@ -1,0 +1,237 @@
+Configuration on demand is an incubating feature.
+Type-safe project accessors is an incubating feature.
+> Task :tooling:plugins:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :tooling:plugins:compileKotlin UP-TO-DATE
+> Task :tooling:plugins:compileJava NO-SOURCE
+> Task :tooling:plugins:pluginDescriptors UP-TO-DATE
+> Task :tooling:plugins:processResources UP-TO-DATE
+> Task :tooling:plugins:classes UP-TO-DATE
+> Task :tooling:plugins:jar UP-TO-DATE
+
+> Configure project :store6-core
+w: [33m[1m⚠️ Deprecated Gradle Property 'kotlin.js.compiler' Used[0m[0m
+The `kotlin.js.compiler` deprecated property is used in your build.
+[32m[1mSolution:[0m[0m
+[32m[3mIt is unsupported, please stop using it.[0m[0m
+
+w: [33m[1m⚠️ Deprecated Gradle Property 'kotlin.mpp.androidGradlePluginCompatibility.nowarn' Used[0m[0m
+The `kotlin.mpp.androidGradlePluginCompatibility.nowarn` deprecated property is used in your build.
+[32m[1mSolution:[0m[0m
+[32m[3mIt is unsupported, please stop using it.[0m[0m
+
+w: [33m[1m⚠️ Kotlin targets do not support Configuration on Demand[0m[0m
+Gradle Configuration on Demand is enabled, but project ':store6-core' has Kotlin targets that do not support this feature.
+This may lead to unpredictable and inconsistent behaviour during a Gradle build.
+
+Unsupported targets: [js, wasmJs]
+
+See https://youtrack.jetbrains.com/issue/KT-52074 for the status of Configuration on Demand support.
+[32m[1mSolution:[0m[0m
+[32m[3mDo not enable Configuration on Demand[0m[0m
+[36mSee [0m[34mhttps://docs.gradle.org/current/userguide/configuration_on_demand.html[0m[36m for more details.[0m
+
+
+> Configure project :store6-mutations
+w: [33m[1m⚠️ Kotlin targets do not support Configuration on Demand[0m[0m
+Gradle Configuration on Demand is enabled, but project ':store6-mutations' has Kotlin targets that do not support this feature.
+This may lead to unpredictable and inconsistent behaviour during a Gradle build.
+
+Unsupported targets: [js, wasmJs]
+
+See https://youtrack.jetbrains.com/issue/KT-52074 for the status of Configuration on Demand support.
+[32m[1mSolution:[0m[0m
+[32m[3mDo not enable Configuration on Demand[0m[0m
+[36mSee [0m[34mhttps://docs.gradle.org/current/userguide/configuration_on_demand.html[0m[36m for more details.[0m
+
+
+> Task :store6-core:commonizeNativeDistribution
+> Task :store6-core:kmpPartiallyResolvedDependenciesChecker
+> Task :store6-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :store6-core:transformCommonMainDependenciesMetadata
+> Task :store6-core:metadataCommonMainProcessResources NO-SOURCE
+> Task :store6-core:transformNativeMainDependenciesMetadata
+> Task :store6-core:metadataNativeMainProcessResources NO-SOURCE
+> Task :store6-core:transformAppleMainDependenciesMetadata
+> Task :store6-core:downloadKotlinNativeDistribution
+> Task :store6-core:metadataAppleMainProcessResources NO-SOURCE
+> Task :store6-core:transformIosMainDependenciesMetadata
+> Task :store6-core:transformWebMainDependenciesMetadata
+> Task :store6-core:transformWasmJsMainDependenciesMetadata
+> Task :store6-core:generateProjectStructureMetadata
+> Task :store6-core:metadataWebMainProcessResources NO-SOURCE
+> Task :store6-core:preBuild UP-TO-DATE
+> Task :store6-core:preDebugBuild UP-TO-DATE
+> Task :store6-core:generateDebugResValues
+> Task :store6-core:generateDebugResources
+> Task :store6-core:packageDebugResources
+> Task :store6-core:preReleaseBuild UP-TO-DATE
+> Task :store6-core:generateReleaseResValues FROM-CACHE
+> Task :store6-core:javaPreCompileDebug
+> Task :store6-core:generateReleaseResources
+> Task :store6-core:packageReleaseResources
+> Task :store6-core:javaPreCompileRelease FROM-CACHE
+> Task :store6-core:parseDebugLocalResources
+> Task :store6-core:parseReleaseLocalResources
+
+> Task :store6-core:compileCommonMainKotlinMetadata
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileKotlinIosArm64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:metadataCommonMainClasses
+> Task :store6-core:compileNativeMainKotlinMetadata NO-SOURCE
+> Task :store6-core:metadataNativeMainClasses UP-TO-DATE
+> Task :store6-core:compileAppleMainKotlinMetadata
+> Task :store6-core:metadataAppleMainClasses
+> Task :store6-core:compileWebMainKotlinMetadata NO-SOURCE
+> Task :store6-core:metadataWebMainClasses UP-TO-DATE
+> Task :store6-core:allMetadataJar
+> Task :store6-core:generateReleaseRFile
+> Task :store6-core:generateDebugRFile
+
+> Task :store6-core:compileKotlinIosSimulatorArm64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileKotlinIosX64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileKotlinLinuxX64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/linuxMain/kotlin/org/mobilenativefoundation/store6/core/internal/WallClock.linux.kt:17:21 Redundant call of conversion method.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/linuxMain/kotlin/org/mobilenativefoundation/store6/core/internal/WallClock.linux.kt:17:55 Redundant call of conversion method.
+
+> Task :store6-core:compileKotlinMacosArm64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileKotlinMingwX64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileKotlinJs
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:dokkaGeneratePublicationHtml
+
+> Task :store6-core:compileKotlinTvosArm64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:logLinkDokkaGeneratePublicationHtml SKIPPED
+> Task :store6-core:dokkaHtml
+
+> Task :store6-core:compileKotlinWatchosArm64
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:jvmProcessResources NO-SOURCE
+> Task :store6-core:processJvmMainResources SKIPPED
+> Task :store6-mutations:commonizeNativeDistribution
+> Task :store6-mutations:kmpPartiallyResolvedDependenciesChecker
+> Task :store6-mutations:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :store6-core:compileIosMainKotlinMetadata NO-SOURCE
+> Task :store6-core:metadataIosMainProcessResources NO-SOURCE
+> Task :store6-core:metadataIosMainClasses UP-TO-DATE
+> Task :store6-core:exportCommonSourceSetsMetadataLocationsForMetadataApiElements
+> Task :store6-core:iosArm64MetadataElements
+> Task :store6-core:iosSimulatorArm64MetadataElements
+> Task :store6-core:iosX64MetadataElements
+> Task :store6-core:linuxX64MetadataElements
+> Task :store6-core:macosArm64MetadataElements
+> Task :store6-core:mingwX64MetadataElements
+> Task :store6-core:tvosArm64MetadataElements
+> Task :store6-core:watchosArm64MetadataElements
+> Task :store6-mutations:transformCommonMainDependenciesMetadata
+> Task :store6-mutations:metadataCommonMainProcessResources NO-SOURCE
+> Task :store6-mutations:transformNativeMainDependenciesMetadata
+> Task :store6-mutations:metadataNativeMainProcessResources NO-SOURCE
+> Task :store6-mutations:transformAppleMainDependenciesMetadata
+> Task :store6-mutations:downloadKotlinNativeDistribution
+> Task :store6-mutations:metadataAppleMainProcessResources NO-SOURCE
+> Task :store6-mutations:transformIosMainDependenciesMetadata
+> Task :store6-mutations:transformWebMainDependenciesMetadata
+> Task :store6-mutations:transformWasmJsMainDependenciesMetadata
+
+> Task :store6-core:compileDebugKotlinAndroid
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileReleaseKotlinAndroid
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileReleaseJavaWithJavac NO-SOURCE
+
+> Task :store6-core:compileKotlinWasmJs
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/wasmJsMain/kotlin/org/mobilenativefoundation/store6/core/internal/WallClock.wasmJs.kt:3:35 This declaration needs opt-in. Its usage should be marked with '@kotlin.js.ExperimentalWasmJsInterop' or '@OptIn(kotlin.js.ExperimentalWasmJsInterop::class)'
+
+> Task :store6-core:compileDebugJavaWithJavac NO-SOURCE
+> Task :store6-core:processDebugJavaRes
+> Task :store6-core:processReleaseJavaRes
+> Task :store6-core:bundleLibRuntimeToJarDebug
+> Task :store6-core:bundleLibCompileToJarDebug
+> Task :store6-core:bundleLibRuntimeToJarRelease
+> Task :store6-core:bundleLibCompileToJarRelease
+> Task :store6-core:createFullJarDebug
+> Task :store6-core:createFullJarRelease
+
+> Task :store6-mutations:compileCommonMainKotlinMetadata
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt:3389:17 'when' is exhaustive so 'else' is redundant here.
+
+> Task :store6-mutations:metadataCommonMainClasses
+> Task :store6-mutations:compileNativeMainKotlinMetadata NO-SOURCE
+> Task :store6-mutations:metadataNativeMainClasses UP-TO-DATE
+> Task :store6-mutations:compileAppleMainKotlinMetadata NO-SOURCE
+> Task :store6-mutations:metadataAppleMainClasses UP-TO-DATE
+
+> Task :store6-core:compileKotlinJvm
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:2884:57 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:3575:34 Unnecessary safe call on a non-null receiver of type 'FetchTicket'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/KeyEngine.kt:4708:46 Unnecessary safe call on a non-null receiver of type 'ValueEnvelope<V (of class KeyEngine<K : StoreKey, V : Any>)>'.
+w: file:///private/tmp/store6-design-revision-reference-20260906/store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/internal/StoreResultFlows.kt:81:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'StoreResult<V (of fun <V> Flow<StoreResult<V>>.conflateLatestData)>'.
+
+> Task :store6-core:compileJvmMainJava NO-SOURCE
+> Task :store6-core:jvmMainClasses
+> Task :store6-core:jvmJar
+> Task :store6-mutations:dokkaGeneratePublicationHtml
+> Task :store6-mutations:logLinkDokkaGeneratePublicationHtml SKIPPED
+> Task :store6-mutations:dokkaHtml
+[Incubating] Problems report is available at: file:///private/tmp/store6-design-revision-reference-20260906/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 44s
+72 actionable tasks: 66 executed, 2 from cache, 4 up-to-date

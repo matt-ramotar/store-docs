@@ -1,0 +1,135 @@
+{
+  "scope": "Computed palette only; rendered measurements pending. Inactive and caller-colored controls recorded separately.",
+  "pairs": [
+    {
+      "name": "primary/paper",
+      "foreground": "#172C2A",
+      "background": "#F7F6F0",
+      "ratio": 13.561902946033527,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "secondary/paper",
+      "foreground": "#596A65",
+      "background": "#F7F6F0",
+      "ratio": 5.278663084372208,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "accent/paper",
+      "foreground": "#13766D",
+      "background": "#F7F6F0",
+      "ratio": 5.0510305871998975,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "white/accent",
+      "foreground": "#FFFFFF",
+      "background": "#13766D",
+      "ratio": 5.46890933427717,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "accent/soft",
+      "foreground": "#13766D",
+      "background": "#E3F0E9",
+      "ratio": 4.663378678358018,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "code/text",
+      "foreground": "#DDE9E5",
+      "background": "#172624",
+      "ratio": 12.591121141624159,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "code/comment",
+      "foreground": "#A8B7B0",
+      "background": "#172624",
+      "ratio": 7.516158711865538,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "code/keyword",
+      "foreground": "#CBB9F5",
+      "background": "#172624",
+      "ratio": 8.809606151720567,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "code/string",
+      "foreground": "#D8C39A",
+      "background": "#172624",
+      "ratio": 9.104603474395743,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "code/function",
+      "foreground": "#9BD6D0",
+      "background": "#172624",
+      "ratio": 9.650251233484013,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "success",
+      "foreground": "#23683F",
+      "background": "#EAF3E9",
+      "ratio": 5.921609573017876,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "warning",
+      "foreground": "#80520C",
+      "background": "#FFF2D9",
+      "ratio": 6.055721775940861,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "danger",
+      "foreground": "#A43E40",
+      "background": "#FCECEC",
+      "ratio": 5.490955198367622,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "accent/hover",
+      "foreground": "#FFFFFF",
+      "backgroundRounded": "#136D65",
+      "backgroundSRGB": [
+        0.0763921568627451,
+        0.427921568627451,
+        0.395921568627451
+      ],
+      "ratio": 6.160154526112935,
+      "threshold": 4.5,
+      "passContrast": true
+    },
+    {
+      "name": "accent/pressed",
+      "foreground": "#FFFFFF",
+      "backgroundRounded": "#146760",
+      "backgroundSRGB": [
+        0.07764705882352942,
+        0.4047058823529412,
+        0.37490196078431376
+      ],
+      "ratio": 6.677629451189103,
+      "threshold": 4.5,
+      "passContrast": true
+    }
+  ]
+}

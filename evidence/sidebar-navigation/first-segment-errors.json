@@ -1,0 +1,508 @@
+{
+  "buildId": "e4RBLSbqo5o-zajl3f3Tv",
+  "failures": [
+    {
+      "path": ".next/server/app/docs/concepts/store5/bookkeeper.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "3c:E{\"digest\":\"\"}",
+        "3f:E{\"digest\":\"\"}",
+        "40:E{\"digest\":\"\"}",
+        "41:E{\"digest\":\"\"}",
+        "43:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}",
+        "6f:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/converter.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "32:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/fetcher.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "48:E{\"digest\":\"\"}",
+        "50:E{\"digest\":\"\"}",
+        "52:E{\"digest\":\"\"}",
+        "53:E{\"digest\":\"\"}",
+        "55:E{\"digest\":\"\"}",
+        "56:E{\"digest\":\"\"}",
+        "57:E{\"digest\":\"\"}",
+        "59:E{\"digest\":\"\"}",
+        "5b:E{\"digest\":\"\"}",
+        "66:E{\"digest\":\"\"}",
+        "67:E{\"digest\":\"\"}",
+        "6a:E{\"digest\":\"\"}",
+        "6b:E{\"digest\":\"\"}",
+        "6c:E{\"digest\":\"\"}",
+        "6d:E{\"digest\":\"\"}",
+        "6e:E{\"digest\":\"\"}",
+        "6f:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/mutable-store.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "47:E{\"digest\":\"\"}",
+        "4c:E{\"digest\":\"\"}",
+        "4d:E{\"digest\":\"\"}",
+        "4e:E{\"digest\":\"\"}",
+        "4f:E{\"digest\":\"\"}",
+        "50:E{\"digest\":\"\"}",
+        "51:E{\"digest\":\"\"}",
+        "53:E{\"digest\":\"\"}",
+        "54:E{\"digest\":\"\"}",
+        "55:E{\"digest\":\"\"}",
+        "56:E{\"digest\":\"\"}",
+        "57:E{\"digest\":\"\"}",
+        "58:E{\"digest\":\"\"}",
+        "5f:E{\"digest\":\"\"}",
+        "60:E{\"digest\":\"\"}",
+        "61:E{\"digest\":\"\"}",
+        "64:E{\"digest\":\"\"}",
+        "65:E{\"digest\":\"\"}",
+        "66:E{\"digest\":\"\"}",
+        "67:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/source-of-truth.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "42:E{\"digest\":\"\"}",
+        "45:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}",
+        "47:E{\"digest\":\"\"}",
+        "48:E{\"digest\":\"\"}",
+        "49:E{\"digest\":\"\"}",
+        "4a:E{\"digest\":\"\"}",
+        "4b:E{\"digest\":\"\"}",
+        "4c:E{\"digest\":\"\"}",
+        "4d:E{\"digest\":\"\"}",
+        "4f:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/store.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "46:E{\"digest\":\"\"}",
+        "4b:E{\"digest\":\"\"}",
+        "4c:E{\"digest\":\"\"}",
+        "58:E{\"digest\":\"\"}",
+        "59:E{\"digest\":\"\"}",
+        "5a:E{\"digest\":\"\"}",
+        "5b:E{\"digest\":\"\"}",
+        "5c:E{\"digest\":\"\"}",
+        "5d:E{\"digest\":\"\"}",
+        "61:E{\"digest\":\"\"}",
+        "62:E{\"digest\":\"\"}",
+        "63:E{\"digest\":\"\"}",
+        "64:E{\"digest\":\"\"}",
+        "65:E{\"digest\":\"\"}",
+        "66:E{\"digest\":\"\"}",
+        "67:E{\"digest\":\"\"}",
+        "68:E{\"digest\":\"\"}",
+        "6c:E{\"digest\":\"\"}",
+        "6d:E{\"digest\":\"\"}",
+        "6e:E{\"digest\":\"\"}",
+        "6f:E{\"digest\":\"\"}",
+        "70:E{\"digest\":\"\"}",
+        "71:E{\"digest\":\"\"}",
+        "72:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/updater.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "37:E{\"digest\":\"\"}",
+        "39:E{\"digest\":\"\"}",
+        "3a:E{\"digest\":\"\"}",
+        "3b:E{\"digest\":\"\"}",
+        "3c:E{\"digest\":\"\"}",
+        "43:E{\"digest\":\"\"}",
+        "44:E{\"digest\":\"\"}",
+        "45:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}",
+        "47:E{\"digest\":\"\"}",
+        "48:E{\"digest\":\"\"}",
+        "49:E{\"digest\":\"\"}",
+        "4a:E{\"digest\":\"\"}",
+        "4b:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/concepts/store5/validator.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "42:E{\"digest\":\"\"}",
+        "43:E{\"digest\":\"\"}",
+        "49:E{\"digest\":\"\"}",
+        "4b:E{\"digest\":\"\"}",
+        "4c:E{\"digest\":\"\"}",
+        "4d:E{\"digest\":\"\"}",
+        "4e:E{\"digest\":\"\"}",
+        "4f:E{\"digest\":\"\"}",
+        "50:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/quickstart.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "3d:E{\"digest\":\"\"}",
+        "3e:E{\"digest\":\"\"}",
+        "3f:E{\"digest\":\"\"}",
+        "44:E{\"digest\":\"\"}",
+        "45:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}",
+        "47:E{\"digest\":\"\"}",
+        "5c:E{\"digest\":\"\"}",
+        "5d:E{\"digest\":\"\"}",
+        "5e:E{\"digest\":\"\"}",
+        "5f:E{\"digest\":\"\"}",
+        "65:E{\"digest\":\"\"}",
+        "66:E{\"digest\":\"\"}",
+        "67:E{\"digest\":\"\"}",
+        "68:E{\"digest\":\"\"}",
+        "73:E{\"digest\":\"\"}",
+        "74:E{\"digest\":\"\"}",
+        "7a:E{\"digest\":\"\"}",
+        "81:E{\"digest\":\"\"}",
+        "82:E{\"digest\":\"\"}",
+        "83:E{\"digest\":\"\"}",
+        "84:E{\"digest\":\"\"}",
+        "8c:E{\"digest\":\"\"}",
+        "8d:E{\"digest\":\"\"}",
+        "8e:E{\"digest\":\"\"}",
+        "8f:E{\"digest\":\"\"}",
+        "a2:E{\"digest\":\"\"}",
+        "a3:E{\"digest\":\"\"}",
+        "c0:E{\"digest\":\"\"}",
+        "c1:E{\"digest\":\"\"}",
+        "c2:E{\"digest\":\"\"}",
+        "c3:E{\"digest\":\"\"}",
+        "cd:E{\"digest\":\"\"}",
+        "ce:E{\"digest\":\"\"}",
+        "d5:E{\"digest\":\"\"}",
+        "d6:E{\"digest\":\"\"}",
+        "de:E{\"digest\":\"\"}",
+        "df:E{\"digest\":\"\"}",
+        "106:E{\"digest\":\"\"}",
+        "107:E{\"digest\":\"\"}",
+        "122:E{\"digest\":\"\"}",
+        "123:E{\"digest\":\"\"}",
+        "146:E{\"digest\":\"\"}",
+        "147:E{\"digest\":\"\"}",
+        "156:E{\"digest\":\"\"}",
+        "157:E{\"digest\":\"\"}",
+        "187:E{\"digest\":\"\"}",
+        "188:E{\"digest\":\"\"}",
+        "194:E{\"digest\":\"\"}",
+        "195:E{\"digest\":\"\"}",
+        "1b1:E{\"digest\":\"\"}",
+        "1b2:E{\"digest\":\"\"}",
+        "1c2:E{\"digest\":\"\"}",
+        "1c3:E{\"digest\":\"\"}",
+        "1d3:E{\"digest\":\"\"}",
+        "1d4:E{\"digest\":\"\"}",
+        "1e2:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/compose.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "35:E{\"digest\":\"\"}",
+        "36:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/concepts/api-tiers.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4c:E{\"digest\":\"\"}",
+        "4d:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/concepts/errors.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4f:E{\"digest\":\"\"}",
+        "60:E{\"digest\":\"\"}",
+        "61:E{\"digest\":\"\"}",
+        "63:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/concepts/freshness.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "5e:E{\"digest\":\"\"}",
+        "60:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/concepts/memory-and-lifecycle.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "43:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/concepts/read-contract.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "1f:E{\"digest\":\"\"}",
+        "58:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/graphql.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "3e:E{\"digest\":\"\"}",
+        "3f:E{\"digest\":\"\"}",
+        "40:E{\"digest\":\"\"}",
+        "4d:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/devtools.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "20:E{\"digest\":\"\"}",
+        "65:E{\"digest\":\"\"}",
+        "66:E{\"digest\":\"\"}",
+        "6c:E{\"digest\":\"\"}",
+        "74:E{\"digest\":\"\"}",
+        "75:E{\"digest\":\"\"}",
+        "76:E{\"digest\":\"\"}",
+        "77:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/extending.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "5a:E{\"digest\":\"\"}",
+        "69:E{\"digest\":\"\"}",
+        "6a:E{\"digest\":\"\"}",
+        "6b:E{\"digest\":\"\"}",
+        "6c:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/fetchers.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4f:E{\"digest\":\"\"}",
+        "50:E{\"digest\":\"\"}",
+        "55:E{\"digest\":\"\"}",
+        "56:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/performance.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "21:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/persistence.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "56:E{\"digest\":\"\"}",
+        "57:E{\"digest\":\"\"}",
+        "58:E{\"digest\":\"\"}",
+        "59:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/swift.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4a:E{\"digest\":\"\"}",
+        "53:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/guides/testing.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4d:E{\"digest\":\"\"}",
+        "70:E{\"digest\":\"\"}",
+        "75:E{\"digest\":\"\"}",
+        "79:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/invalidate-vs-clear.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "3c:E{\"digest\":\"\"}",
+        "53:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/key-design.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "20:E{\"digest\":\"\"}",
+        "44:E{\"digest\":\"\"}",
+        "45:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/migration/from-store4.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "43:E{\"digest\":\"\"}",
+        "44:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/migration/from-store5.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "62:E{\"digest\":\"\"}",
+        "63:E{\"digest\":\"\"}",
+        "69:E{\"digest\":\"\"}",
+        "6a:E{\"digest\":\"\"}",
+        "73:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/aliases.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "58:E{\"digest\":\"\"}",
+        "79:E{\"digest\":\"\"}",
+        "82:E{\"digest\":\"\"}",
+        "84:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/conflicts.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "44:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/drain-and-restart.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "45:E{\"digest\":\"\"}",
+        "46:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/inspection.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "5f:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/journal-storage.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "46:E{\"digest\":\"\"}",
+        "50:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/mutators.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4e:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/pending-write-ui.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "49:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/quickstart.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4a:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/server.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "50:E{\"digest\":\"\"}",
+        "68:E{\"digest\":\"\"}",
+        "bb:E{\"digest\":\"\"}",
+        "d0:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations/testing.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "47:E{\"digest\":\"\"}",
+        "74:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/mutations.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "43:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/paging.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "50:E{\"digest\":\"\"}",
+        "51:E{\"digest\":\"\"}",
+        "52:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/quickstart.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "1f:E{\"digest\":\"\"}",
+        "4c:E{\"digest\":\"\"}",
+        "6b:E{\"digest\":\"\"}",
+        "77:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/realtime.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "20:E{\"digest\":\"\"}",
+        "3f:E{\"digest\":\"\"}",
+        "43:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/room.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "4f:E{\"digest\":\"\"}",
+        "5c:E{\"digest\":\"\"}",
+        "5d:E{\"digest\":\"\"}",
+        "5e:E{\"digest\":\"\"}",
+        "6f:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/store6/sqldelight.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "21:E{\"digest\":\"\"}",
+        "48:E{\"digest\":\"\"}",
+        "49:E{\"digest\":\"\"}",
+        "4f:E{\"digest\":\"\"}",
+        "5a:E{\"digest\":\"\"}",
+        "5b:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/use-cases/store5/implementing-crud-operations-in-store.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "50:E{\"digest\":\"\"}",
+        "9e:E{\"digest\":\"\"}",
+        "9f:E{\"digest\":\"\"}",
+        "a0:E{\"digest\":\"\"}",
+        "af:E{\"digest\":\"\"}",
+        "b2:E{\"digest\":\"\"}",
+        "105:E{\"digest\":\"\"}",
+        "14f:E{\"digest\":\"\"}",
+        "152:E{\"digest\":\"\"}"
+      ]
+    },
+    {
+      "path": ".next/server/app/docs/use-cases/store5/setting-up-store-for-crud-operations.segments/!KGRvY3Mp/docs/$oc$slug/__PAGE__.segment.rsc",
+      "errors": [
+        "60:E{\"digest\":\"\"}",
+        "67:E{\"digest\":\"\"}",
+        "8a:E{\"digest\":\"\"}",
+        "8f:E{\"digest\":\"\"}",
+        "93:E{\"digest\":\"\"}",
+        "9d:E{\"digest\":\"\"}",
+        "ad:E{\"digest\":\"\"}",
+        "cf:E{\"digest\":\"\"}",
+        "e2:E{\"digest\":\"\"}",
+        "e3:E{\"digest\":\"\"}"
+      ]
+    }
+  ]
+}

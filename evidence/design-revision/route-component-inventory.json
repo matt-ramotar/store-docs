@@ -1,0 +1,2061 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T13:55:09.526Z",
+  "authority": {
+    "routeCoverage": "evidence/design-revision/route-coverage.json",
+    "routeCoverageSha256": "c46a879040ecd5feb5b197030781d83e2bdefe2c02281da8f887623472412cc4",
+    "componentMap": "mdx-components.tsx",
+    "componentMapSha256": "7aeca6657965f543f1630803ff5db2522d9f8fe1270fff0fb66035bbb27167ab",
+    "parser": "@mdx-js/mdx@3.1.1",
+    "registrationParser": "next@16.3.0 compiled Babel parser",
+    "rule": "Only uppercase mdxJsxFlowElement and mdxJsxTextElement names are component registrations. Code and inlineCode nodes are excluded."
+  },
+  "summary": {
+    "routeSources": 82,
+    "parsedMdxFiles": 76,
+    "nonMdxSources": 6,
+    "uniqueActualJsxNames": 14,
+    "genuineUnregisteredNames": 0
+  },
+  "actualJsxNames": [
+    {
+      "name": "Callout",
+      "registration": {
+        "binding": "Callout",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "CodeSlab",
+      "registration": {
+        "binding": "CodeSlab",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "Link",
+      "registration": {
+        "binding": "Link",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "Link.Icon",
+      "registration": {
+        "binding": "Link",
+        "evidence": "installed @heroui/react/link runtime member Icon"
+      }
+    },
+    {
+      "name": "ParamField",
+      "registration": {
+        "binding": "ParamField",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "ParamList",
+      "registration": {
+        "binding": "ParamList",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "ReadResolutionTable",
+      "registration": {
+        "binding": "ReadResolutionTable",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "StartHereList",
+      "registration": {
+        "binding": "StartHereList",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "StepItem",
+      "registration": {
+        "binding": "StepItem",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "StepsGroup",
+      "registration": {
+        "binding": "StepsGroup",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "SupportMatrix",
+      "registration": {
+        "binding": "SupportMatrix",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "TabGroup",
+      "registration": {
+        "binding": "TabGroup",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "TabPanel",
+      "registration": {
+        "binding": "TabPanel",
+        "evidence": "getMDXComponents root property"
+      }
+    },
+    {
+      "name": "UnavailableDestination",
+      "registration": {
+        "binding": "UnavailableDestination",
+        "evidence": "getMDXComponents root property"
+      }
+    }
+  ],
+  "genuineUnregisteredNames": [],
+  "excludedFencedCodeCandidates": [
+    {
+      "name": "AppDatabase",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/room.mdx"
+      ]
+    },
+    {
+      "name": "DocumentKey",
+      "occurrences": 2,
+      "files": [
+        "content/docs/store6/invalidate-vs-clear.mdx",
+        "content/docs/store6/key-design.mdx"
+      ]
+    },
+    {
+      "name": "E",
+      "occurrences": 1,
+      "files": [
+        "content/docs/concepts/store5/fetcher.mdx"
+      ]
+    },
+    {
+      "name": "FakeStoreInteraction.Stream",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "GraphQlOperationKey",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/graphql.mdx"
+      ]
+    },
+    {
+      "name": "Hashtag.Node",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "HttpUserKey",
+      "occurrences": 4,
+      "files": [
+        "content/docs/store6/mutations/server.mdx"
+      ]
+    },
+    {
+      "name": "Int",
+      "occurrences": 17,
+      "files": [
+        "content/docs/concepts/store5/bookkeeper.mdx",
+        "content/docs/quickstart.mdx"
+      ]
+    },
+    {
+      "name": "JournalFixture",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/mutations/testing.mdx"
+      ]
+    },
+    {
+      "name": "K",
+      "occurrences": 54,
+      "files": [
+        "content/docs/store6/concepts/api-tiers.mdx",
+        "content/docs/store6/guides/extending.mdx",
+        "content/docs/store6/mutations/conflicts.mdx",
+        "content/docs/store6/mutations/server.mdx",
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Key",
+      "occurrences": 16,
+      "files": [
+        "content/docs/concepts/store5/bookkeeper.mdx",
+        "content/docs/concepts/store5/fetcher.mdx",
+        "content/docs/concepts/store5/mutable-store.mdx",
+        "content/docs/concepts/store5/source-of-truth.mdx",
+        "content/docs/concepts/store5/store.mdx",
+        "content/docs/concepts/store5/updater.mdx",
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Long",
+      "occurrences": 3,
+      "files": [
+        "content/docs/store6/guides/devtools.mdx"
+      ]
+    },
+    {
+      "name": "Media.Node",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Mention.Node",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "MutationJournalStorage",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/mutations/testing.mdx"
+      ]
+    },
+    {
+      "name": "MyKey",
+      "occurrences": 2,
+      "files": [
+        "content/docs/store6/guides/persistence.mdx",
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "N",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Network",
+      "occurrences": 12,
+      "files": [
+        "content/docs/concepts/store5/converter.mdx",
+        "content/docs/concepts/store5/fetcher.mdx"
+      ]
+    },
+    {
+      "name": "NewUser",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/mutations/mutators.mdx"
+      ]
+    },
+    {
+      "name": "Nothing",
+      "occurrences": 10,
+      "files": [
+        "content/docs/concepts/store5/fetcher.mdx",
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Origin",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/devtools.mdx"
+      ]
+    },
+    {
+      "name": "Output",
+      "occurrences": 5,
+      "files": [
+        "content/docs/concepts/store5/mutable-store.mdx",
+        "content/docs/concepts/store5/store.mdx",
+        "content/docs/concepts/store5/validator.mdx",
+        "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx"
+      ]
+    },
+    {
+      "name": "P",
+      "occurrences": 4,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Post",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "Post.Key",
+      "occurrences": 20,
+      "files": [
+        "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx",
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "PostNetworkModel",
+      "occurrences": 5,
+      "files": [
+        "content/docs/quickstart.mdx",
+        "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx"
+      ]
+    },
+    {
+      "name": "PostOperation",
+      "occurrences": 5,
+      "files": [
+        "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx",
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "PostOutput",
+      "occurrences": 1,
+      "files": [
+        "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx"
+      ]
+    },
+    {
+      "name": "R",
+      "occurrences": 2,
+      "files": [
+        "content/docs/store6/guides/persistence.mdx",
+        "content/docs/store6/mutations/journal-storage.mdx"
+      ]
+    },
+    {
+      "name": "Rename",
+      "occurrences": 2,
+      "files": [
+        "content/docs/store6/mutations/mutators.mdx",
+        "content/docs/store6/mutations/quickstart.mdx"
+      ]
+    },
+    {
+      "name": "Response",
+      "occurrences": 5,
+      "files": [
+        "content/docs/concepts/store5/mutable-store.mdx",
+        "content/docs/concepts/store5/updater.mdx"
+      ]
+    },
+    {
+      "name": "State",
+      "occurrences": 2,
+      "files": [
+        "content/docs/quickstart.mdx"
+      ]
+    },
+    {
+      "name": "StoreError",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/devtools.mdx"
+      ]
+    },
+    {
+      "name": "StoreError.Fetch",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "StoreKey",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/extending.mdx"
+      ]
+    },
+    {
+      "name": "String",
+      "occurrences": 5,
+      "files": [
+        "content/docs/store6/guides/devtools.mdx",
+        "content/docs/store6/mutations/quickstart.mdx",
+        "content/docs/store6/mutations/testing.mdx"
+      ]
+    },
+    {
+      "name": "T",
+      "occurrences": 3,
+      "files": [
+        "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx"
+      ]
+    },
+    {
+      "name": "User",
+      "occurrences": 6,
+      "files": [
+        "content/docs/store6/guides/testing.mdx",
+        "content/docs/store6/invalidate-vs-clear.mdx",
+        "content/docs/store6/mutations/mutators.mdx",
+        "content/docs/store6/mutations/quickstart.mdx"
+      ]
+    },
+    {
+      "name": "UserCommand",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/mutations/mutators.mdx"
+      ]
+    },
+    {
+      "name": "UserKey",
+      "occurrences": 55,
+      "files": [
+        "content/docs/store6/concepts/api-tiers.mdx",
+        "content/docs/store6/concepts/memory-and-lifecycle.mdx",
+        "content/docs/store6/guides/devtools.mdx",
+        "content/docs/store6/guides/fetchers.mdx",
+        "content/docs/store6/guides/testing.mdx",
+        "content/docs/store6/invalidate-vs-clear.mdx",
+        "content/docs/store6/migration/from-store4.mdx",
+        "content/docs/store6/migration/from-store5.mdx",
+        "content/docs/store6/mutations/aliases.mdx",
+        "content/docs/store6/mutations/drain-and-restart.mdx",
+        "content/docs/store6/mutations/mutators.mdx",
+        "content/docs/store6/mutations/quickstart.mdx",
+        "content/docs/store6/mutations/testing.mdx",
+        "content/docs/store6/quickstart.mdx",
+        "content/docs/store6/realtime.mdx",
+        "content/docs/store6/room.mdx",
+        "content/docs/store6/sqldelight.mdx"
+      ]
+    },
+    {
+      "name": "UserUiState",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "UserUiState.Failed",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "UserUiState.Loading",
+      "occurrences": 1,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "UserUiState.Ready",
+      "occurrences": 2,
+      "files": [
+        "content/docs/store6/guides/testing.mdx"
+      ]
+    },
+    {
+      "name": "V",
+      "occurrences": 5,
+      "files": [
+        "content/docs/store6/concepts/read-contract.mdx",
+        "content/docs/store6/guides/extending.mdx",
+        "content/docs/store6/guides/fetchers.mdx",
+        "content/docs/store6/mutations/pending-write-ui.mdx"
+      ]
+    }
+  ],
+  "nonMdxSources": [
+    {
+      "route": "/",
+      "source": "app/page.tsx",
+      "routeCoverageComponents": [
+        "HeroThesis",
+        "KeyEngineTrace"
+      ]
+    },
+    {
+      "route": "/developer-newsletter/overview",
+      "source": "app/developer-newsletter/overview/page.tsx",
+      "routeCoverageComponents": [
+        "AppShell",
+        "OnThisPage",
+        "Separator"
+      ]
+    },
+    {
+      "route": "/reference/store6-core/index.html",
+      "source": "public/reference/store6-core/index.html",
+      "routeCoverageComponents": []
+    },
+    {
+      "route": "/reference/store6-mutations/index.html",
+      "source": "public/reference/store6-mutations/index.html",
+      "routeCoverageComponents": []
+    },
+    {
+      "route": "/release-notes/overview",
+      "source": "app/release-notes/overview/page.tsx",
+      "routeCoverageComponents": [
+        "AppShell",
+        "OnThisPage",
+        "Separator"
+      ]
+    },
+    {
+      "route": "/tokens-demo",
+      "source": "app/tokens-demo/page.tsx",
+      "routeCoverageComponents": [
+        "Chip",
+        "Chip.Label"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "route": "/docs",
+      "source": "content/docs/index.mdx",
+      "sha256": "fcd35efa664283659f1f97564b5282fc734ba433560af272ca7a2a88374cf949",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/best-practices/store5/overview",
+      "source": "content/docs/best-practices/store5/overview.mdx",
+      "sha256": "557f1d0530bbaa795d86b7d358f42b029ac4674cc282f79f167e554b805d271e",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/best-practices/store5/single-or-multiple-stores",
+      "source": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
+      "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 10
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/challenges-at-scale",
+      "source": "content/docs/challenges-at-scale.mdx",
+      "sha256": "5d226bc1d5d170b5a308a87d31318d531eea0f5fa366f178019b74bbaba279b1",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/community/overview",
+      "source": "content/docs/community/overview.mdx",
+      "sha256": "ed3848d286c21fe050d59088d1ecca88f35faf51a1c824b588ceee708ef9ddb1",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/bookkeeper",
+      "source": "content/docs/concepts/store5/bookkeeper.mdx",
+      "sha256": "ee19278b52093072b8fbcda27b6c16a451b44251168217775a24605df6f49bcf",
+      "fencedCodeBlocks": 3,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 5
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 1
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 4
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/converter",
+      "source": "content/docs/concepts/store5/converter.mdx",
+      "sha256": "25d78f9618dc9af51b74a2d04b29fc27f61f4ad85b5eb582c0291eb9fa23e619",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "ParamField",
+          "occurrences": 5
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "ParamField",
+        "ParamList"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "ParamField",
+        "ParamList"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/fetcher",
+      "source": "content/docs/concepts/store5/fetcher.mdx",
+      "sha256": "0812a2c2d162e89e8d0049646ee7757ce52b64477c1c0d259b012720c7614d99",
+      "fencedCodeBlocks": 9,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 11
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 5
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 8
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/mutable-store",
+      "source": "content/docs/concepts/store5/mutable-store.mdx",
+      "sha256": "3cf6681b664cd5595ea1c1082a6b47dcfd2b95b5e735f660955723f04e3662fc",
+      "fencedCodeBlocks": 10,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 6
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 4
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 10
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/overview",
+      "source": "content/docs/concepts/store5/overview.mdx",
+      "sha256": "cfe1a2156de86c2a232ed4ebe01c516c83aaa2ff8598eed99e85396d17991f4e",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/source-of-truth",
+      "source": "content/docs/concepts/store5/source-of-truth.mdx",
+      "sha256": "b761ba393e463d1ef8bb055fa7305f9b1e2f8f5a430f349f229fcf90e03a33df",
+      "fencedCodeBlocks": 5,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 7
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 4
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 6
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/store",
+      "source": "content/docs/concepts/store5/store.mdx",
+      "sha256": "0ff3d42e0fc2c705aff0c396a8304a1e487213378c1c0fe152ae86ce867f3289",
+      "fencedCodeBlocks": 10,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 4
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 3
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 14
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 5
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/updater",
+      "source": "content/docs/concepts/store5/updater.mdx",
+      "sha256": "5499b1f9e4dbb36dcdeb03623386204813dd861c3a4a0ece315fd740202a6802",
+      "fencedCodeBlocks": 6,
+      "jsxNames": [
+        {
+          "name": "ParamField",
+          "occurrences": 5
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 2
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 8
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/concepts/store5/validator",
+      "source": "content/docs/concepts/store5/validator.mdx",
+      "sha256": "75c151a7358b15a8baa6ae09a6876199d5cf1c68835a5da2d66adf56dd0432d6",
+      "fencedCodeBlocks": 5,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        },
+        {
+          "name": "ParamField",
+          "occurrences": 2
+        },
+        {
+          "name": "ParamList",
+          "occurrences": 1
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 4
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ParamField",
+        "ParamList",
+        "StepItem",
+        "StepsGroup"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/intro",
+      "source": "content/docs/intro.mdx",
+      "sha256": "3f5b896a840f812f2083c437cb54bda7ed933609f5b62ac7a6ca8b25890228a9",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/meet-store",
+      "source": "content/docs/meet-store.mdx",
+      "sha256": "5dbdad8c87797cc38a7e65758ff7b6bf10f6c706bacffc3987bb4e505a03af46",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/quickstart",
+      "source": "content/docs/quickstart.mdx",
+      "sha256": "be9ae79ef4a86751180ab44d063393137a36f63af9d3df6f728f31ab71624cc5",
+      "fencedCodeBlocks": 26,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 11
+        },
+        {
+          "name": "StepItem",
+          "occurrences": 16
+        },
+        {
+          "name": "StepsGroup",
+          "occurrences": 3
+        },
+        {
+          "name": "TabGroup",
+          "occurrences": 4
+        },
+        {
+          "name": "TabPanel",
+          "occurrences": 11
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "StepItem",
+        "StepsGroup",
+        "TabGroup",
+        "TabPanel"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "StepItem",
+        "StepsGroup",
+        "TabGroup",
+        "TabPanel"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/compose",
+      "source": "content/docs/store6/compose.mdx",
+      "sha256": "fc6db20221ad1ce58ffcff8d256330743455392f93198e80cc51072b41527cc1",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/concepts/api-tiers",
+      "source": "content/docs/store6/concepts/api-tiers.mdx",
+      "sha256": "28a01831938dbdd4e593185ee658c42f4b45df2d5ebf1840fb5ca8957523c664",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/concepts/errors",
+      "source": "content/docs/store6/concepts/errors.mdx",
+      "sha256": "e439784bd8c730dbb8c352222390e4b80816e591ace6ed319adde581fc657f0f",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/concepts/freshness",
+      "source": "content/docs/store6/concepts/freshness.mdx",
+      "sha256": "05e479274edd361c3ba1df196335d02b48ad3fc276fb54696d7da4c18ed03aed",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        },
+        {
+          "name": "CodeSlab",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "CodeSlab"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "CodeSlab"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/concepts/memory-and-lifecycle",
+      "source": "content/docs/store6/concepts/memory-and-lifecycle.mdx",
+      "sha256": "a6ae505abd5b26943700f5048ad9bb17a3f1e15a84761770308ee9be65a3036f",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/concepts/read-contract",
+      "source": "content/docs/store6/concepts/read-contract.mdx",
+      "sha256": "38708603034f6512722ccbf3291913467bc39d8554786fdbc2005406aa54b748",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        },
+        {
+          "name": "ReadResolutionTable",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout",
+        "ReadResolutionTable"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout",
+        "ReadResolutionTable"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/contributing",
+      "source": "content/docs/store6/contributing.mdx",
+      "sha256": "341130c484dc74832ec45f05775ff6a38a1ccf70bcc2e76cd7ccfcef7f4e109c",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/graphql",
+      "source": "content/docs/store6/graphql.mdx",
+      "sha256": "934620b68fc81ef2dee41b909e9994095a3adcb67bb8ffa143b8ba8812a28aa3",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/devtools",
+      "source": "content/docs/store6/guides/devtools.mdx",
+      "sha256": "629690d272a9515381467dfabc80ebc98b1b8bc2930f71ef7b9b5ffb3a79a843",
+      "fencedCodeBlocks": 8,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/extending",
+      "source": "content/docs/store6/guides/extending.mdx",
+      "sha256": "ced5f07e4bbbf24bd5fdd3c0a1b57de1e0f3858228861536a3aa5f2e9f959c29",
+      "fencedCodeBlocks": 5,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/fetchers",
+      "source": "content/docs/store6/guides/fetchers.mdx",
+      "sha256": "b408a4637c0bb0f389f9554239aa48cdb21013d879b1ffcd454a5edf2a7bdc7d",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/performance",
+      "source": "content/docs/store6/guides/performance.mdx",
+      "sha256": "f49843f32555bc3d9f738582dd05a99dbcc74afd8195ad362972a1837d4b8a9a",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/persistence",
+      "source": "content/docs/store6/guides/persistence.mdx",
+      "sha256": "f5d219cf04cc8699fb96a2ea68dadb1385d95a71722387308525b1f46e031249",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/swift",
+      "source": "content/docs/store6/guides/swift.mdx",
+      "sha256": "55e6be71349065ba3ca734ee3790685bb6d43d579654efbc9f5f40bead1880cb",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/guides/testing",
+      "source": "content/docs/store6/guides/testing.mdx",
+      "sha256": "298f18d69f461017944199beae5704cacfd3dced09491bb1b3f1aa95c9994615",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/important-defaults",
+      "source": "content/docs/store6/important-defaults.mdx",
+      "sha256": "f2baa51b286dabb0c3c47d9302a91d8cafa8a0dc74f96e2c26bc41fb91ad4d75",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/invalidate-vs-clear",
+      "source": "content/docs/store6/invalidate-vs-clear.mdx",
+      "sha256": "10e9efa7d10ee3a5c68e9f204ba3562f98e790f972d9f8a97aa1dd89d9b56a96",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/key-design",
+      "source": "content/docs/store6/key-design.mdx",
+      "sha256": "c6a8514df07051aff3fe7e1e9a897bf79581d99f7c0d498325f8ad448acdd414",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/migration/component-map",
+      "source": "content/docs/store6/migration/component-map.mdx",
+      "sha256": "662f33149db20360b53d59c66af2a740ee00e4c22e71cfb5bc3d35276fbf3ba5",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/migration/from-store4",
+      "source": "content/docs/store6/migration/from-store4.mdx",
+      "sha256": "9292526a6075b9f34fd6dad0d9575d131e6481497ae9a1a5f9d5d706f38d58af",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/migration/from-store5",
+      "source": "content/docs/store6/migration/from-store5.mdx",
+      "sha256": "a7b7409fe17b5a0903de8d80eb07b33b384dbd576b71f1d2396bd27102460ad1",
+      "fencedCodeBlocks": 5,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations",
+      "source": "content/docs/store6/mutations/index.mdx",
+      "sha256": "7a61067d309c798b170d9cc874c01dd50dc6befe26c57ab1259091fb802efc6c",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 4
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/aliases",
+      "source": "content/docs/store6/mutations/aliases.mdx",
+      "sha256": "7886dc0749e211ac79a10a445077585bfe24210536249f4c0d55bd3243dd4704",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 4
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/conflicts",
+      "source": "content/docs/store6/mutations/conflicts.mdx",
+      "sha256": "7ff58422f5988cce00c2df1afe560f8865f3240a9d08cbcb6bdaae3b123e219f",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/drain-and-restart",
+      "source": "content/docs/store6/mutations/drain-and-restart.mdx",
+      "sha256": "40e0b9a806f2f0839fb431caddf40163cb75cbccfb9ae62c8090c392cc6706a1",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/inspection",
+      "source": "content/docs/store6/mutations/inspection.mdx",
+      "sha256": "8f4c850c8393552458c6f7cb6a61f01304e8f10bca82daff0706d2fc5e131cef",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 4
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/journal-storage",
+      "source": "content/docs/store6/mutations/journal-storage.mdx",
+      "sha256": "401447c20a1c600a7e033de347adf6b8f396fd5a61723e966311dcb6980817dd",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 4
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/mutators",
+      "source": "content/docs/store6/mutations/mutators.mdx",
+      "sha256": "11e59cf06f6f52c6c226fcbb17f5e8d2ed9894d097b94a9aac35fb67b11fb187",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/pending-write-ui",
+      "source": "content/docs/store6/mutations/pending-write-ui.mdx",
+      "sha256": "0933b354b6417325badacf842400995bec460061fb54fdad465e09b16ec5faf7",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/quickstart",
+      "source": "content/docs/store6/mutations/quickstart.mdx",
+      "sha256": "831e3df9d72368fb4c025ee0d8848cdd79cb30b4c59fce855aea6203c97da26b",
+      "fencedCodeBlocks": 1,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 2
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/server",
+      "source": "content/docs/store6/mutations/server.mdx",
+      "sha256": "353ed48acf0bf2062d959a16ff6487520c0efe08e80d419280895c13c65cfc1c",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/mutations/testing",
+      "source": "content/docs/store6/mutations/testing.mdx",
+      "sha256": "3ae22e2fb0781d8863b0a2d93ed2c1e42aa816b96995c9c4d17265cdef69e7d9",
+      "fencedCodeBlocks": 2,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 3
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/overview",
+      "source": "content/docs/store6/overview.mdx",
+      "sha256": "1b19e3c98343493f707b181cd8573972b788784df6c0c0b1d0af4a6d86758404",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "CodeSlab",
+          "occurrences": 1
+        },
+        {
+          "name": "Link",
+          "occurrences": 2
+        },
+        {
+          "name": "Link.Icon",
+          "occurrences": 2
+        },
+        {
+          "name": "StartHereList",
+          "occurrences": 1
+        },
+        {
+          "name": "SupportMatrix",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "CodeSlab",
+        "Link",
+        "Link.Icon",
+        "StartHereList",
+        "SupportMatrix"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "CodeSlab",
+        "Link",
+        "Link.Icon",
+        "StartHereList",
+        "SupportMatrix"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/paging",
+      "source": "content/docs/store6/paging.mdx",
+      "sha256": "fdd02ccd23dd08e428d53ebe122715887657b58a2bd74ae3bafaead6396f14f9",
+      "fencedCodeBlocks": 3,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/quickstart",
+      "source": "content/docs/store6/quickstart.mdx",
+      "sha256": "767e0d9c572fac78d9da323dc74eb51dd1d766cc00c0819b576e365d5dd25b33",
+      "fencedCodeBlocks": 4,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/realtime",
+      "source": "content/docs/store6/realtime.mdx",
+      "sha256": "35df93b5670b858762cb3cd863e77c2138f78a1a3394a456831ae76caea4d1a4",
+      "fencedCodeBlocks": 3,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/roadmap",
+      "source": "content/docs/store6/roadmap.mdx",
+      "sha256": "a60ea77d53b25418d8c14d48dea1d4e85e5583041ddd2581fd9afc85da30173f",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/room",
+      "source": "content/docs/store6/room.mdx",
+      "sha256": "ca64912cb279bfeb5d4700275f36510264c4422599bc1d347bde3abed4ec9ea2",
+      "fencedCodeBlocks": 5,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/sqldelight",
+      "source": "content/docs/store6/sqldelight.mdx",
+      "sha256": "c21e095b623109eff59239726e0ec951b5f461774ae131ab0bf3f3bf9ac9b701",
+      "fencedCodeBlocks": 6,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/store6/stability",
+      "source": "content/docs/store6/stability.mdx",
+      "sha256": "446226a9bf47e7d1315fc454dde9e648fdd7d7102b30078835cfe3595fe8552c",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/advanced-caching-strategies",
+      "source": "content/docs/use-cases/store5/advanced-caching-strategies.mdx",
+      "sha256": "e8c626b37b865a66826d87d115d43fedfdd407843c2e11e8191520043468c687",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/authentication-and-secure-data-access",
+      "source": "content/docs/use-cases/store5/authentication-and-secure-data-access.mdx",
+      "sha256": "d87486b56f87f10ca68e1d1effd21849c8c4b446b393b8db018f0d9a953d3c2b",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/data-synchronization-and-conflict-resolution",
+      "source": "content/docs/use-cases/store5/data-synchronization-and-conflict-resolution.mdx",
+      "sha256": "36ba28ae9cd624ce33b55d8b1fff5fc43a00e3f106cc6113138d7d418074ec91",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/ensuring-data-integrity-and-freshness",
+      "source": "content/docs/use-cases/store5/ensuring-data-integrity-and-freshness.mdx",
+      "sha256": "358ab027b2dabbe4766c2856e6ca47f4e002d763d32038d7354ac7c94f85b480",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/error-handling-and-retry-strategies",
+      "source": "content/docs/use-cases/store5/error-handling-and-retry-strategies.mdx",
+      "sha256": "10e6f6a53674cae8e68e0b5eef47876ffb0a1e0611bb38211d0469a74d85cc51",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/handling-complex-data-relationships",
+      "source": "content/docs/use-cases/store5/handling-complex-data-relationships.mdx",
+      "sha256": "db4fc04852893f169f8dfd387e0ce0e2752284836d34bdbced5825ddba0fdb63",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/implementing-crud-operations-in-store",
+      "source": "content/docs/use-cases/store5/implementing-crud-operations-in-store.mdx",
+      "sha256": "b44c9467d3ba1a9fde69de151a2f7cbd37703cd5adca2ff2cbe29d0f8ff104f7",
+      "fencedCodeBlocks": 9,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 12
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience",
+      "source": "content/docs/use-cases/store5/implementing-fallback-mechanisms-to-enhance-resilience.mdx",
+      "sha256": "49d3c7e414967bcca25134583a44fce3d109794886864761c8d5e030ad9e68ea",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux",
+      "source": "content/docs/use-cases/store5/integrating-store-with-state-management-libraries-like-redux.mdx",
+      "sha256": "c7cca008406dc236313db45542e3d2ae9f798c0ff2601e19e7e32c024dd83c36",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui",
+      "source": "content/docs/use-cases/store5/integration-with-jetpack-compose-and-swift-ui.mdx",
+      "sha256": "22018bfbea1e0b581bd571429ef1159fd93977e2919cc54df61718f6215cecf0",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/migrating-from-existing-data-layers",
+      "source": "content/docs/use-cases/store5/migrating-from-existing-data-layers.mdx",
+      "sha256": "aa8ebf85f0838232e4665ec09502f4dc1adec7cdf29222b40bb0ebd171316e7e",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight",
+      "source": "content/docs/use-cases/store5/offline-first-data-access-with-store-and-sql-delight.mdx",
+      "sha256": "5882b3d535f39408532d714339fe081590ad6bd9ed6f3e71287f4a1c8fcb2207",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/overview",
+      "source": "content/docs/use-cases/store5/overview.mdx",
+      "sha256": "f628777954741b8006912d8f1755c1da8260afde479b884c694ebb8ae9c209b6",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [
+        {
+          "name": "UnavailableDestination",
+          "occurrences": 1
+        }
+      ],
+      "routeCoverageComponents": [
+        "UnavailableDestination"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "UnavailableDestination"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/pagination-and-infinite-scrolling",
+      "source": "content/docs/use-cases/store5/pagination-and-infinite-scrolling.mdx",
+      "sha256": "de9ee22139bffa8afb318ed1594231ab9843bd98f1b4725206a674601be16ac8",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/real-time-data-updates",
+      "source": "content/docs/use-cases/store5/real-time-data-updates.mdx",
+      "sha256": "4b1c10c5ae29b31ac1e74225138a3d666ab048232a8a4658c5255caa2e488d21",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/security-and-data-encryption",
+      "source": "content/docs/use-cases/store5/security-and-data-encryption.mdx",
+      "sha256": "1de504c7e068819969cc376d61b1d0085f3e587a8fe4aa97fac69e44ffa02eaf",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/setting-up-store-for-crud-operations",
+      "source": "content/docs/use-cases/store5/setting-up-store-for-crud-operations.mdx",
+      "sha256": "cb05acceef61618dfb69b686c3cc74231f678ddec74bbb7ae40728afff96a34e",
+      "fencedCodeBlocks": 10,
+      "jsxNames": [
+        {
+          "name": "Callout",
+          "occurrences": 5
+        }
+      ],
+      "routeCoverageComponents": [
+        "Callout"
+      ],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [
+        "Callout"
+      ],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/testing-store-and-its-components",
+      "source": "content/docs/use-cases/store5/testing-store-and-its-components.mdx",
+      "sha256": "a14b97ce7f6ea646c540b59366bb88828ed478a6725e51e7969b963b1df37af1",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    },
+    {
+      "route": "/docs/use-cases/store5/working-with-non-paginated-lists",
+      "source": "content/docs/use-cases/store5/working-with-non-paginated-lists.mdx",
+      "sha256": "ace5a01b1c1d681ad6db896c5df80c9e15060855110df7e39786bce850679576",
+      "fencedCodeBlocks": 0,
+      "jsxNames": [],
+      "routeCoverageComponents": [],
+      "routeCoverageLexicalOnly": [],
+      "routeCoverageMissingActual": [],
+      "registeredJsxNames": [],
+      "unregisteredJsxNames": []
+    }
+  ]
+}

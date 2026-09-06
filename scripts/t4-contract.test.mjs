@@ -42,7 +42,6 @@ const STORE6_TARGETS = [
   "content/docs/store6/realtime.mdx",
   "content/docs/store6/graphql.mdx",
 ];
-const T3_OVERVIEW_SHA256 = "318c2bd1c6ae33bc642694c36763f1ad491a0e83ca9816231df4f44e366ca2d2";
 
 const inventory = readLines(INVENTORY_PATH);
 const docsInventory = inventory.filter((url) => new URL(url).pathname.startsWith("/docs/"));
@@ -235,11 +234,10 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     "/docs/store6/quickstart",
     "/docs/store6/important-defaults",
   ]);
-  assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 1);
-  assert.match(
-    document.body,
-    /<Callout type="(?:Info|Note|Tip)">\s*Store 6 is in development targeting 6\.0\.0-alpha01\. Nothing is published yet\. The `store6-core`\s+API is not frozen until the beta01 freeze candidate\.\s*<\/Callout>/,
-  );
+  assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 0, "release notice is consolidated in the shell");
+  assert.match(readFileSync(resolve(ROOT, "components/shell/Store6Banner.tsx"), "utf8"), /Nothing in Store 6 is published yet/);
+  assert.match(supportMatrix, /not frozen until the beta01 freeze candidate/);
+  assert.match(document.body, /Build your first store/);
   assert.match(
     document.body,
     /code=\{`val users = store<UserKey, User> \{\n    fetcher \{ key -> FakeApi\.getUser\(key\.id\) \}\n\}`\}/,
@@ -339,16 +337,11 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     ],
   );
   assert.match(supportMatrix, /not frozen until the beta01 freeze candidate/);
-  const tierCell = supportMatrix.match(
-    /<Table\.Cell>\s*<div\b[^>]*data-tier-guidance=\{entry\.module\}[^>]*>[\s\S]*?<\/Table\.Cell>/,
-  )?.[0];
-  assert.ok(tierCell, "every mapped tier cell must expose row-level guidance");
-  assert.match(tierCell, /<TierChip tier=\{entry\.tier\} \/>/);
-  assert.deepEqual(
-    [...tierCell.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
-    ["/docs/store6/stability", "/docs/store6/concepts/api-tiers"],
-  );
-  assertNoNestedInteractiveLinks(tierCell, "components/overview/SupportMatrix.tsx tier cell");
+  assert.match(supportMatrix, /<li[^>]+id=\{entry\.module\}/);
+  assert.match(supportMatrix, /aria-describedby="module-tier-guidance"/);
+  assert.match(supportMatrix, /<TierChip tier=\{entry\.tier\} \/>/);
+  assert.match(supportMatrix, /id="module-tier-guidance"/);
+  assertNoNestedInteractiveLinks(supportMatrix, "components/overview/SupportMatrix.tsx");
   assert.deepEqual(
     [...supportMatrix.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
     [
@@ -620,7 +613,7 @@ test("migrated widgets retain grouped steps, code panels, callouts, and paramete
     $("#content aside[role=note][data-callout-type]").each((_, callout) => {
       assert.equal(callout.tagName, "aside", `${pathname}: callout element`);
       actual.callouts.push({
-        body: normalizeWidgetBody($(callout).children("[data-callout-body]").text()),
+        body: normalizeWidgetBody($(callout).children("[data-callout-body]").clone().find(".store-m-code-header").remove().end().text()),
         page: pathname,
         type: $(callout).attr("data-callout-type"),
       });
@@ -1082,8 +1075,8 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
   });
   quickstart("#content pre").each((_, pre) => {
     assert.ok(quickstart(pre).hasClass("shiki"));
-    assert.ok(quickstart(pre).hasClass("overflow-x-auto"));
-    assert.ok(quickstart(pre).hasClass("bg-store-code-surface"));
+    assert.ok(quickstart(pre).hasClass("store-m-code-compiled"));
+    assert.equal(quickstart(pre).closest(".store-m-code").find("button[aria-label=\"Copy code\"]").length, 1);
     assert.ok(quickstart(pre).attr("style"));
     assert.equal(quickstart(pre).attr("tabindex"), "0");
     assert.equal(quickstart(pre).children("code").length, 1);
@@ -1091,10 +1084,12 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
 
   const stability = cheerio.load(readStaticHtml("/docs/store6/stability"));
   stability('#content [role="region"][aria-label="Scrollable table"][tabindex="0"]').each((_, region) => {
-    assert.ok(stability(region).hasClass("overflow-x-auto"));
+    assert.ok(stability(region).hasClass("table__scroll-container"));
+    assert.ok(stability(region).parent().hasClass("table-root--secondary"));
     const table = stability(region).children("table");
     assert.equal(table.length, 1);
     assert.ok(table.hasClass("min-w-[40rem]"));
+    assert.ok(table.hasClass("table__content"));
     assert.ok(table.find("thead,tbody,tr,th,td").length > 0);
   });
   assert.ok(stability('#content [role="region"][aria-label="Scrollable table"]').length > 0);
@@ -1228,10 +1223,13 @@ test("public source contains no symlinks", () => {
   }
 });
 
-test("T3 Store6 overview remains byte-identical", async () => {
-  const { createHash } = await import("node:crypto");
-  const bytes = readFileSync(resolve(ROOT, "content/docs/store6/overview.mdx"));
-  assert.equal(createHash("sha256").update(bytes).digest("hex"), T3_OVERVIEW_SHA256);
+test("planned overview revision retains exact source attribution and its first-store destination", () => {
+  const document = readFrontmatterDocument(STORE6_OVERVIEW_PATH);
+  assert.equal(document.title, "Introduction");
+  assert.match(document.body, /href="\/docs\/store6\/quickstart"[\s\S]*?Build your first store/);
+  assert.match(document.body, /Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6\.0\.0-alpha01/);
+  const $ = cheerio.load(readStaticHtml("/docs/store6/overview"));
+  assert.ok($('a[href="/docs/store6/quickstart"]').text().includes("Build your first store"));
 });
 
 test(
@@ -1425,6 +1423,7 @@ function compiledDirectWidgetBody($, item) {
   body.find("[data-component-part='step-line']").remove();
   body.find("[data-component-part='tabs-list']").remove();
   body.find("[role='tablist']").remove();
+  body.find(".store-m-code-header").remove();
   return normalizeWidgetBody(body.text());
 }
 

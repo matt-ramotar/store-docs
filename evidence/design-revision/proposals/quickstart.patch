@@ -1,0 +1,48 @@
+diff --git a/docs/store6/quickstart.md b/docs/store6/quickstart.md
+index 207ec61d..d6f4748e 100644
+--- a/docs/store6/quickstart.md
++++ b/docs/store6/quickstart.md
+@@ -3,6 +3,24 @@
+ > Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
+ > it stands on `main`; the install coordinates land with 6.0.0-alpha01.
+ 
++Until those coordinates are published, run the checked-in quickstart at the source revision behind
++this page.
++
++## Get the source
++
++```shell
++git clone https://github.com/matt-ramotar/Store6.git
++cd Store6
++git checkout --detach 5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71
++./gradlew :store6-quickstart:run
++```
++
++This checkout runs the same `store6-quickstart` module that CI executes. The example uses a
++deterministic stand-in service so you can learn the read path before connecting a network or
++database.
++
++## Create a store
++
+ Store needs two things from you: a **key** that identifies what you want, and a **fetcher** that
+ knows how to go get it. Everything else — sharing one in-flight request across concurrent callers,
+ serving what is already resident, tracking staleness, bounding memory — is what Store does with
+@@ -21,6 +39,8 @@ users.stream(UserKey("1")).collect { result -> render(result) }
+ val user = users.get(UserKey("2"))
+ ```
+ 
++## Read from the store
++
+ The `store { }` block is verbatim from a module this repository compiles and runs in CI. The last
+ two lines are shown in their simplest form so the shape is legible. The program below is the exact
+ one CI executes, and it is where the real `stream` and `get` call sites live.
+@@ -137,6 +157,9 @@ uses resident and fetched data.
+ > **The spelling below is the current API surface.** The module is still experimental — shapes
+ > can change in any release — but the snippet below matches the implementation.
+ 
++For a complete walkthrough of the write path, continue with the
++[Mutations quickstart](/docs/store6/mutations/quickstart).
++
+ Optimistic writes go through a journal, so they survive being offline and survive process death.
+ You get a mutation store instead of a plain one, and it is a `Store` — everything above still works.
+ 

@@ -1,0 +1,25 @@
+{
+  "buildId": "EAMxD_PWAaPNi7bnnb2Mn",
+  "records": [
+    {
+      "id": "c2-steps-lifecycle-copy-scroll",
+      "copy": {
+        "clipboard": "http://127.0.0.1:3222/design-review/components#c2-step-callbacks",
+        "output": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | copied:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks"
+      },
+      "unmount": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | copied:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks",
+      "remount": "registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | copied:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | registered:c2-step-callbacks | unregistered:c2-step-callbacks | scrolled:c2-step-callbacks | registered:c2-step-callbacks"
+    },
+    {
+      "id": "c3-color-copy-tooltip",
+      "linked": {
+        "bg": "rgb(23, 44, 42)",
+        "focus": true,
+        "id": "store-mintlify-color-tooltips-_R_5kl2npfivb_-description-1",
+        "role": "tooltip",
+        "text": "#172C2A"
+      },
+      "clipboard": "#172C2A"
+    }
+  ]
+}

@@ -36,11 +36,11 @@ export function TopNav({ currentPath, tree, version }: TopNavProps) {
           />
         </Link>
         <VersionMenu version={version} />
-        <div className="ms-3 hidden w-full max-w-sm sm:block">
-          <CommandSearch />
+        <div className="min-w-0 flex-1 sm:ms-3 sm:max-w-sm">
+          <CommandSearch version={version} />
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-1">
-          <nav aria-label="Utility" className="hidden items-center md:flex">
+          <nav aria-label="Utility" className="hidden items-center lg:flex">
             {topNavLinks.map((link) => (
               <a
                 key={link.href}

@@ -10,11 +10,11 @@
     "port-page:generate": [
       {
         "path": "app/developer-newsletter/overview/page.tsx",
-        "sha256": "4ed66e6411765d6b172a1a2d5822d7f930dad93b746fa53bb9303eff88be13fe"
+        "sha256": "70c577f7853f3b0a391a32b30ce19fe5a203ee8bb8e848b21e876c4e4cfa9dec"
       },
       {
         "path": "app/release-notes/overview/page.tsx",
-        "sha256": "b7deeb2344542e3ac8db7fee690bfa0038cb16c3c089c0b6ab8bf65438be3eb2"
+        "sha256": "2d8173b1371c5db82b3fc5d2edccf4d21625fd463c8315d9313c59c474e3da99"
       },
       {
         "path": "content/docs/best-practices/store5/overview.mdx",

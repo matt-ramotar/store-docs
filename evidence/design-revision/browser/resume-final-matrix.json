@@ -1,0 +1,345 @@
+{
+  "buildId": "75Q69n2P-RWOozdcTufpd",
+  "records": [
+    {
+      "links": [
+        {
+          "href": "/docs/store6/stability",
+          "text": "Stability"
+        },
+        {
+          "href": "/docs/store6/concepts/api-tiers",
+          "text": "API tiers"
+        },
+        {
+          "href": "/reference/store6-core/index.html",
+          "text": "store6-core API reference"
+        }
+      ],
+      "rows": [
+        {
+          "id": "store6-core",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-core\nStable track\n\nThe API is not frozen until the beta01 freeze candidate.\n\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-testing",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-testing\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-mutations",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-mutations\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-compose",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-compose\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-sqldelight",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-sqldelight\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows. JS and Wasm are compile-only."
+        },
+        {
+          "id": "store6-room",
+          "left": 24,
+          "right": 296,
+          "text": "store6-room\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nAndroid, JVM, iosArm64, iosSimulatorArm64, macosArm64, watchosArm64, tvosArm64, and linuxX64."
+        },
+        {
+          "id": "store6-devtools",
+          "left": 24,
+          "right": 296,
+          "targets": "canonical-targets",
+          "text": "store6-devtools\nExperimental\nRelease target\nalpha02 (target)\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-devtools-inspector",
+          "left": 24,
+          "right": 296,
+          "targets": "inspector-targets",
+          "text": "store6-devtools-inspector\nExperimental\nRelease target\nalpha02 (target)\nTargets\nInspector 8"
+        }
+      ],
+      "scrollWidth": 320,
+      "shared": [
+        {
+          "id": "canonical-targets",
+          "text": "Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64."
+        },
+        {
+          "id": "inspector-targets",
+          "text": "Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS."
+        }
+      ],
+      "width": 320
+    },
+    {
+      "links": [
+        {
+          "href": "/docs/store6/stability",
+          "text": "Stability"
+        },
+        {
+          "href": "/docs/store6/concepts/api-tiers",
+          "text": "API tiers"
+        },
+        {
+          "href": "/reference/store6-core/index.html",
+          "text": "store6-core API reference"
+        }
+      ],
+      "rows": [
+        {
+          "id": "store6-core",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-core\nStable track\n\nThe API is not frozen until the beta01 freeze candidate.\n\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-testing",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-testing\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-mutations",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-mutations\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-compose",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-compose\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-sqldelight",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-sqldelight\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows. JS and Wasm are compile-only."
+        },
+        {
+          "id": "store6-room",
+          "left": 24,
+          "right": 366,
+          "text": "store6-room\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nAndroid, JVM, iosArm64, iosSimulatorArm64, macosArm64, watchosArm64, tvosArm64, and linuxX64."
+        },
+        {
+          "id": "store6-devtools",
+          "left": 24,
+          "right": 366,
+          "targets": "canonical-targets",
+          "text": "store6-devtools\nExperimental\nRelease target\nalpha02 (target)\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-devtools-inspector",
+          "left": 24,
+          "right": 366,
+          "targets": "inspector-targets",
+          "text": "store6-devtools-inspector\nExperimental\nRelease target\nalpha02 (target)\nTargets\nInspector 8"
+        }
+      ],
+      "scrollWidth": 390,
+      "shared": [
+        {
+          "id": "canonical-targets",
+          "text": "Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64."
+        },
+        {
+          "id": "inspector-targets",
+          "text": "Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS."
+        }
+      ],
+      "width": 390
+    },
+    {
+      "links": [
+        {
+          "href": "/docs/store6/stability",
+          "text": "Stability"
+        },
+        {
+          "href": "/docs/store6/concepts/api-tiers",
+          "text": "API tiers"
+        },
+        {
+          "href": "/reference/store6-core/index.html",
+          "text": "store6-core API reference"
+        }
+      ],
+      "rows": [
+        {
+          "id": "store6-core",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-core\nStable track\n\nThe API is not frozen until the beta01 freeze candidate.\n\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-testing",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-testing\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-mutations",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-mutations\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-compose",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-compose\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-sqldelight",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-sqldelight\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows. JS and Wasm are compile-only."
+        },
+        {
+          "id": "store6-room",
+          "left": 296,
+          "right": 952,
+          "text": "store6-room\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nAndroid, JVM, iosArm64, iosSimulatorArm64, macosArm64, watchosArm64, tvosArm64, and linuxX64."
+        },
+        {
+          "id": "store6-devtools",
+          "left": 296,
+          "right": 952,
+          "targets": "canonical-targets",
+          "text": "store6-devtools\nExperimental\nRelease target\nalpha02 (target)\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-devtools-inspector",
+          "left": 296,
+          "right": 952,
+          "targets": "inspector-targets",
+          "text": "store6-devtools-inspector\nExperimental\nRelease target\nalpha02 (target)\nTargets\nInspector 8"
+        }
+      ],
+      "scrollWidth": 1280,
+      "shared": [
+        {
+          "id": "canonical-targets",
+          "text": "Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64."
+        },
+        {
+          "id": "inspector-targets",
+          "text": "Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS."
+        }
+      ],
+      "width": 1280
+    },
+    {
+      "links": [
+        {
+          "href": "/docs/store6/stability",
+          "text": "Stability"
+        },
+        {
+          "href": "/docs/store6/concepts/api-tiers",
+          "text": "API tiers"
+        },
+        {
+          "href": "/reference/store6-core/index.html",
+          "text": "store6-core API reference"
+        }
+      ],
+      "rows": [
+        {
+          "id": "store6-core",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-core\nStable track\n\nThe API is not frozen until the beta01 freeze candidate.\n\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-testing",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-testing\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-mutations",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-mutations\nExperimental\nRelease target\nalpha01\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-compose",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-compose\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-sqldelight",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-sqldelight\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nCanonical 12 artifacts. Drivers run on Android, JVM, Apple, Linux, and Windows. JS and Wasm are compile-only."
+        },
+        {
+          "id": "store6-room",
+          "left": 320,
+          "right": 1088,
+          "text": "store6-room\nExperimental\nRelease target\nalpha01, may slip one alpha\nTargets\nAndroid, JVM, iosArm64, iosSimulatorArm64, macosArm64, watchosArm64, tvosArm64, and linuxX64."
+        },
+        {
+          "id": "store6-devtools",
+          "left": 320,
+          "right": 1088,
+          "targets": "canonical-targets",
+          "text": "store6-devtools\nExperimental\nRelease target\nalpha02 (target)\nTargets\nCanonical 12"
+        },
+        {
+          "id": "store6-devtools-inspector",
+          "left": 320,
+          "right": 1088,
+          "targets": "inspector-targets",
+          "text": "store6-devtools-inspector\nExperimental\nRelease target\nalpha02 (target)\nTargets\nInspector 8"
+        }
+      ],
+      "scrollWidth": 1440,
+      "shared": [
+        {
+          "id": "canonical-targets",
+          "text": "Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64."
+        },
+        {
+          "id": "inspector-targets",
+          "text": "Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS."
+        }
+      ],
+      "width": 1440
+    }
+  ]
+}

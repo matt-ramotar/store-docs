@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: layout family exports every compatibility component and compound member
+ok 1 - layout family exports every compatibility component and compound member
+  ---
+  duration_ms: 0.684708
+  type: 'test'
+  ...
+# Subtest: Card preserves navigation semantics, explicit as, and disabled state
+ok 2 - Card preserves navigation semantics, explicit as, and disabled state
+  ---
+  duration_ms: 10.145625
+  type: 'test'
+  ...
+# Subtest: Columns and CardGroup preserve every column count and local defaults
+ok 3 - Columns and CardGroup preserve every column count and local defaults
+  ---
+  duration_ms: 1.241041
+  type: 'test'
+  ...
+# Subtest: Frame preserves media, author style, description rendering, and optional defaults
+ok 4 - Frame preserves media, author style, description rendering, and optional defaults
+  ---
+  duration_ms: 0.630792
+  type: 'test'
+  ...
+# Subtest: Panel and Tile retain caller HTML props and link states
+ok 5 - Panel and Tile retain caller HTML props and link states
+  ---
+  duration_ms: 0.738208
+  type: 'test'
+  ...
+# Subtest: Update defaults visible and honors hidden state
+ok 6 - Update defaults visible and honors hidden state
+  ---
+  duration_ms: 0.685167
+  type: 'test'
+  ...
+# Subtest: View requires an explicit registry and stays empty until client mount
+ok 7 - View requires an explicit registry and stays empty until client mount
+  ---
+  duration_ms: 0.160459
+  type: 'test'
+  ...
+# Subtest: Color keeps compact/table variants and author supplied current and legacy swatches
+ok 8 - Color keeps compact/table variants and author supplied current and legacy swatches
+  ---
+  duration_ms: 3.149125
+  type: 'test'
+  ...
+# Subtest: Icon preserves library, type, color, size, and override behavior
+ok 9 - Icon preserves library, type, color, size, and override behavior
+  ---
+  duration_ms: 0.708125
+  type: 'test'
+  ...
+# Subtest: fixtures are executable, uniquely identified, and cover enums and required states
+ok 10 - fixtures are executable, uniquely identified, and cover enums and required states
+  ---
+  duration_ms: 13.493917
+  type: 'test'
+  ...
+# Subtest: family CSS is fully scoped and uses shared semantic tokens without overriding swatches
+ok 11 - family CSS is fully scoped and uses shared semantic tokens without overriding swatches
+  ---
+  duration_ms: 2.163583
+  type: 'test'
+  ...
+# Subtest: overlay family exports the complete runtime and type-compatible ref adapters
+ok 12 - overlay family exports the complete runtime and type-compatible ref adapters
+  ---
+  duration_ms: 0.592916
+  type: 'test'
+  ...
+# Subtest: Tooltip forwards every declared prop and marks its trigger for scoped theming
+ok 13 - Tooltip forwards every declared prop and marks its trigger for scoped theming
+  ---
+  duration_ms: 0.4245
+  type: 'test'
+  ...
+# Subtest: Search forwards all state, callback, placement, custom-state, and input-ref props
+ok 14 - Search forwards all state, callback, placement, custom-state, and input-ref props
+  ---
+  duration_ms: 0.154292
+  type: 'test'
+  ...
+# Subtest: SearchButton preserves native button props, shortcuts, callbacks, children, and ref
+ok 15 - SearchButton preserves native button props, shortcuts, callbacks, children, and ref
+  ---
+  duration_ms: 0.071042
+  type: 'test'
+  ...
+# Subtest: SearchProvider keeps package context compatibility and every provider prop
+ok 16 - SearchProvider keeps package context compatibility and every provider prop
+  ---
+  duration_ms: 0.129958
+  type: 'test'
+  ...
+# Subtest: serializable MDX excludes callback-required Search and SearchProvider
+ok 17 - serializable MDX excludes callback-required Search and SearchProvider
+  ---
+  duration_ms: 1.532875
+  type: 'test'
+  ...
+# Subtest: fixtures are executable, deterministic, and cover every required overlay state
+ok 18 - fixtures are executable, deterministic, and cover every required overlay state
+  ---
+  duration_ms: 16.845042
+  type: 'test'
+  ...
+# Subtest: family CSS scopes body-mounted search and tooltip portals to Store docs
+ok 19 - family CSS scopes body-mounted search and tooltip portals to Store docs
+  ---
+  duration_ms: 2.922625
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 578.0385

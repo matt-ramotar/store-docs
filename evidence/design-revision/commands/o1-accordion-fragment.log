@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: compound members and standalone MDX aliases are identical
+ok 1 - compound members and standalone MDX aliases are identical
+  ---
+  duration_ms: 0.599125
+  type: 'test'
+  ...
+# Subtest: accordion preserves legacy boolean/string initial states and URL ancestry
+ok 2 - accordion preserves legacy boolean/string initial states and URL ancestry
+  ---
+  duration_ms: 10.888292
+  type: 'test'
+  ...
+# Subtest: expandable lazy rendering and unique summary-panel relationships
+ok 3 - expandable lazy rendering and unique summary-panel relationships
+  ---
+  duration_ms: 3.716792
+  type: 'test'
+  ...
+# Subtest: accordion repeated titles have unique IDs in server HTML and disabled semantics
+ok 4 - accordion repeated titles have unique IDs in server HTML and disabled semantics
+  ---
+  duration_ms: 1.288125
+  type: 'test'
+  ...
+# Subtest: tabs preserve initial selection, duplicate-label IDs, panel ref surface and all content
+ok 5 - tabs preserve initial selection, duplicate-label IDs, panel ref surface and all content
+  ---
+  duration_ms: 0.793541
+  type: 'test'
+  ...
+# Subtest: steps keep heading sizes, explicit numbering, and nested list semantics
+ok 6 - steps keep heading sizes, explicit numbering, and nested list semantics
+  ---
+  duration_ms: 0.777666
+  type: 'test'
+  ...
+# Subtest: tree exposes open group ownership and omits closed or non-openable children
+ok 7 - tree exposes open group ownership and omits closed or non-openable children
+  ---
+  duration_ms: 0.917792
+  type: 'test'
+  ...
+# Subtest: every disclosure fixture is stable, documented, and executable
+ok 8 - every disclosure fixture is stable, documented, and executable
+  ---
+  duration_ms: 148.804875
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 466.832583

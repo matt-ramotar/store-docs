@@ -136,6 +136,24 @@ over that content. Do not blank the screen. When `servedStale` is `false`, there
 screen to preserve, and a full error state is honest. The `StoreError` vocabulary that tells you
 *what* failed is covered in [Errors and failure handling](/docs/store6/concepts/errors).
 
+## Failure trace: invalidated persisted data
+
+This trace has four qualifying conditions: a first cold subscription after restart, a durably
+invalidated persisted row, the default freshness validator, and `Freshness.CachedOrFetch`.
+Wall-clock age alone does not trigger this fetch. A custom `FreshnessValidator` can plan
+differently.
+
+1. Store hydrates the persisted row into resident state and requests an unconditional fetch with
+   `etag=null`. The durable record may still retain its stored ETag.
+2. The initial public result is
+   `Data(origin=Origin.SOT, isStale=true, refreshing=true)`.
+3. A queued stale `Data` replay may occur before the error, without an intervening `Loading`.
+4. `Bookkeeper.recordFailure` completes before the public error is emitted.
+5. The failed refresh produces `Error(StoreError.Fetch, servedStale=true)`, and the stream remains
+   live.
+
+After hydration populates memory, a later resident replay may carry `Origin.MEMORY`.
+
 ## The one stream-terminating case
 
 Exactly one failure completes a stream: a `Freshness.MustBeFresh` initial-cycle fetch or

@@ -1,0 +1,238 @@
+TAP version 13
+# Subtest: committed sources derive the inventory, separate exclusion, extras, and page census
+ok 1 - committed sources derive the inventory, separate exclusion, extras, and page census
+  ---
+  duration_ms: 40.419791
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B3 mutation routes
+ok 2 - committed route contract includes all B3 mutation routes
+  ---
+  duration_ms: 25.165958
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B4 migration routes
+ok 3 - committed route contract includes all B4 migration routes
+  ---
+  duration_ms: 24.974542
+  type: 'test'
+  ...
+# Subtest: fixture derivation gets synchronized Store6 routes from both lock and ledger
+ok 4 - fixture derivation gets synchronized Store6 routes from both lock and ledger
+  ---
+  duration_ms: 12.30725
+  type: 'test'
+  ...
+# Subtest: route derivation rejects OpenAPI inside the inventory
+ok 5 - route derivation rejects OpenAPI inside the inventory
+  ---
+  duration_ms: 7.767334
+  type: 'test'
+  ...
+# Subtest: route derivation rejects Store6 lock and ledger drift
+ok 6 - route derivation rejects Store6 lock and ledger drift
+  ---
+  duration_ms: 8.116833
+  type: 'test'
+  ...
+# Subtest: route derivation checks the complete Store6 lock and ledger target sets
+ok 7 - route derivation checks the complete Store6 lock and ledger target sets
+  ---
+  duration_ms: 8.974417
+  type: 'test'
+  ...
+# Subtest: route derivation keeps the hand-authored Store6 overview outside the sync lock
+ok 8 - route derivation keeps the hand-authored Store6 overview outside the sync lock
+  ---
+  duration_ms: 8.493166
+  type: 'test'
+  ...
+# Subtest: route derivation requires the locked public text surface
+ok 9 - route derivation requires the locked public text surface
+  ---
+  duration_ms: 8.872709
+  type: 'test'
+  ...
+# Subtest: route derivation rejects inventory target and port ledger drift
+ok 10 - route derivation rejects inventory target and port ledger drift
+  ---
+  duration_ms: 8.93125
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an orphan content documentation route
+ok 11 - route derivation rejects an orphan content documentation route
+  ---
+  duration_ms: 9.377084
+  type: 'test'
+  ...
+# Subtest: only the named internal component fixture is excluded from the public page census
+ok 12 - only the named internal component fixture is excluded from the public page census
+  ---
+  duration_ms: 14.426791
+  type: 'test'
+  ...
+# Subtest: route derivation rejects unexpected application page entrypoints for every configured extension
+ok 13 - route derivation rejects unexpected application page entrypoints for every configured extension
+  ---
+  duration_ms: 64.126875
+  type: 'test'
+  ...
+# Subtest: route derivation accepts generated files nested below the required public reference modules
+ok 14 - route derivation accepts generated files nested below the required public reference modules
+  ---
+  duration_ms: 12.197125
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an unexpected third public reference module
+ok 15 - route derivation rejects an unexpected third public reference module
+  ---
+  duration_ms: 10.605459
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a top-level file in the public reference root
+ok 16 - route derivation rejects a top-level file in the public reference root
+  ---
+  duration_ms: 12.325583
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference module
+ok 17 - route derivation rejects a missing required public reference module
+  ---
+  duration_ms: 8.899125
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference index
+ok 18 - route derivation rejects a missing required public reference index
+  ---
+  duration_ms: 9.765666
+  type: 'test'
+  ...
+# Subtest: route derivation rejects public reference symlink escapes
+ok 19 - route derivation rejects public reference symlink escapes
+  ---
+  duration_ms: 34.060333
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an extras file that differs from computed routes
+ok 20 - route derivation rejects an extras file that differs from computed routes
+  ---
+  duration_ms: 7.765083
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction retains hidden panels and ordered headings
+ok 21 - rendered-page extraction retains hidden panels and ordered headings
+  ---
+  duration_ms: 3.924208
+  type: 'test'
+  ...
+# Subtest: served-page extraction uses the title and content contract without the live-only main
+ok 22 - served-page extraction uses the title and content contract without the live-only main
+  ---
+  duration_ms: 0.57175
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction requires one container, title, and content node
+ok 23 - rendered-page extraction requires one container, title, and content node
+  ---
+  duration_ms: 0.302958
+  type: 'test'
+  ...
+# Subtest: fidelity uses title equality, ordered headings, and the normalized character ratio
+ok 24 - fidelity uses title equality, ordered headings, and the normalized character ratio
+  ---
+  duration_ms: 0.0775
+  type: 'test'
+  ...
+# Subtest: title-only fidelity is N/A and rejects invented local body content
+ok 25 - title-only fidelity is N/A and rejects invented local body content
+  ---
+  duration_ms: 0.032958
+  type: 'test'
+  ...
+# Subtest: local verification checks page routes and labels non-page surfaces separately
+ok 26 - local verification checks page routes and labels non-page surfaces separately
+  ---
+  duration_ms: 2.216917
+  type: 'test'
+  ...
+# Subtest: local verification fails on the first non-200 response
+ok 27 - local verification fails on the first non-200 response
+  ---
+  duration_ms: 0.199125
+  type: 'test'
+  ...
+# Subtest: local verification identifies the exact route when transport fails
+ok 28 - local verification identifies the exact route when transport fails
+  ---
+  duration_ms: 0.076834
+  type: 'test'
+  ...
+# Subtest: serial live fetcher spaces every attempt and retries only 5xx
+ok 29 - serial live fetcher spaces every attempt and retries only 5xx
+  ---
+  duration_ms: 1.351083
+  type: 'test'
+  ...
+# Subtest: serial live fetcher rechecks the clock after an early timer wake
+ok 30 - serial live fetcher rechecks the clock after an early timer wake
+  ---
+  duration_ms: 0.305083
+  type: 'test'
+  ...
+# Subtest: serial live fetcher does not retry a network exception
+ok 31 - serial live fetcher does not retry a network exception
+  ---
+  duration_ms: 0.070125
+  type: 'test'
+  ...
+# Subtest: serial live fetcher stops after two retries and never retries 429
+ok 32 - serial live fetcher stops after two retries and never retries 429
+  ---
+  duration_ms: 0.281166
+  type: 'test'
+  ...
+# Subtest: serial live fetcher retries a 5xx even when its response body cannot be read
+ok 33 - serial live fetcher retries a 5xx even when its response body cannot be read
+  ---
+  duration_ms: 0.115958
+  type: 'test'
+  ...
+# Subtest: serial live fetcher queues concurrent callers
+ok 34 - serial live fetcher queues concurrent callers
+  ---
+  duration_ms: 1.510833
+  type: 'test'
+  ...
+# Subtest: live inventory re-fetch requires exact sitemap value-and-order equality
+ok 35 - live inventory re-fetch requires exact sitemap value-and-order equality
+  ---
+  duration_ms: 0.236584
+  type: 'test'
+  ...
+# Subtest: live verification compares each live page with its served local page
+ok 36 - live verification compares each live page with its served local page
+  ---
+  duration_ms: 0.942083
+  type: 'test'
+  ...
+# Subtest: mode parser exposes bounded local and live commands
+ok 37 - mode parser exposes bounded local and live commands
+  ---
+  duration_ms: 0.056292
+  type: 'test'
+  ...
+# Subtest: failure envelope is deterministic and omits stack and timing data
+ok 38 - failure envelope is deterministic and omits stack and timing data
+  ---
+  duration_ms: 0.039958
+  type: 'test'
+  ...
+1..38
+# tests 38
+# suites 0
+# pass 38
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 491.668666

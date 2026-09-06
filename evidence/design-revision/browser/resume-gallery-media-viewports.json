@@ -1,0 +1,93 @@
+{
+  "buildId": "KvrsyvS1-iCrM9IFzMYjS",
+  "records": [
+    {
+      "height": 900,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 131,
+          "src": "https://d3gk2c5xim1je2.cloudfront.net/v7.1.0/regular/database.svg"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 500,
+          "src": "/store-logo.png"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 16,
+          "src": "/reference/store6-core/images/function.svg"
+        }
+      ],
+      "overflow": false,
+      "width": 320
+    },
+    {
+      "height": 900,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 131,
+          "src": "https://d3gk2c5xim1je2.cloudfront.net/v7.1.0/regular/database.svg"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 500,
+          "src": "/store-logo.png"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 16,
+          "src": "/reference/store6-core/images/function.svg"
+        }
+      ],
+      "overflow": false,
+      "width": 390
+    },
+    {
+      "height": 900,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 131,
+          "src": "https://d3gk2c5xim1je2.cloudfront.net/v7.1.0/regular/database.svg"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 500,
+          "src": "/store-logo.png"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 16,
+          "src": "/reference/store6-core/images/function.svg"
+        }
+      ],
+      "overflow": false,
+      "width": 768
+    },
+    {
+      "height": 900,
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 131,
+          "src": "https://d3gk2c5xim1je2.cloudfront.net/v7.1.0/regular/database.svg"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 500,
+          "src": "/store-logo.png"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 16,
+          "src": "/reference/store6-core/images/function.svg"
+        }
+      ],
+      "overflow": false,
+      "width": 1440
+    }
+  ]
+}

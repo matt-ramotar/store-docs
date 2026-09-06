@@ -1,0 +1,61 @@
+## Status components from MDX
+
+<div className="flex flex-wrap gap-2">
+  <Badge color="blue" leadIcon="circle-info" shape="pill" size="xs" variant="outline">
+    Preview
+  </Badge>
+  <Badge color="green" href="#property-fixture" size="lg">
+    Available
+  </Badge>
+  <Badge color="surface-destructive" disabled>
+    Disabled
+  </Badge>
+</div>
+
+<Callout title="Explicit package variant" type="Info" variant="danger">
+  The explicit danger variant wins over the legacy Info type.
+</Callout>
+
+<Callout
+  ariaLabel="Brand-specific migration note"
+  color="#6D28D9"
+  icon="sparkles"
+  iconLibrary="lucide"
+  variant="custom"
+>
+  Custom callouts retain serializable icon, color, class, and accessible-label props.
+</Callout>
+
+<Info>Information alias</Info>
+<Warning>Warning alias</Warning>
+<Note>Note alias</Note>
+<Tip>Tip alias</Tip>
+<Check>Check alias</Check>
+<Danger>Danger alias</Danger>
+
+<Property
+  default={false}
+  defaultLabel="initial"
+  deprecated
+  deprecatedLabel="retired"
+  id="property-fixture"
+  location="query"
+  name="fetchPolicy"
+  post={["experimental"]}
+  pre={["Store6"]}
+  required
+  requiredLabel="mandatory"
+  type="NetworkPolicy | null"
+>
+  Property descriptions retain **arbitrary MDX content**.
+</Property>
+
+<ParamHead name="standaloneHead" type="String" />
+
+<div className="flex flex-wrap gap-2">
+  <InfoPill prefix="type">
+    <code>List&lt;String&gt;</code>
+  </InfoPill>
+  <RequiredPill label="required" />
+  <DeprecatedPill label="deprecated" />
+</div>

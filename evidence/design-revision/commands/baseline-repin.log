@@ -1,0 +1,7 @@
+re-verification: node scripts/check-claims.mjs --source-root /fixture
+re-verification: node scripts/check-snippets.mjs --source-root /fixture
+re-verification: node scripts/check-claims.mjs --source-root /fixture
+re-verification: node scripts/check-snippets.mjs --source-root /fixture
+re-verification: node scripts/check-claims.mjs --source-root /fixture
+re-verification: node scripts/check-claims.mjs --source-root /fixture
+repin-store6-lock self-tests passed

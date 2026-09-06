@@ -1,0 +1,39 @@
+
+> store-docs@1.0.0 build /Users/matt/.codex/worktrees/7d49/store-docs
+> next build --webpack
+
+▲ Next.js 16.3.0 (webpack)
+✓ Running next.config.mjs took 44ms
+
+[MDX] generated files in 30.116874999999936ms
+  Creating an optimized production build ...
+✓ Compiled successfully in 7.2s
+  Running TypeScript ...
+  Finished TypeScript in 420ms ...
+  Collecting page data using 10 workers ...
+  Generating static pages using 10 workers (0/84) ...
+  Generating static pages using 10 workers (21/84) 
+  Generating static pages using 10 workers (42/84) 
+  Generating static pages using 10 workers (63/84) 
+✓ Generating static pages using 10 workers (84/84) in 917ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)                         Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ○ /api/search
+├ ○ /design-review/components
+├ ○ /developer-newsletter/overview          1h      1y
+├   /docs/[[...slug]]
+│ ├ ● /docs/challenges-at-scale             1h      1y
+│ ├ ● /docs                                 1h      1y
+│ ├ ● /docs/intro                           1h      1y
+│ └ ● [+73 more paths]
+├ ○ /release-notes/overview                 1h      1y
+└ ○ /tokens-demo
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses generateStaticParams)
+

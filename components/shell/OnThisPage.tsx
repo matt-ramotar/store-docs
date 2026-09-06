@@ -1,44 +1,131 @@
 "use client";
 
 import type { TOCItemType } from "fumadocs-core/toc";
-import { isValidElement, useEffect, useState, type ReactNode } from "react";
+import { FloatingToc } from "@heroui-pro/react/floating-toc";
+import { isValidElement, useEffect, useId, useRef, useState, type ReactNode } from "react";
 
-export function OnThisPage({ items }: { items: TOCItemType[] }) {
+/** Preserve heading nesting even when a page skips a heading level. */
+export function getTocEntries(items: TOCItemType[]) {
+  const ancestors: number[] = [];
+  return items.map((item) => {
+    while (ancestors.length && ancestors.at(-1)! >= item.depth) ancestors.pop();
+    ancestors.push(item.depth);
+    return { url: item.url, title: toPlainText(item.title), level: ancestors.length };
+  });
+}
+
+export function OnThisPage({ items, compact = false }: { items: TOCItemType[]; compact?: boolean }) {
   const activeUrl = useActiveSection(items);
-
+  const headingId = useId();
+  const panelId = useId();
+  const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLSpanElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const focusOnOpen = useRef(false);
+  const suppressFocusOpen = useRef(false);
+  useEffect(() => setOpen(false), [items]);
   if (items.length === 0) return null;
 
-  return (
-    <nav aria-labelledby="on-this-page-heading">
-      <h2 id="on-this-page-heading" className="text-sm font-semibold">
-        On this page
-      </h2>
-      <ul className="mt-3 space-y-2 text-sm">
-        {items.map((item) => {
-          const isActive = activeUrl === item.url;
+  const entries = getTocEntries(items);
+  function handleOpenChange(nextOpen: boolean) {
+    if (nextOpen && suppressFocusOpen.current) return;
+    // A hover-close timer must not dismiss the panel while navigating it by keyboard.
+    if (!nextOpen && panelRef.current?.contains(document.activeElement)) return;
+    setOpen(nextOpen);
+  }
 
-          return (
-            <li
-              key={item.url}
-              style={{ paddingInlineStart: `${Math.max(0, item.depth - 2) * 0.75}rem` }}
-            >
-              <a
-                aria-current={isActive ? "location" : undefined}
-                className={`block leading-5 no-underline transition-colors ${
-                  isActive
-                    ? "text-accent-strong font-medium"
-                    : "text-muted hover:text-foreground"
-                }`}
-                href={item.url}
+  function focusActiveItem() {
+    const panel = panelRef.current;
+    (panel?.querySelector<HTMLButtonElement>('[aria-current="location"]') ?? panel?.querySelector<HTMLButtonElement>('button'))?.focus();
+  }
+
+  function navigateToSection(url: string) {
+    const id = getSectionId(url);
+    const section = id ? document.getElementById(id) : null;
+    if (!section) return;
+    setOpen(false);
+    requestAnimationFrame(() => {
+      window.location.hash = url;
+      section.scrollIntoView({ block: "start", behavior: "instant" });
+      if (!section.hasAttribute("tabindex")) section.setAttribute("tabindex", "-1");
+      section.focus({ preventScroll: true });
+    });
+  }
+
+  return (
+    <div className={`store-floating-toc ${compact ? "xl:hidden" : "hidden xl:block"}`}>
+      <FloatingToc placement="right" open={open} onOpenChange={handleOpenChange}>
+        <FloatingToc.Trigger
+          ref={triggerRef}
+          aria-label="On this page"
+          aria-expanded={open}
+          aria-controls={open ? panelId : undefined}
+          className="store-floating-toc__trigger"
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              suppressFocusOpen.current = false;
+              focusOnOpen.current = true;
+              setOpen(true);
+              focusActiveItem();
+            }
+            if (event.key === "Escape") {
+              suppressFocusOpen.current = true;
+              setOpen(false);
+            }
+          }}
+          onPointerEnter={() => { suppressFocusOpen.current = false; }}
+          onPointerDown={() => {
+            suppressFocusOpen.current = false;
+            focusOnOpen.current = false;
+          }}
+          onBlur={() => { suppressFocusOpen.current = false; }}
+        >
+          {entries.map((entry) => (
+            <FloatingToc.Bar key={entry.url} active={activeUrl === entry.url} level={entry.level} aria-hidden="true" />
+          ))}
+        </FloatingToc.Trigger>
+        <FloatingToc.Content containerPadding={12} className="store-floating-toc__content" onOpenChange={setOpen}>
+          <nav
+            id={panelId}
+            aria-labelledby={headingId}
+            ref={(node) => {
+              panelRef.current = node;
+              if (node && focusOnOpen.current) {
+                focusOnOpen.current = false;
+                focusActiveItem();
+              }
+            }}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget) && event.relatedTarget !== triggerRef.current) {
+                setOpen(false);
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                suppressFocusOpen.current = true;
+                triggerRef.current?.focus({ preventScroll: true });
+                setOpen(false);
+              }
+            }}
+          >
+            <p id={headingId} className="px-3 py-2 text-sm font-semibold text-foreground">On this page</p>
+            {entries.map((entry) => (
+              <FloatingToc.Item
+                key={entry.url}
+                active={activeUrl === entry.url}
+                level={entry.level}
+                aria-current={activeUrl === entry.url ? "location" : undefined}
+                onClick={() => navigateToSection(entry.url)}
               >
-                {/* Headings can contain inline links; render text only to avoid nested anchors. */}
-                {toPlainText(item.title)}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+                {entry.title}
+              </FloatingToc.Item>
+            ))}
+          </nav>
+        </FloatingToc.Content>
+      </FloatingToc>
+    </div>
   );
 }
 

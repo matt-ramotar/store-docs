@@ -1,0 +1,256 @@
+diff --git a/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt b/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt
+index 02bac221..92aa8bd0 100644
+--- a/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt
++++ b/tooling/plugins/src/main/kotlin/org/mobilenativefoundation/store/tooling/plugins/KotlinMultiplatformConventionPlugin.kt
+@@ -17,6 +17,7 @@ import org.gradle.kotlin.dsl.configure
+ import org.gradle.kotlin.dsl.get
+ import org.gradle.kotlin.dsl.withType
+ import org.jetbrains.dokka.gradle.DokkaExtension
++import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
+ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+ import org.jetbrains.kotlin.gradle.dsl.JvmDefaultMode
+ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+@@ -212,11 +213,23 @@ fun Project.configureAtomicFu() =
+ 
+ fun Project.configureDokka() {
+     val moduleDocumentation = layout.projectDirectory.file("dokka/Module.md")
++    val isStore6Reference = name == "store6-core" || name == "store6-mutations"
++    val dokkaResources =
++        rootProject.layout.projectDirectory.dir("tooling/plugins/src/main/resources/dokka")
+ 
+     extensions.configure<DokkaExtension> {
+         dokkaPublications.named("html") {
+             outputDirectory.set(layout.buildDirectory.dir("dokka/html"))
+         }
++        if (isStore6Reference) {
++            pluginsConfiguration.withType<DokkaHtmlPluginParameters>().configureEach {
++                customStyleSheets.from(dokkaResources.file("store-reference.css"))
++                customAssets.from(dokkaResources.file("logo-icon.svg"))
++                footerMessage.set("Store 6 API reference")
++                homepageLink.set("/docs/store6/overview")
++                templatesDir.set(dokkaResources.dir("templates"))
++            }
++        }
+         dokkaSourceSets.configureEach {
+             reportUndocumented.set(false)
+             skipDeprecated.set(true)
+diff --git a/tooling/plugins/src/main/resources/dokka/store-reference.css b/tooling/plugins/src/main/resources/dokka/store-reference.css
+new file mode 100644
+index 00000000..be63397e
+--- /dev/null
++++ b/tooling/plugins/src/main/resources/dokka/store-reference.css
+@@ -0,0 +1,160 @@
++/* Store 6 colors for Dokka's stock HTML renderer. */
++:root {
++    --default-gray: #e3f0e9;
++    --default-font-color: #172c2a;
++    --header-font-color: #172c2a;
++    --hover-link-color: #136d65;
++    --color-scrollbar: #596a65;
++    --color-scrollbar-track: #f7f6f0;
++    --default-white: #f7f6f0;
++    --background-color: #f7f6f0;
++    --color-dark: #172c2a;
++    --blockquote-background: #e3f0e9;
++    --border-color: rgba(23, 44, 42, 0.2);
++    --navigation-highlight-color: rgba(155, 214, 208, 0.12);
++    --active-tab-border-color: #13766d;
++    --inactive-tab-border-color: #596a65;
++    --active-section-color: #13766d;
++    --inactive-section-color: #596a65;
++    --sidemenu-section-active-color: #e3f0e9;
++
++    --color-key-blue: #13766d;
++    --color-key-blue-hover: #136d65;
++    --color-key-blue-50: rgba(19, 118, 109, 0.42);
++    --color-background-nav: #172c2a;
++    --color-background-nav-dt: #172c2a;
++    --color-background-page: #f7f6f0;
++    --color-background-page-dt: #172624;
++    --color-background-footer: #e3f0e9;
++    --color-background-footer-dt: #1f3431;
++    --color-text: #172c2a;
++    --color-text-dt: #dde9e5;
++    --color-text-light: #596a65;
++    --color-text-light-dt: #a8b7b0;
++    --color-background-inline-code: #e3f0e9;
++    --color-background-code-block: #e3f0e9;
++    --color-cd-punctuation: #596a65;
++    --color-cd-keyword: #13766d;
++    --color-cd-builtin: #23683f;
++    --color-cd-function: #13766d;
++    --color-cd-operator: #80520c;
++    --color-cd-number: #a43e40;
++    --color-cd-keyword-alternative: #cbb9f5;
++    --color-cd-builtin-alternative: #d8c39a;
++    --color-cd-function-alternative: #9bd6d0;
++    --color-cd-operator-alternative: #dde9e5;
++    --color-cd-number-alternative: #9bd6d0;
++    --color-background: #f7f6f0;
++    --color-background-hover: rgba(23, 44, 42, 0.08);
++    --text-color: #172c2a;
++    --text-outline: rgba(23, 44, 42, 0.25);
++    --focus-outline: 3px solid #13766d;
++}
++
++html.theme-dark {
++    --default-gray: #1f3431;
++    --default-font-color: #dde9e5;
++    --header-font-color: #dde9e5;
++    --background-color: #172624;
++    --color-dark: #dde9e5;
++    --border-color: rgba(221, 233, 229, 0.2);
++    --blockquote-background: rgba(221, 233, 229, 0.08);
++    --active-tab-border-color: #9bd6d0;
++    --inactive-tab-border-color: #a8b7b0;
++    --active-section-color: #9bd6d0;
++    --inactive-section-color: #a8b7b0;
++    --sidemenu-section-active-color: #9bd6d0;
++    --color-background: #172624;
++    --color-background-hover: rgba(221, 233, 229, 0.1);
++    --color-background-inline-code: rgba(221, 233, 229, 0.1);
++    --color-background-code-block: rgba(221, 233, 229, 0.07);
++    --text-color: #dde9e5;
++    --text-outline: rgba(221, 233, 229, 0.24);
++    --focus-outline: 3px solid #9bd6d0;
++}
++
++.navigation.theme-dark {
++    --focus-outline: 3px solid #9bd6d0;
++}
++
++#homepage-link {
++    width: auto;
++    gap: 8px;
++    padding: 0 12px 0 38px;
++    background-position: 10px 50%;
++    color: #dde9e5;
++    font: 600 14px/20px var(--font-family-default);
++    text-decoration: none;
++}
++
++.sidebar {
++    background-color: #fbfbf8;
++}
++
++html.theme-dark .sidebar {
++    background-color: #172624;
++}
++
++.main-content a:not([data-name]),
++.main-content a:not([data-name]):active,
++.main-content a:not([data-name]):focus,
++.main-content a:not([data-name]):hover {
++    color: #13766d;
++}
++
++html.theme-dark .main-content a:not([data-name]),
++html.theme-dark .main-content a:not([data-name]):active,
++html.theme-dark .main-content a:not([data-name]):focus,
++html.theme-dark .main-content a:not([data-name]):hover {
++    color: #9bd6d0;
++}
++
++.main-content a:not([data-name]):focus-visible,
++.navigation-controls--btn:focus-visible,
++.library-name--link:focus-visible,
++.platform-tag:focus-visible,
++.button:focus-visible {
++    box-shadow: none;
++    outline: var(--focus-outline);
++    outline-offset: 3px;
++}
++
++.button:active,
++.toc--part[data-active] > .toc--row .toc--button,
++.toc--part[data-active] > .toc--row .toc--link {
++    color: #ffffff;
++}
++
++.popup-wrapper {
++    color: #dde9e5;
++    border-color: #596a65 !important;
++    background-color: #172624 !important;
++}
++
++.popup-wrapper [class^="filterWrapper"] {
++    border-bottom-color: #596a65;
++}
++
++.popup-wrapper input,
++.popup-wrapper span[data-test-custom="ring-select-popup-filter-icon"],
++.popup-wrapper button[data-test="ring-input-clear"],
++.template-title {
++    color: #dde9e5 !important;
++}
++
++.template-description {
++    color: #a8b7b0;
++}
++
++.template-wrapper strong {
++    color: #dde9e5;
++    background-color: rgba(19, 118, 109, 0.48);
++}
++
++.popup-wrapper [class*="hover"] {
++    background-color: rgba(155, 214, 208, 0.12) !important;
++}
++
++.popup-wrapper :focus-visible {
++    outline-color: #9bd6d0;
++}
+diff --git a/tooling/plugins/src/main/resources/dokka/logo-icon.svg b/tooling/plugins/src/main/resources/dokka/logo-icon.svg
+new file mode 100644
+index 00000000..bbb91c23
+--- /dev/null
++++ b/tooling/plugins/src/main/resources/dokka/logo-icon.svg
+@@ -0,0 +1,7 @@
++<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
++    <rect width="64" height="64" rx="16" fill="#F7F6F0"/>
++    <path d="M14 22C14 17.582 17.582 14 22 14H42C46.418 14 50 17.582 50 22C50 26.418 46.418 30 42 30H22C17.582 30 14 26.418 14 22Z" fill="#13766D"/>
++    <path d="M14 42C14 37.582 17.582 34 22 34H42C46.418 34 50 37.582 50 42C50 46.418 46.418 50 42 50H22C17.582 50 14 46.418 14 42Z" fill="#172C2A"/>
++    <circle cx="22" cy="22" r="3" fill="#F7F6F0"/>
++    <circle cx="42" cy="42" r="3" fill="#9BD6D0"/>
++</svg>
+diff --git a/tooling/plugins/src/main/resources/dokka/templates/includes/header.ftl b/tooling/plugins/src/main/resources/dokka/templates/includes/header.ftl
+new file mode 100644
+index 00000000..53c099d6
+--- /dev/null
++++ b/tooling/plugins/src/main/resources/dokka/templates/includes/header.ftl
+@@ -0,0 +1,35 @@
++<#import "source_set_selector.ftl" as source_set_selector>
++<#macro display>
++    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
++        <@template_cmd name="pathToRoot">
++            <a class="library-name--link" href="${pathToRoot}index.html" tabindex="1">
++                <@template_cmd name="projectName">
++                    ${projectName}
++                </@template_cmd>
++            </a>
++        </@template_cmd>
++        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
++                type="button">Toggle table of contents
++        </button>
++        <div class="navigation-controls--break ui-kit_mobile-only"></div>
++        <div class="library-version" id="library-version">
++            <#-- This can be handled by the versioning plugin -->
++            <@version/>
++        </div>
++        <div class="navigation-controls">
++            <@source_set_selector.display/>
++            <#if homepageLink?has_content>
++                <a aria-label="Store 6 guide"
++                   class="navigation-controls--btn navigation-controls--btn_homepage"
++                   id="homepage-link"
++                   href="${homepageLink}">Store guide</a>
++            </#if>
++            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
++                    type="button">Switch theme
++            </button>
++            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
++                API
++            </div>
++        </div>
++    </header>
++</#macro>

@@ -1,0 +1,36 @@
+## Disclosure components authored in MDX
+
+<Accordion.Group>
+  <Accordion title="MDX accordion" defaultOpen="true" description="A serializable legacy initial state.">
+    Accordion content from the production MDX compiler.
+  </Accordion>
+  <Accordion title="Closed MDX accordion" defaultOpen={false}>
+    Closed accordion content.
+  </Accordion>
+</Accordion.Group>
+
+<Expandable title="MDX properties" defaultOpen={true}>
+  Expandable content from MDX.
+</Expandable>
+
+<Steps titleSize="h3">
+  <Steps.Item title="Read the key" id="mdx-step-read">
+    Start with the local source.
+    <Steps>
+      <Steps.Item title="Nested step">Inspect the cached value.</Steps.Item>
+    </Steps>
+  </Steps.Item>
+  <Steps.Item title="Refresh" stepNumber="4">Fetch remote data.</Steps.Item>
+</Steps>
+
+<Tabs ariaLabel="MDX backends" defaultTabIndex={1}>
+  <Tabs.Item title="Memory">Memory panel from MDX.</Tabs.Item>
+  <Tabs.Item title="Database">Database panel from MDX.</Tabs.Item>
+</Tabs>
+
+<Tree>
+  <Tree.Folder name="MDX source" defaultOpen={true}>
+    <Tree.File name="Store.kt" />
+    <Tree.Folder name="closed folder"><Tree.File name="Hidden.kt" /></Tree.Folder>
+  </Tree.Folder>
+</Tree>

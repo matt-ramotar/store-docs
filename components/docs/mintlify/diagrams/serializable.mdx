@@ -1,0 +1,16 @@
+## Diagrams authored in MDX
+
+<Mermaid
+  chart={"flowchart LR\n  A[Store] --> B[Local source]\n  A --> C[Fetcher]"}
+  ariaLabel="MDX Store data flow"
+  placement="bottom-right"
+  actions={true}
+/>
+
+<Mermaid
+  chart={"sequenceDiagram\n  Store->>Cache: Read key\n  Cache-->>Store: Value"}
+  ariaLabel="MDX cache sequence"
+  actions={false}
+/>
+
+ZoomControls and usePanZoom receive callbacks and therefore run in the separate client fixture.

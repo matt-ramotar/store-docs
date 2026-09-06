@@ -1,0 +1,713 @@
+TAP version 13
+# Subtest: inventory defines direct docs targets and two exact outside routes
+ok 1 - inventory defines direct docs targets and two exact outside routes
+  ---
+  duration_ms: 1.196125
+  type: 'test'
+  ...
+# Subtest: B5 docs home is the two-track Store 6 and Store 5 router
+not ok 2 - B5 docs home is the two-track Store 6 and Store 5 router
+  ---
+  duration_ms: 1.10775
+  type: 'test'
+  location: '/Users/matt/.codex/worktrees/7d49/store-docs/scripts/t4-contract.test.mjs:66:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    release notice is consolidated in the shell
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/t4-contract.test.mjs:103:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: B5 primary navigation points at Store6 while version navigation remains stable
+ok 3 - B5 primary navigation points at Store6 while version navigation remains stable
+  ---
+  duration_ms: 0.339083
+  type: 'test'
+  ...
+# Subtest: every T4 source, inventory target, outside route, and Store6 copy exists
+ok 4 - every T4 source, inventory target, outside route, and Store6 copy exists
+  ---
+  duration_ms: 0.210541
+  type: 'test'
+  ...
+# Subtest: manifest has every ordered inventory row and one separate OpenAPI exclusion
+ok 5 - manifest has every ordered inventory row and one separate OpenAPI exclusion
+  ---
+  duration_ms: 0.3305
+  type: 'test'
+  ...
+# Subtest: manifest generation does not depend on the wall clock
+ok 6 - manifest generation does not depend on the wall clock
+  ---
+  duration_ms: 0.139791
+  type: 'test'
+  ...
+# Subtest: API migration removes empty permalink artifacts and preserves linked heading content
+ok 7 - API migration removes empty permalink artifacts and preserves linked heading content
+  ---
+  duration_ms: 60.403584
+  type: 'test'
+  ...
+# Subtest: MDX article renderer maps the complete semantic surface and preserves T3 overrides
+ok 8 - MDX article renderer maps the complete semantic surface and preserves T3 overrides
+  ---
+  duration_ms: 0.561584
+  type: 'test'
+  ...
+# Subtest: component-aware migration preserves cards, steps, callouts, descriptions, and light media
+ok 9 - component-aware migration preserves cards, steps, callouts, descriptions, and light media
+  ---
+  duration_ms: 7.975334
+  type: 'test'
+  ...
+# Subtest: migrated widgets retain grouped steps, code panels, callouts, and parameter definitions
+not ok 10 - migrated widgets retain grouped steps, code panels, callouts, and parameter definitions
+  ---
+  duration_ms: 169.926208
+  type: 'test'
+  location: '/Users/matt/.codex/worktrees/7d49/store-docs/scripts/t4-contract.test.mjs:399:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    ... Skipped lines
+    
+      [
+        {
+          body: 'PrerequisitesBeforedivingin,youshould:CompletetheQuickstart.HaveanunderstandingofthecoreStoreconcepts.',
+          page: '/docs/best-practices/store5/single-or-multiple-stores',
+          type: 'info'
+    ...
+        {
+    +     body: 'ExtensionforMakingaCachedDataRequest:kotlinCopysuspendfun<Key:Any,Output:Any>Store<Key,Output>.get(key:Key)=stream(StoreReadRequest.cached(key,refresh=false)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()',
+    -     body: 'ExtensionforMakingaCachedDataRequest:suspendfun<Key:Any,Output:Any>Store<Key,Output>.get(key:Key)=stream(StoreReadRequest.cached(key,refresh=false)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()',
+          page: '/docs/concepts/store5/fetcher',
+          type: 'tip'
+        },
+        {
+    +     body: 'ExtensionforMakingaFreshDataRequest:kotlinCopysuspendfun<Key:Any,Output:Any>Store<Key,Output>.fresh(key:Key)=stream(StoreReadRequest.fresh(key)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()',
+    -     body: 'ExtensionforMakingaFreshDataRequest:suspendfun<Key:Any,Output:Any>Store<Key,Output>.fresh(key:Key)=stream(StoreReadRequest.fresh(key)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()',
+          page: '/docs/concepts/store5/fetcher',
+          type: 'tip'
+        },
+        {
+          body: 'FreshDataRequestsBypassClient-SideChecks:Iftherequestisforfreshdata,theStorebypassestheMemoryCache,SourceOfTruth,andValidatorandinvokestheFetcherimmediately.',
+    ...
+        {
+    +     body: `UnderstandingVersionCatalogs:Thelibs.versions.tomlfileispartofGradle'sVersionCatalogsfeature,whichsimplifiesdependencymanagement.Ifyou'renotusingVersionCatalogs,youcanaddthedependencydirectlytoyourbuild.gradle.kts:kotlinCopydependencies{implementation("org.mobilenativefoundation.store:store5:5.1.0")}FormoreinformationonVersionCatalogs,visittheGradleDocumentation.`,
+    -     body: `UnderstandingVersionCatalogs:Thelibs.versions.tomlfileispartofGradle'sVersionCatalogsfeature,whichsimplifiesdependencymanagement.Ifyou'renotusingVersionCatalogs,youcanaddthedependencydirectlytoyourbuild.gradle.kts:dependencies{implementation("org.mobilenativefoundation.store:store5:5.1.0")}FormoreinformationonVersionCatalogs,visittheGradleDocumentation.`,
+          page: '/docs/quickstart',
+          type: 'tip'
+        },
+        {
+    +     body: "UsingSqlDelightforLocalDatabaseModels:TheSQLschemadefinedusingSqlDelightwillgenerateKotlinmodelsforyou.Here'showthePostEntityclassmightlookaftergeneration:kotlinCopydataclassPostEntity(valid:Long,valcreator_id:Long,valcaption:String?,valcreated_at:String,vallikes_count:Long,valcomments_count:Long,valshares_count:Long,valviews_count:Long,valis_sponsored:Long,valcover_url:String,valplatform:Platform,vallocation_name:String?,valis_favorited_by_current_user:Long)FormoredetailsonhowSqlDelightgeneratesKotlinclassesfromSQLschemas,checkouttheSqlDelightDocs.",
+    -     body: "UsingSqlDelightforLocalDatabaseModels:TheSQLschemadefinedusingSqlDelightwillgenerateKotlinmodelsforyou.Here'showthePostEntityclassmightlookaftergeneration:dataclassPostEntity(valid:Long,valcreator_id:Long,valcaption:String?,valcreated_at:String,vallikes_count:Long,valcomments_count:Long,valshares_count:Long,valviews_count:Long,valis_sponsored:Long,valcover_url:String,valplatform:Platform,vallocation_name:String?,valis_favorited_by_current_user:Long)FormoredetailsonhowSqlDelightgeneratesKotlinclassesfromSQLschemas,checkouttheSqlDelightDocs.",
+          page: '/docs/quickstart',
+          type: 'note'
+        },
+        {
+          body: 'DependencyInjectionContext:Trailsuseskotlin-inject,acompile-timedependencyinjectionlibraryforKotlin.The@Injectannotationindicatesaclasscanbeinjected.',
+    ...
+        {
+    +     body: 'ObservingDatabaseChangesOverTime:ToensureyourSourceOfTruthobserveschangesinthedatabase,useasFlow()andappropriatemappingfunctions.kotlinCopytrailsDatabase.postQueries.selectPostById(id.toLong()).asFlow().mapToOneOrNull()',
+    -     body: 'ObservingDatabaseChangesOverTime:ToensureyourSourceOfTruthobserveschangesinthedatabase,useasFlow()andappropriatemappingfunctions.trailsDatabase.postQueries.selectPostById(id.toLong()).asFlow().mapToOneOrNull()',
+          page: '/docs/quickstart',
+          type: 'tip'
+        },
+        {
+          body: "UnderstandingtheConverter'sRole:TheConverterbridgesthegapbetweenthenetworkmodel,localdatabasemodel,anddomainmodelwithintheStore.Whileyouhaveextensionfunctionsforconversions,theConverterintegratestheseintotheStore'spipeline,ensuringdataflowscorrectlythrougheachlayer.",
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      body: 'PrerequisitesBeforedivingin,youshould:CompletetheQuickstart.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'info'
+    1:
+      body: 'Question:Arethedatasourcestightlycoupledorindependent?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    2:
+      body: 'Question:Doyourequireatomicupdatesacrossdatasources?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    3:
+      body: 'Question:Doyourdatasourcesrequiredifferentcachingstrategiesorvalidationrules?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    4:
+      body: 'Question:IscombiningdatawithinasingleStorelesscomplex?Iscombiningdataintherepositorylayerfeasible?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    5:
+      body: 'Question:Dothedatasourceshavedifferenterrorhandlingrequirements?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    6:
+      body: 'Question:Willotherdatasourcesneedtobeaddedinthefuture?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    7:
+      body: 'HowtoUsetheFlowChart:Startatthetopofthechart.Answereachquestionwith"yes"or"no".Greenpathsrepresent"yes".Redpathsrepresent"no".'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'info'
+    8:
+      body: 'WhenUsingMultipleStores:CreatearepositorylayertocombinedatafromdifferentStores.UseappropriatecachingstrategiesforeachStore.ImplementclearerrorhandlingforeachStore.UseKotlinFlowstocombinedatastreams.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'tip'
+    9:
+      body: 'WhenUsingaSingleStore:Designarobustdomainmodelthataccommodatesalldata.Implementcarefulerrorhandlingthatconsiderspartialdata.Useappropriatevalidationrulesfordifferentdatatypes.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'tip'
+    10:
+      body: "CheckoutGoogle'sOfflineFirstguideformoreinformationonconflictresolutionstrategies."
+      page: '/docs/concepts/store5/bookkeeper'
+      type: 'tip'
+    11:
+      body: 'ExtensionforMakingaCachedDataRequest:suspendfun<Key:Any,Output:Any>Store<Key,Output>.get(key:Key)=stream(StoreReadRequest.cached(key,refresh=false)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'tip'
+    12:
+      body: 'ExtensionforMakingaFreshDataRequest:suspendfun<Key:Any,Output:Any>Store<Key,Output>.fresh(key:Key)=stream(StoreReadRequest.fresh(key)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'tip'
+    13:
+      body: 'FreshDataRequestsBypassClient-SideChecks:Iftherequestisforfreshdata,theStorebypassestheMemoryCache,SourceOfTruth,andValidatorandinvokestheFetcherimmediately.'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'note'
+    14:
+      body: 'CheckoutHandlingCRUDOperationsforaguideonsupporting:Create:InsertOne,InsertManyRead:FindOne,FindMany,FindAll,ObserveOne,ObserveManyUpdate:UpdateOne,UpdateMany,UpsertOne,UpsertManyDelete:DeleteOne,DeleteMany'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'tip'
+    15:
+      body: 'ThismethodonlyremovesdatafromthedelegateStore.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'note'
+    16:
+      body: 'ThismethodonlyremovesdatafromthedelegateStore.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'note'
+    17:
+      body: "ThismethodisusedbyRealStoretowritedatafetchedfromthenetworkintolocalstorage.It'salsousedbytheMutableStoretooptimisticallyupdatethelocaldatasourcewhenawriterequestisreceived."
+      page: '/docs/concepts/store5/source-of-truth'
+      type: 'note'
+    18:
+      body: 'Thismethodonlyremovesdatafromthememorycacheandsourceoftruth.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    19:
+      body: 'Thismethodonlyremovesdatafromthememorycacheandsourceoftruth.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    20:
+      body: 'TheFetcherControllerensuresonlyonenetworkcallperkey.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    21:
+      body: "TheValidatorisoptional.Ifyoudon'tprovideone,theStoredefaultstoconsideringthecacheddatavalid."
+      page: '/docs/concepts/store5/validator'
+      type: 'info'
+    22:
+      body: 'TheValidatoronlyoperatesondatafromtheSourceofTruthanddoesnotvalidatedatacomingdirectlyfromthenetwork.'
+      page: '/docs/concepts/store5/validator'
+      type: 'note'
+    23:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/quickstart'
+      type: 'note'
+    24:
+      body: 'QuickLinkstoPrerequisites:KotlinMultiplatformProjectSetup:BasicunderstandingofKMPandaprojectsetupwithsharedcommonMaincode.CoroutinesandFlow:BasicunderstandingofKotlinCoroutinesandFlowforasynchronousprogramming.Gradle:FamiliaritywithGradlefordependencymanagement.'
+      page: '/docs/quickstart'
+      type: 'info'
+    25:
+      body: `UnderstandingVersionCatalogs:Thelibs.versions.tomlfileispartofGradle'sVersionCatalogsfeature,whichsimplifiesdependencymanagement.Ifyou'renotusingVersionCatalogs,youcanaddthedependencydirectlytoyourbuild.gradle.kts:dependencies{implementation("org.mobilenativefoundation.store:store5:5.1.0")}FormoreinformationonVersionCatalogs,visittheGradleDocumentation.`
+      page: '/docs/quickstart'
+      type: 'tip'
+    26:
+      body: "UsingSqlDelightforLocalDatabaseModels:TheSQLschemadefinedusingSqlDelightwillgenerateKotlinmodelsforyou.Here'showthePostEntityclassmightlookaftergeneration:dataclassPostEntity(valid:Long,valcreator_id:Long,valcaption:String?,valcreated_at:String,vallikes_count:Long,valcomments_count:Long,valshares_count:Long,valviews_count:Long,valis_sponsored:Long,valcover_url:String,valplatform:Platform,vallocation_name:String?,valis_favorited_by_current_user:Long)FormoredetailsonhowSqlDelightgeneratesKotlinclassesfromSQLschemas,checkouttheSqlDelightDocs."
+      page: '/docs/quickstart'
+      type: 'note'
+    27:
+      body: 'DependencyInjectionContext:Trailsuseskotlin-inject,acompile-timedependencyinjectionlibraryforKotlin.The@Injectannotationindicatesaclasscanbeinjected.'
+      page: '/docs/quickstart'
+      type: 'note'
+    28:
+      body: 'AbouttheTODO()Placeholders:TheTODO()placeholdersindicatewhereimplementationswillbeprovidedinthesubsequentsteps.'
+      page: '/docs/quickstart'
+      type: 'info'
+    29:
+      body: 'ObservingDatabaseChangesOverTime:ToensureyourSourceOfTruthobserveschangesinthedatabase,useasFlow()andappropriatemappingfunctions.trailsDatabase.postQueries.selectPostById(id.toLong()).asFlow().mapToOneOrNull()'
+      page: '/docs/quickstart'
+      type: 'tip'
+    30:
+      body: "UnderstandingtheConverter'sRole:TheConverterbridgesthegapbetweenthenetworkmodel,localdatabasemodel,anddomainmodelwithintheStore.Whileyouhaveextensionfunctionsforconversions,theConverterintegratestheseintotheStore'spipeline,ensuringdataflowscorrectlythrougheachlayer."
+      page: '/docs/quickstart'
+      type: 'note'
+    31:
+      body: "HowComponentsWorkTogether:EachcomponentoftheStorehasaspecificrole:Fetcher:Retrievesdatafromthenetwork.SourceofTruth:Manageslocaldatastorage.Converter:Handlesdatatransformationsbetweenmodels.Updater:Syncslocalchangesbacktothenetwork.Bookkeeper:Keepstrackoffailedupdatesforretrymechanisms.Byintegratingthesecomponents,theStoreefficientlymanagesdataflowbetweenthenetwork,localstorage,andyourapp'sUI."
+      page: '/docs/quickstart'
+      type: 'info'
+    32:
+      body: 'PostRepositoryisfeatureagnostic.WedefinethePostRepositoryunderthecommonlib/market/post/apinamespaceandimplementitinthelib/market/post/implmoduletofacilitateitsreuseacrossfeatures.Consumerscandependonthelib/market/post/apimodulewithoutbeingexposedtotheimplementationdetails,suchasthePostStore.'
+      page: '/docs/quickstart'
+      type: 'tip'
+    33:
+      body: 'Amarketisacompositionofstoresandsystemsenablingexchangebetweenconsumersandproviders.'
+      page: '/docs/quickstart'
+      type: 'note'
+    34:
+      body: 'Prerequisites:CompletePart1ofthisguide.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'info'
+    35:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    36:
+      body: 'WeonlyneedtohandleQueryoperationsintheFetcher,becauseweonlyinvokeFetcheronreads.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    37:
+      body: 'UsingFetcher.ofFlowallowsustosupportoperationsthatobservechangesovertime,suchasObserveOneandObserveMany.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    38:
+      body: 'SimilartoFetcher,ourReaderonlyneedstohandleQueryoperations.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    39:
+      body: 'However,ourWriterneedstohandleallQueryandMutationoperationsbecausewewritetotheSourceofTruthonbothreadsandwrites.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    40:
+      body: 'Whenemittingdata,ifthereisnovaluetoemit(e.g.,noentitiesfound),wereturnnullinsteadofanemptylist.ThispreventstheStorefromconsideringtheoperationfulfilledandtriggersafetchfromthenetwork.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    41:
+      body: 'EnsurethatyourWriterhandlesalloperationcases,includingbothmutationsandqueries,tomaintainconsistencybetweenthelocaldataandremotesources.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    42:
+      body: 'WeinvokeUpdateronreadsifconflictsmightexist.Thismeansweneedtohandlequeryoperationstoo.Ifwedohitcodeforhandlingaqueryoperation,itmeanswearefetchingaPostbuttheBookkeeperhasanunresolvedsyncfailureforthatPost.So,beforewecanpullthelatestvalue,weneedtopushourlatestlocalvaluetothenetwork.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    43:
+      body: 'Weonlycheckforfailedsyncsonreads.Weonlysetfailedsyncsonwrites.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    44:
+      body: 'WeusethesametypeforallthreeparametersintheConverterbecausewearenottransformingthedataanymore.TheConvertersimplypassesthedatathroughas-is.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    45:
+      body: 'Organizingourcodeintoseparateclassesandfactoriesmakesitmoremaintainableandeasiertounderstand.Eachcomponenthasaclearresponsibility.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    46:
+      body: 'Prerequisites:CompletetheQuickstart.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'info'
+    47:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'note'
+    48:
+      body: 'ImplementingtheModelinterfaceinPostallowsustodefineoperationsonvariousPostmodels.Forinstance:WhencreatinganewPost,wehaveonlytheProperties(noKeyorEdges).WhenupdatingaPost,wehaveboththeKeyandtheProperties.WhenfetchingafeedofPosts,wehavealistofPost.Node.WhenfetchingasinglePost,wehaveaPost.Composite.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'note'
+    49:
+      body: 'Providingacompanionobjectwithcommonconfigurationsimprovesreadabilityandreducesthelikelihoodoferrors.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'tip'
+    50:
+      body: 'CreatingtypealiasesforPostOperation,Output,andPostStoresimplifiesourcodeandimprovesreadability.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'tip'
+  actual:
+    0:
+      body: 'PrerequisitesBeforedivingin,youshould:CompletetheQuickstart.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'info'
+    1:
+      body: 'Question:Arethedatasourcestightlycoupledorindependent?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    2:
+      body: 'Question:Doyourequireatomicupdatesacrossdatasources?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    3:
+      body: 'Question:Doyourdatasourcesrequiredifferentcachingstrategiesorvalidationrules?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    4:
+      body: 'Question:IscombiningdatawithinasingleStorelesscomplex?Iscombiningdataintherepositorylayerfeasible?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    5:
+      body: 'Question:Dothedatasourceshavedifferenterrorhandlingrequirements?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    6:
+      body: 'Question:Willotherdatasourcesneedtobeaddedinthefuture?'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'note'
+    7:
+      body: 'HowtoUsetheFlowChart:Startatthetopofthechart.Answereachquestionwith"yes"or"no".Greenpathsrepresent"yes".Redpathsrepresent"no".'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'info'
+    8:
+      body: 'WhenUsingMultipleStores:CreatearepositorylayertocombinedatafromdifferentStores.UseappropriatecachingstrategiesforeachStore.ImplementclearerrorhandlingforeachStore.UseKotlinFlowstocombinedatastreams.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'tip'
+    9:
+      body: 'WhenUsingaSingleStore:Designarobustdomainmodelthataccommodatesalldata.Implementcarefulerrorhandlingthatconsiderspartialdata.Useappropriatevalidationrulesfordifferentdatatypes.'
+      page: '/docs/best-practices/store5/single-or-multiple-stores'
+      type: 'tip'
+    10:
+      body: "CheckoutGoogle'sOfflineFirstguideformoreinformationonconflictresolutionstrategies."
+      page: '/docs/concepts/store5/bookkeeper'
+      type: 'tip'
+    11:
+      body: 'ExtensionforMakingaCachedDataRequest:kotlinCopysuspendfun<Key:Any,Output:Any>Store<Key,Output>.get(key:Key)=stream(StoreReadRequest.cached(key,refresh=false)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'tip'
+    12:
+      body: 'ExtensionforMakingaFreshDataRequest:kotlinCopysuspendfun<Key:Any,Output:Any>Store<Key,Output>.fresh(key:Key)=stream(StoreReadRequest.fresh(key)).filterNot{itisStoreReadResponse.Loading||itisStoreReadResponse.NoNewData}.first().requireData()'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'tip'
+    13:
+      body: 'FreshDataRequestsBypassClient-SideChecks:Iftherequestisforfreshdata,theStorebypassestheMemoryCache,SourceOfTruth,andValidatorandinvokestheFetcherimmediately.'
+      page: '/docs/concepts/store5/fetcher'
+      type: 'note'
+    14:
+      body: 'CheckoutHandlingCRUDOperationsforaguideonsupporting:Create:InsertOne,InsertManyRead:FindOne,FindMany,FindAll,ObserveOne,ObserveManyUpdate:UpdateOne,UpdateMany,UpsertOne,UpsertManyDelete:DeleteOne,DeleteMany'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'tip'
+    15:
+      body: 'ThismethodonlyremovesdatafromthedelegateStore.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'note'
+    16:
+      body: 'ThismethodonlyremovesdatafromthedelegateStore.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/mutable-store'
+      type: 'note'
+    17:
+      body: "ThismethodisusedbyRealStoretowritedatafetchedfromthenetworkintolocalstorage.It'salsousedbytheMutableStoretooptimisticallyupdatethelocaldatasourcewhenawriterequestisreceived."
+      page: '/docs/concepts/store5/source-of-truth'
+      type: 'note'
+    18:
+      body: 'Thismethodonlyremovesdatafromthememorycacheandsourceoftruth.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    19:
+      body: 'Thismethodonlyremovesdatafromthememorycacheandsourceoftruth.Itwillnotupdatetheremotedatasource.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    20:
+      body: 'TheFetcherControllerensuresonlyonenetworkcallperkey.'
+      page: '/docs/concepts/store5/store'
+      type: 'note'
+    21:
+      body: "TheValidatorisoptional.Ifyoudon'tprovideone,theStoredefaultstoconsideringthecacheddatavalid."
+      page: '/docs/concepts/store5/validator'
+      type: 'info'
+    22:
+      body: 'TheValidatoronlyoperatesondatafromtheSourceofTruthanddoesnotvalidatedatacomingdirectlyfromthenetwork.'
+      page: '/docs/concepts/store5/validator'
+      type: 'note'
+    23:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/quickstart'
+      type: 'note'
+    24:
+      body: 'QuickLinkstoPrerequisites:KotlinMultiplatformProjectSetup:BasicunderstandingofKMPandaprojectsetupwithsharedcommonMaincode.CoroutinesandFlow:BasicunderstandingofKotlinCoroutinesandFlowforasynchronousprogramming.Gradle:FamiliaritywithGradlefordependencymanagement.'
+      page: '/docs/quickstart'
+      type: 'info'
+    25:
+      body: `UnderstandingVersionCatalogs:Thelibs.versions.tomlfileispartofGradle'sVersionCatalogsfeature,whichsimplifiesdependencymanagement.Ifyou'renotusingVersionCatalogs,youcanaddthedependencydirectlytoyourbuild.gradle.kts:kotlinCopydependencies{implementation("org.mobilenativefoundation.store:store5:5.1.0")}FormoreinformationonVersionCatalogs,visittheGradleDocumentation.`
+      page: '/docs/quickstart'
+      type: 'tip'
+    26:
+      body: "UsingSqlDelightforLocalDatabaseModels:TheSQLschemadefinedusingSqlDelightwillgenerateKotlinmodelsforyou.Here'showthePostEntityclassmightlookaftergeneration:kotlinCopydataclassPostEntity(valid:Long,valcreator_id:Long,valcaption:String?,valcreated_at:String,vallikes_count:Long,valcomments_count:Long,valshares_count:Long,valviews_count:Long,valis_sponsored:Long,valcover_url:String,valplatform:Platform,vallocation_name:String?,valis_favorited_by_current_user:Long)FormoredetailsonhowSqlDelightgeneratesKotlinclassesfromSQLschemas,checkouttheSqlDelightDocs."
+      page: '/docs/quickstart'
+      type: 'note'
+    27:
+      body: 'DependencyInjectionContext:Trailsuseskotlin-inject,acompile-timedependencyinjectionlibraryforKotlin.The@Injectannotationindicatesaclasscanbeinjected.'
+      page: '/docs/quickstart'
+      type: 'note'
+    28:
+      body: 'AbouttheTODO()Placeholders:TheTODO()placeholdersindicatewhereimplementationswillbeprovidedinthesubsequentsteps.'
+      page: '/docs/quickstart'
+      type: 'info'
+    29:
+      body: 'ObservingDatabaseChangesOverTime:ToensureyourSourceOfTruthobserveschangesinthedatabase,useasFlow()andappropriatemappingfunctions.kotlinCopytrailsDatabase.postQueries.selectPostById(id.toLong()).asFlow().mapToOneOrNull()'
+      page: '/docs/quickstart'
+      type: 'tip'
+    30:
+      body: "UnderstandingtheConverter'sRole:TheConverterbridgesthegapbetweenthenetworkmodel,localdatabasemodel,anddomainmodelwithintheStore.Whileyouhaveextensionfunctionsforconversions,theConverterintegratestheseintotheStore'spipeline,ensuringdataflowscorrectlythrougheachlayer."
+      page: '/docs/quickstart'
+      type: 'note'
+    31:
+      body: "HowComponentsWorkTogether:EachcomponentoftheStorehasaspecificrole:Fetcher:Retrievesdatafromthenetwork.SourceofTruth:Manageslocaldatastorage.Converter:Handlesdatatransformationsbetweenmodels.Updater:Syncslocalchangesbacktothenetwork.Bookkeeper:Keepstrackoffailedupdatesforretrymechanisms.Byintegratingthesecomponents,theStoreefficientlymanagesdataflowbetweenthenetwork,localstorage,andyourapp'sUI."
+      page: '/docs/quickstart'
+      type: 'info'
+    32:
+      body: 'PostRepositoryisfeatureagnostic.WedefinethePostRepositoryunderthecommonlib/market/post/apinamespaceandimplementitinthelib/market/post/implmoduletofacilitateitsreuseacrossfeatures.Consumerscandependonthelib/market/post/apimodulewithoutbeingexposedtotheimplementationdetails,suchasthePostStore.'
+      page: '/docs/quickstart'
+      type: 'tip'
+    33:
+      body: 'Amarketisacompositionofstoresandsystemsenablingexchangebetweenconsumersandproviders.'
+      page: '/docs/quickstart'
+      type: 'note'
+    34:
+      body: 'Prerequisites:CompletePart1ofthisguide.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'info'
+    35:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    36:
+      body: 'WeonlyneedtohandleQueryoperationsintheFetcher,becauseweonlyinvokeFetcheronreads.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    37:
+      body: 'UsingFetcher.ofFlowallowsustosupportoperationsthatobservechangesovertime,suchasObserveOneandObserveMany.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    38:
+      body: 'SimilartoFetcher,ourReaderonlyneedstohandleQueryoperations.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    39:
+      body: 'However,ourWriterneedstohandleallQueryandMutationoperationsbecausewewritetotheSourceofTruthonbothreadsandwrites.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    40:
+      body: 'Whenemittingdata,ifthereisnovaluetoemit(e.g.,noentitiesfound),wereturnnullinsteadofanemptylist.ThispreventstheStorefromconsideringtheoperationfulfilledandtriggersafetchfromthenetwork.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    41:
+      body: 'EnsurethatyourWriterhandlesalloperationcases,includingbothmutationsandqueries,tomaintainconsistencybetweenthelocaldataandremotesources.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    42:
+      body: 'WeinvokeUpdateronreadsifconflictsmightexist.Thismeansweneedtohandlequeryoperationstoo.Ifwedohitcodeforhandlingaqueryoperation,itmeanswearefetchingaPostbuttheBookkeeperhasanunresolvedsyncfailureforthatPost.So,beforewecanpullthelatestvalue,weneedtopushourlatestlocalvaluetothenetwork.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    43:
+      body: 'Weonlycheckforfailedsyncsonreads.Weonlysetfailedsyncsonwrites.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    44:
+      body: 'WeusethesametypeforallthreeparametersintheConverterbecausewearenottransformingthedataanymore.TheConvertersimplypassesthedatathroughas-is.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'note'
+    45:
+      body: 'Organizingourcodeintoseparateclassesandfactoriesmakesitmoremaintainableandeasiertounderstand.Eachcomponenthasaclearresponsibility.'
+      page: '/docs/use-cases/store5/implementing-crud-operations-in-store'
+      type: 'tip'
+    46:
+      body: 'Prerequisites:CompletetheQuickstart.HaveanunderstandingofthecoreStoreconcepts.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'info'
+    47:
+      body: 'ThecodeforthisexampleisavailableintheTrailsrepository.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'note'
+    48:
+      body: 'ImplementingtheModelinterfaceinPostallowsustodefineoperationsonvariousPostmodels.Forinstance:WhencreatinganewPost,wehaveonlytheProperties(noKeyorEdges).WhenupdatingaPost,wehaveboththeKeyandtheProperties.WhenfetchingafeedofPosts,wehavealistofPost.Node.WhenfetchingasinglePost,wehaveaPost.Composite.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'note'
+    49:
+      body: 'Providingacompanionobjectwithcommonconfigurationsimprovesreadabilityandreducesthelikelihoodoferrors.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'tip'
+    50:
+      body: 'CreatingtypealiasesforPostOperation,Output,andPostStoresimplifiesourcodeandimprovesreadability.'
+      page: '/docs/use-cases/store5/setting-up-store-for-crud-operations'
+      type: 'tip'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/t4-contract.test.mjs:529:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: the token replacement fence remains exact
+ok 11 - the token replacement fence remains exact
+  ---
+  duration_ms: 0.180667
+  type: 'test'
+  ...
+# Subtest: same-origin migration links are healthy or rendered as unavailable
+ok 12 - same-origin migration links are healthy or rendered as unavailable
+  ---
+  duration_ms: 121.720958
+  type: 'test'
+  ...
+# Subtest: publishable tracked text excludes local paths and private publication vocabulary
+ok 13 - publishable tracked text excludes local paths and private publication vocabulary
+  ---
+  duration_ms: 448.827542
+  type: 'test'
+  ...
+# Subtest: publishable text census excludes only generated reference module artifacts
+ok 14 - publishable text census excludes only generated reference module artifacts
+  ---
+  duration_ms: 4.226
+  type: 'test'
+  ...
+# Subtest: published-surface scan reports the exact file, line, and curated pattern
+ok 15 - published-surface scan reports the exact file, line, and curated pattern
+  ---
+  duration_ms: 1.199625
+  type: 'test'
+  ...
+# Subtest: published surfaces exclude curated internal process vocabulary
+ok 16 - published surfaces exclude curated internal process vocabulary
+  ---
+  duration_ms: 4.986208
+  type: 'test'
+  ...
+# Subtest: Store6 sync is portable and locked to exact revision and source hashes
+ok 17 - Store6 sync is portable and locked to exact revision and source hashes
+  ---
+  duration_ms: 0.200125
+  type: 'test'
+  ...
+# Subtest: inventory partitions and manifest access contain no fixed cardinality literals
+ok 18 - inventory partitions and manifest access contain no fixed cardinality literals
+  ---
+  duration_ms: 0.415916
+  type: 'test'
+  ...
+# Subtest: live generation is snapshot-backed, source-locked, guarded, and transactional
+ok 19 - live generation is snapshot-backed, source-locked, guarded, and transactional
+  ---
+  duration_ms: 23.038375
+  type: 'test'
+  ...
+# Subtest: snapshot validation rejects a missing derived link-health entry
+ok 20 - snapshot validation rejects a missing derived link-health entry
+  ---
+  duration_ms: 45.566791
+  type: 'test'
+  ...
+# Subtest: snapshot validation and card conversion reject empty link health
+ok 21 - snapshot validation and card conversion reject empty link health
+  ---
+  duration_ms: 50.656125
+  type: 'test'
+  ...
+# Subtest: URL rewriting fails closed for unsafe anchor and image schemes
+ok 22 - URL rewriting fails closed for unsafe anchor and image schemes
+  ---
+  duration_ms: 0.316709
+  type: 'test'
+  ...
+# Subtest: manifest fidelity values match ported bodies and warrant every status
+ok 23 - manifest fidelity values match ported bodies and warrant every status
+  ---
+  duration_ms: 6.106042
+  type: 'test'
+  ...
+# Subtest: ported pages do not lose headings that are present in the live content tree
+ok 24 - ported pages do not lose headings that are present in the live content tree
+  ---
+  duration_ms: 0.198875
+  type: 'test'
+  ...
+# Subtest: all generated MDX has one frontmatter block, no body H1, and static output
+ok 25 - all generated MDX has one frontmatter block, no body H1, and static output
+  ---
+  duration_ms: 2.325083
+  type: 'test'
+  ...
+# Subtest: compiled migrated articles preserve renderer semantics, meaningful links, and visible media
+ok 26 - compiled migrated articles preserve renderer semantics, meaningful links, and visible media
+  ---
+  duration_ms: 195.761625
+  type: 'test'
+  ...
+# Subtest: copied indented source examples are fenced before MDX compilation
+ok 27 - copied indented source examples are fenced before MDX compilation
+  ---
+  duration_ms: 0.177666
+  type: 'test'
+  ...
+# Subtest: copy sanitation states the changing Swift bridge boundary directly
+ok 28 - copy sanitation states the changing Swift bridge boundary directly
+  ---
+  duration_ms: 0.152125
+  type: 'test'
+  ...
+# Subtest: outside routes are static, use the shell, and preserve an empty live body
+ok 29 - outside routes are static, use the shell, and preserve an empty live body
+  ---
+  duration_ms: 3.79575
+  type: 'test'
+  ...
+# Subtest: public links resolve locally or use explicit external destinations
+ok 30 - public links resolve locally or use explicit external destinations
+  ---
+  duration_ms: 2.318833
+  type: 'test'
+  ...
+# Subtest: rewritten Store6-relative links use the current public source repository
+ok 31 - rewritten Store6-relative links use the current public source repository
+  ---
+  duration_ms: 0.197833
+  type: 'test'
+  ...
+# Subtest: llms copy preserves its locked link inventory and maps every target on-site
+ok 32 - llms copy preserves its locked link inventory and maps every target on-site
+  ---
+  duration_ms: 0.168625
+  type: 'test'
+  ...
+# Subtest: public source contains no symlinks
+ok 33 - public source contains no symlinks
+  ---
+  duration_ms: 8.702708
+  type: 'test'
+  ...
+# Subtest: planned overview revision retains exact source attribution and its first-store destination
+ok 34 - planned overview revision retains exact source attribution and its first-store destination
+  ---
+  duration_ms: 3.804583
+  type: 'test'
+  ...
+# Subtest: live inventory, selectors, source semantics, and hidden code match the pinned migration
+ok 35 - live inventory, selectors, source semantics, and hidden code match the pinned migration # SKIP
+  ---
+  duration_ms: 0.104
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 32
+# fail 2
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 1313.519792

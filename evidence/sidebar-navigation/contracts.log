@@ -1,0 +1,1982 @@
+TAP version 13
+# Subtest: claims can anchor whole files in Store6 and store-docs
+ok 1 - claims can anchor whole files in Store6 and store-docs
+  ---
+  duration_ms: 281.773208
+  type: 'test'
+  ...
+# Subtest: claims and the source lock must name the same Store6 revision
+ok 2 - claims and the source lock must name the same Store6 revision
+  ---
+  duration_ms: 3.903333
+  type: 'test'
+  ...
+# Subtest: changed and missing anchors report the page, id, claim, path, and reconciliation command
+ok 3 - changed and missing anchors report the page, id, claim, path, and reconciliation command
+  ---
+  duration_ms: 268.021084
+  type: 'test'
+  ...
+# Subtest: claims reject private Store6 decision-record anchors
+ok 4 - claims reject private Store6 decision-record anchors
+  ---
+  duration_ms: 4.641417
+  type: 'test'
+  ...
+# Subtest: every hand-authored Store6 page has a claim while locked pages and overview are excluded
+ok 5 - every hand-authored Store6 page has a claim while locked pages and overview are excluded
+  ---
+  duration_ms: 116.925375
+  type: 'test'
+  ...
+# Subtest: reconciling one claim rewrites only that claim's whole-file hash
+ok 6 - reconciling one claim rewrites only that claim's whole-file hash
+  ---
+  duration_ms: 311.996375
+  type: 'test'
+  ...
+# Subtest: reconcile-all rewrites every claim's whole-file hashes
+ok 7 - reconcile-all rewrites every claim's whole-file hashes
+  ---
+  duration_ms: 231.947834
+  type: 'test'
+  ...
+# Subtest: reconciling one claim persists its hash while reporting other claims that still need review
+ok 8 - reconciling one claim persists its hash while reporting other claims that still need review
+  ---
+  duration_ms: 251.094875
+  type: 'test'
+  ...
+# Subtest: post-repin selective reconciliation persists one pinned hash and reports the other
+ok 9 - post-repin selective reconciliation persists one pinned hash and reports the other
+  ---
+  duration_ms: 217.956667
+  type: 'test'
+  ...
+# Subtest: reconciliation hashes the pinned Store6 object instead of dirty checkout bytes
+ok 10 - reconciliation hashes the pinned Store6 object instead of dirty checkout bytes
+  ---
+  duration_ms: 203.606792
+  type: 'test'
+  ...
+# Subtest: CLI parsing requires a source root and recognizes only explicit reconciliation modes
+ok 11 - CLI parsing requires a source root and recognizes only explicit reconciliation modes
+  ---
+  duration_ms: 0.423667
+  type: 'test'
+  ...
+# Subtest: an index.mdx hand-authored page is claimed by its directory route
+ok 12 - an index.mdx hand-authored page is claimed by its directory route
+  ---
+  duration_ms: 195.976292
+  type: 'test'
+  ...
+# Subtest: claim ids must be unique
+ok 13 - claim ids must be unique
+  ---
+  duration_ms: 1.738916
+  type: 'test'
+  ...
+# Subtest: every anchor names its repository explicitly
+ok 14 - every anchor names its repository explicitly
+  ---
+  duration_ms: 1.982959
+  type: 'test'
+  ...
+# Subtest: claims without anchors are rejected instead of being silently skipped
+ok 15 - claims without anchors are rejected instead of being silently skipped
+  ---
+  duration_ms: 2.566208
+  type: 'test'
+  ...
+# Subtest: anchor paths must be normalized POSIX-relative paths
+ok 16 - anchor paths must be normalized POSIX-relative paths
+  ---
+  duration_ms: 17.989125
+  type: 'test'
+  ...
+# Subtest: the private-record guard applies after path normalization
+ok 17 - the private-record guard applies after path normalization
+  ---
+  duration_ms: 3.277875
+  type: 'test'
+  ...
+# Subtest: working-tree anchors may not escape their repository through a symlink
+ok 18 - working-tree anchors may not escape their repository through a symlink
+  ---
+  duration_ms: 198.324833
+  type: 'test'
+  ...
+# Subtest: Store6 anchors reject committed symlinks even when they stay inside the checkout
+ok 19 - Store6 anchors reject committed symlinks even when they stay inside the checkout
+  ---
+  duration_ms: 153.668625
+  type: 'test'
+  ...
+# Subtest: claims schema errors identify the evidence file and JSON path
+ok 20 - claims schema errors identify the evidence file and JSON path
+  ---
+  duration_ms: 11.556
+  type: 'test'
+  ...
+# Subtest: source-lock schema errors identify the evidence file and JSON path
+ok 21 - source-lock schema errors identify the evidence file and JSON path
+  ---
+  duration_ms: 8.41125
+  type: 'test'
+  ...
+# Subtest: source-root Git preflight preserves operational stderr
+ok 22 - source-root Git preflight preserves operational stderr
+  ---
+  duration_ms: 11.177292
+  type: 'test'
+  ...
+# Subtest: source-root Git preflight requires the pinned commit object
+ok 23 - source-root Git preflight requires the pinned commit object
+  ---
+  duration_ms: 95.514292
+  type: 'test'
+  ...
+# Subtest: a missing pinned Store6 blob is distinct from working-tree drift
+ok 24 - a missing pinned Store6 blob is distinct from working-tree drift
+  ---
+  duration_ms: 103.963083
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist when the Class H census fails
+ok 25 - reconciliation does not persist when the Class H census fails
+  ---
+  duration_ms: 58.343458
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist when Git preflight fails
+ok 26 - reconciliation does not persist when Git preflight fails
+  ---
+  duration_ms: 12.1265
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist a structurally invalid ledger
+ok 27 - reconciliation does not persist a structurally invalid ledger
+  ---
+  duration_ms: 2.218375
+  type: 'test'
+  ...
+# Subtest: an idempotent reconcile preserves canonical ledger bytes
+ok 28 - an idempotent reconcile preserves canonical ledger bytes
+  ---
+  duration_ms: 98.917125
+  type: 'test'
+  ...
+# Subtest: dedents a named source region and checks every declared hand-authored page
+ok 29 - dedents a named source region and checks every declared hand-authored page
+  ---
+  duration_ms: 53.680708
+  type: 'test'
+  ...
+# Subtest: maps an index.mdx hand-authored page to its directory route
+ok 30 - maps an index.mdx hand-authored page to its directory route
+  ---
+  duration_ms: 25.930709
+  type: 'test'
+  ...
+# Subtest: a changed fence reports the exact contract failure and a useful diff
+ok 31 - a changed fence reports the exact contract failure and a useful diff
+  ---
+  duration_ms: 28.419333
+  type: 'test'
+  ...
+# Subtest: rejects duplicate manifest names, page routes, source regions, and page markers
+    # Subtest: manifest names
+    ok 1 - manifest names
+      ---
+      duration_ms: 7.260791
+      type: 'test'
+      ...
+    # Subtest: page routes
+    ok 2 - page routes
+      ---
+      duration_ms: 15.184084
+      type: 'test'
+      ...
+    # Subtest: source regions
+    ok 3 - source regions
+      ---
+      duration_ms: 28.234333
+      type: 'test'
+      ...
+    # Subtest: page markers
+    ok 4 - page markers
+      ---
+      duration_ms: 16.858042
+      type: 'test'
+      ...
+    1..4
+ok 32 - rejects duplicate manifest names, page routes, source regions, and page markers
+  ---
+  duration_ms: 68.112
+  type: 'test'
+  ...
+# Subtest: rejects missing and unterminated source regions
+    # Subtest: missing
+    ok 1 - missing
+      ---
+      duration_ms: 57.443042
+      type: 'test'
+      ...
+    # Subtest: unterminated
+    ok 2 - unterminated
+      ---
+      duration_ms: 11.885834
+      type: 'test'
+      ...
+    1..2
+ok 33 - rejects missing and unterminated source regions
+  ---
+  duration_ms: 70.361
+  type: 'test'
+  ...
+# Subtest: rejects missing pages, markers, Kotlin fences, and closing fences
+    # Subtest: page
+    ok 1 - page
+      ---
+      duration_ms: 30.524208
+      type: 'test'
+      ...
+    # Subtest: marker
+    ok 2 - marker
+      ---
+      duration_ms: 15.640542
+      type: 'test'
+      ...
+    # Subtest: Kotlin fence
+    ok 3 - Kotlin fence
+      ---
+      duration_ms: 19.234584
+      type: 'test'
+      ...
+    # Subtest: closing fence
+    ok 4 - closing fence
+      ---
+      duration_ms: 7.280333
+      type: 'test'
+      ...
+    1..4
+ok 34 - rejects missing pages, markers, Kotlin fences, and closing fences
+  ---
+  duration_ms: 73.176167
+  type: 'test'
+  ...
+# Subtest: rejects unsafe source paths and page routes
+    # Subtest: parent source path
+    ok 1 - parent source path
+      ---
+      duration_ms: 2.924917
+      type: 'test'
+      ...
+    # Subtest: absolute source path
+    ok 2 - absolute source path
+      ---
+      duration_ms: 5.473584
+      type: 'test'
+      ...
+    # Subtest: backslash source path
+    ok 3 - backslash source path
+      ---
+      duration_ms: 2.199583
+      type: 'test'
+      ...
+    # Subtest: parent page route
+    ok 4 - parent page route
+      ---
+      duration_ms: 1.752792
+      type: 'test'
+      ...
+    # Subtest: outside page route
+    ok 5 - outside page route
+      ---
+      duration_ms: 2.708667
+      type: 'test'
+      ...
+    1..5
+ok 35 - rejects unsafe source paths and page routes
+  ---
+  duration_ms: 15.500458
+  type: 'test'
+  ...
+# Subtest: rejects a source path whose symlink escapes the checkout
+ok 36 - rejects a source path whose symlink escapes the checkout
+  ---
+  duration_ms: 8.572042
+  type: 'test'
+  ...
+# Subtest: rejects undeclared Class H markers and manifest entries for sync-owned pages
+    # Subtest: undeclared marker
+    ok 1 - undeclared marker
+      ---
+      duration_ms: 7.759584
+      type: 'test'
+      ...
+    # Subtest: sync-owned page
+    ok 2 - sync-owned page
+      ---
+      duration_ms: 5.328166
+      type: 'test'
+      ...
+    1..2
+ok 37 - rejects undeclared Class H markers and manifest entries for sync-owned pages
+  ---
+  duration_ms: 13.45025
+  type: 'test'
+  ...
+# Subtest: CLI parsing requires exactly one source root
+ok 38 - CLI parsing requires exactly one source root
+  ---
+  duration_ms: 0.278209
+  type: 'test'
+  ...
+# Subtest: public page Flight payloads contain no server-render errors during client navigation
+ok 39 - public page Flight payloads contain no server-render errors during client navigation
+  ---
+  duration_ms: 670.420125
+  type: 'test'
+  ...
+# Subtest: mobile and desktop TOCs share nested destinations without duplicate control IDs
+ok 40 - mobile and desktop TOCs share nested destinations without duplicate control IDs
+  ---
+  duration_ms: 159.4755
+  type: 'test'
+  ...
+# Subtest: short-page fallback remains a real page-title destination
+ok 41 - short-page fallback remains a real page-title destination
+  ---
+  duration_ms: 149.417958
+  type: 'test'
+  ...
+# Subtest: source attribution uses only known fork revisions and retains exact metadata
+ok 42 - source attribution uses only known fork revisions and retains exact metadata
+  ---
+  duration_ms: 41.722875
+  type: 'test'
+  ...
+# Subtest: shell version destinations are preserved without implied release taxonomy
+ok 43 - shell version destinations are preserved without implied release taxonomy
+  ---
+  duration_ms: 79.712583
+  type: 'test'
+  ...
+# Subtest: reading shell exposes one mobile search entry, a main skip target, and drawer dismissal
+ok 44 - reading shell exposes one mobile search entry, a main skip target, and drawer dismissal
+  ---
+  duration_ms: 2.796833
+  type: 'test'
+  ...
+# Subtest: pre-alpha schedule and workflow dispatch process in main-tracking mode
+ok 45 - pre-alpha schedule and workflow dispatch process in main-tracking mode
+  ---
+  duration_ms: 1.763667
+  type: 'test'
+  ...
+# Subtest: post-alpha schedule is a green tag-only no-op
+ok 46 - post-alpha schedule is a green tag-only no-op
+  ---
+  duration_ms: 0.114
+  type: 'test'
+  ...
+# Subtest: post-alpha dispatch requires exactly one valid 6.x tag at HEAD
+ok 47 - post-alpha dispatch requires exactly one valid 6.x tag at HEAD
+  ---
+  duration_ms: 0.386083
+  type: 'test'
+  ...
+# Subtest: cadence rejects invalid inputs and inspects tags at exact HEAD
+ok 48 - cadence rejects invalid inputs and inspects tags at exact HEAD
+  ---
+  duration_ms: 487.073833
+  type: 'test'
+  ...
+# Subtest: workflow parses as two least-privilege jobs on trusted documentation main
+ok 49 - workflow parses as two least-privilege jobs on trusted documentation main
+  ---
+  duration_ms: 127.446792
+  type: 'test'
+  ...
+# Subtest: Store6 checkout rejects refspecs before fetching origin tags
+ok 50 - Store6 checkout rejects refspecs before fetching origin tags
+  ---
+  duration_ms: 74.360792
+  type: 'test'
+  ...
+# Subtest: pnpm install in CI receives HEROUI_AUTH_TOKEN from Actions secrets
+ok 51 - pnpm install in CI receives HEROUI_AUTH_TOKEN from Actions secrets
+  ---
+  duration_ms: 0.39525
+  type: 'test'
+  ...
+# Subtest: every workflow step has exactly one executable form
+ok 52 - every workflow step has exactly one executable form
+  ---
+  duration_ms: 88.585459
+  type: 'test'
+  ...
+# Subtest: generator validates cadence, exact revision, Dokka outputs, and full verification order
+ok 53 - generator validates cadence, exact revision, Dokka outputs, and full verification order
+  ---
+  duration_ms: 0.593542
+  type: 'test'
+  ...
+# Subtest: release tags regenerate even at the pinned SHA and require same-PR editorial review
+ok 54 - release tags regenerate even at the pinned SHA and require same-PR editorial review
+  ---
+  duration_ms: 0.453375
+  type: 'test'
+  ...
+# Subtest: generator emits only an allowlisted binary patch plus bounded verified metadata
+ok 55 - generator emits only an allowlisted binary patch plus bounded verified metadata
+  ---
+  duration_ms: 0.242125
+  type: 'test'
+  ...
+# Subtest: publisher validates base, artifact, indexed apply, allowlist, and residue before one commit
+ok 56 - publisher validates base, artifact, indexed apply, allowlist, and residue before one commit
+  ---
+  duration_ms: 0.188208
+  type: 'test'
+  ...
+# Subtest: token is isolated to final rolling branch publication with review-final-red semantics
+ok 57 - token is isolated to final rolling branch publication with review-final-red semantics
+  ---
+  duration_ms: 0.154625
+  type: 'test'
+  ...
+# Subtest: proposal-only strict reference workflow requires source customization before generation and publication
+ok 58 - proposal-only strict reference workflow requires source customization before generation and publication
+  ---
+  duration_ms: 353.792667
+  type: 'test'
+  ...
+# Subtest: committed ledger records disjoint live, snapshot, and Store6 censuses
+ok 59 - committed ledger records disjoint live, snapshot, and Store6 censuses
+  ---
+  duration_ms: 468.305917
+  type: 'test'
+  ...
+# Subtest: port-page:generate removes only matching stale files and updates its census
+ok 60 - port-page:generate removes only matching stale files and updates its census
+  ---
+  duration_ms: 317.496625
+  type: 'test'
+  ...
+# Subtest: port-page:generate preserves existing modes and defaults new generated files to 0644
+ok 61 - port-page:generate preserves existing modes and defaults new generated files to 0644
+  ---
+  duration_ms: 14.911417
+  type: 'test'
+  ...
+# Subtest: port-page:generate refuses to remove a stale file changed after its census
+ok 62 - port-page:generate refuses to remove a stale file changed after its census
+  ---
+  duration_ms: 52.144167
+  type: 'test'
+  ...
+# Subtest: port-page:generate refuses to overwrite a pre-existing unclaimed target
+ok 63 - port-page:generate refuses to overwrite a pre-existing unclaimed target
+  ---
+  duration_ms: 10.829833
+  type: 'test'
+  ...
+# Subtest: port-page:generate rolls a stale removal back when ledger installation fails
+ok 64 - port-page:generate rolls a stale removal back when ledger installation fails
+  ---
+  duration_ms: 79.819708
+  type: 'test'
+  ...
+# Subtest: port-page:generate keeps committed outputs when backup cleanup fails after one removal
+ok 65 - port-page:generate keeps committed outputs when backup cleanup fails after one removal
+  ---
+  duration_ms: 74.967208
+  type: 'test'
+  ...
+# Subtest: port-page:generate keeps committed outputs when transaction-directory cleanup fails
+ok 66 - port-page:generate keeps committed outputs when transaction-directory cleanup fails
+  ---
+  duration_ms: 61.814333
+  type: 'test'
+  ...
+# Subtest: port-page:generate rejects a symlinked parent before any mutation
+ok 67 - port-page:generate rejects a symlinked parent before any mutation
+  ---
+  duration_ms: 4.945875
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs removes only matching stale files and updates its census
+ok 68 - sync-store6-docs removes only matching stale files and updates its census
+  ---
+  duration_ms: 41.660208
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs preserves existing modes and defaults new generated files to 0644
+ok 69 - sync-store6-docs preserves existing modes and defaults new generated files to 0644
+  ---
+  duration_ms: 36.178958
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs refuses to remove a stale file changed after its census
+ok 70 - sync-store6-docs refuses to remove a stale file changed after its census
+  ---
+  duration_ms: 5.464917
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs refuses to overwrite a pre-existing unclaimed target
+ok 71 - sync-store6-docs refuses to overwrite a pre-existing unclaimed target
+  ---
+  duration_ms: 2.970542
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs rolls a stale removal back when ledger installation fails
+ok 72 - sync-store6-docs rolls a stale removal back when ledger installation fails
+  ---
+  duration_ms: 6.476417
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs keeps committed outputs when backup cleanup fails after one removal
+ok 73 - sync-store6-docs keeps committed outputs when backup cleanup fails after one removal
+  ---
+  duration_ms: 140.003333
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs keeps committed outputs when transaction-directory cleanup fails
+ok 74 - sync-store6-docs keeps committed outputs when transaction-directory cleanup fails
+  ---
+  duration_ms: 19.691834
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs rejects a symlinked parent before any mutation
+ok 75 - sync-store6-docs rejects a symlinked parent before any mutation
+  ---
+  duration_ms: 6.261375
+  type: 'test'
+  ...
+# Subtest: mintlify CJS loader rewrites Vite __require imports to the named namespace export
+ok 76 - mintlify CJS loader rewrites Vite __require imports to the named namespace export
+  ---
+  duration_ms: 0.644958
+  type: 'test'
+  ...
+# Subtest: mintlify CJS loader leaves files without __require unchanged
+ok 77 - mintlify CJS loader leaves files without __require unchanged
+  ---
+  duration_ms: 0.059917
+  type: 'test'
+  ...
+# Subtest: loader resolves Vite, default CommonJS, and named CommonJS namespaces
+ok 78 - loader resolves Vite, default CommonJS, and named CommonJS namespaces
+  ---
+  duration_ms: 0.080125
+  type: 'test'
+  ...
+# Subtest: all executable code fixtures render through real adapters
+ok 79 - all executable code fixtures render through real adapters
+  ---
+  duration_ms: 37.433334
+  type: 'test'
+  ...
+# Subtest: compiled fences preserve token elements independently from exact source
+ok 80 - compiled fences preserve token elements independently from exact source
+  ---
+  duration_ms: 128.699667
+  type: 'test'
+  ...
+# Subtest: fences without raw metadata retain content without guessing copy text
+ok 81 - fences without raw metadata retain content without guessing copy text
+  ---
+  duration_ms: 0.358584
+  type: 'test'
+  ...
+# Subtest: code source honors compiler metadata and preserves whitespace
+ok 82 - code source honors compiler metadata and preserves whitespace
+  ---
+  duration_ms: 0.122833
+  type: 'test'
+  ...
+# Subtest: groups clamp initial selection and keep accessible panel associations
+ok 83 - groups clamp initial selection and keep accessible panel associations
+  ---
+  duration_ms: 2.974209
+  type: 'test'
+  ...
+# Subtest: explicit code UI themes and syntax data survive adapters
+ok 84 - explicit code UI themes and syntax data survive adapters
+  ---
+  duration_ms: 1.73525
+  type: 'test'
+  ...
+# Subtest: copy overrides, hidden assistant and line-state options render
+ok 85 - copy overrides, hidden assistant and line-state options render
+  ---
+  duration_ms: 1.056
+  type: 'test'
+  ...
+# Subtest: empty registry, snippet elements and audio sources remain valid
+ok 86 - empty registry, snippet elements and audio sources remain valid
+  ---
+  duration_ms: 5.262958
+  type: 'test'
+  ...
+# Subtest: Tidal highlighter emits real syntax spans and precise line states
+ok 87 - Tidal highlighter emits real syntax spans and precise line states
+  ---
+  duration_ms: 120.3465
+  type: 'test'
+  ...
+# Subtest: explicit CSS-variable syntax theme honors Shiki variable names
+ok 88 - explicit CSS-variable syntax theme honors Shiki variable names
+  ---
+  duration_ms: 168.955417
+  type: 'test'
+  ...
+# Subtest: dropdown public display names and state-valued trigger classes survive
+ok 89 - dropdown public display names and state-valued trigger classes survive
+  ---
+  duration_ms: 0.867917
+  type: 'test'
+  ...
+# Subtest: state class adapters preserve caller render functions and elements
+ok 90 - state class adapters preserve caller render functions and elements
+  ---
+  duration_ms: 0.729083
+  type: 'test'
+  ...
+# Subtest: state render adapters compose native and authored refs with symmetric cleanup
+ok 91 - state render adapters compose native and authored refs with symmetric cleanup
+  ---
+  duration_ms: 0.646625
+  type: 'test'
+  ...
+# Subtest: C4 interaction fixtures name the remaining observable acceptance transitions
+ok 92 - C4 interaction fixtures name the remaining observable acceptance transitions
+  ---
+  duration_ms: 0.068
+  type: 'test'
+  ...
+# Subtest: explicit CSS-variable themes are separated from forced Tidal surfaces
+ok 93 - explicit CSS-variable themes are separated from forced Tidal surfaces
+  ---
+  duration_ms: 0.284084
+  type: 'test'
+  ...
+# Subtest: standalone Tidal snippets force their code surface without changing named themes or CodeGroups
+ok 94 - standalone Tidal snippets force their code surface without changing named themes or CodeGroups
+  ---
+  duration_ms: 1.753791
+  type: 'test'
+  ...
+# Subtest: code menu triggers override translucent utilities with context-aware solid colors
+ok 95 - code menu triggers override translucent utilities with context-aware solid colors
+  ---
+  duration_ms: 0.33275
+  type: 'test'
+  ...
+# Subtest: portal menu items keep solid state colors while preserving selected accent and disabled opacity
+ok 96 - portal menu items keep solid state colors while preserving selected accent and disabled opacity
+  ---
+  duration_ms: 0.368833
+  type: 'test'
+  ...
+# Subtest: compiled fence code resets inline-code utilities and plain output inherits the pre foreground
+ok 97 - compiled fence code resets inline-code utilities and plain output inherits the pre foreground
+  ---
+  duration_ms: 0.35925
+  type: 'test'
+  ...
+# Subtest: installed package runtime census remains 42 components and 12 utilities
+ok 98 - installed package runtime census remains 42 components and 12 utilities
+  ---
+  duration_ms: 0.520667
+  type: 'test'
+  ...
+# Subtest: compatibility runtime preserves every package runtime import and compound member
+ok 99 - compatibility runtime preserves every package runtime import and compound member
+  ---
+  duration_ms: 1693.989291
+  type: 'test'
+  ...
+# Subtest: production MDX map exposes every component and compound while caller overrides win
+ok 100 - production MDX map exposes every component and compound while caller overrides win
+  ---
+  duration_ms: 953.24075
+  type: 'test'
+  ...
+# Subtest: default Mermaid theme resolves Tidal tokens while authored configuration keeps authority
+ok 101 - default Mermaid theme resolves Tidal tokens while authored configuration keeps authority
+  ---
+  duration_ms: 0.803334
+  type: 'test'
+  ...
+# Subtest: SVG identities and references are isolated without rewriting authored colors or data IDs
+ok 102 - SVG identities and references are isolated without rewriting authored colors or data IDs
+  ---
+  duration_ms: 0.9915
+  type: 'test'
+  ...
+# Subtest: render queue prevents overlapping singleton config transactions and recovers after failure
+ok 103 - render queue prevents overlapping singleton config transactions and recovers after failure
+  ---
+  duration_ms: 0.880917
+  type: 'test'
+  ...
+# Subtest: Mermaid SSR exposes names/loading and declared explicit versus automatic action states
+ok 104 - Mermaid SSR exposes names/loading and declared explicit versus automatic action states
+  ---
+  duration_ms: 87.92175
+  type: 'test'
+  ...
+# Subtest: public zoom controls retain all seven accessible actions and callback direction values
+ok 105 - public zoom controls retain all seven accessible actions and callback direction values
+  ---
+  duration_ms: 0.483416
+  type: 'test'
+  ...
+# Subtest: all diagram fixtures have stable metadata and render actual client boundaries
+ok 106 - all diagram fixtures have stable metadata and render actual client boundaries
+  ---
+  duration_ms: 621.36
+  type: 'test'
+  ...
+# Subtest: C6 interaction fixture binds all keyboard actions, both zoom limits, and live motion changes
+ok 107 - C6 interaction fixture binds all keyboard actions, both zoom limits, and live motion changes
+  ---
+  duration_ms: 592.786875
+  type: 'test'
+  ...
+# Subtest: compound members and standalone MDX aliases are identical
+ok 108 - compound members and standalone MDX aliases are identical
+  ---
+  duration_ms: 0.562791
+  type: 'test'
+  ...
+# Subtest: accordion preserves legacy boolean/string initial states and URL ancestry
+ok 109 - accordion preserves legacy boolean/string initial states and URL ancestry
+  ---
+  duration_ms: 27.826167
+  type: 'test'
+  ...
+# Subtest: expandable lazy rendering and unique summary-panel relationships
+ok 110 - expandable lazy rendering and unique summary-panel relationships
+  ---
+  duration_ms: 3.971292
+  type: 'test'
+  ...
+# Subtest: accordion repeated titles have unique IDs in server HTML and disabled semantics
+ok 111 - accordion repeated titles have unique IDs in server HTML and disabled semantics
+  ---
+  duration_ms: 23.337708
+  type: 'test'
+  ...
+# Subtest: tabs preserve initial selection, duplicate-label IDs, panel ref surface and all content
+ok 112 - tabs preserve initial selection, duplicate-label IDs, panel ref surface and all content
+  ---
+  duration_ms: 1.05375
+  type: 'test'
+  ...
+# Subtest: steps keep heading sizes, explicit numbering, and nested list semantics
+ok 113 - steps keep heading sizes, explicit numbering, and nested list semantics
+  ---
+  duration_ms: 0.925709
+  type: 'test'
+  ...
+# Subtest: tree exposes open group ownership and omits closed or non-openable children
+ok 114 - tree exposes open group ownership and omits closed or non-openable children
+  ---
+  duration_ms: 1.087542
+  type: 'test'
+  ...
+# Subtest: every disclosure fixture is stable, documented, and executable
+ok 115 - every disclosure fixture is stable, documented, and executable
+  ---
+  duration_ms: 650.941791
+  type: 'test'
+  ...
+# Subtest: layout family exports every compatibility component and compound member
+ok 116 - layout family exports every compatibility component and compound member
+  ---
+  duration_ms: 0.712125
+  type: 'test'
+  ...
+# Subtest: Card preserves navigation semantics, explicit as, and disabled state
+ok 117 - Card preserves navigation semantics, explicit as, and disabled state
+  ---
+  duration_ms: 10.656125
+  type: 'test'
+  ...
+# Subtest: Columns and CardGroup preserve every column count and local defaults
+ok 118 - Columns and CardGroup preserve every column count and local defaults
+  ---
+  duration_ms: 1.172458
+  type: 'test'
+  ...
+# Subtest: Frame preserves media, author style, description rendering, and optional defaults
+ok 119 - Frame preserves media, author style, description rendering, and optional defaults
+  ---
+  duration_ms: 0.612708
+  type: 'test'
+  ...
+# Subtest: Panel and Tile retain caller HTML props and link states
+ok 120 - Panel and Tile retain caller HTML props and link states
+  ---
+  duration_ms: 0.732458
+  type: 'test'
+  ...
+# Subtest: Update defaults visible and honors hidden state
+ok 121 - Update defaults visible and honors hidden state
+  ---
+  duration_ms: 0.727417
+  type: 'test'
+  ...
+# Subtest: View requires an explicit registry and stays empty until client mount
+ok 122 - View requires an explicit registry and stays empty until client mount
+  ---
+  duration_ms: 0.161584
+  type: 'test'
+  ...
+# Subtest: Color keeps compact/table variants and author supplied current and legacy swatches
+ok 123 - Color keeps compact/table variants and author supplied current and legacy swatches
+  ---
+  duration_ms: 3.105334
+  type: 'test'
+  ...
+# Subtest: native Color tooltips gain and release an accessible trigger association
+ok 124 - native Color tooltips gain and release an accessible trigger association
+  ---
+  duration_ms: 1.129167
+  type: 'test'
+  ...
+# Subtest: Icon preserves library, type, color, size, and override behavior
+ok 125 - Icon preserves library, type, color, size, and override behavior
+  ---
+  duration_ms: 0.522042
+  type: 'test'
+  ...
+# Subtest: fixtures are executable, uniquely identified, and cover enums and required states
+ok 126 - fixtures are executable, uniquely identified, and cover enums and required states
+  ---
+  duration_ms: 26.405167
+  type: 'test'
+  ...
+# Subtest: family CSS is fully scoped and uses shared semantic tokens without overriding swatches
+ok 127 - family CSS is fully scoped and uses shared semantic tokens without overriding swatches
+  ---
+  duration_ms: 14.741042
+  type: 'test'
+  ...
+# Subtest: overlay family exports the complete runtime and type-compatible ref adapters
+ok 128 - overlay family exports the complete runtime and type-compatible ref adapters
+  ---
+  duration_ms: 0.678833
+  type: 'test'
+  ...
+# Subtest: Tooltip forwards every declared prop and marks its trigger for scoped theming
+ok 129 - Tooltip forwards every declared prop and marks its trigger for scoped theming
+  ---
+  duration_ms: 3.431792
+  type: 'test'
+  ...
+# Subtest: Search forwards all state, callback, placement, custom-state, and input-ref props
+ok 130 - Search forwards all state, callback, placement, custom-state, and input-ref props
+  ---
+  duration_ms: 0.197084
+  type: 'test'
+  ...
+# Subtest: Search portal observer names its own dialog and attaches and clears the actual input ref
+ok 131 - Search portal observer names its own dialog and attaches and clears the actual input ref
+  ---
+  duration_ms: 0.709667
+  type: 'test'
+  ...
+# Subtest: SearchButton preserves native button props, shortcuts, callbacks, children, and ref
+ok 132 - SearchButton preserves native button props, shortcuts, callbacks, children, and ref
+  ---
+  duration_ms: 0.0895
+  type: 'test'
+  ...
+# Subtest: SearchProvider keeps package context compatibility and every provider prop
+ok 133 - SearchProvider keeps package context compatibility and every provider prop
+  ---
+  duration_ms: 4.096375
+  type: 'test'
+  ...
+# Subtest: serializable MDX excludes callback-required Search and SearchProvider
+ok 134 - serializable MDX excludes callback-required Search and SearchProvider
+  ---
+  duration_ms: 2.504958
+  type: 'test'
+  ...
+# Subtest: fixtures are executable, deterministic, and cover every required overlay state
+ok 135 - fixtures are executable, deterministic, and cover every required overlay state
+  ---
+  duration_ms: 11.592459
+  type: 'test'
+  ...
+# Subtest: Tooltip acceptance fixture exposes stable touch, placement, and CTA targets
+ok 136 - Tooltip acceptance fixture exposes stable touch, placement, and CTA targets
+  ---
+  duration_ms: 2.871125
+  type: 'test'
+  ...
+# Subtest: Search acceptance fixtures bind each remaining keyboard, focus, ref, and supplied-state transition
+ok 137 - Search acceptance fixtures bind each remaining keyboard, focus, ref, and supplied-state transition
+  ---
+  duration_ms: 1.172875
+  type: 'test'
+  ...
+# Subtest: family CSS scopes body-mounted search and tooltip portals to Store docs
+ok 138 - family CSS scopes body-mounted search and tooltip portals to Store docs
+  ---
+  duration_ms: 6.154792
+  type: 'test'
+  ...
+# Subtest: status facade exposes every assigned component
+ok 139 - status facade exposes every assigned component
+  ---
+  duration_ms: 395.502916
+  type: 'test'
+  ...
+# Subtest: Badge renders every public color, variant, size, and shape as an inspectable state
+ok 140 - Badge renders every public color, variant, size, and shape as an inspectable state
+  ---
+  duration_ms: 285.341167
+  type: 'test'
+  ...
+# Subtest: Badge retains link, button, disabled, icon, and deprecated stroke behavior
+ok 141 - Badge retains link, button, disabled, icon, and deprecated stroke behavior
+  ---
+  duration_ms: 302.234833
+  type: 'test'
+  ...
+# Subtest: Callout covers all variants and lets explicit variant override a legacy type
+ok 142 - Callout covers all variants and lets explicit variant override a legacy type
+  ---
+  duration_ms: 205.330917
+  type: 'test'
+  ...
+# Subtest: Callout supports named aliases plus custom icon, color, class, and accessible label
+ok 143 - Callout supports named aliases plus custom icon, color, class, and accessible label
+  ---
+  duration_ms: 162.043583
+  type: 'test'
+  ...
+# Subtest: Property and ParamHead retain metadata, labels, content, ids, and hidden state
+ok 144 - Property and ParamHead retain metadata, labels, content, ids, and hidden state
+  ---
+  duration_ms: 154.299917
+  type: 'test'
+  ...
+# Subtest: Pills preserve arbitrary content and optional label absence
+ok 145 - Pills preserve arbitrary content and optional label absence
+  ---
+  duration_ms: 226.505041
+  type: 'test'
+  ...
+# Subtest: client fixtures have stable metadata and execute with the real adapters
+ok 146 - client fixtures have stable metadata and execute with the real adapters
+  ---
+  duration_ms: 177.237417
+  type: 'test'
+  ...
+# Subtest: ParamHead preserves the installed international fragment spelling
+ok 147 - ParamHead preserves the installed international fragment spelling
+  ---
+  duration_ms: 149.554625
+  type: 'test'
+  ...
+# Subtest: responsive module list preserves every module, tier and release
+ok 148 - responsive module list preserves every module, tier and release
+  ---
+  duration_ms: 3.08425
+  type: 'test'
+  ...
+# Subtest: target groups remain associated while storage exceptions stay in their rows
+ok 149 - target groups remain associated while storage exceptions stay in their rows
+  ---
+  duration_ms: 10.457583
+  type: 'test'
+  ...
+# Subtest: quickstart publication transform publishes the mutations block as a Warning callout
+ok 150 - quickstart publication transform publishes the mutations block as a Warning callout
+  ---
+  duration_ms: 0.756292
+  type: 'test'
+  ...
+# Subtest: quickstart publication transform drops the in-page status quote
+ok 151 - quickstart publication transform drops the in-page status quote
+  ---
+  duration_ms: 0.155333
+  type: 'test'
+  ...
+# Subtest: important-defaults publication transform wraps the zero-config quote as an Info callout
+ok 152 - important-defaults publication transform wraps the zero-config quote as an Info callout
+  ---
+  duration_ms: 4.4545
+  type: 'test'
+  ...
+# Subtest: stability crash-window transform accepts only the legacy or current safe block
+ok 153 - stability crash-window transform accepts only the legacy or current safe block
+  ---
+  duration_ms: 0.216917
+  type: 'test'
+  ...
+# Subtest: inventory defines direct docs targets and two exact outside routes
+ok 154 - inventory defines direct docs targets and two exact outside routes
+  ---
+  duration_ms: 1.33275
+  type: 'test'
+  ...
+# Subtest: B5 docs home is the two-track Store 6 and Store 5 router
+ok 155 - B5 docs home is the two-track Store 6 and Store 5 router
+  ---
+  duration_ms: 0.945625
+  type: 'test'
+  ...
+# Subtest: B5 docs root metadata presents Store 6 before the maintained legacy shelf
+ok 156 - B5 docs root metadata presents Store 6 before the maintained legacy shelf
+  ---
+  duration_ms: 0.229542
+  type: 'test'
+  ...
+# Subtest: B5 legacy shelves render with distinct page-tree names
+ok 157 - B5 legacy shelves render with distinct page-tree names
+  ---
+  duration_ms: 6.068709
+  type: 'test'
+  ...
+# Subtest: B5 Store6 overview preserves the entry contract and exposes the complete adoption path
+ok 158 - B5 Store6 overview preserves the entry contract and exposes the complete adoption path
+  ---
+  duration_ms: 1.1735
+  type: 'test'
+  ...
+# Subtest: B5 primary navigation points at Store6 while version navigation remains stable
+ok 159 - B5 primary navigation points at Store6 while version navigation remains stable
+  ---
+  duration_ms: 0.350709
+  type: 'test'
+  ...
+# Subtest: every T4 source, inventory target, outside route, and Store6 copy exists
+ok 160 - every T4 source, inventory target, outside route, and Store6 copy exists
+  ---
+  duration_ms: 0.3055
+  type: 'test'
+  ...
+# Subtest: manifest has every ordered inventory row and one separate OpenAPI exclusion
+ok 161 - manifest has every ordered inventory row and one separate OpenAPI exclusion
+  ---
+  duration_ms: 0.363833
+  type: 'test'
+  ...
+# Subtest: manifest generation does not depend on the wall clock
+ok 162 - manifest generation does not depend on the wall clock
+  ---
+  duration_ms: 0.3335
+  type: 'test'
+  ...
+# Subtest: API migration removes empty permalink artifacts and preserves linked heading content
+ok 163 - API migration removes empty permalink artifacts and preserves linked heading content
+  ---
+  duration_ms: 396.429208
+  type: 'test'
+  ...
+# Subtest: MDX article renderer maps the complete semantic surface and preserves T3 overrides
+ok 164 - MDX article renderer maps the complete semantic surface and preserves T3 overrides
+  ---
+  duration_ms: 0.618875
+  type: 'test'
+  ...
+# Subtest: component-aware migration preserves cards, steps, callouts, descriptions, and light media
+ok 165 - component-aware migration preserves cards, steps, callouts, descriptions, and light media
+  ---
+  duration_ms: 6.150833
+  type: 'test'
+  ...
+# Subtest: migrated widgets retain grouped steps, code panels, callouts, and parameter definitions
+ok 166 - migrated widgets retain grouped steps, code panels, callouts, and parameter definitions
+  ---
+  duration_ms: 601.109792
+  type: 'test'
+  ...
+# Subtest: the token replacement fence remains exact
+ok 167 - the token replacement fence remains exact
+  ---
+  duration_ms: 0.136208
+  type: 'test'
+  ...
+# Subtest: same-origin migration links are healthy or rendered as unavailable
+ok 168 - same-origin migration links are healthy or rendered as unavailable
+  ---
+  duration_ms: 312.756208
+  type: 'test'
+  ...
+# Subtest: publishable tracked text excludes local paths and private publication vocabulary
+ok 169 - publishable tracked text excludes local paths and private publication vocabulary
+  ---
+  duration_ms: 484.192458
+  type: 'test'
+  ...
+# Subtest: publishable text census excludes only generated reference module artifacts
+ok 170 - publishable text census excludes only generated reference module artifacts
+  ---
+  duration_ms: 4.821375
+  type: 'test'
+  ...
+# Subtest: published-surface scan reports the exact file, line, and curated pattern
+ok 171 - published-surface scan reports the exact file, line, and curated pattern
+  ---
+  duration_ms: 1.030583
+  type: 'test'
+  ...
+# Subtest: published surfaces exclude curated internal process vocabulary
+ok 172 - published surfaces exclude curated internal process vocabulary
+  ---
+  duration_ms: 4.552125
+  type: 'test'
+  ...
+# Subtest: Store6 sync is portable and locked to exact revision and source hashes
+ok 173 - Store6 sync is portable and locked to exact revision and source hashes
+  ---
+  duration_ms: 0.199625
+  type: 'test'
+  ...
+# Subtest: inventory partitions and manifest access contain no fixed cardinality literals
+ok 174 - inventory partitions and manifest access contain no fixed cardinality literals
+  ---
+  duration_ms: 0.439666
+  type: 'test'
+  ...
+# Subtest: live generation is snapshot-backed, source-locked, guarded, and transactional
+ok 175 - live generation is snapshot-backed, source-locked, guarded, and transactional
+  ---
+  duration_ms: 23.681917
+  type: 'test'
+  ...
+# Subtest: snapshot validation rejects a missing derived link-health entry
+ok 176 - snapshot validation rejects a missing derived link-health entry
+  ---
+  duration_ms: 45.05675
+  type: 'test'
+  ...
+# Subtest: snapshot validation and card conversion reject empty link health
+ok 177 - snapshot validation and card conversion reject empty link health
+  ---
+  duration_ms: 44.635292
+  type: 'test'
+  ...
+# Subtest: URL rewriting fails closed for unsafe anchor and image schemes
+ok 178 - URL rewriting fails closed for unsafe anchor and image schemes
+  ---
+  duration_ms: 0.287417
+  type: 'test'
+  ...
+# Subtest: manifest fidelity values match ported bodies and warrant every status
+ok 179 - manifest fidelity values match ported bodies and warrant every status
+  ---
+  duration_ms: 6.010292
+  type: 'test'
+  ...
+# Subtest: ported pages do not lose headings that are present in the live content tree
+ok 180 - ported pages do not lose headings that are present in the live content tree
+  ---
+  duration_ms: 0.173916
+  type: 'test'
+  ...
+# Subtest: all generated MDX has one frontmatter block, no body H1, and static output
+ok 181 - all generated MDX has one frontmatter block, no body H1, and static output
+  ---
+  duration_ms: 2.730625
+  type: 'test'
+  ...
+# Subtest: compiled migrated articles preserve renderer semantics, meaningful links, and visible media
+ok 182 - compiled migrated articles preserve renderer semantics, meaningful links, and visible media
+  ---
+  duration_ms: 177.118125
+  type: 'test'
+  ...
+# Subtest: copied indented source examples are fenced before MDX compilation
+ok 183 - copied indented source examples are fenced before MDX compilation
+  ---
+  duration_ms: 0.149792
+  type: 'test'
+  ...
+# Subtest: copy sanitation states the changing Swift bridge boundary directly
+ok 184 - copy sanitation states the changing Swift bridge boundary directly
+  ---
+  duration_ms: 0.098458
+  type: 'test'
+  ...
+# Subtest: outside routes are static, use the shell, and preserve an empty live body
+ok 185 - outside routes are static, use the shell, and preserve an empty live body
+  ---
+  duration_ms: 1.714292
+  type: 'test'
+  ...
+# Subtest: public links resolve locally or use explicit external destinations
+ok 186 - public links resolve locally or use explicit external destinations
+  ---
+  duration_ms: 2.092375
+  type: 'test'
+  ...
+# Subtest: rewritten Store6-relative links use the current public source repository
+ok 187 - rewritten Store6-relative links use the current public source repository
+  ---
+  duration_ms: 0.157083
+  type: 'test'
+  ...
+# Subtest: llms copy preserves its locked link inventory and maps every target on-site
+ok 188 - llms copy preserves its locked link inventory and maps every target on-site
+  ---
+  duration_ms: 0.210666
+  type: 'test'
+  ...
+# Subtest: public source contains no symlinks
+ok 189 - public source contains no symlinks
+  ---
+  duration_ms: 9.703333
+  type: 'test'
+  ...
+# Subtest: planned overview revision retains exact source attribution and its first-store destination
+ok 190 - planned overview revision retains exact source attribution and its first-store destination
+  ---
+  duration_ms: 2.078792
+  type: 'test'
+  ...
+# Subtest: live inventory, selectors, source semantics, and hidden code match the pinned migration
+ok 191 - live inventory, selectors, source semantics, and hidden code match the pinned migration # SKIP
+  ---
+  duration_ms: 0.021333
+  type: 'test'
+  ...
+# (node:40392) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/matt/.codex/worktrees/7d49/store-docs/lib/search-results.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /Users/matt/.codex/worktrees/7d49/store-docs/package.json.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: T5 owns the complete local-search surface
+ok 192 - T5 owns the complete local-search surface
+  ---
+  duration_ms: 0.702125
+  type: 'test'
+  ...
+# Subtest: the static route exports a Fumadocs source index
+ok 193 - the static route exports a Fumadocs source index
+  ---
+  duration_ms: 0.268666
+  type: 'test'
+  ...
+# Subtest: TopNav renders the command-search client island
+ok 194 - TopNav renders the command-search client island
+  ---
+  duration_ms: 0.108084
+  type: 'test'
+  ...
+# Subtest: the palette follows the verified Command compound and accessibility contract
+ok 195 - the palette follows the verified Command compound and accessibility contract
+  ---
+  duration_ms: 0.338041
+  type: 'test'
+  ...
+# Subtest: result normalization uses stable source identity and rejects non-docs URLs
+ok 196 - result normalization uses stable source identity and rejects non-docs URLs
+  ---
+  duration_ms: 581.352791
+  type: 'test'
+  ...
+# Subtest: version classification uses the parsed normalized pathname
+ok 197 - version classification uses the parsed normalized pathname
+  ---
+  duration_ms: 1.646167
+  type: 'test'
+  ...
+# Subtest: search label normalization uses the pinned Markdown and GFM AST parser
+ok 198 - search label normalization uses the pinned Markdown and GFM AST parser
+  ---
+  duration_ms: 0.335917
+  type: 'test'
+  ...
+# Subtest: search labels normalize Markdown to readable plain text
+    # Subtest: "<mark>**Fetcher**</mark> and *emphasis* with `Store`"
+    ok 1 - "<mark>**Fetcher**</mark> and *emphasis* with `Store`"
+      ---
+      duration_ms: 16.759958
+      type: 'test'
+      ...
+    # Subtest: "[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)"
+    ok 2 - "[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)"
+      ---
+      duration_ms: 3.360583
+      type: 'test'
+      ...
+    # Subtest: "[label](https://example.test/a_(b)) and [outer [inner]](/docs/store6)"
+    ok 3 - "[label](https://example.test/a_(b)) and [outer [inner]](/docs/store6)"
+      ---
+      duration_ms: 2.096583
+      type: 'test'
+      ...
+    # Subtest: "\# Heading\\n- first item\\n1. second item\\n> quoted note"
+    ok 4 - "\# Heading\\n- first item\\n1. second item\\n> quoted note"
+      ---
+      duration_ms: 7.858833
+      type: 'test'
+      ...
+    # Subtest: "__Strong__ and _emphasis_ with ~~obsolete~~ text"
+    ok 5 - "__Strong__ and _emphasis_ with ~~obsolete~~ text"
+      ---
+      duration_ms: 8.726292
+      type: 'test'
+      ...
+    # Subtest: "*single asterisk* and _single underscore_"
+    ok 6 - "*single asterisk* and _single underscore_"
+      ---
+      duration_ms: 11.820083
+      type: 'test'
+      ...
+    # Subtest: "```kotlin\\nstore.stream()\\n```"
+    ok 7 - "```kotlin\\nstore.stream()\\n```"
+      ---
+      duration_ms: 1.500208
+      type: 'test'
+      ...
+    # Subtest: "<mark>Use</mark> <strong>safe text</strong> &amp; entities"
+    ok 8 - "<mark>Use</mark> <strong>safe text</strong> &amp; entities"
+      ---
+      duration_ms: 1.358
+      type: 'test'
+      ...
+    # Subtest: "<span title=\\"a > b\\">quoted attribute</span>"
+    ok 9 - "<span title=\\"a > b\\">quoted attribute</span>"
+      ---
+      duration_ms: 14.932625
+      type: 'test'
+      ...
+    # Subtest: "[Quickstart][guide]\\n\\n[guide]: /docs/store6 \\"Store 6\\""
+    ok 10 - "[Quickstart][guide]\\n\\n[guide]: /docs/store6 \\"Store 6\\""
+      ---
+      duration_ms: 10.181333
+      type: 'test'
+      ...
+    # Subtest: "[guide]: /docs/store6"
+    ok 11 - "[guide]: /docs/store6"
+      ---
+      duration_ms: 1.576791
+      type: 'test'
+      ...
+    # Subtest: "![Store diagram][image]\\n\\n[image]: /store.svg"
+    ok 12 - "![Store diagram][image]\\n\\n[image]: /store.svg"
+      ---
+      duration_ms: 3.261458
+      type: 'test'
+      ...
+    # Subtest: "&\#x2A;*hex** and &\#42;*decimal** and &ast;*named**"
+    ok 13 - "&\#x2A;*hex** and &\#42;*decimal** and &ast;*named**"
+      ---
+      duration_ms: 2.006458
+      type: 'test'
+      ...
+    # Subtest: "&\#96;numeric code&\#96; and &grave;named code&grave;"
+    ok 14 - "&\#96;numeric code&\#96; and &grave;named code&grave;"
+      ---
+      duration_ms: 5.853375
+      type: 'test'
+      ...
+    # Subtest: "&\#xE000;0&\#xE001;"
+    ok 15 - "&\#xE000;0&\#xE001;"
+      ---
+      duration_ms: 0.876625
+      type: 'test'
+      ...
+    # Subtest: "***[Use `Store`][guide]***\\n\\n[guide]: /docs/store6"
+    ok 16 - "***[Use `Store`][guide]***\\n\\n[guide]: /docs/store6"
+      ---
+      duration_ms: 2.185167
+      type: 'test'
+      ...
+    # Subtest: escaped literal markers remain literal
+    ok 17 - escaped literal markers remain literal
+      ---
+      duration_ms: 1.172125
+      type: 'test'
+      ...
+    # Subtest: code spans keep nested escapes opaque without leaking sentinels
+    ok 18 - code spans keep nested escapes opaque without leaking sentinels
+      ---
+      duration_ms: 0.370084
+      type: 'test'
+      ...
+    1..18
+ok 199 - search labels normalize Markdown to readable plain text
+  ---
+  duration_ms: 98.839
+  type: 'test'
+  ...
+# Subtest: search label normalization fails closed without overflowing on resource limits
+ok 200 - search label normalization fails closed without overflowing on resource limits
+  ---
+  duration_ms: 1034.335917
+  type: 'test'
+  ...
+# Subtest: block HTML and MDX preserve safe body text while excluding unsafe raw text
+ok 201 - block HTML and MDX preserve safe body text while excluding unsafe raw text
+  ---
+  duration_ms: 7.825791
+  type: 'test'
+  ...
+# Subtest: normalization reports pass exhaustion and rejects non-convergent labels
+ok 202 - normalization reports pass exhaustion and rejects non-convergent labels
+  ---
+  duration_ms: 31.272584
+  type: 'test'
+  ...
+# Subtest: the tracker caches normalized arrays by raw result identity and generation
+ok 203 - the tracker caches normalized arrays by raw result identity and generation
+  ---
+  duration_ms: 1.007417
+  type: 'test'
+  ...
+# Subtest: canonical destinations dedupe deterministically with reorder-stable identities
+ok 204 - canonical destinations dedupe deterministically with reorder-stable identities
+  ---
+  duration_ms: 7.923709
+  type: 'test'
+  ...
+# Subtest: search generations hide and disarm blank, changed, pending, failed, and late data
+ok 205 - search generations hide and disarm blank, changed, pending, failed, and late data
+  ---
+  duration_ms: 1.00175
+  type: 'test'
+  ...
+# Subtest: search trigger relationship exists only while its dialog target is open
+ok 206 - search trigger relationship exists only while its dialog target is open
+  ---
+  duration_ms: 0.1165
+  type: 'test'
+  ...
+# Subtest: the built-index verifier uses the public local static client
+ok 207 - the built-index verifier uses the public local static client
+  ---
+  duration_ms: 0.215667
+  type: 'test'
+  ...
+# Subtest: T5 does not introduce a cloud search client or browser secret
+ok 208 - T5 does not introduce a cloud search client or browser secret
+  ---
+  duration_ms: 0.457291
+  type: 'test'
+  ...
+# Subtest: canonical matching pages outrank incidental text and retain parent and section context
+ok 209 - canonical matching pages outrank incidental text and retain parent and section context
+  ---
+  duration_ms: 2.590541
+  type: 'test'
+  ...
+# Subtest: scope changes invalidate same-query results, late failures, and old client activation
+ok 210 - scope changes invalidate same-query results, late failures, and old client activation
+  ---
+  duration_ms: 0.970584
+  type: 'test'
+  ...
+# Subtest: public static client applies version tags before ranking and supports both versions
+ok 211 - public static client applies version tags before ranking and supports both versions
+  ---
+  duration_ms: 54.28025
+  type: 'test'
+  ...
+# Subtest: T7 owns the static root, hero components, and relocated read-contract trace
+ok 212 - T7 owns the static root, hero components, and relocated read-contract trace
+  ---
+  duration_ms: 1.084125
+  type: 'test'
+  ...
+# Subtest: the hero leads with purpose, the first action, and the source-backed example
+ok 213 - the hero leads with purpose, the first action, and the source-backed example
+  ---
+  duration_ms: 0.54675
+  type: 'test'
+  ...
+# Subtest: the detailed failure trace and every qualification live in the read contract
+ok 214 - the detailed failure trace and every qualification live in the read contract
+  ---
+  duration_ms: 1.39725
+  type: 'test'
+  ...
+# Subtest: every Store code-surface text token clears 4.5:1
+ok 215 - every Store code-surface text token clears 4.5:1
+  ---
+  duration_ms: 0.782667
+  type: 'test'
+  ...
+# Subtest: the built root preserves the purpose-first action and example semantics
+ok 216 - the built root preserves the purpose-first action and example semantics
+  ---
+  duration_ms: 14.615667
+  type: 'test'
+  ...
+# Subtest: the built read-contract page preserves the relocated semantic trace
+ok 217 - the built read-contract page preserves the relocated semantic trace
+  ---
+  duration_ms: 161.555584
+  type: 'test'
+  ...
+# Subtest: committed sources derive the inventory, separate exclusion, extras, and page census
+ok 218 - committed sources derive the inventory, separate exclusion, extras, and page census
+  ---
+  duration_ms: 465.939917
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B3 mutation routes
+ok 219 - committed route contract includes all B3 mutation routes
+  ---
+  duration_ms: 316.877
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B4 migration routes
+ok 220 - committed route contract includes all B4 migration routes
+  ---
+  duration_ms: 254.020833
+  type: 'test'
+  ...
+# Subtest: fixture derivation gets synchronized Store6 routes from both lock and ledger
+ok 221 - fixture derivation gets synchronized Store6 routes from both lock and ledger
+  ---
+  duration_ms: 46.729833
+  type: 'test'
+  ...
+# Subtest: route derivation rejects OpenAPI inside the inventory
+ok 222 - route derivation rejects OpenAPI inside the inventory
+  ---
+  duration_ms: 15.767083
+  type: 'test'
+  ...
+# Subtest: route derivation rejects Store6 lock and ledger drift
+ok 223 - route derivation rejects Store6 lock and ledger drift
+  ---
+  duration_ms: 13.168709
+  type: 'test'
+  ...
+# Subtest: route derivation checks the complete Store6 lock and ledger target sets
+ok 224 - route derivation checks the complete Store6 lock and ledger target sets
+  ---
+  duration_ms: 36.588208
+  type: 'test'
+  ...
+# Subtest: route derivation keeps the hand-authored Store6 overview outside the sync lock
+ok 225 - route derivation keeps the hand-authored Store6 overview outside the sync lock
+  ---
+  duration_ms: 11.301333
+  type: 'test'
+  ...
+# Subtest: route derivation requires the locked public text surface
+ok 226 - route derivation requires the locked public text surface
+  ---
+  duration_ms: 16.479042
+  type: 'test'
+  ...
+# Subtest: route derivation rejects inventory target and port ledger drift
+ok 227 - route derivation rejects inventory target and port ledger drift
+  ---
+  duration_ms: 20.032833
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an orphan content documentation route
+ok 228 - route derivation rejects an orphan content documentation route
+  ---
+  duration_ms: 17.727
+  type: 'test'
+  ...
+# Subtest: only the named internal component fixture is excluded from the public page census
+ok 229 - only the named internal component fixture is excluded from the public page census
+  ---
+  duration_ms: 24.124666
+  type: 'test'
+  ...
+# Subtest: route derivation rejects unexpected application page entrypoints for every configured extension
+ok 230 - route derivation rejects unexpected application page entrypoints for every configured extension
+  ---
+  duration_ms: 106.914667
+  type: 'test'
+  ...
+# Subtest: route derivation accepts generated files nested below the required public reference modules
+ok 231 - route derivation accepts generated files nested below the required public reference modules
+  ---
+  duration_ms: 19.257333
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an unexpected third public reference module
+ok 232 - route derivation rejects an unexpected third public reference module
+  ---
+  duration_ms: 19.875583
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a top-level file in the public reference root
+ok 233 - route derivation rejects a top-level file in the public reference root
+  ---
+  duration_ms: 16.572875
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference module
+ok 234 - route derivation rejects a missing required public reference module
+  ---
+  duration_ms: 10.69875
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference index
+ok 235 - route derivation rejects a missing required public reference index
+  ---
+  duration_ms: 11.876458
+  type: 'test'
+  ...
+# Subtest: route derivation rejects public reference symlink escapes
+ok 236 - route derivation rejects public reference symlink escapes
+  ---
+  duration_ms: 45.234667
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an extras file that differs from computed routes
+ok 237 - route derivation rejects an extras file that differs from computed routes
+  ---
+  duration_ms: 16.379583
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction retains hidden panels and ordered headings
+ok 238 - rendered-page extraction retains hidden panels and ordered headings
+  ---
+  duration_ms: 4.41875
+  type: 'test'
+  ...
+# Subtest: served-page extraction uses the title and content contract without the live-only main
+ok 239 - served-page extraction uses the title and content contract without the live-only main
+  ---
+  duration_ms: 0.615333
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction requires one container, title, and content node
+ok 240 - rendered-page extraction requires one container, title, and content node
+  ---
+  duration_ms: 0.331625
+  type: 'test'
+  ...
+# Subtest: fidelity uses title equality, ordered headings, and the normalized character ratio
+ok 241 - fidelity uses title equality, ordered headings, and the normalized character ratio
+  ---
+  duration_ms: 0.082958
+  type: 'test'
+  ...
+# Subtest: title-only fidelity is N/A and rejects invented local body content
+ok 242 - title-only fidelity is N/A and rejects invented local body content
+  ---
+  duration_ms: 0.034083
+  type: 'test'
+  ...
+# Subtest: local verification checks page routes and labels non-page surfaces separately
+ok 243 - local verification checks page routes and labels non-page surfaces separately
+  ---
+  duration_ms: 2.047542
+  type: 'test'
+  ...
+# Subtest: local verification fails on the first non-200 response
+ok 244 - local verification fails on the first non-200 response
+  ---
+  duration_ms: 0.191375
+  type: 'test'
+  ...
+# Subtest: local verification identifies the exact route when transport fails
+ok 245 - local verification identifies the exact route when transport fails
+  ---
+  duration_ms: 0.085708
+  type: 'test'
+  ...
+# Subtest: serial live fetcher spaces every attempt and retries only 5xx
+ok 246 - serial live fetcher spaces every attempt and retries only 5xx
+  ---
+  duration_ms: 0.982834
+  type: 'test'
+  ...
+# Subtest: serial live fetcher rechecks the clock after an early timer wake
+ok 247 - serial live fetcher rechecks the clock after an early timer wake
+  ---
+  duration_ms: 0.289417
+  type: 'test'
+  ...
+# Subtest: serial live fetcher does not retry a network exception
+ok 248 - serial live fetcher does not retry a network exception
+  ---
+  duration_ms: 0.066625
+  type: 'test'
+  ...
+# Subtest: serial live fetcher stops after two retries and never retries 429
+ok 249 - serial live fetcher stops after two retries and never retries 429
+  ---
+  duration_ms: 0.277458
+  type: 'test'
+  ...
+# Subtest: serial live fetcher retries a 5xx even when its response body cannot be read
+ok 250 - serial live fetcher retries a 5xx even when its response body cannot be read
+  ---
+  duration_ms: 0.0985
+  type: 'test'
+  ...
+# Subtest: serial live fetcher queues concurrent callers
+ok 251 - serial live fetcher queues concurrent callers
+  ---
+  duration_ms: 1.636834
+  type: 'test'
+  ...
+# Subtest: live inventory re-fetch requires exact sitemap value-and-order equality
+ok 252 - live inventory re-fetch requires exact sitemap value-and-order equality
+  ---
+  duration_ms: 0.320625
+  type: 'test'
+  ...
+# Subtest: live verification compares each live page with its served local page
+ok 253 - live verification compares each live page with its served local page
+  ---
+  duration_ms: 1.071208
+  type: 'test'
+  ...
+# Subtest: mode parser exposes bounded local and live commands
+ok 254 - mode parser exposes bounded local and live commands
+  ---
+  duration_ms: 0.068
+  type: 'test'
+  ...
+# Subtest: failure envelope is deterministic and omits stack and timing data
+ok 255 - failure envelope is deterministic and omits stack and timing data
+  ---
+  duration_ms: 0.045458
+  type: 'test'
+  ...
+# Subtest: exports a fixture-callable reference verifier
+ok 256 - exports a fixture-callable reference verifier
+  ---
+  duration_ms: 0.682875
+  type: 'test'
+  ...
+# Subtest: accepts a minimal generated-compatible reference tree
+ok 257 - accepts a minimal generated-compatible reference tree
+  ---
+  duration_ms: 143.845834
+  type: 'test'
+  ...
+# Subtest: rejects placeholder reference notices anywhere in the generated tree
+ok 258 - rejects placeholder reference notices anywhere in the generated tree
+  ---
+  duration_ms: 98.829792
+  type: 'test'
+  ...
+# Subtest: accepts a nested generated page with safe links and stock Dokka scripts
+ok 259 - accepts a nested generated page with safe links and stock Dokka scripts
+  ---
+  duration_ms: 28.643667
+  type: 'test'
+  ...
+# Subtest: accepts all three stock Dokka inline bootstraps
+ok 260 - accepts all three stock Dokka inline bootstraps
+  ---
+  duration_ms: 12.395791
+  type: 'test'
+  ...
+# Subtest: accepts the exact Dokka 2.2 dark-mode bootstrap
+ok 261 - accepts the exact Dokka 2.2 dark-mode bootstrap
+  ---
+  duration_ms: 81.208875
+  type: 'test'
+  ...
+# Subtest: accepts the exact Dokka 2.2 local script paths
+ok 262 - accepts the exact Dokka 2.2 local script paths
+  ---
+  duration_ms: 11.705375
+  type: 'test'
+  ...
+# Subtest: rejects a base element before validating approved-looking relative scripts
+ok 263 - rejects a base element before validating approved-looking relative scripts
+  ---
+  duration_ms: 47.753416
+  type: 'test'
+  ...
+# Subtest: rejects an approved script basename outside the module-root scripts directory
+ok 264 - rejects an approved script basename outside the module-root scripts directory
+  ---
+  duration_ms: 8.117625
+  type: 'test'
+  ...
+# Subtest: accepts a deeply nested page whose script resolves to module-root scripts
+ok 265 - accepts a deeply nested page whose script resolves to module-root scripts
+  ---
+  duration_ms: 21.600875
+  type: 'test'
+  ...
+# Subtest: rejects symlinked owned public path components before module traversal
+ok 266 - rejects symlinked owned public path components before module traversal
+  ---
+  duration_ms: 6.87475
+  type: 'test'
+  ...
+# Subtest: accepts published words that merely contain the tracker spelling
+ok 267 - accepts published words that merely contain the tracker spelling
+  ---
+  duration_ms: 11.08525
+  type: 'test'
+  ...
+# Subtest: scans nested pages for unresolved-link markers
+ok 268 - scans nested pages for unresolved-link markers
+  ---
+  duration_ms: 8.122917
+  type: 'test'
+  ...
+# Subtest: scans nested pages for internal tracker vocabulary
+ok 269 - scans nested pages for internal tracker vocabulary
+  ---
+  duration_ms: 35.661208
+  type: 'test'
+  ...
+# Subtest: scans every non-HTML text asset for durable forbidden tokens
+ok 270 - scans every non-HTML text asset for durable forbidden tokens
+  ---
+  duration_ms: 47.339708
+  type: 'test'
+  ...
+# Subtest: scans non-HTML text assets for local and private filesystem paths
+ok 271 - scans non-HTML text assets for local and private filesystem paths
+  ---
+  duration_ms: 29.576875
+  type: 'test'
+  ...
+# Subtest: rejects an unreferenced unexpected executable asset
+ok 272 - rejects an unreferenced unexpected executable asset
+  ---
+  duration_ms: 15.230875
+  type: 'test'
+  ...
+# Subtest: rejects altered bytes at an approved stock Dokka script path
+ok 273 - rejects altered bytes at an approved stock Dokka script path
+  ---
+  duration_ms: 124.994708
+  type: 'test'
+  ...
+# Subtest: rejects unsafe anchor schemes and site-root paths
+ok 274 - rejects unsafe anchor schemes and site-root paths
+  ---
+  duration_ms: 93.900167
+  type: 'test'
+  ...
+# Subtest: rejects missing and escaping relative anchor targets
+ok 275 - rejects missing and escaping relative anchor targets
+  ---
+  duration_ms: 8.541166
+  type: 'test'
+  ...
+# Subtest: rejects arbitrary inline scripts
+ok 276 - rejects arbitrary inline scripts
+  ---
+  duration_ms: 5.254083
+  type: 'test'
+  ...
+# Subtest: rejects unapproved external scripts
+ok 277 - rejects unapproved external scripts
+  ---
+  duration_ms: 4.3995
+  type: 'test'
+  ...
+# Subtest: rejects unapproved and missing local scripts
+ok 278 - rejects unapproved and missing local scripts
+  ---
+  duration_ms: 11.928667
+  type: 'test'
+  ...
+# Subtest: rejects inline event-handler attributes on nested pages
+ok 279 - rejects inline event-handler attributes on nested pages
+  ---
+  duration_ms: 8.546625
+  type: 'test'
+  ...
+# Subtest: accepts only the exact Dokka 2.2 navigation toggle handler
+ok 280 - accepts only the exact Dokka 2.2 navigation toggle handler
+  ---
+  duration_ms: 49.350375
+  type: 'test'
+  ...
+# Subtest: rejects a symlink nested in either module tree
+ok 281 - rejects a symlink nested in either module tree
+  ---
+  duration_ms: 4.0445
+  type: 'test'
+  ...
+# Subtest: requires each module entrypoint and a normalized module title
+ok 282 - requires each module entrypoint and a normalized module title
+  ---
+  duration_ms: 20.1895
+  type: 'test'
+  ...
+# Subtest: requires sibling, docs, and Store6 overview links on each entrypoint
+ok 283 - requires sibling, docs, and Store6 overview links on each entrypoint
+  ---
+  duration_ms: 46.728458
+  type: 'test'
+  ...
+# Subtest: accepts required entrypoint links on the canonical Store documentation origin
+ok 284 - accepts required entrypoint links on the canonical Store documentation origin
+  ---
+  duration_ms: 7.713917
+  type: 'test'
+  ...
+# Subtest: rejects required-link aliases with duplicate or encoded separators
+ok 285 - rejects required-link aliases with duplicate or encoded separators
+  ---
+  duration_ms: 46.494917
+  type: 'test'
+  ...
+# Subtest: preserves the Reference nav, no-redirect, and no-shadow-route invariants
+ok 286 - preserves the Reference nav, no-redirect, and no-shadow-route invariants
+  ---
+  duration_ms: 23.307208
+  type: 'test'
+  ...
+# Subtest: Tidal verification explicitly distinguishes candidate structure from legacy integrity
+ok 287 - Tidal verification explicitly distinguishes candidate structure from legacy integrity
+  ---
+  duration_ms: 94.357292
+  type: 'test'
+  ...
+# Subtest: Tidal checks the exact guide control on deep pages, not a body link
+ok 288 - Tidal checks the exact guide control on deep pages, not a body link
+  ---
+  duration_ms: 156.657041
+  type: 'test'
+  ...
+# Subtest: Tidal rejects lost stock controls and broken module identity
+ok 289 - Tidal rejects lost stock controls and broken module identity
+  ---
+  duration_ms: 234.659958
+  type: 'test'
+  ...
+# Subtest: Tidal rejects missing, unloaded, and altered theme assets
+ok 290 - Tidal rejects missing, unloaded, and altered theme assets
+  ---
+  duration_ms: 119.487916
+  type: 'test'
+  ...
+# Subtest: Tidal retains stock script integrity and cannot excuse a full page as navigation
+ok 291 - Tidal retains stock script integrity and cannot excuse a full page as navigation
+  ---
+  duration_ms: 18.037917
+  type: 'test'
+  ...
+# Subtest: CLI selects strict mode explicitly and rejects unknown arguments
+ok 292 - CLI selects strict mode explicitly and rejects unknown arguments
+  ---
+  duration_ms: 464.17775
+  type: 'test'
+  ...
+1..292
+# tests 327
+# suites 0
+# pass 326
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 3560.543459

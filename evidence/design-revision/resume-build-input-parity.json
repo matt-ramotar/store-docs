@@ -1,0 +1,12 @@
+{
+  "buildId": "2nwz4DunLZkUkvn38eITs",
+  "buildInputDigest": "48c20d0ac93dbdbfa3f7153af30bdc229b7bf9f454e8bbbdd68b47c64b29a872",
+  "finalDigest": "3d4f0e236750c8c15d9b60e55e58160315a2b67029a83a2f07231e49d485da3e",
+  "changedSinceBuild": [
+    {
+      "path": "evidence/store6-claims.json",
+      "sha256": "95c24215ba05928db8581654da4beb02bba251e31968929a21ccc3114b0fe813"
+    }
+  ],
+  "interpretation": "Only the claims evidence ledger changed after compilation; application sources, generated pages, styles, dependencies, fixtures, and tests are byte-identical to the recorded build input."
+}

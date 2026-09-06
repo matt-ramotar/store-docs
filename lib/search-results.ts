@@ -5,12 +5,17 @@ import { gfmFromMarkdown } from "mdast-util-gfm";
 import { gfm } from "micromark-extension-gfm";
 
 export type SearchDocsVersion = "store5" | "store6";
+export type SearchScope = SearchDocsVersion | "both";
 
 export type NormalizedSearchResult = {
   id: string;
   url: string;
   title: string;
   context: string;
+  type: SortedResult["type"];
+  pageTitle: string;
+  pageUrl: string;
+  sectionTitle: string;
   version: SearchDocsVersion;
 };
 
@@ -43,6 +48,7 @@ export type SearchLabelNormalization = {
 };
 
 type SearchGeneration = {
+  scope: SearchScope;
   generation: number;
   normalizedQuery: string;
 };
@@ -101,23 +107,31 @@ export class SearchResultTracker {
     { generation: SearchGeneration; results: NormalizedSearchResult[] }
   >();
   readonly #resultGenerations = new WeakMap<SortedResult[], SearchGeneration>();
-  #current: SearchGeneration = { generation: 0, normalizedQuery: "" };
+  #current: SearchGeneration = { generation: 0, normalizedQuery: "", scope: "both" };
   #nextGeneration = 0;
+
+  updateScope(scope: SearchScope): void {
+    if (scope === this.#current.scope) return;
+    this.#current = { ...this.#current, scope, generation: ++this.#nextGeneration };
+    this.#generationByQuery.clear();
+    this.#generationByQuery.set(this.#current.normalizedQuery, this.#current.generation);
+  }
 
   updateInput(value: string): void {
     const normalizedQuery = normalizeSearchQuery(value);
     if (normalizedQuery === this.#current.normalizedQuery) return;
 
     const generation = ++this.#nextGeneration;
-    this.#current = { generation, normalizedQuery };
+    this.#current = { generation, normalizedQuery, scope: this.#current.scope };
     this.#generationByQuery.set(normalizedQuery, generation);
   }
 
-  beginRequest(value: string): SearchGeneration {
+  beginRequest(value: string, scope = this.#current.scope): SearchGeneration {
     const normalizedQuery = normalizeSearchQuery(value);
     return {
-      generation: this.#generationByQuery.get(normalizedQuery) ?? -1,
+      generation: scope === this.#current.scope ? (this.#generationByQuery.get(normalizedQuery) ?? -1) : -1,
       normalizedQuery,
+      scope,
     };
   }
 
@@ -132,7 +146,9 @@ export class SearchResultTracker {
     ) {
       this.#normalizedResults.set(results, {
         generation,
-        results: normalizeSearchResults(results),
+        results: normalizeSearchResults(results, generation.normalizedQuery).filter(
+          (result) => generation.scope === "both" || result.version === generation.scope,
+        ),
       });
     }
   }
@@ -170,7 +186,8 @@ export class SearchResultTracker {
   #isCurrent(generation: SearchGeneration | undefined): boolean {
     return (
       generation?.generation === this.#current.generation &&
-      generation.normalizedQuery === this.#current.normalizedQuery
+      generation.normalizedQuery === this.#current.normalizedQuery &&
+      generation.scope === this.#current.scope
     );
   }
 }
@@ -178,11 +195,12 @@ export class SearchResultTracker {
 export function createTrackedSearchClient(
   client: SearchClient,
   tracker: SearchResultTracker,
+  scope?: SearchScope,
 ): SearchClient {
   return {
     deps: client.deps,
     async search(query) {
-      const generation = tracker.beginRequest(query);
+      const generation = tracker.beginRequest(query, scope);
 
       try {
         const results = await client.search(query);
@@ -216,12 +234,16 @@ export function normalizeSearchResult(result: SortedResult): NormalizedSearchRes
 
 export function normalizeSearchResults(
   results: readonly SortedResult[],
+  query = "",
 ): NormalizedSearchResult[] {
   const candidatesByUrl = new Map<string, NormalizedCandidate[]>();
+  const normalized = results.map(normalizeCandidate).filter((item): item is NormalizedCandidate => item !== null);
+  const pages = new Map(normalized.filter((item) => item.type === "page").map((item) => [item.pageUrl, item.title]));
+  const headings = new Map(normalized.filter((item) => item.type === "heading").map((item) => [item.url, item.title]));
 
-  for (const result of results) {
-    const candidate = normalizeCandidate(result);
-    if (!candidate) continue;
+  for (const candidate of normalized) {
+    candidate.pageTitle = pages.get(candidate.pageUrl) ?? candidate.pageTitle;
+    candidate.sectionTitle = headings.get(candidate.url) ?? candidate.sectionTitle;
 
     const candidates = candidatesByUrl.get(candidate.url);
     if (candidates) candidates.push(candidate);
@@ -238,7 +260,14 @@ export function normalizeSearchResults(
     itemIdCounts.set(candidate.id, (itemIdCounts.get(candidate.id) ?? 0) + 1);
   }
 
-  return selected.flatMap((candidate) => {
+  const term = normalizeSearchQuery(query);
+  const rank = (candidate: NormalizedCandidate | undefined) => {
+    if (!candidate || !term) return 0;
+    const title = normalizeSearchQuery(candidate.title);
+    const matches = title === term || title.includes(term);
+    return candidate.type === "page" && matches ? (title === term ? 0 : 1) : 2;
+  };
+  return selected.toSorted((left, right) => rank(left) - rank(right)).flatMap((candidate) => {
     if (!candidate) return [];
 
     const result = toSearchResult(candidate);
@@ -815,6 +844,9 @@ function normalizeCandidate(result: SortedResult): NormalizedCandidate | null {
     type: result.type,
     url: destination.url,
     title: title.text,
+    pageTitle: result.type === "page" ? title.text : "",
+    pageUrl: destination.url.split("#")[0],
+    sectionTitle: result.type === "heading" ? title.text : "",
     context: breadcrumbs.map((breadcrumb) => breadcrumb.text).filter(Boolean).join(" / "),
     version:
       destination.pathname === "/docs/store6" ||
@@ -846,6 +878,10 @@ function toSearchResult(candidate: NormalizedCandidate): NormalizedSearchResult 
     url: candidate.url,
     title: candidate.title,
     context: candidate.context,
+    type: candidate.type,
+    pageTitle: candidate.pageTitle,
+    pageUrl: candidate.pageUrl,
+    sectionTitle: candidate.sectionTitle,
     version: candidate.version,
   };
 }

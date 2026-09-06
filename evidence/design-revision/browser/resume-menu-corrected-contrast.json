@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-06T12:33:28.936Z",
+  "source": {
+    "path": "/Users/matt/.codex/worktrees/7d49/store-docs/evidence/design-revision/browser/resume-menu-corrected-samples.json",
+    "sha256": "fc4f2bd96b9a7aa77f8a475ffd74ffd5fc85c7f96909336281c754ebd85b9bb9",
+    "bytes": 4419
+  },
+  "counts": {
+    "samples": 4,
+    "pass": 3,
+    "fail": 0,
+    "indeterminate": 0,
+    "inactive": 1,
+    "authoredExceptions": 0
+  },
+  "rows": [
+    {
+      "id": "dropdown-corrected-390:0",
+      "fixture": "dropdown-corrected-390",
+      "label": "Read",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.07450980392156863,
+        "g": 0.4627450980392157,
+        "b": 0.42745098039215684,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 0.8901960784313725,
+        "g": 0.9411764705882353,
+        "b": 0.9137254901960784,
+        "a": 1
+      },
+      "ratio": 4.663378678358019,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "dropdown-corrected-390:1",
+      "fixture": "dropdown-corrected-390",
+      "label": "Write",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 14.68389793561718,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    },
+    {
+      "id": "dropdown-corrected-390:2",
+      "fixture": "dropdown-corrected-390",
+      "label": "Unavailable operation",
+      "kind": "text",
+      "inactive": true,
+      "authoredException": null,
+      "applicability": "inactive",
+      "foregroundPixel": {
+        "r": 0.5450980392156862,
+        "g": 0.5862745098039216,
+        "b": 0.5823529411764706,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 3.0615451221546834,
+      "threshold": 4.5,
+      "contrastStatus": "fail",
+      "status": "inactive"
+    },
+    {
+      "id": "dropdown-corrected-390:3",
+      "fixture": "dropdown-corrected-390",
+      "label": "Inspect mounted menu refs",
+      "kind": "text",
+      "inactive": false,
+      "authoredException": null,
+      "applicability": "active",
+      "foregroundPixel": {
+        "r": 0.09019607843137255,
+        "g": 0.17254901960784313,
+        "b": 0.16470588235294117,
+        "a": 1
+      },
+      "backgroundPixel": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "ratio": 14.68389793561718,
+      "threshold": 4.5,
+      "contrastStatus": "pass",
+      "status": "pass"
+    }
+  ]
+}

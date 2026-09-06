@@ -1,7 +1,9 @@
 import type { MDXComponents } from "mdx/types";
+import type { ComponentProps } from "react";
 
 import { Button } from "@heroui/react/button";
 import { Link } from "@heroui/react/link";
+import { Table } from "@heroui/react/table";
 import { Segment } from "@heroui-pro/react/segment";
 import { MdxH2, MdxH3, MdxH4, MdxH5, MdxH6 } from "@/components/docs/MdxHeroPrimitives";
 
@@ -30,18 +32,35 @@ import {
   Accordion,
   AccordionGroup,
   Badge,
+  BaseCodeBlock,
   Card,
   CardGroup,
   CodeBlock,
   CodeGroup,
+  CodeGroupSelect,
+  CodeSnippet,
   Color,
+  ColorRow,
+  ColorItem,
   Columns,
+  DeprecatedPill,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Expandable,
+  FencedCodeBlock,
   Frame,
   Icon,
+  InfoPill,
   Mermaid,
   Panel,
+  ParamHead,
   Property,
+  RequiredPill,
+  Search,
+  SearchButton,
+  SearchProvider,
   Step,
   Steps,
   Tab,
@@ -49,10 +68,20 @@ import {
   Tile,
   Tooltip,
   Tree,
+  TreeFile,
+  TreeFolder,
   Update,
+  View,
+  ZoomControls,
 } from "@/components/docs/mintlify-runtime";
 import { EmWithVerifiedCommit } from "@/components/docs/LastVerified";
 import { CodeSlab } from "@/components/shell/CodeSlab";
+
+const MdxAccordion = Object.assign((props: ComponentProps<typeof Accordion>) => <Accordion {...props} />, { Group: AccordionGroup });
+const MdxSteps = Object.assign((props: ComponentProps<typeof Steps>) => <Steps {...props} />, { Item: Step });
+const MdxTabs = Object.assign((props: ComponentProps<typeof Tabs>) => <Tabs {...props} />, { Item: Tab });
+const MdxTree = Object.assign((props: ComponentProps<typeof Tree>) => <Tree {...props} />, { File: TreeFile, Folder: TreeFolder });
+const MdxColor = Object.assign((props: ComponentProps<typeof Color>) => <Color {...props} />, { Row: ColorRow, Item: ColorItem });
 
 function mergeClassName(base: string, className?: string) {
   return className ? `${base} ${className}` : base;
@@ -61,9 +90,10 @@ function mergeClassName(base: string, className?: string) {
 /** Shared component map for every MDX rendering surface. */
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
-    Accordion,
+    Accordion: MdxAccordion,
     AccordionGroup,
     Badge,
+    BaseCodeBlock,
     Button,
     Callout,
     Card,
@@ -71,28 +101,45 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     Check,
     CodeBlock,
     CodeGroup,
+    CodeGroupSelect,
+    CodeSnippet,
     CodeSlab,
-    Color,
+    Color: MdxColor,
+    ColorRow,
+    ColorItem,
     Columns,
     Danger,
+    DeprecatedPill,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
     Expandable,
     Frame,
     Icon,
     Info,
+    InfoPill,
     Mermaid,
     Note,
     Panel,
+    ParamHead,
     Property,
+    RequiredPill,
+    Search,
+    SearchButton,
+    SearchProvider,
     Step,
-    Steps,
+    Steps: MdxSteps,
     Tab,
-    Tabs,
+    Tabs: MdxTabs,
     Tile,
     Tip,
     Tooltip,
-    Tree,
+    Tree: MdxTree,
     Update,
+    View,
     Warning,
+    ZoomControls,
     a: ({ className, ...props }) => (
       <a
         {...props}
@@ -115,7 +162,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
       <code
         {...props}
         className={mergeClassName(
-          "rounded-md bg-surface-secondary px-1.5 py-0.5 font-mono text-sm text-foreground",
+          "store-inline-code",
           className,
         )}
       />
@@ -153,15 +200,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     ),
     ParamField,
     ParamList,
-    pre: ({ className, ...props }) => (
-      <pre
-        {...props}
-        className={mergeClassName(
-          "not-prose my-6 overflow-x-auto rounded-2xl border border-border bg-store-code-surface p-4 font-mono text-sm leading-6 text-store-code-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&>code]:rounded-none [&>code]:bg-transparent [&>code]:p-0 [&>code]:text-inherit",
-          className,
-        )}
-      />
-    ),
+    pre: FencedCodeBlock,
     ReadResolutionTable,
     Segment,
     StartHereList,
@@ -170,42 +209,41 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     SupportMatrix,
     TabGroup,
     TabPanel,
+    // Native MDX cells retain rich content and HTML attributes inside HeroUI's table shell.
     table: ({ className, ...props }) => (
-      <div
-        role="region"
-        aria-label="Scrollable table"
-        tabIndex={0}
-        className="my-6 max-w-full overflow-x-auto rounded-2xl border border-border bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-      >
-        <table
-          {...props}
-          className={mergeClassName("w-full min-w-[40rem] border-collapse text-left text-sm", className)}
-        />
-      </div>
+      <Table className="my-6 max-w-full" variant="secondary">
+        <Table.ScrollContainer
+          role="region"
+          aria-label="Scrollable table"
+          tabIndex={0}
+        >
+          <table
+            {...props}
+            className={mergeClassName("table__content min-w-[40rem] text-left", className)}
+          />
+        </Table.ScrollContainer>
+      </Table>
     ),
     tbody: ({ className, ...props }) => (
-      <tbody {...props} className={mergeClassName("divide-y divide-separator", className)} />
+      <tbody {...props} className={mergeClassName("table__body", className)} />
     ),
     td: ({ className, ...props }) => (
       <td
         {...props}
-        className={mergeClassName("px-4 py-3 align-top leading-6 text-foreground-secondary", className)}
+        className={mergeClassName("table__cell align-top leading-6", className)}
       />
     ),
     th: ({ className, ...props }) => (
       <th
         {...props}
-        className={mergeClassName(
-          "border-b border-border px-4 py-3 text-left align-top font-semibold text-foreground",
-          className,
-        )}
+        className={mergeClassName("table__column align-top", className)}
       />
     ),
     thead: ({ className, ...props }) => (
-      <thead {...props} className={mergeClassName("bg-surface-secondary text-foreground", className)} />
+      <thead {...props} className={mergeClassName("table__header", className)} />
     ),
     tr: ({ className, ...props }) => (
-      <tr {...props} className={mergeClassName("align-top", className)} />
+      <tr {...props} className={mergeClassName("table__row align-top", className)} />
     ),
     ul: ({ className, ...props }) => (
       <ul

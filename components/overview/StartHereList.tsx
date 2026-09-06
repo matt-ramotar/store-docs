@@ -4,7 +4,7 @@ import { Link } from "@heroui/react/link";
 const startHereItems = [
   {
     id: "quickstart",
-    title: "Quickstart",
+    title: "Build your first store",
     description: "Build a fetcher-backed Store and make the first read.",
     experimental: false,
     links: [{ href: "/docs/store6/quickstart", label: "Quickstart" }],

@@ -1,0 +1,11 @@
+
+> store-docs@1.0.0 start /Users/matt/.codex/worktrees/7d49/store-docs
+> next start -p 3222
+
+▲ Next.js 16.3.0
+- Local:         http://localhost:3222
+- Network:       http://192.168.1.67:3222
+✓ Ready in 73ms
+✓ Running next.config.mjs took 28ms
+[MDX] generated files in 5.829499999999996ms
+ ELIFECYCLE  Command failed with exit code 130.

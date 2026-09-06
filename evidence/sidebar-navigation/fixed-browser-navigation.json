@@ -1,0 +1,105 @@
+{
+  "buildId": "tDZkDmjMZP4GzeiE_j9qa",
+  "records": [
+    {
+      "label": "Freshness",
+      "record": {
+        "dialogs": 0,
+        "h1": "Freshness policies",
+        "path": "/docs/store6/concepts/freshness",
+        "width": 880
+      }
+    },
+    {
+      "label": "Important defaults",
+      "record": {
+        "dialogs": 0,
+        "h1": "Important defaults",
+        "path": "/docs/store6/important-defaults",
+        "width": 880
+      }
+    },
+    {
+      "label": "Quickstart",
+      "record": {
+        "dialogs": 0,
+        "h1": "Quickstart",
+        "path": "/docs/store6/quickstart",
+        "width": 880
+      }
+    },
+    {
+      "label": "Introduction",
+      "record": {
+        "dialogs": 0,
+        "h1": "Introduction",
+        "path": "/docs/store6/overview",
+        "width": 880
+      }
+    },
+    {
+      "label": "Errors",
+      "record": {
+        "dialogs": 0,
+        "h1": "Errors and failure handling",
+        "path": "/docs/store6/concepts/errors",
+        "width": 880
+      }
+    },
+    {
+      "label": "Freshness",
+      "record": {
+        "codeBlocks": 2,
+        "h1": "Freshness policies",
+        "path": "/docs/store6/concepts/freshness",
+        "width": 1440
+      }
+    },
+    {
+      "label": "Quickstart",
+      "record": {
+        "codeBlocks": 4,
+        "h1": "Quickstart",
+        "path": "/docs/store6/quickstart",
+        "width": 1440
+      }
+    },
+    {
+      "label": "Errors",
+      "record": {
+        "codeBlocks": 4,
+        "h1": "Errors and failure handling",
+        "path": "/docs/store6/concepts/errors",
+        "width": 1440
+      }
+    },
+    {
+      "label": "Store5 Quickstart",
+      "record": {
+        "h1": "Quickstart",
+        "path": "/docs/quickstart",
+        "tabs": 11,
+        "width": 1440
+      }
+    }
+  ],
+  "legacyTab": {
+    "selected": "Local Database Model",
+    "panelVisible": true
+  },
+  "consoleErrors": [
+    {
+      "level": "error",
+      "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "timestamp": "2026-09-06T14:14:55.439Z",
+      "url": "http://localhost:3222/_next/static/chunks/27574-e08d061d4b9e601a.js"
+    },
+    {
+      "level": "error",
+      "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+      "timestamp": "2026-09-06T14:16:19.608Z",
+      "url": "http://localhost:3222/_next/static/chunks/27574-e08d061d4b9e601a.js"
+    }
+  ],
+  "consoleScope": "The two React441 errors are retained from the pre-fix reproductions at14:14:55 and14:16:19 UTC; no new error was recorded during corrected navigation."
+}

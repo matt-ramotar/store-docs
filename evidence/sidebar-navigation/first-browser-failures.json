@@ -1,0 +1,47 @@
+{
+  "records": [
+    {
+      "step": "sidebar-Freshness-failure",
+      "record": {
+        "h1": "This page couldn’t load",
+        "url": "http://localhost:3222/docs/store6/concepts/freshness"
+      },
+      "errors": [
+        {
+          "level": "error",
+          "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "timestamp": "2026-09-06T14:14:55.439Z",
+          "url": "http://localhost:3222/_next/static/chunks/27574-e08d061d4b9e601a.js"
+        }
+      ]
+    },
+    {
+      "step": "reload-Freshness-success",
+      "record": {
+        "h1": "Freshness policies",
+        "url": "http://localhost:3222/docs/store6/concepts/freshness"
+      }
+    },
+    {
+      "step": "sidebar-Errors-failure",
+      "record": {
+        "h1": "This page couldn’t load",
+        "url": "http://localhost:3222/docs/store6/concepts/errors"
+      },
+      "errors": [
+        {
+          "level": "error",
+          "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "timestamp": "2026-09-06T14:14:55.439Z",
+          "url": "http://localhost:3222/_next/static/chunks/27574-e08d061d4b9e601a.js"
+        },
+        {
+          "level": "error",
+          "message": "Error: Minified React error #441; visit https://react.dev/errors/441 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.",
+          "timestamp": "2026-09-06T14:16:19.608Z",
+          "url": "http://localhost:3222/_next/static/chunks/27574-e08d061d4b9e601a.js"
+        }
+      ]
+    }
+  ]
+}

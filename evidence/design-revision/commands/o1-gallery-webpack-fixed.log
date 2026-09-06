@@ -1,0 +1,27 @@
+
+> store-docs@1.0.0 build /Users/matt/.codex/worktrees/7d49/store-docs
+> next build --webpack
+
+▲ Next.js 16.3.0 (webpack)
+✓ Running next.config.mjs took 31ms
+
+[MDX] generated files in 28.307874999999967ms
+  Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Parsing of /Users/matt/.codex/worktrees/7d49/store-docs/node_modules/.pnpm/fumadocs-mdx@15.2.0_@types+mdast@4.0.4_@types+mdx@2.0.14_@types+react@19.2.18_fumadocs-_274cf6f9d407e4fd968abbfda6f6a16e/node_modules/fumadocs-mdx/dist/load-from-file-DNDIyOo3.js for build dependencies failed at 'import(url.href)'.
+<w> Build dependencies behind this expression are ignored and might cause incorrect cache invalidation.
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Parsing of /Users/matt/.codex/worktrees/7d49/store-docs/node_modules/.pnpm/fumadocs-mdx@15.2.0_@types+mdast@4.0.4_@types+mdx@2.0.14_@types+react@19.2.18_fumadocs-_274cf6f9d407e4fd968abbfda6f6a16e/node_modules/fumadocs-mdx/dist/eval-z3HV4VJp.js for build dependencies failed at 'import(pathToFileURL(outfile).href)'.
+<w> Build dependencies behind this expression are ignored and might cause incorrect cache invalidation.
+Failed to compile.
+
+./components/hero/HeroThesis.tsx
+'client-only' cannot be imported from a Server Component module. It should only be used from a Client Component.
+
+The error was caused by importing '@heroui/react/dist/index.js' in './components/hero/HeroThesis.tsx'.
+
+Import trace for requested module:
+  ./components/hero/HeroThesis.tsx
+  ./app/page.tsx
+
+
+> Build failed because of webpack errors
+ ELIFECYCLE  Command failed with exit code 1.

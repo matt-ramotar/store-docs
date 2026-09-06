@@ -1,11 +1,12 @@
 import type { TOCItemType } from "fumadocs-core/toc";
-import { Separator } from "@heroui/react";
+import { SeparatorRoot as Separator } from "@heroui/react/separator";
 import { getBreadcrumbItems } from "fumadocs-core/breadcrumb";
 import { findNeighbour } from "fumadocs-core/page-tree";
 import { notFound } from "next/navigation";
 
 import { AppShell } from "@/components/shell/AppShell";
 import { Breadcrumbs } from "@/components/shell/Breadcrumbs";
+import { OnThisPage } from "@/components/shell/OnThisPage";
 import { PageFooterNav } from "@/components/shell/PageFooterNav";
 import { getMDXComponents } from "@/mdx-components";
 import { getDocsVersion, getVersionTrees } from "@/lib/nav";
@@ -41,6 +42,7 @@ export default async function Page(props: {
               {page.data.description}
             </p>
           ) : null}
+          <OnThisPage items={toc} compact />
           <Separator />
         </header>
         <div id="content" className="mt-8 min-w-0 leading-7">

@@ -1,0 +1,54 @@
+[
+  {
+    "case": "search-select",
+    "text": "Search results\n\nResults search opened from its trigger with deterministic breadcrumbs, long text, and a real supplied selection callback.\n\nSearch supplied documentation data\nquery:Store | selected:network-fallback:Store"
+  },
+  {
+    "case": "denied-copy",
+    "text": "Clipboard rejection feedback\n\nA deterministic denied writer exercises the production copy failure path without changing browser permissions.\n\ntext\nCopy\nPreserved source\nNo attempt"
+  },
+  {
+    "case": "real-copy",
+    "text": "CodeBlock copy and action contract\n\nReal clipboard result callbacks, exact source, reference attachment and custom action slots.\n\nExact source.kt\nCode feedback\nSource copied\nCode copied.\nCode assistant\n\n  const title = \"Tidal\";\n  // Keep indentation and the final newline.\n\nsuccess: exact source0Check code anchor"
+  },
+  {
+    "case": "code-tab-keys",
+    "text": "CodeGroup tabs\n\nInitial selected tab, keyboard navigation, noMargins, small text and selection callback.\n\nStore.kt\nStore.ts\nStore.swift\nCopy\nlet store = Store()\n2Check group anchor"
+  },
+  {
+    "case": "menu-callbacks",
+    "text": "DropdownMenu compound states\n\nControlled open state, alignment, selected and disabled items, onClick and onSelect.\n\nCode operations\nclosed:Write:1"
+  },
+  {
+    "case": "diagram-transform",
+    "text": "ZoomControls and usePanZoom\n\nStandalone public hook and controls expose the live transform for zoom, four-direction pan and reset checks.\n\nStore\ntranslate(-50px, 0px) scale(1.15)"
+  },
+  {
+    "case": "diagram-reset",
+    "text": "ZoomControls and usePanZoom\n\nStandalone public hook and controls expose the live transform for zoom, four-direction pan and reset checks.\n\nStore\ntranslate(0px, 0px) scale(1)"
+  },
+  {
+    "case": "denied-copy-settled",
+    "text": "Clipboard rejection feedback\n\nA deterministic denied writer exercises the production copy failure path without changing browser permissions.\n\ntext\nCopy\nPreserved source\nNo attempt"
+  },
+  {
+    "case": "accordion-events",
+    "text": "Accordion and Accordion.Group\n\nGrouped, nested, repeated-title and disabled disclosures with URL and tracking callbacks.\n\n▸\nRepeated title\nLegacy string initial state\n▸\nRepeated title\n▸\nDisabled disclosure\nmounted | url:false:repeated-title | close:Repeated title"
+  },
+  {
+    "case": "expandable-events",
+    "text": "Expandable\n\nLazy content, custom labels, lifecycle callbacks, supplied anchor and local session memory.\n\nInspect response fields\n\nCollapse session fields\n\nLocal tab-session memory uses the installed package behavior.\n\nHide anchored fields\n\nAnchor opens the matching fields until the supplied scrolled ref is set.\n\nmounted"
+  },
+  {
+    "case": "view-selection",
+    "text": "View explicit registry and mount states\n\nAn explicit items registry demonstrates active, inactive, mounting, switched and empty states.\n\nShow KotlinShow Swift\n\nSwift active view mounted."
+  },
+  {
+    "case": "denied-copy-retry",
+    "text": "Clipboard rejection feedback\n\nA deterministic denied writer exercises the production copy failure path without changing browser permissions.\n\ntext\nCopy failed\nCopy failed. Select the code and copy it manually.\nPreserved source\nerror:Preserved source"
+  },
+  {
+    "case": "expandable-click",
+    "text": "Expandable\n\nLazy content, custom labels, lifecycle callbacks, supplied anchor and local session memory.\n\nInspect response fields\n\nCollapse session fields\n\nLocal tab-session memory uses the installed package behavior.\n\nHide anchored fields\n\nAnchor opens the matching fields until the supplied scrolled ref is set.\n\nmounted | change:true | opened | change:false | closed"
+  }
+]

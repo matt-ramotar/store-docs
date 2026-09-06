@@ -91,24 +91,26 @@
       "id": "home/006",
       "page": "/",
       "claim": "The T7 harness byte-pins the hero's exact result strings 'Data(origin=Origin.SOT, isStale=true, refreshing=true)' and 'Error(StoreError.Fetch, servedStale=true)', and asserts that the built main exposes exactly two CTA anchors: the Store 6 overview and quickstart.",
-      "verdict": "CONFIRMED",
+      "verdict": "REFUTED",
+      "note": "The revised T7 harness preserves both exact result strings in source and built read-contract assertions after moving the detailed failure trace off the homepage. The built homepage now requires three destinations: Quickstart first, the Store 6 overview, and the relocated failure-trace section.",
+      "correction": "The T7 harness pins the detailed result strings on the read-contract page and requires the built homepage to expose Quickstart as the first action plus overview and failure-trace destinations.",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
+          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
           "lines": {
             "start": 14,
-            "end": 15
+            "end": 16
           }
         },
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
+          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
           "lines": {
-            "start": 244,
-            "end": 255
+            "start": 136,
+            "end": 161
           }
         }
       ]
@@ -207,10 +209,10 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
+          "sha256": "7e4688c22df4ec2f56bd8b3141cf9a10b64e85abbab40618814bcff4c3f63e7e",
           "lines": {
-            "start": 24,
-            "end": 24
+            "start": 20,
+            "end": 28
           }
         }
       ]
@@ -260,7 +262,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 76,
             "end": 76
@@ -294,7 +296,7 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
+          "sha256": "7e4688c22df4ec2f56bd8b3141cf9a10b64e85abbab40618814bcff4c3f63e7e",
           "lines": {
             "start": 15,
             "end": 15
@@ -362,7 +364,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 72,
             "end": 72
@@ -413,10 +415,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/verify-search-index.mjs",
-          "sha256": "5ec442d47d8f5df6953ba2b8e83cc057a1d12a54a429dfb56ece788f8ae6fc93",
+          "sha256": "aefb2565da1b83a1501f183ba182fdbb72223ff1ea07feef0595df3fdeb4db52",
           "lines": {
-            "start": 76,
-            "end": 76
+            "start": 88,
+            "end": 97
           }
         }
       ]
@@ -425,15 +427,17 @@
       "id": "docs/quickstart/004",
       "page": "/docs/quickstart",
       "claim": "The search verifier pins the built index at exactly 60 raw results for the query 'fetcher', a count this page's content contributes to.",
-      "verdict": "CONFIRMED",
+      "verdict": "REFUTED",
+      "note": "The revised verifier deliberately removed the brittle raw-result count. It now requires both Store 5 and Store 6 fetcher destinations and version scopes, normalized nonempty results, unique destinations, and unique command IDs.",
+      "correction": "The search verifier checks meaningful fetcher destination, version, normalization, and uniqueness behavior without pinning an exact raw-result count.",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/verify-search-index.mjs",
-          "sha256": "5ec442d47d8f5df6953ba2b8e83cc057a1d12a54a429dfb56ece788f8ae6fc93",
+          "sha256": "aefb2565da1b83a1501f183ba182fdbb72223ff1ea07feef0595df3fdeb4db52",
           "lines": {
-            "start": 42,
-            "end": 42
+            "start": 31,
+            "end": 86
           }
         }
       ]
@@ -447,7 +451,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 80,
             "end": 80
@@ -515,7 +519,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 28,
             "end": 28
@@ -549,10 +553,10 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
+          "sha256": "7e4688c22df4ec2f56bd8b3141cf9a10b64e85abbab40618814bcff4c3f63e7e",
           "lines": {
-            "start": 20,
-            "end": 20
+            "start": 14,
+            "end": 18
           }
         }
       ]
@@ -566,7 +570,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 32,
             "end": 32
@@ -594,16 +598,16 @@
     {
       "id": "developer-newsletter/overview/001",
       "page": "/developer-newsletter/overview",
-      "claim": "The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.",
+      "claim": "The route renders an AppShell page with an h1 reading 'Coming soon', a compact fallback table of contents, a header Separator, and an empty #content div.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "app/developer-newsletter/overview/page.tsx",
-          "sha256": "4ed66e6411765d6b172a1a2d5822d7f930dad93b746fa53bb9303eff88be13fe",
+          "sha256": "70c577f7853f3b0a391a32b30ce19fe5a203ee8bb8e848b21e876c4e4cfa9dec",
           "lines": {
-            "start": 8,
-            "end": 8
+            "start": 13,
+            "end": 25
           }
         }
       ]
@@ -617,7 +621,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 12,
             "end": 12
@@ -645,16 +649,16 @@
     {
       "id": "release-notes/overview/001",
       "page": "/release-notes/overview",
-      "claim": "The route renders an AppShell page whose only content is an h1 reading 'Coming soon' above an empty content div.",
+      "claim": "The route renders an AppShell page with an h1 reading 'Coming soon', a compact fallback table of contents, a header Separator, and an empty #content div.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "app/release-notes/overview/page.tsx",
-          "sha256": "b7deeb2344542e3ac8db7fee690bfa0038cb16c3c089c0b6ab8bf65438be3eb2",
+          "sha256": "2d8173b1371c5db82b3fc5d2edccf4d21625fd463c8315d9313c59c474e3da99",
           "lines": {
-            "start": 8,
-            "end": 8
+            "start": 13,
+            "end": 25
           }
         }
       ]
@@ -702,7 +706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "de26936c2b36ca8c430b09359853faad5cafd69e16fc17c1b2d0103080ef1f37",
+          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
           "lines": {
             "start": 16,
             "end": 16
@@ -752,11 +756,11 @@
       "anchors": [
         {
           "repository": "store-docs",
-          "path": "app/tokens-demo/page.tsx",
-          "sha256": "b5a7dc35a9dcf49a886184f9c79424151909d92fed1d34e4bf4d86254cdd6658",
+          "path": "app/tokens-demo/TokenExamples.tsx",
+          "sha256": "2559868a6be55820b26838a25d9be9370257c23a9610fbce57a0d8a91f248e6b",
           "lines": {
-            "start": 8,
-            "end": 8
+            "start": 5,
+            "end": 114
           }
         }
       ]
@@ -765,15 +769,17 @@
       "id": "tokens-demo/003",
       "page": "/tokens-demo",
       "claim": "The on-dark origin text tokens shown on this page are held to a 4.5:1 minimum contrast ratio against the store code surface by the hero test harness.",
-      "verdict": "CONFIRMED",
+      "verdict": "REFUTED",
+      "note": "The revised hero harness checks the code foreground, keyword, string, function, and comment tokens. It no longer checks the four on-dark origin tokens rendered by this page.",
+      "correction": "The on-dark origin tokens remain rendered, but their contrast is not currently asserted by the T7 hero harness.",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "07790f16db2a0879104409770c0f4dc3f8bbf80b281e2746e50c2856db7da435",
+          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
           "lines": {
-            "start": 214,
-            "end": 229
+            "start": 122,
+            "end": 134
           }
         }
       ]
@@ -787,9 +793,9 @@
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "b3a24c49faf5a9637d29e54819275d7f4a66cd13c0b090c2e272705ad67c0e0d",
+          "sha256": "7d7ef87f9969c69a9e428b5128474a0fd71693e8450e48bf1292a0724278d1eb",
           "lines": {
-            "start": 20,
+            "start": 28,
             "end": 149
           }
         }
@@ -804,10 +810,10 @@
         {
           "repository": "store-docs",
           "path": "lib/nav.ts",
-          "sha256": "7cb789582e7b7c00f27c163a1c2177cc4dc7decf5d458fa202fc766ce822befd",
+          "sha256": "7e4688c22df4ec2f56bd8b3141cf9a10b64e85abbab40618814bcff4c3f63e7e",
           "lines": {
             "start": 14,
-            "end": 14
+            "end": 22
           }
         }
       ]

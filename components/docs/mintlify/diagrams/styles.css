@@ -1,0 +1,55 @@
+.store-docs .store-diagrams {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+  margin-block: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--foreground);
+}
+.store-docs .store-diagrams-viewport {
+  overflow: auto;
+  min-width: 0;
+  max-width: 100%;
+  padding: 1rem;
+  border-radius: inherit;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-docs .store-diagrams[data-actions="true"] .store-diagrams-viewport { min-height: 11rem; padding-bottom: 7.5rem; }
+.store-docs .store-diagrams[data-actions="true"][data-placement^="top-"] .store-diagrams-viewport { padding-top: 7.5rem; padding-bottom: 1rem; }
+.store-docs .store-diagrams [data-component-part="mermaid-diagram"] { min-width: 0; transform-origin: center center; }
+.store-docs .store-diagrams [data-component-part="mermaid-diagram"] > svg { display: block; margin-inline: auto; }
+.store-docs .store-diagrams-loading { margin: 0; color: var(--muted); font-size: 0.875rem; }
+.store-docs .store-diagrams-controls { display: contents; }
+.store-docs .store-diagrams-controls [data-component-part="zoom-controls"] {
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
+}
+.store-docs .store-diagrams-controls button {
+  width: 2rem;
+  height: 2rem;
+  border-color: var(--muted);
+  background: var(--surface);
+  color: var(--foreground);
+}
+.store-docs .store-diagrams-controls button:hover { background: color-mix(in srgb, var(--foreground) 8%, var(--surface)); }
+.store-docs .store-diagrams-controls button:active { background: var(--accent-soft); color: var(--accent-soft-foreground); }
+.store-docs .store-diagrams-controls button:focus-visible,
+.store-docs .store-diagrams a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.store-docs .store-diagrams[data-component-part="mermaid-error"] {
+  padding: 1rem;
+  border-color: var(--danger-soft-foreground);
+  background: var(--danger-soft);
+  color: var(--danger-soft-foreground);
+  overflow-wrap: anywhere;
+}
+.store-docs .store-diagrams [data-component-part="mermaid-error-title"] { margin: 0; font-weight: 600; }
+.store-docs .store-diagrams [data-component-part="mermaid-error-message"] { margin: 0.5rem 0 0; font-size: 0.875rem; white-space: pre-wrap; }
+@media (prefers-reduced-motion: reduce) {
+  .store-docs .store-diagrams [data-component-part="mermaid-diagram"],
+  .store-docs .store-diagrams-controls button,
+  .store-docs .store-diagrams svg * { transition: none !important; animation: none !important; }
+}

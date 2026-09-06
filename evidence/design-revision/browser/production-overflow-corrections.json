@@ -1,0 +1,102 @@
+[
+  {
+    "path": "/docs/store6/important-defaults",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/docs/store6/important-defaults",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/docs/store6/important-defaults",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/docs/store6/important-defaults",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/docs/store6/migration/component-map",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/docs/store6/migration/component-map",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/docs/store6/migration/component-map",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/docs/store6/migration/component-map",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/docs/store6/mutations/conflicts",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/docs/store6/mutations/conflicts",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/docs/store6/mutations/conflicts",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/docs/store6/mutations/conflicts",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/docs/store6/mutations/journal-storage",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/docs/store6/mutations/journal-storage",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/docs/store6/mutations/journal-storage",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/docs/store6/mutations/journal-storage",
+    "scrollWidth": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/docs/store6/mutations/server",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/docs/store6/mutations/server",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/docs/store6/mutations/server",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/docs/store6/mutations/server",
+    "scrollWidth": 1440,
+    "width": 1440
+  }
+]

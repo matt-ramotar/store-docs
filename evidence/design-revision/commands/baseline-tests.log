@@ -1,0 +1,1202 @@
+TAP version 13
+# Subtest: claims can anchor whole files in Store6 and store-docs
+ok 1 - claims can anchor whole files in Store6 and store-docs
+  ---
+  duration_ms: 126.7545
+  type: 'test'
+  ...
+# Subtest: claims and the source lock must name the same Store6 revision
+ok 2 - claims and the source lock must name the same Store6 revision
+  ---
+  duration_ms: 1.965541
+  type: 'test'
+  ...
+# Subtest: changed and missing anchors report the page, id, claim, path, and reconciliation command
+ok 3 - changed and missing anchors report the page, id, claim, path, and reconciliation command
+  ---
+  duration_ms: 119.33175
+  type: 'test'
+  ...
+# Subtest: claims reject private Store6 decision-record anchors
+ok 4 - claims reject private Store6 decision-record anchors
+  ---
+  duration_ms: 2.553666
+  type: 'test'
+  ...
+# Subtest: every hand-authored Store6 page has a claim while locked pages and overview are excluded
+ok 5 - every hand-authored Store6 page has a claim while locked pages and overview are excluded
+  ---
+  duration_ms: 71.977042
+  type: 'test'
+  ...
+# Subtest: reconciling one claim rewrites only that claim's whole-file hash
+ok 6 - reconciling one claim rewrites only that claim's whole-file hash
+  ---
+  duration_ms: 131.111042
+  type: 'test'
+  ...
+# Subtest: reconcile-all rewrites every claim's whole-file hashes
+ok 7 - reconcile-all rewrites every claim's whole-file hashes
+  ---
+  duration_ms: 100.122375
+  type: 'test'
+  ...
+# Subtest: reconciling one claim persists its hash while reporting other claims that still need review
+ok 8 - reconciling one claim persists its hash while reporting other claims that still need review
+  ---
+  duration_ms: 104.521958
+  type: 'test'
+  ...
+# Subtest: post-repin selective reconciliation persists one pinned hash and reports the other
+ok 9 - post-repin selective reconciliation persists one pinned hash and reports the other
+  ---
+  duration_ms: 97.596792
+  type: 'test'
+  ...
+# Subtest: reconciliation hashes the pinned Store6 object instead of dirty checkout bytes
+ok 10 - reconciliation hashes the pinned Store6 object instead of dirty checkout bytes
+  ---
+  duration_ms: 84.42775
+  type: 'test'
+  ...
+# Subtest: CLI parsing requires a source root and recognizes only explicit reconciliation modes
+ok 11 - CLI parsing requires a source root and recognizes only explicit reconciliation modes
+  ---
+  duration_ms: 0.370084
+  type: 'test'
+  ...
+# Subtest: an index.mdx hand-authored page is claimed by its directory route
+ok 12 - an index.mdx hand-authored page is claimed by its directory route
+  ---
+  duration_ms: 91.125875
+  type: 'test'
+  ...
+# Subtest: claim ids must be unique
+ok 13 - claim ids must be unique
+  ---
+  duration_ms: 1.41025
+  type: 'test'
+  ...
+# Subtest: every anchor names its repository explicitly
+ok 14 - every anchor names its repository explicitly
+  ---
+  duration_ms: 1.32925
+  type: 'test'
+  ...
+# Subtest: claims without anchors are rejected instead of being silently skipped
+ok 15 - claims without anchors are rejected instead of being silently skipped
+  ---
+  duration_ms: 1.393
+  type: 'test'
+  ...
+# Subtest: anchor paths must be normalized POSIX-relative paths
+ok 16 - anchor paths must be normalized POSIX-relative paths
+  ---
+  duration_ms: 4.63925
+  type: 'test'
+  ...
+# Subtest: the private-record guard applies after path normalization
+ok 17 - the private-record guard applies after path normalization
+  ---
+  duration_ms: 1.321084
+  type: 'test'
+  ...
+# Subtest: working-tree anchors may not escape their repository through a symlink
+ok 18 - working-tree anchors may not escape their repository through a symlink
+  ---
+  duration_ms: 83.632083
+  type: 'test'
+  ...
+# Subtest: Store6 anchors reject committed symlinks even when they stay inside the checkout
+ok 19 - Store6 anchors reject committed symlinks even when they stay inside the checkout
+  ---
+  duration_ms: 84.417
+  type: 'test'
+  ...
+# Subtest: claims schema errors identify the evidence file and JSON path
+ok 20 - claims schema errors identify the evidence file and JSON path
+  ---
+  duration_ms: 11.114958
+  type: 'test'
+  ...
+# Subtest: source-lock schema errors identify the evidence file and JSON path
+ok 21 - source-lock schema errors identify the evidence file and JSON path
+  ---
+  duration_ms: 6.490458
+  type: 'test'
+  ...
+# Subtest: source-root Git preflight preserves operational stderr
+ok 22 - source-root Git preflight preserves operational stderr
+  ---
+  duration_ms: 11.419291
+  type: 'test'
+  ...
+# Subtest: source-root Git preflight requires the pinned commit object
+ok 23 - source-root Git preflight requires the pinned commit object
+  ---
+  duration_ms: 66.540625
+  type: 'test'
+  ...
+# Subtest: a missing pinned Store6 blob is distinct from working-tree drift
+ok 24 - a missing pinned Store6 blob is distinct from working-tree drift
+  ---
+  duration_ms: 74.8705
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist when the Class H census fails
+ok 25 - reconciliation does not persist when the Class H census fails
+  ---
+  duration_ms: 50.547792
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist when Git preflight fails
+ok 26 - reconciliation does not persist when Git preflight fails
+  ---
+  duration_ms: 10.341167
+  type: 'test'
+  ...
+# Subtest: reconciliation does not persist a structurally invalid ledger
+ok 27 - reconciliation does not persist a structurally invalid ledger
+  ---
+  duration_ms: 1.680041
+  type: 'test'
+  ...
+# Subtest: an idempotent reconcile preserves canonical ledger bytes
+ok 28 - an idempotent reconcile preserves canonical ledger bytes
+  ---
+  duration_ms: 82.738292
+  type: 'test'
+  ...
+# Subtest: dedents a named source region and checks every declared hand-authored page
+ok 29 - dedents a named source region and checks every declared hand-authored page
+  ---
+  duration_ms: 10.258167
+  type: 'test'
+  ...
+# Subtest: maps an index.mdx hand-authored page to its directory route
+ok 30 - maps an index.mdx hand-authored page to its directory route
+  ---
+  duration_ms: 5.336416
+  type: 'test'
+  ...
+# Subtest: a changed fence reports the exact contract failure and a useful diff
+ok 31 - a changed fence reports the exact contract failure and a useful diff
+  ---
+  duration_ms: 4.334667
+  type: 'test'
+  ...
+# Subtest: rejects duplicate manifest names, page routes, source regions, and page markers
+    # Subtest: manifest names
+    ok 1 - manifest names
+      ---
+      duration_ms: 2.329875
+      type: 'test'
+      ...
+    # Subtest: page routes
+    ok 2 - page routes
+      ---
+      duration_ms: 2.016625
+      type: 'test'
+      ...
+    # Subtest: source regions
+    ok 3 - source regions
+      ---
+      duration_ms: 4.591958
+      type: 'test'
+      ...
+    # Subtest: page markers
+    ok 4 - page markers
+      ---
+      duration_ms: 2.88825
+      type: 'test'
+      ...
+    1..4
+ok 32 - rejects duplicate manifest names, page routes, source regions, and page markers
+  ---
+  duration_ms: 12.331333
+  type: 'test'
+  ...
+# Subtest: rejects missing and unterminated source regions
+    # Subtest: missing
+    ok 1 - missing
+      ---
+      duration_ms: 3.641292
+      type: 'test'
+      ...
+    # Subtest: unterminated
+    ok 2 - unterminated
+      ---
+      duration_ms: 3.102458
+      type: 'test'
+      ...
+    1..2
+ok 33 - rejects missing and unterminated source regions
+  ---
+  duration_ms: 7.403292
+  type: 'test'
+  ...
+# Subtest: rejects missing pages, markers, Kotlin fences, and closing fences
+    # Subtest: page
+    ok 1 - page
+      ---
+      duration_ms: 2.919917
+      type: 'test'
+      ...
+    # Subtest: marker
+    ok 2 - marker
+      ---
+      duration_ms: 2.948166
+      type: 'test'
+      ...
+    # Subtest: Kotlin fence
+    ok 3 - Kotlin fence
+      ---
+      duration_ms: 3.064584
+      type: 'test'
+      ...
+    # Subtest: closing fence
+    ok 4 - closing fence
+      ---
+      duration_ms: 3.97475
+      type: 'test'
+      ...
+    1..4
+ok 34 - rejects missing pages, markers, Kotlin fences, and closing fences
+  ---
+  duration_ms: 13.269625
+  type: 'test'
+  ...
+# Subtest: rejects unsafe source paths and page routes
+    # Subtest: parent source path
+    ok 1 - parent source path
+      ---
+      duration_ms: 1.814125
+      type: 'test'
+      ...
+    # Subtest: absolute source path
+    ok 2 - absolute source path
+      ---
+      duration_ms: 1.705792
+      type: 'test'
+      ...
+    # Subtest: backslash source path
+    ok 3 - backslash source path
+      ---
+      duration_ms: 1.570542
+      type: 'test'
+      ...
+    # Subtest: parent page route
+    ok 4 - parent page route
+      ---
+      duration_ms: 1.93275
+      type: 'test'
+      ...
+    # Subtest: outside page route
+    ok 5 - outside page route
+      ---
+      duration_ms: 1.5965
+      type: 'test'
+      ...
+    1..5
+ok 35 - rejects unsafe source paths and page routes
+  ---
+  duration_ms: 8.988042
+  type: 'test'
+  ...
+# Subtest: rejects a source path whose symlink escapes the checkout
+ok 36 - rejects a source path whose symlink escapes the checkout
+  ---
+  duration_ms: 6.11175
+  type: 'test'
+  ...
+# Subtest: rejects undeclared Class H markers and manifest entries for sync-owned pages
+    # Subtest: undeclared marker
+    ok 1 - undeclared marker
+      ---
+      duration_ms: 2.499041
+      type: 'test'
+      ...
+    # Subtest: sync-owned page
+    ok 2 - sync-owned page
+      ---
+      duration_ms: 3.930667
+      type: 'test'
+      ...
+    1..2
+ok 37 - rejects undeclared Class H markers and manifest entries for sync-owned pages
+  ---
+  duration_ms: 6.744958
+  type: 'test'
+  ...
+# Subtest: CLI parsing requires exactly one source root
+ok 38 - CLI parsing requires exactly one source root
+  ---
+  duration_ms: 0.224834
+  type: 'test'
+  ...
+# Subtest: pre-alpha schedule and workflow dispatch process in main-tracking mode
+ok 39 - pre-alpha schedule and workflow dispatch process in main-tracking mode
+  ---
+  duration_ms: 2.057792
+  type: 'test'
+  ...
+# Subtest: post-alpha schedule is a green tag-only no-op
+ok 40 - post-alpha schedule is a green tag-only no-op
+  ---
+  duration_ms: 0.159
+  type: 'test'
+  ...
+# Subtest: post-alpha dispatch requires exactly one valid 6.x tag at HEAD
+ok 41 - post-alpha dispatch requires exactly one valid 6.x tag at HEAD
+  ---
+  duration_ms: 0.418542
+  type: 'test'
+  ...
+# Subtest: cadence rejects invalid inputs and inspects tags at exact HEAD
+ok 42 - cadence rejects invalid inputs and inspects tags at exact HEAD
+  ---
+  duration_ms: 212.825167
+  type: 'test'
+  ...
+# Subtest: workflow parses as two least-privilege jobs on trusted documentation main
+ok 43 - workflow parses as two least-privilege jobs on trusted documentation main
+  ---
+  duration_ms: 107.110208
+  type: 'test'
+  ...
+# Subtest: Store6 checkout rejects refspecs before fetching origin tags
+ok 44 - Store6 checkout rejects refspecs before fetching origin tags
+  ---
+  duration_ms: 55.678583
+  type: 'test'
+  ...
+# Subtest: pnpm install in CI receives HEROUI_AUTH_TOKEN from Actions secrets
+ok 45 - pnpm install in CI receives HEROUI_AUTH_TOKEN from Actions secrets
+  ---
+  duration_ms: 0.28675
+  type: 'test'
+  ...
+# Subtest: every workflow step has exactly one executable form
+ok 46 - every workflow step has exactly one executable form
+  ---
+  duration_ms: 64.190542
+  type: 'test'
+  ...
+# Subtest: generator validates cadence, exact revision, Dokka outputs, and full verification order
+ok 47 - generator validates cadence, exact revision, Dokka outputs, and full verification order
+  ---
+  duration_ms: 0.592542
+  type: 'test'
+  ...
+# Subtest: release tags regenerate even at the pinned SHA and require same-PR editorial review
+ok 48 - release tags regenerate even at the pinned SHA and require same-PR editorial review
+  ---
+  duration_ms: 0.472833
+  type: 'test'
+  ...
+# Subtest: generator emits only an allowlisted binary patch plus bounded verified metadata
+ok 49 - generator emits only an allowlisted binary patch plus bounded verified metadata
+  ---
+  duration_ms: 0.268625
+  type: 'test'
+  ...
+# Subtest: publisher validates base, artifact, indexed apply, allowlist, and residue before one commit
+ok 50 - publisher validates base, artifact, indexed apply, allowlist, and residue before one commit
+  ---
+  duration_ms: 0.177292
+  type: 'test'
+  ...
+# Subtest: token is isolated to final rolling branch publication with review-final-red semantics
+ok 51 - token is isolated to final rolling branch publication with review-final-red semantics
+  ---
+  duration_ms: 0.119833
+  type: 'test'
+  ...
+# Subtest: committed ledger records disjoint live, snapshot, and Store6 censuses
+not ok 52 - committed ledger records disjoint live, snapshot, and Store6 censuses
+  ---
+  duration_ms: 143.465
+  type: 'test'
+  location: '/Users/matt/.codex/worktrees/7d49/store-docs/scripts/generated-output-transaction.test.mjs:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    content/docs/store6/important-defaults.mdx
+    + actual - expected
+    
+    + '8ecfcc1e0634459b0f8f1a9205238124c2599ed37b98ebc4160b4e597c8a6800'
+    - 'f2baa51b286dabb0c3c47d9302a91d8cafa8a0dc74f96e2c26bc41fb91ad4d75'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'f2baa51b286dabb0c3c47d9302a91d8cafa8a0dc74f96e2c26bc41fb91ad4d75'
+  actual: '8ecfcc1e0634459b0f8f1a9205238124c2599ed37b98ebc4160b4e597c8a6800'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/matt/.codex/worktrees/7d49/store-docs/scripts/generated-output-transaction.test.mjs:53:14)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: port-page:generate removes only matching stale files and updates its census
+ok 53 - port-page:generate removes only matching stale files and updates its census
+  ---
+  duration_ms: 14.35425
+  type: 'test'
+  ...
+# Subtest: port-page:generate preserves existing modes and defaults new generated files to 0644
+ok 54 - port-page:generate preserves existing modes and defaults new generated files to 0644
+  ---
+  duration_ms: 4.820458
+  type: 'test'
+  ...
+# Subtest: port-page:generate refuses to remove a stale file changed after its census
+ok 55 - port-page:generate refuses to remove a stale file changed after its census
+  ---
+  duration_ms: 3.391958
+  type: 'test'
+  ...
+# Subtest: port-page:generate refuses to overwrite a pre-existing unclaimed target
+ok 56 - port-page:generate refuses to overwrite a pre-existing unclaimed target
+  ---
+  duration_ms: 2.603625
+  type: 'test'
+  ...
+# Subtest: port-page:generate rolls a stale removal back when ledger installation fails
+ok 57 - port-page:generate rolls a stale removal back when ledger installation fails
+  ---
+  duration_ms: 7.533167
+  type: 'test'
+  ...
+# Subtest: port-page:generate keeps committed outputs when backup cleanup fails after one removal
+ok 58 - port-page:generate keeps committed outputs when backup cleanup fails after one removal
+  ---
+  duration_ms: 7.487416
+  type: 'test'
+  ...
+# Subtest: port-page:generate keeps committed outputs when transaction-directory cleanup fails
+ok 59 - port-page:generate keeps committed outputs when transaction-directory cleanup fails
+  ---
+  duration_ms: 7.469541
+  type: 'test'
+  ...
+# Subtest: port-page:generate rejects a symlinked parent before any mutation
+ok 60 - port-page:generate rejects a symlinked parent before any mutation
+  ---
+  duration_ms: 2.46175
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs removes only matching stale files and updates its census
+ok 61 - sync-store6-docs removes only matching stale files and updates its census
+  ---
+  duration_ms: 4.679292
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs preserves existing modes and defaults new generated files to 0644
+ok 62 - sync-store6-docs preserves existing modes and defaults new generated files to 0644
+  ---
+  duration_ms: 5.528625
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs refuses to remove a stale file changed after its census
+ok 63 - sync-store6-docs refuses to remove a stale file changed after its census
+  ---
+  duration_ms: 2.494625
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs refuses to overwrite a pre-existing unclaimed target
+ok 64 - sync-store6-docs refuses to overwrite a pre-existing unclaimed target
+  ---
+  duration_ms: 5.1155
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs rolls a stale removal back when ledger installation fails
+ok 65 - sync-store6-docs rolls a stale removal back when ledger installation fails
+  ---
+  duration_ms: 6.968667
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs keeps committed outputs when backup cleanup fails after one removal
+ok 66 - sync-store6-docs keeps committed outputs when backup cleanup fails after one removal
+  ---
+  duration_ms: 4.367708
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs keeps committed outputs when transaction-directory cleanup fails
+ok 67 - sync-store6-docs keeps committed outputs when transaction-directory cleanup fails
+  ---
+  duration_ms: 6.710583
+  type: 'test'
+  ...
+# Subtest: sync-store6-docs rejects a symlinked parent before any mutation
+ok 68 - sync-store6-docs rejects a symlinked parent before any mutation
+  ---
+  duration_ms: 1.730791
+  type: 'test'
+  ...
+# Subtest: mintlify CJS loader rewrites Vite __require imports to the named namespace export
+ok 69 - mintlify CJS loader rewrites Vite __require imports to the named namespace export
+  ---
+  duration_ms: 0.778917
+  type: 'test'
+  ...
+# Subtest: mintlify CJS loader leaves files without __require unchanged
+ok 70 - mintlify CJS loader leaves files without __require unchanged
+  ---
+  duration_ms: 0.065
+  type: 'test'
+  ...
+# Subtest: quickstart publication transform publishes the mutations block as a Warning callout
+ok 71 - quickstart publication transform publishes the mutations block as a Warning callout
+  ---
+  duration_ms: 0.731917
+  type: 'test'
+  ...
+# Subtest: quickstart publication transform drops the in-page status quote
+ok 72 - quickstart publication transform drops the in-page status quote
+  ---
+  duration_ms: 0.168041
+  type: 'test'
+  ...
+# Subtest: important-defaults publication transform wraps the zero-config quote as an Info callout
+ok 73 - important-defaults publication transform wraps the zero-config quote as an Info callout
+  ---
+  duration_ms: 0.071375
+  type: 'test'
+  ...
+# Subtest: stability crash-window transform accepts only the legacy or current safe block
+ok 74 - stability crash-window transform accepts only the legacy or current safe block
+  ---
+  duration_ms: 0.1515
+  type: 'test'
+  ...
+# (node:3523) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/matt/.codex/worktrees/7d49/store-docs/lib/search-results.ts is not specified and it doesn't parse as CommonJS.
+# Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+# To eliminate this warning, add "type": "module" to /Users/matt/.codex/worktrees/7d49/store-docs/package.json.
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: T5 owns the complete local-search surface
+ok 75 - T5 owns the complete local-search surface
+  ---
+  duration_ms: 0.717792
+  type: 'test'
+  ...
+# Subtest: the static route exports a Fumadocs source index
+ok 76 - the static route exports a Fumadocs source index
+  ---
+  duration_ms: 0.634834
+  type: 'test'
+  ...
+# Subtest: TopNav renders the command-search client island
+ok 77 - TopNav renders the command-search client island
+  ---
+  duration_ms: 0.241
+  type: 'test'
+  ...
+# Subtest: the palette follows the verified Command compound and accessibility contract
+ok 78 - the palette follows the verified Command compound and accessibility contract
+  ---
+  duration_ms: 0.456583
+  type: 'test'
+  ...
+# Subtest: result normalization uses stable source identity and rejects non-docs URLs
+ok 79 - result normalization uses stable source identity and rejects non-docs URLs
+  ---
+  duration_ms: 129.531333
+  type: 'test'
+  ...
+# Subtest: version classification uses the parsed normalized pathname
+ok 80 - version classification uses the parsed normalized pathname
+  ---
+  duration_ms: 1.021709
+  type: 'test'
+  ...
+# Subtest: search label normalization uses the pinned Markdown and GFM AST parser
+ok 81 - search label normalization uses the pinned Markdown and GFM AST parser
+  ---
+  duration_ms: 0.214958
+  type: 'test'
+  ...
+# Subtest: search labels normalize Markdown to readable plain text
+    # Subtest: "<mark>**Fetcher**</mark> and *emphasis* with `Store`"
+    ok 1 - "<mark>**Fetcher**</mark> and *emphasis* with `Store`"
+      ---
+      duration_ms: 4.269667
+      type: 'test'
+      ...
+    # Subtest: "[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)"
+    ok 2 - "[Quickstart](/docs/quickstart) and ![Store diagram](/store.svg)"
+      ---
+      duration_ms: 2.956291
+      type: 'test'
+      ...
+    # Subtest: "[label](https://example.test/a_(b)) and [outer [inner]](/docs/store6)"
+    ok 3 - "[label](https://example.test/a_(b)) and [outer [inner]](/docs/store6)"
+      ---
+      duration_ms: 2.731666
+      type: 'test'
+      ...
+    # Subtest: "\# Heading\\n- first item\\n1. second item\\n> quoted note"
+    ok 4 - "\# Heading\\n- first item\\n1. second item\\n> quoted note"
+      ---
+      duration_ms: 3.806042
+      type: 'test'
+      ...
+    # Subtest: "__Strong__ and _emphasis_ with ~~obsolete~~ text"
+    ok 5 - "__Strong__ and _emphasis_ with ~~obsolete~~ text"
+      ---
+      duration_ms: 2.112959
+      type: 'test'
+      ...
+    # Subtest: "*single asterisk* and _single underscore_"
+    ok 6 - "*single asterisk* and _single underscore_"
+      ---
+      duration_ms: 1.27
+      type: 'test'
+      ...
+    # Subtest: "```kotlin\\nstore.stream()\\n```"
+    ok 7 - "```kotlin\\nstore.stream()\\n```"
+      ---
+      duration_ms: 1.306542
+      type: 'test'
+      ...
+    # Subtest: "<mark>Use</mark> <strong>safe text</strong> &amp; entities"
+    ok 8 - "<mark>Use</mark> <strong>safe text</strong> &amp; entities"
+      ---
+      duration_ms: 1.911542
+      type: 'test'
+      ...
+    # Subtest: "<span title=\\"a > b\\">quoted attribute</span>"
+    ok 9 - "<span title=\\"a > b\\">quoted attribute</span>"
+      ---
+      duration_ms: 1.204125
+      type: 'test'
+      ...
+    # Subtest: "[Quickstart][guide]\\n\\n[guide]: /docs/store6 \\"Store 6\\""
+    ok 10 - "[Quickstart][guide]\\n\\n[guide]: /docs/store6 \\"Store 6\\""
+      ---
+      duration_ms: 2.338042
+      type: 'test'
+      ...
+    # Subtest: "[guide]: /docs/store6"
+    ok 11 - "[guide]: /docs/store6"
+      ---
+      duration_ms: 0.960916
+      type: 'test'
+      ...
+    # Subtest: "![Store diagram][image]\\n\\n[image]: /store.svg"
+    ok 12 - "![Store diagram][image]\\n\\n[image]: /store.svg"
+      ---
+      duration_ms: 1.478333
+      type: 'test'
+      ...
+    # Subtest: "&\#x2A;*hex** and &\#42;*decimal** and &ast;*named**"
+    ok 13 - "&\#x2A;*hex** and &\#42;*decimal** and &ast;*named**"
+      ---
+      duration_ms: 2.270416
+      type: 'test'
+      ...
+    # Subtest: "&\#96;numeric code&\#96; and &grave;named code&grave;"
+    ok 14 - "&\#96;numeric code&\#96; and &grave;named code&grave;"
+      ---
+      duration_ms: 1.459542
+      type: 'test'
+      ...
+    # Subtest: "&\#xE000;0&\#xE001;"
+    ok 15 - "&\#xE000;0&\#xE001;"
+      ---
+      duration_ms: 1.160708
+      type: 'test'
+      ...
+    # Subtest: "***[Use `Store`][guide]***\\n\\n[guide]: /docs/store6"
+    ok 16 - "***[Use `Store`][guide]***\\n\\n[guide]: /docs/store6"
+      ---
+      duration_ms: 1.84475
+      type: 'test'
+      ...
+    # Subtest: escaped literal markers remain literal
+    ok 17 - escaped literal markers remain literal
+      ---
+      duration_ms: 1.558
+      type: 'test'
+      ...
+    # Subtest: code spans keep nested escapes opaque without leaking sentinels
+    ok 18 - code spans keep nested escapes opaque without leaking sentinels
+      ---
+      duration_ms: 0.424917
+      type: 'test'
+      ...
+    1..18
+ok 82 - search labels normalize Markdown to readable plain text
+  ---
+  duration_ms: 36.209167
+  type: 'test'
+  ...
+# Subtest: search label normalization fails closed without overflowing on resource limits
+ok 83 - search label normalization fails closed without overflowing on resource limits
+  ---
+  duration_ms: 296.730916
+  type: 'test'
+  ...
+# Subtest: block HTML and MDX preserve safe body text while excluding unsafe raw text
+ok 84 - block HTML and MDX preserve safe body text while excluding unsafe raw text
+  ---
+  duration_ms: 5.448417
+  type: 'test'
+  ...
+# Subtest: normalization reports pass exhaustion and rejects non-convergent labels
+ok 85 - normalization reports pass exhaustion and rejects non-convergent labels
+  ---
+  duration_ms: 18.4005
+  type: 'test'
+  ...
+# Subtest: the tracker caches normalized arrays by raw result identity and generation
+ok 86 - the tracker caches normalized arrays by raw result identity and generation
+  ---
+  duration_ms: 1.008333
+  type: 'test'
+  ...
+# Subtest: canonical destinations dedupe deterministically with reorder-stable identities
+ok 87 - canonical destinations dedupe deterministically with reorder-stable identities
+  ---
+  duration_ms: 7.343042
+  type: 'test'
+  ...
+# Subtest: search generations hide and disarm blank, changed, pending, failed, and late data
+ok 88 - search generations hide and disarm blank, changed, pending, failed, and late data
+  ---
+  duration_ms: 0.942084
+  type: 'test'
+  ...
+# Subtest: search trigger relationship exists only while its dialog target is open
+ok 89 - search trigger relationship exists only while its dialog target is open
+  ---
+  duration_ms: 0.126125
+  type: 'test'
+  ...
+# Subtest: the built-index verifier uses the public local static client
+ok 90 - the built-index verifier uses the public local static client
+  ---
+  duration_ms: 0.307083
+  type: 'test'
+  ...
+# Subtest: T5 does not introduce a cloud search client or browser secret
+ok 91 - T5 does not introduce a cloud search client or browser secret
+  ---
+  duration_ms: 0.431542
+  type: 'test'
+  ...
+# Subtest: committed sources derive the inventory, separate exclusion, extras, and page census
+ok 92 - committed sources derive the inventory, separate exclusion, extras, and page census
+  ---
+  duration_ms: 51.290083
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B3 mutation routes
+ok 93 - committed route contract includes all B3 mutation routes
+  ---
+  duration_ms: 40.525584
+  type: 'test'
+  ...
+# Subtest: committed route contract includes all B4 migration routes
+ok 94 - committed route contract includes all B4 migration routes
+  ---
+  duration_ms: 57.975167
+  type: 'test'
+  ...
+# Subtest: fixture derivation gets synchronized Store6 routes from both lock and ledger
+ok 95 - fixture derivation gets synchronized Store6 routes from both lock and ledger
+  ---
+  duration_ms: 17.969834
+  type: 'test'
+  ...
+# Subtest: route derivation rejects OpenAPI inside the inventory
+ok 96 - route derivation rejects OpenAPI inside the inventory
+  ---
+  duration_ms: 11.226834
+  type: 'test'
+  ...
+# Subtest: route derivation rejects Store6 lock and ledger drift
+ok 97 - route derivation rejects Store6 lock and ledger drift
+  ---
+  duration_ms: 11.967209
+  type: 'test'
+  ...
+# Subtest: route derivation checks the complete Store6 lock and ledger target sets
+ok 98 - route derivation checks the complete Store6 lock and ledger target sets
+  ---
+  duration_ms: 12.902542
+  type: 'test'
+  ...
+# Subtest: route derivation keeps the hand-authored Store6 overview outside the sync lock
+ok 99 - route derivation keeps the hand-authored Store6 overview outside the sync lock
+  ---
+  duration_ms: 11.54725
+  type: 'test'
+  ...
+# Subtest: route derivation requires the locked public text surface
+ok 100 - route derivation requires the locked public text surface
+  ---
+  duration_ms: 13.372
+  type: 'test'
+  ...
+# Subtest: route derivation rejects inventory target and port ledger drift
+ok 101 - route derivation rejects inventory target and port ledger drift
+  ---
+  duration_ms: 11.655833
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an orphan content documentation route
+ok 102 - route derivation rejects an orphan content documentation route
+  ---
+  duration_ms: 14.476
+  type: 'test'
+  ...
+# Subtest: route derivation rejects unexpected application page entrypoints for every configured extension
+ok 103 - route derivation rejects unexpected application page entrypoints for every configured extension
+  ---
+  duration_ms: 85.073208
+  type: 'test'
+  ...
+# Subtest: route derivation accepts generated files nested below the required public reference modules
+ok 104 - route derivation accepts generated files nested below the required public reference modules
+  ---
+  duration_ms: 12.934958
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an unexpected third public reference module
+ok 105 - route derivation rejects an unexpected third public reference module
+  ---
+  duration_ms: 10.459167
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a top-level file in the public reference root
+ok 106 - route derivation rejects a top-level file in the public reference root
+  ---
+  duration_ms: 11.5915
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference module
+ok 107 - route derivation rejects a missing required public reference module
+  ---
+  duration_ms: 8.334167
+  type: 'test'
+  ...
+# Subtest: route derivation rejects a missing required public reference index
+ok 108 - route derivation rejects a missing required public reference index
+  ---
+  duration_ms: 10.468875
+  type: 'test'
+  ...
+# Subtest: route derivation rejects public reference symlink escapes
+ok 109 - route derivation rejects public reference symlink escapes
+  ---
+  duration_ms: 34.489875
+  type: 'test'
+  ...
+# Subtest: route derivation rejects an extras file that differs from computed routes
+ok 110 - route derivation rejects an extras file that differs from computed routes
+  ---
+  duration_ms: 9.904833
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction retains hidden panels and ordered headings
+ok 111 - rendered-page extraction retains hidden panels and ordered headings
+  ---
+  duration_ms: 3.95725
+  type: 'test'
+  ...
+# Subtest: served-page extraction uses the title and content contract without the live-only main
+ok 112 - served-page extraction uses the title and content contract without the live-only main
+  ---
+  duration_ms: 0.58925
+  type: 'test'
+  ...
+# Subtest: rendered-page extraction requires one container, title, and content node
+ok 113 - rendered-page extraction requires one container, title, and content node
+  ---
+  duration_ms: 0.313
+  type: 'test'
+  ...
+# Subtest: fidelity uses title equality, ordered headings, and the normalized character ratio
+ok 114 - fidelity uses title equality, ordered headings, and the normalized character ratio
+  ---
+  duration_ms: 0.080708
+  type: 'test'
+  ...
+# Subtest: title-only fidelity is N/A and rejects invented local body content
+ok 115 - title-only fidelity is N/A and rejects invented local body content
+  ---
+  duration_ms: 0.034416
+  type: 'test'
+  ...
+# Subtest: local verification checks page routes and labels non-page surfaces separately
+ok 116 - local verification checks page routes and labels non-page surfaces separately
+  ---
+  duration_ms: 2.167167
+  type: 'test'
+  ...
+# Subtest: local verification fails on the first non-200 response
+ok 117 - local verification fails on the first non-200 response
+  ---
+  duration_ms: 0.246167
+  type: 'test'
+  ...
+# Subtest: local verification identifies the exact route when transport fails
+ok 118 - local verification identifies the exact route when transport fails
+  ---
+  duration_ms: 0.085292
+  type: 'test'
+  ...
+# Subtest: serial live fetcher spaces every attempt and retries only 5xx
+ok 119 - serial live fetcher spaces every attempt and retries only 5xx
+  ---
+  duration_ms: 1.037791
+  type: 'test'
+  ...
+# Subtest: serial live fetcher rechecks the clock after an early timer wake
+ok 120 - serial live fetcher rechecks the clock after an early timer wake
+  ---
+  duration_ms: 0.303667
+  type: 'test'
+  ...
+# Subtest: serial live fetcher does not retry a network exception
+ok 121 - serial live fetcher does not retry a network exception
+  ---
+  duration_ms: 0.077625
+  type: 'test'
+  ...
+# Subtest: serial live fetcher stops after two retries and never retries 429
+ok 122 - serial live fetcher stops after two retries and never retries 429
+  ---
+  duration_ms: 0.316458
+  type: 'test'
+  ...
+# Subtest: serial live fetcher retries a 5xx even when its response body cannot be read
+ok 123 - serial live fetcher retries a 5xx even when its response body cannot be read
+  ---
+  duration_ms: 0.129167
+  type: 'test'
+  ...
+# Subtest: serial live fetcher queues concurrent callers
+ok 124 - serial live fetcher queues concurrent callers
+  ---
+  duration_ms: 1.47025
+  type: 'test'
+  ...
+# Subtest: live inventory re-fetch requires exact sitemap value-and-order equality
+ok 125 - live inventory re-fetch requires exact sitemap value-and-order equality
+  ---
+  duration_ms: 0.190792
+  type: 'test'
+  ...
+# Subtest: live verification compares each live page with its served local page
+ok 126 - live verification compares each live page with its served local page
+  ---
+  duration_ms: 1.047625
+  type: 'test'
+  ...
+# Subtest: mode parser exposes bounded local and live commands
+ok 127 - mode parser exposes bounded local and live commands
+  ---
+  duration_ms: 0.12625
+  type: 'test'
+  ...
+# Subtest: failure envelope is deterministic and omits stack and timing data
+ok 128 - failure envelope is deterministic and omits stack and timing data
+  ---
+  duration_ms: 0.060458
+  type: 'test'
+  ...
+# Subtest: exports a fixture-callable reference verifier
+ok 129 - exports a fixture-callable reference verifier
+  ---
+  duration_ms: 0.655625
+  type: 'test'
+  ...
+# Subtest: accepts a minimal generated-compatible reference tree
+ok 130 - accepts a minimal generated-compatible reference tree
+  ---
+  duration_ms: 18.821625
+  type: 'test'
+  ...
+# Subtest: rejects placeholder reference notices anywhere in the generated tree
+ok 131 - rejects placeholder reference notices anywhere in the generated tree
+  ---
+  duration_ms: 24.461542
+  type: 'test'
+  ...
+# Subtest: accepts a nested generated page with safe links and stock Dokka scripts
+ok 132 - accepts a nested generated page with safe links and stock Dokka scripts
+  ---
+  duration_ms: 23.448542
+  type: 'test'
+  ...
+# Subtest: accepts all three stock Dokka inline bootstraps
+ok 133 - accepts all three stock Dokka inline bootstraps
+  ---
+  duration_ms: 6.939208
+  type: 'test'
+  ...
+# Subtest: accepts the exact Dokka 2.2 dark-mode bootstrap
+ok 134 - accepts the exact Dokka 2.2 dark-mode bootstrap
+  ---
+  duration_ms: 4.964209
+  type: 'test'
+  ...
+# Subtest: accepts the exact Dokka 2.2 local script paths
+ok 135 - accepts the exact Dokka 2.2 local script paths
+  ---
+  duration_ms: 7.528166
+  type: 'test'
+  ...
+# Subtest: rejects a base element before validating approved-looking relative scripts
+ok 136 - rejects a base element before validating approved-looking relative scripts
+  ---
+  duration_ms: 7.509792
+  type: 'test'
+  ...
+# Subtest: rejects an approved script basename outside the module-root scripts directory
+ok 137 - rejects an approved script basename outside the module-root scripts directory
+  ---
+  duration_ms: 5.130709
+  type: 'test'
+  ...
+# Subtest: accepts a deeply nested page whose script resolves to module-root scripts
+ok 138 - accepts a deeply nested page whose script resolves to module-root scripts
+  ---
+  duration_ms: 13.122833
+  type: 'test'
+  ...
+# Subtest: rejects symlinked owned public path components before module traversal
+ok 139 - rejects symlinked owned public path components before module traversal
+  ---
+  duration_ms: 5.567792
+  type: 'test'
+  ...
+# Subtest: accepts published words that merely contain the tracker spelling
+ok 140 - accepts published words that merely contain the tracker spelling
+  ---
+  duration_ms: 6.294958
+  type: 'test'
+  ...
+# Subtest: scans nested pages for unresolved-link markers
+ok 141 - scans nested pages for unresolved-link markers
+  ---
+  duration_ms: 4.999166
+  type: 'test'
+  ...
+# Subtest: scans nested pages for internal tracker vocabulary
+ok 142 - scans nested pages for internal tracker vocabulary
+  ---
+  duration_ms: 12.397708
+  type: 'test'
+  ...
+# Subtest: scans every non-HTML text asset for durable forbidden tokens
+ok 143 - scans every non-HTML text asset for durable forbidden tokens
+  ---
+  duration_ms: 28.045709
+  type: 'test'
+  ...
+# Subtest: scans non-HTML text assets for local and private filesystem paths
+ok 144 - scans non-HTML text assets for local and private filesystem paths
+  ---
+  duration_ms: 18.558833
+  type: 'test'
+  ...
+# Subtest: rejects an unreferenced unexpected executable asset
+ok 145 - rejects an unreferenced unexpected executable asset
+  ---
+  duration_ms: 4.42275
+  type: 'test'
+  ...
+# Subtest: rejects altered bytes at an approved stock Dokka script path
+ok 146 - rejects altered bytes at an approved stock Dokka script path
+  ---
+  duration_ms: 4.532791
+  type: 'test'
+  ...
+# Subtest: rejects unsafe anchor schemes and site-root paths
+ok 147 - rejects unsafe anchor schemes and site-root paths
+  ---
+  duration_ms: 16.683
+  type: 'test'
+  ...
+# Subtest: rejects missing and escaping relative anchor targets
+ok 148 - rejects missing and escaping relative anchor targets
+  ---
+  duration_ms: 8.731708
+  type: 'test'
+  ...
+# Subtest: rejects arbitrary inline scripts
+ok 149 - rejects arbitrary inline scripts
+  ---
+  duration_ms: 4.273416
+  type: 'test'
+  ...
+# Subtest: rejects unapproved external scripts
+ok 150 - rejects unapproved external scripts
+  ---
+  duration_ms: 4.745208
+  type: 'test'
+  ...
+# Subtest: rejects unapproved and missing local scripts
+ok 151 - rejects unapproved and missing local scripts
+  ---
+  duration_ms: 8.141334
+  type: 'test'
+  ...
+# Subtest: rejects inline event-handler attributes on nested pages
+ok 152 - rejects inline event-handler attributes on nested pages
+  ---
+  duration_ms: 3.564083
+  type: 'test'
+  ...
+# Subtest: accepts only the exact Dokka 2.2 navigation toggle handler
+ok 153 - accepts only the exact Dokka 2.2 navigation toggle handler
+  ---
+  duration_ms: 13.73025
+  type: 'test'
+  ...
+# Subtest: rejects a symlink nested in either module tree
+ok 154 - rejects a symlink nested in either module tree
+  ---
+  duration_ms: 2.806334
+  type: 'test'
+  ...
+# Subtest: requires each module entrypoint and a normalized module title
+ok 155 - requires each module entrypoint and a normalized module title
+  ---
+  duration_ms: 5.745792
+  type: 'test'
+  ...
+# Subtest: requires sibling, docs, and Store6 overview links on each entrypoint
+ok 156 - requires sibling, docs, and Store6 overview links on each entrypoint
+  ---
+  duration_ms: 9.206875
+  type: 'test'
+  ...
+# Subtest: accepts required entrypoint links on the canonical Store documentation origin
+ok 157 - accepts required entrypoint links on the canonical Store documentation origin
+  ---
+  duration_ms: 4.103333
+  type: 'test'
+  ...
+# Subtest: rejects required-link aliases with duplicate or encoded separators
+ok 158 - rejects required-link aliases with duplicate or encoded separators
+  ---
+  duration_ms: 17.097417
+  type: 'test'
+  ...
+# Subtest: preserves the Reference nav, no-redirect, and no-shadow-route invariants
+ok 159 - preserves the Reference nav, no-redirect, and no-shadow-route invariants
+  ---
+  duration_ms: 18.012125
+  type: 'test'
+  ...
+1..159
+# tests 194
+# suites 0
+# pass 193
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1497.695291
