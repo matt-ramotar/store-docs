@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "mode": "local",
-  "passed": false,
-  "error": {
-    "message": "http://127.0.0.1:3222/: request failed: fetch failed",
-    "name": "Error"
-  }
-}

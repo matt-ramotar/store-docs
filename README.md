@@ -49,4 +49,9 @@ pnpm build-script allowances live in `package.json` under
 - `mdx-components.tsx`: the shared MDX component map.
 - `app/(docs)/docs/[[...slug]]/page.tsx`: the documentation catch-all route.
 - `app/globals.css`: the CSS entry and token insertion boundary.
-- `evidence/`: local verification records.
+- `evidence/`: source locks, ownership ledgers, claim and snippet manifests, and other verification inputs.
+
+Keep verification inputs and maintained contracts in Git. Build logs, browser dumps, and routine
+screenshots from local runs stay in ignored artifact directories. CI run outputs belong in workflow
+artifacts. The `design-revision` and `sidebar-navigation` directories under `evidence/` are local
+run archives and are not required to build or verify the site.

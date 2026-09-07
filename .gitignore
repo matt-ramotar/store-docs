@@ -3,3 +3,8 @@ node_modules/
 .source/
 *.tsbuildinfo
 next-env.d.ts
+
+# Local run artifacts. Required evidence manifests remain tracked.
+/evidence/design-revision/
+/evidence/sidebar-navigation/
+/evidence/**/*.log

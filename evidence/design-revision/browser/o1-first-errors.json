@@ -1,8 +1,0 @@
-[
-  {
-    "level": "error",
-    "message": "Error: Minified React error #418; visit https://react.dev/errors/418?args[]=HTML&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.\n    at r1 (http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:37066)\n    at ih (http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:88494)\n    at sy (http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:129323)\n    at http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:124202\n    at so (http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:124303)\n    at sG (http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js:1:150890)\n    at MessagePort.A (http://127.0.0.1:3222/_next/static/chunks/27574-e08d061d4b9e601a.js:52:90575)",
-    "timestamp": "2026-09-06T07:51:25.523Z",
-    "url": "http://127.0.0.1:3222/_next/static/chunks/4585599d-2e5c89ae9d3d3196.js"
-  }
-]
