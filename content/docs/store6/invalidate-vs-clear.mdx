@@ -75,7 +75,7 @@ Two properties matter here:
   guarantee, not a timing accident, and it is what makes clear safe for sign-out.
 
 What the user sees: the content disappears and a loading state appears. That is correct when the old
-value is not just outdated but *wrong to show* — a different user's data, data the current session is
+value is not just outdated but *wrong to show*: a different user's data, data the current session is
 no longer entitled to, a record the server says no longer exists.
 
 ```kotlin
@@ -151,7 +151,7 @@ After `clear`, there is nothing to serve. The next read is a cold read: `Loading
 fetcher returns. If the fetch fails, the user has an empty screen and an error.
 
 That asymmetry is the whole decision. `invalidate` degrades gracefully when the network is bad.
-`clear` does not, because it cannot — you told it the old value was not safe to show.
+`clear` does not, because it cannot. You told it the old value was not safe to show.
 
 ---
 

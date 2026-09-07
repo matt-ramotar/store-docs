@@ -85,7 +85,7 @@ It can also configure these doors:
   `freshnessValidator`, and `maxIdleKeys`, whose default is `128`.
 - Mutation doors: `conflicts { }` and `journalStorage(...)`.
 
-There is deliberately no `overlay` door. The mutation engine installs the store's sole projection
+There is no `overlay` door. The mutation engine installs the store's sole projection
 layer. When `persistence` or `bookkeeper` is unset, the builder creates a mutations-owned in-memory
 default and forwards that same instance to both the delegated Store and the mutation engine. An
 unset `journalStorage` creates an in-memory journal with no process-restart durability. See
@@ -246,8 +246,7 @@ The example hydrates a committed base before enqueueing the update. After `mutat
 read immediately after it still returns `Ada`, because `get` is deliberately unprojected.
 
 After `drain(key)` adopts the acknowledgement, the example opens another stream. That new
-collection sees the server echo attributed `Origin.SOT` or `Origin.MEMORY`. This is the observation
-limit to rely on today: a stream opened after acknowledgement sees the echo, but convergence for a
+collection sees the server echo attributed `Origin.SOT` or `Origin.MEMORY`. Convergence for a
 collector already active across acknowledgement is not yet promised. The
 [pending-write UI guide](/docs/store6/mutations/pending-write-ui) covers the rendering contract.
 

@@ -1,0 +1,112 @@
+/* Code scopes deliberately leave explicit Shiki inline token colors intact. */
+.store-docs .store-m-code {
+  --code-ui-bg: var(--color-store-code-surface);
+  --code-ui-fg: var(--color-store-code-foreground);
+  --code-ui-muted: var(--color-store-code-comment);
+  --code-ui-header-bg: var(--color-store-code-header);
+  --code-ui-border: color-mix(in oklch, var(--code-ui-fg) 20%, var(--code-ui-bg));
+  --code-ui-focus: color-mix(in oklch, var(--accent), white 45%);
+  margin-block: 1.5rem;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--code-ui-border);
+  border-radius: var(--radius-2xl, 1rem);
+  background: var(--code-ui-bg);
+  color: var(--code-ui-fg);
+}
+.store-docs .store-m-code[data-code-theme="system"] {
+  --code-ui-bg: var(--surface);
+  --code-ui-fg: var(--foreground);
+  --code-ui-muted: var(--muted);
+  --code-ui-header-bg: var(--surface-secondary);
+  --code-ui-border: var(--border);
+  --code-ui-focus: var(--focus);
+}
+.store-docs .store-m-code[data-feedback-open] { outline: 2px solid var(--code-ui-focus); }
+.store-docs .store-m-code.store-m-code-no-margins { margin-block: 0; }
+.store-docs .store-m-code-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem .75rem;
+  min-height: 3rem;
+  padding: .5rem .875rem;
+  border-bottom: 1px solid var(--code-ui-border);
+  background: var(--code-ui-header-bg);
+  color: var(--code-ui-fg);
+}
+.store-docs .store-m-code-title { display: inline-flex; align-items: center; gap: .5rem; overflow-wrap: anywhere; font-size: .8125rem; font-weight: 600; }
+.store-docs .store-m-code-title > svg, .store-docs .store-m-code-title > span[data-component-part], .store-docs .store-m-code-tabs svg { width: 1rem; height: 1rem; }
+.store-docs .store-m-code-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .375rem; margin-inline-start: auto; }
+.store-docs .store-m-code-copy { display: inline-flex; align-items: center; }
+.store-docs .store-m-code-copy button { color: var(--code-ui-fg, var(--color-store-code-foreground)); }
+.store-docs .store-m-code-copy button:hover { background: color-mix(in srgb, var(--code-ui-fg, var(--color-store-code-foreground)) 10%, transparent); }
+.store-docs .store-m-code-body { min-width: 0; color: var(--color-store-code-foreground); background: var(--color-store-code-surface); }
+.store-docs .store-m-code-body[data-code-theme="system"] { color: var(--foreground); background: var(--surface); }
+.store-docs .store-m-code-body[data-code-syntax="tidal"] [data-component-part="code-block-root"] { background: var(--color-store-code-surface) !important; }
+.store-docs .store-m-code-body [data-component-part="code-block-root"] { border-radius: 0; width: auto; min-width: 0; max-width: 100%; }
+.store-docs .store-m-code-body pre, .store-docs .store-m-code-snippet pre, .store-docs pre.store-m-code-compiled {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: .8125rem;
+  line-height: 1.7;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.store-docs .store-m-code-body pre { padding: 0; }
+.store-docs .store-m-code-snippet pre, .store-docs pre.store-m-code-compiled { padding: 1rem; }
+.store-docs .store-m-code-snippet[data-code-syntax="tidal"] { background: var(--color-store-code-surface); }
+.store-docs .store-m-code-snippet[data-code-syntax="tidal"] pre { background: var(--color-store-code-surface) !important; color: var(--color-store-code-foreground); }
+.store-docs .store-m-code-body pre > code, .store-docs .store-m-code-snippet pre > code, .store-docs pre.store-m-code-compiled > code {
+  display: block; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; color: inherit; font: inherit;
+}
+.store-docs pre.store-m-code-compiled > code { background: transparent !important; color: inherit !important; }
+.store-docs .store-m-code-body [data-component-part="code-block-footer"] { color: var(--code-ui-muted, var(--color-store-code-comment)); }
+.store-docs .store-m-code-body [data-component-part="code-block-footer"] svg { color: inherit; }
+.store-docs .store-m-code-body .line { min-height: 1.7em; }
+.store-docs .store-m-code-body .has-line-numbers code { counter-reset: store-code-line; }
+.store-docs .store-m-code-body .has-line-numbers .line::before { counter-increment: store-code-line; content: counter(store-code-line); display: inline-block; width: 2.5rem; padding-inline-end: 1rem; color: var(--color-store-code-comment); text-align: end; user-select: none; }
+.store-docs .store-m-code-body .code-block-wrap pre, .store-docs .store-m-code-body .code-block-wrap code { white-space: pre-wrap; overflow-wrap: anywhere; }
+.store-docs .store-m-code-tabs { display: flex; gap: .25rem; min-width: 0; max-width: 100%; overflow-x: auto; }
+.store-docs .store-m-code-tabs [role="tab"] { display: inline-flex; align-items: center; gap: .375rem; flex-shrink: 0; padding: .5rem .625rem; border-radius: var(--radius-md, 0.375rem); color: var(--code-ui-muted); font-size: .8125rem; }
+.store-docs .store-m-code-tabs [role="tab"][aria-selected="true"] { background: color-mix(in srgb, var(--code-ui-focus) 15%, transparent); color: var(--code-ui-fg); box-shadow: inset 0 -2px var(--code-ui-focus); }
+.store-docs .store-m-code-tabs [role="tab"]:hover { background: color-mix(in srgb, var(--code-ui-fg) 10%, transparent); }
+.store-docs .store-m-code [hidden] { display: none; }
+.store-docs .store-m-code-audio { padding: 1rem; }
+.store-docs .store-m-code-audio audio { width: 100%; }
+.store-docs .store-m-code-menu-trigger { min-height: 2.25rem; padding: .375rem .625rem; gap: .5rem; border: 1px solid var(--muted); color: var(--foreground) !important; background: var(--surface); font-size: .8125rem; }
+.store-docs .store-m-code-menu-trigger:hover { color: var(--foreground) !important; }
+.store-docs .store-m-code .store-m-code-menu-trigger { border-color: var(--code-ui-muted); background: transparent; color: var(--code-ui-muted) !important; }
+.store-docs .store-m-code .store-m-code-menu-trigger:hover { color: var(--code-ui-fg) !important; }
+.store-docs .store-m-code-menu { z-index: 60; min-width: var(--anchor-width); max-height: min(24rem, var(--available-height)); padding: .375rem; border: 1px solid var(--border); border-radius: var(--radius-xl, 0.75rem); background: var(--overlay); color: var(--overlay-foreground); box-shadow: 0 .5rem 2rem color-mix(in srgb, var(--foreground) 14%, transparent); }
+.store-docs .store-m-code-menu-item { min-height: 2.25rem; gap: .75rem; padding: .5rem .625rem; color: var(--foreground) !important; border-radius: var(--radius-md, 0.375rem); }
+.store-docs .store-m-code-menu-item svg { color: var(--accent); }
+.store-docs .store-m-code-menu-item:is(:hover, :focus-visible, [data-highlighted]) { background: color-mix(in srgb, var(--foreground) 8%, var(--surface)); color: var(--foreground) !important; }
+.store-docs .store-m-code-menu-item[data-selected] { color: var(--accent) !important; background: var(--accent-soft); }
+.store-docs .store-m-code-menu-item[data-selected]:is(:hover, :focus-visible, [data-highlighted]) { color: var(--accent) !important; }
+.store-docs .store-m-code-menu-item[data-disabled], .store-docs .store-m-code-menu-trigger:disabled { opacity: .5; }
+.store-docs .store-m-code :is(button, [tabindex]):focus-visible, .store-docs .store-m-code-body [tabindex]:focus-visible {
+  outline: 2px solid var(--code-ui-focus, var(--color-store-code-function)) !important; outline-offset: 3px;
+}
+.store-docs :is(.store-m-code-menu, .store-m-code-menu-trigger, .store-m-code-menu-item):focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .store-docs .store-m-code-body * { transition-duration: 0s; } }
+.store-docs .store-m-code-body[data-code-syntax="tidal"] .line-highlight { background: color-mix(in srgb, var(--color-store-code-function) 14%, var(--color-store-code-surface)); }
+.store-docs .store-m-code-body[data-code-syntax="tidal"] .has-focused .line:not(.line-focus) { opacity: .8; }
+.store-docs .store-m-code-body[data-code-syntax="tidal"] .has-focused:hover .line { opacity: 1; }
+
+.store-docs .store-m-code-body[data-small-text] pre { font-size: .75rem; line-height: 1.8; }
+
+.store-docs .store-m-code:has(:is(pre, [data-component-part="code-block-root"]):focus-visible) { outline: 2px solid var(--code-ui-focus); outline-offset: 3px; }
+.store-docs .store-m-code-body [data-component-part="code-block-footer"] { padding: .375rem .75rem; }
+.store-docs .store-m-code-body [data-component-part="code-block-footer"] button { color: inherit; }
+
+/* Explicit CSS-variable themes resolve their authored background and foreground. */
+.store-docs .store-m-code-body[data-code-syntax="css-variables"],
+.store-docs .store-m-code-body[data-code-syntax="css-variables"] [data-component-part="code-block-root"],
+.store-docs .store-m-code-snippet[data-code-syntax="css-variables"] pre {
+  background: var(--shiki-background, var(--shiki-color-background)) !important;
+  color: var(--shiki-foreground, var(--shiki-color-text));
+}

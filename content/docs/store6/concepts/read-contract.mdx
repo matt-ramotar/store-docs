@@ -3,7 +3,7 @@ title: "The read contract: stream, get, and origins"
 description: "One failure rule, four result kinds, honest origin attribution, and the lifecycle of a Store stream."
 ---
 
-A Store has exactly two read doors (`stream` and `get`) and one failure rule that splits them.
+A Store has exactly two read operations (`stream` and `get`) and one failure rule:
 `stream` emits failures as values and never throws them at your collector. `get` returns a value or
 throws, and never emits partial states. Everything on this page is the contract of the `Store`
 interface in `store6-core`. It holds for every store you build, from a five-line memory-only store
@@ -94,7 +94,7 @@ Attribution honesty is a tested contract, not a debugging aid: a network commit 
 [Important defaults](/docs/store6/important-defaults). If this page and a test ever disagreed, the
 test would be right and this page would be a bug.
 
-Two facts about `OVERLAY` frames are worth learning before you ever use the write path:
+Two rules govern `OVERLAY` frames on the write path:
 
 - **Overlay frames are fresh by definition.** They are stamped `age = Duration.ZERO` and
   `isStale = false` unconditionally, because an optimistic value genuinely is new. The user just
@@ -119,7 +119,7 @@ behind, the store conflates, but conflation is **per result kind**:
   signals survive backpressure. Only a newer signal of the same kind can supersede an older queued
   one, so the kind itself is never lost.
 
-The consequence for UI code: you may not see every intermediate value, but you will never miss the
+In UI code, you may not see every intermediate value, but you will never miss the
 fact that a load started, a fetch failed, or the server confirmed freshness, and every collector
 eventually observes the latest row. Each of these claims is pinned by a named conformance test on
 [Important defaults](/docs/store6/important-defaults).
@@ -135,6 +135,24 @@ usable content. The stale value was emitted before the failure arrived. Show an 
 over that content. Do not blank the screen. When `servedStale` is `false`, there is nothing on
 screen to preserve, and a full error state is honest. The `StoreError` vocabulary that tells you
 *what* failed is covered in [Errors and failure handling](/docs/store6/concepts/errors).
+
+## Failure trace: invalidated persisted data
+
+This trace has four qualifying conditions: a first cold subscription after restart, a durably
+invalidated persisted row, the default freshness validator, and `Freshness.CachedOrFetch`.
+Wall-clock age alone does not trigger this fetch. A custom `FreshnessValidator` can plan
+differently.
+
+1. Store hydrates the persisted row into resident state and requests an unconditional fetch with
+   `etag=null`. The durable record may still retain its stored ETag.
+2. The initial public result is
+   `Data(origin=Origin.SOT, isStale=true, refreshing=true)`.
+3. A queued stale `Data` replay may occur before the error, without an intervening `Loading`.
+4. `Bookkeeper.recordFailure` completes before the public error is emitted.
+5. The failed refresh produces `Error(StoreError.Fetch, servedStale=true)`, and the stream remains
+   live.
+
+After hydration populates memory, a later resident replay may carry `Origin.MEMORY`.
 
 ## The one stream-terminating case
 

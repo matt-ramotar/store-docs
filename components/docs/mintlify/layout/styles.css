@@ -1,0 +1,146 @@
+.store-docs .store-mintlify-layout {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-card {
+  background: var(--surface);
+  border-color: var(--border);
+  border-radius: var(--radius-2xl, 1rem);
+  color: var(--foreground);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.store-docs .store-mintlify-card:is(a):hover {
+  border-color: var(--accent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--foreground), transparent 92%);
+  transform: translateY(-1px);
+}
+
+.store-docs .store-mintlify-card:is(a):active {
+  background: color-mix(in srgb, var(--surface), var(--foreground) 8%);
+  transform: translateY(0);
+}
+
+.store-docs .store-mintlify-card [data-component-part="card-title"] {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-card [data-component-part="card-content"],
+.store-docs .store-mintlify-card [data-component-part="card-cta"] {
+  color: var(--foreground-secondary);
+}
+
+.store-docs .store-mintlify-card-group,
+.store-docs .store-mintlify-columns {
+  container-name: store-layout-columns;
+  container-type: inline-size;
+  gap: 1rem;
+}
+
+.store-docs .store-mintlify-frame [data-component-part="frame"] {
+  background: var(--surface-secondary);
+  border-radius: var(--radius-2xl, 1rem);
+}
+
+.store-docs .store-mintlify-frame [data-component-part="frame-content"] {
+  background: var(--surface);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+
+.store-docs .store-mintlify-frame [data-component-part="frame-content"] :where(img, picture, video, iframe, svg, canvas) {
+  flex: 0 0 auto;
+  max-width: none;
+}
+
+.store-docs .store-mintlify-frame [data-component-part="frame-description"] {
+  background: var(--surface);
+  color: var(--foreground-secondary);
+}
+
+.store-docs .store-mintlify-frame [data-component-part="frame-border"] {
+  border-color: var(--border);
+}
+
+.store-docs .store-mintlify-panel {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius, 0.5rem) * 1.75);
+  color: var(--foreground);
+  padding: 1rem;
+}
+
+.store-docs .store-mintlify-tile {
+  border-radius: var(--radius-2xl, 1rem);
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-tile [data-component-part="tile-children-container"] {
+  background: var(--surface-secondary);
+  border: 1px solid var(--border);
+}
+
+.store-docs .store-mintlify-tile:hover [data-component-part="tile-children-container"] {
+  border-color: var(--accent);
+}
+
+.store-docs .store-mintlify-tile:active [data-component-part="tile-children-container"] {
+  background: color-mix(in srgb, var(--surface-secondary), var(--foreground) 8%);
+}
+
+.store-docs .store-mintlify-tile [data-component-part="tile-title"] {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-tile [data-component-part="tile-description"] {
+  color: var(--foreground-secondary);
+}
+
+.store-docs .store-mintlify-update {
+  border-block-start: 1px solid var(--border);
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-update [data-component-part="update-label"] {
+  background: var(--accent-soft);
+  color: var(--accent-soft-foreground);
+}
+
+.store-docs .store-mintlify-update [data-component-part="update-description"],
+.store-docs .store-mintlify-update [data-component-part="update-tag-list"] {
+  color: var(--foreground-secondary);
+}
+
+.store-docs .store-mintlify-view {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-color {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-color [data-component-part="color-row-title"] {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-color [data-component-part="color-item-button"] {
+  border-color: var(--border);
+}
+
+.store-docs .store-mintlify-color [data-component-part="color-item-name"] {
+  color: var(--foreground);
+}
+
+.store-docs .store-mintlify-color [data-component-part="color-item-value"] {
+  color: var(--foreground-secondary);
+}
+
+.store-docs .store-mintlify-icon {
+  flex: none;
+}
+
+@media (max-width: 639px) {
+  .store-docs .store-mintlify-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

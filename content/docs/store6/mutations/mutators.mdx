@@ -194,8 +194,8 @@ state, or perform I/O, and do not call back into Store.
 
 <Callout type="Note">
 
-**A projector throw permanently parks the intent.** This is deliberate containment, not retry.
-Store reports the exact in-process throwable through `MutationStore.poisoned`, records a normalized
+**A projector throw permanently parks the intent.** Store reports the exact in-process throwable
+through `MutationStore.poisoned`, records a normalized
 durable `PROJECTION` failure, and never returns that parked sequence to the executable FIFO. The
 throwable itself does not survive restart. Use
 [inspection](/docs/store6/mutations/inspection) to read the durable dead letter.

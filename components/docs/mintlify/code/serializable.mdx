@@ -1,0 +1,39 @@
+## Code components from compiled MDX
+
+```kotlin title="Compiled fence.kt"
+// Keep real compiled syntax spans.
+val title = "Tidal"
+println(title)
+```
+
+```text title="Plain compiled fence.txt"
+Plain output inherits the compiled fence foreground.
+```
+
+<CodeBlock filename="Store.kt" language="kotlin" lines highlight="[2]" focus="[2]">
+  {`val key = 1\nval value = store.get(key)\nprintln(value)`}
+</CodeBlock>
+
+<CodeGroup initialSelectedTab={0}>
+  <CodeBlock filename="Kotlin" language="kotlin">{`val store = Store()`}</CodeBlock>
+  <CodeBlock filename="TypeScript" language="typescript">{`const store = new Store();`}</CodeBlock>
+</CodeGroup>
+
+<CodeGroup dropdown>
+  <CodeBlock filename="Read.kt" language="kotlin">{`store.get(1)`}</CodeBlock>
+  <CodeBlock filename="Read.ts" language="typescript">{`store.get(1);`}</CodeBlock>
+</CodeGroup>
+
+<CodeGroupSelect snippets={{ Kotlin: { Read: { filename: "Read.kt", language: "kotlin", code: "store.get(1)" } } }} />
+
+<CodeSnippet language="kotlin">{`val snapshot = store.get(1)`}</CodeSnippet>
+
+<BaseCodeBlock language="kotlin" wrap>{`val message = "This source remains available in the compiled MDX tree."`}</BaseCodeBlock>
+
+<DropdownMenu>
+  <DropdownMenuTrigger>Static code actions</DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem isSelected>Read example</DropdownMenuItem>
+    <DropdownMenuItem disabled>Unavailable example</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>

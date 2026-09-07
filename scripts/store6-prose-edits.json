@@ -1,0 +1,250 @@
+{
+  "docs/store6/quickstart.md": [
+    {
+      "before": "Everything else — sharing one in-flight request across concurrent callers,\nserving what is already resident, tracking staleness, bounding memory — is what Store does with",
+      "after": "Everything else, including sharing one in-flight request across concurrent callers,\nserving what is already resident, tracking staleness, and bounding memory, is what Store does with"
+    },
+    {
+      "before": "Supporting declarations — the key, the model, and a stand-in service:",
+      "after": "Supporting declarations (the key, the model, and a stand-in service):"
+    },
+    {
+      "before": "- **`Loading`** — demand has been registered and no value is available yet.",
+      "after": "- **`Loading`**: demand has been registered and no value is available yet."
+    },
+    {
+      "before": "- **`Data`** — a value, carrying an `origin` that tells you where it came from (`FETCHER`, `SOT`,",
+      "after": "- **`Data`**: a value carrying an `origin` that tells you where it came from (`FETCHER`, `SOT`,"
+    },
+    {
+      "before": "- **`Revalidated`** — the server said nothing changed. You get one of these with the resident value's",
+      "after": "- **`Revalidated`**: the server said nothing changed. You get one of these with the resident value's"
+    },
+    {
+      "before": "- **`Error`** — the fetch failed. If a stale value was resident, you will have been served it first.",
+      "after": "- **`Error`**: the fetch failed. If a stale value was resident, you will have been served it first."
+    },
+    {
+      "before": "first two frames — `Loading`, then `Data` — and stops.",
+      "after": "first two frames (`Loading`, then `Data`) and stops."
+    },
+    {
+      "before": "`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.",
+      "after": "`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01. Nothing here is published yet."
+    },
+    {
+      "before": "**The spelling below is the current API surface.** The module is still experimental — shapes\ncan change in any release — but the snippet below matches the implementation.",
+      "after": "**The spelling below is the current API surface.** The module is still experimental, so shapes\ncan change in any release. The snippet below matches the implementation."
+    },
+    {
+      "before": "You get a mutation store instead of a plain one, and it is a `Store` — everything above still works.",
+      "after": "You get a mutation store instead of a plain one, and it is a `Store`. Everything above still works."
+    }
+  ],
+  "docs/store6/important-defaults.md": [
+    {
+      "before": "Those tests are the specification — if a\nline here and its test ever disagree, the test is right and this page is a bug.",
+      "after": "Those tests are the specification. If a\nline here and its test ever disagree, the test is right and this page is a bug."
+    },
+    {
+      "before": "the refresh produces **exactly one** terminal outcome — one fresh `Data`, or one served-stale",
+      "after": "the refresh produces **exactly one** terminal outcome: one fresh `Data`, or one served-stale"
+    },
+    {
+      "before": "demand cycle invokes the fetcher exactly once, and a failure schedules no background retry — on\n  the terminalizing `get` path and on a live `stream` collector that survives the failure.",
+      "after": "demand cycle invokes the fetcher exactly once, and a failure schedules no background retry on\n  the terminalizing `get` path and on a live `stream` collector that survives the failure."
+    }
+  ],
+  "docs/store6/invalidate-vs-clear.md": [
+    {
+      "before": "value is not just outdated but *wrong to show* — a different user's data, data the current session is",
+      "after": "value is not just outdated but *wrong to show*: a different user's data, data the current session is"
+    },
+    {
+      "before": "`clear` does not, because it cannot — you told it the old value was not safe to show.",
+      "after": "`clear` does not, because it cannot. You told it the old value was not safe to show."
+    }
+  ],
+  "STABILITY.md": [
+    {
+      "before": "API that is **stable but easy to misuse** — for example implementing `Store` directly",
+      "after": "API that is **stable but easy to misuse**: for example, implementing `Store` directly"
+    },
+    {
+      "before": "Experimental (`@ExperimentalStoreApi`) — every public declaration in the artifact carries the marker today.",
+      "after": "Experimental (`@ExperimentalStoreApi`): every public declaration in the artifact carries the marker today."
+    },
+    {
+      "before": "**Experimental, separate artifact — every public symbol is `@ExperimentalStoreApi`.**",
+      "after": "**Experimental, separate artifact: every public symbol is `@ExperimentalStoreApi`.**"
+    },
+    {
+      "before": "Inside `store6-core`, the `org.mobilenativefoundation.store6.core.seam` package — the 13 files you\nimplement to plug in your own fetcher, source of truth, bookkeeper, clock, telemetry, or overlay —\nis a **freeze candidate, not frozen.**",
+      "after": "Inside `store6-core`, the `org.mobilenativefoundation.store6.core.seam` package (the 13 files you\nimplement to plug in your own fetcher, source of truth, bookkeeper, clock, telemetry, or overlay)\nis a **freeze candidate, not frozen.**"
+    },
+    {
+      "before": "Each alpha closes at least one community issue with a link to the named guarantee that resolves it —\na conformance test, not a changelog line.",
+      "after": "Each alpha closes at least one community issue with a link to the named guarantee that resolves it:\na conformance test, not a changelog line."
+    },
+    {
+      "before": "gates for 6.0.0 — they block GA, they are not follow-ups.",
+      "after": "gates for 6.0.0. They block GA and are not follow-ups."
+    },
+    {
+      "before": "JVM `.api` dump and a `.klib.api` dump — for example `store6-core/api/jvm/store6-core.api` and",
+      "after": "JVM `.api` dump and a `.klib.api` dump, for example, `store6-core/api/jvm/store6-core.api` and"
+    },
+    {
+      "before": "- **Generated-Swift dumps diffed on every pull request** across the supported bridges — Obj-C export",
+      "after": "- **Generated-Swift dumps diffed on every pull request** across the supported bridges: Obj-C export"
+    },
+    {
+      "before": "The module remains experimental — shapes can change in any release, and this document",
+      "after": "The module remains experimental. Shapes can change in any release, and this document"
+    },
+    {
+      "before": "genuinely is new — the user just wrote it.",
+      "after": "genuinely is new. The user just wrote it."
+    },
+    {
+      "before": "`store6-core` variant — JVM, Android, JS, wasmJs, and each native target — declares",
+      "after": "`store6-core` variant (JVM, Android, JS, wasmJs, and each native target) declares"
+    }
+  ],
+  "ROADMAP.md": [
+    {
+      "before": "extension for this rule's purposes — writing is functionality Store 5 already shipped, and Store 6",
+      "after": "extension for this rule's purposes: writing is functionality Store 5 already shipped, and Store 6"
+    },
+    {
+      "before": "**The floor — these are alpha01:**",
+      "after": "**The alpha01 floor:**"
+    },
+    {
+      "before": "one closes at least one community issue with a link to the named guarantee that resolves it — a\nconformance test, not a changelog line.",
+      "after": "one closes at least one community issue with a link to the named guarantee that resolves it: a\nconformance test, not a changelog line."
+    }
+  ],
+  "store6-compose/README.md": [
+    {
+      "before": "The seam it consumes is a freeze candidate, not frozen — see [STABILITY.md](../STABILITY.md).",
+      "after": "The seam it consumes is a freeze candidate, not frozen. See [STABILITY.md](../STABILITY.md)."
+    },
+    {
+      "before": "- `Store.collectAsState(key, freshness)` — `State<StoreResult<V>>`, starts at `Loading`,",
+      "after": "- `Store.collectAsState(key, freshness)`: `State<StoreResult<V>>`, starts at `Loading`,"
+    },
+    {
+      "before": "- `Flow<StoreResult<V>>.collectAsStoreState(initial)` — the flow-level variant.",
+      "after": "- `Flow<StoreResult<V>>.collectAsStoreState(initial)`: the flow-level variant."
+    },
+    {
+      "before": "- `Store.collectAsStateWithLifecycle(...)` / `collectAsStoreStateWithLifecycle(...)` —\n  lifecycle-gated",
+      "after": "- `Store.collectAsStateWithLifecycle(...)` / `collectAsStoreStateWithLifecycle(...)`:\n  lifecycle-gated"
+    },
+    {
+      "before": "- `skipEqualData()` / `storeResultMutationPolicy()` — structural skipping",
+      "after": "- `skipEqualData()` / `storeResultMutationPolicy()`: structural skipping"
+    },
+    {
+      "before": "structural comparison of `Data`'s value/origin/isStale/refreshing — `age` is excluded (it",
+      "after": "structural comparison of `Data`'s value/origin/isStale/refreshing. `age` is excluded (it"
+    },
+    {
+      "before": "This module is stricter still — `Loading`/`Revalidated`/",
+      "after": "This module is stricter still: `Loading`/`Revalidated`/"
+    },
+    {
+      "before": "instead — which is what lets the compiler skip\non equal *content* rather than equal *instance* — add",
+      "after": "instead (which is what lets the compiler skip\non equal *content* rather than equal *instance*), add"
+    },
+    {
+      "before": "every probed core type — including the interface-typed ones (`StoreResult`,\n`Freshness`, `StoreKey`, `StoreMeta`, `StoreError`) and the generic `StoreResult.Data<V>` —\nresolves",
+      "after": "every probed core type, including the interface-typed ones (`StoreResult`,\n`Freshness`, `StoreKey`, `StoreMeta`, `StoreError`) and the generic `StoreResult.Data<V>`,\nresolves"
+    },
+    {
+      "before": "`./gradlew :store6-compose-demo:run` — refreshing spinner-over-content, STALE badge, and",
+      "after": "`./gradlew :store6-compose-demo:run`: refreshing spinner-over-content, STALE badge, and"
+    }
+  ],
+  "store6-sqldelight/README.md": [
+    {
+      "before": "The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](../STABILITY.md).",
+      "after": "The Store6 seam is a **freeze candidate, not frozen**. See [STABILITY.md](../STABILITY.md)."
+    }
+  ],
+  "store6-room/README.md": [
+    {
+      "before": "The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](../STABILITY.md).",
+      "after": "The Store6 seam is a **freeze candidate, not frozen**. See [STABILITY.md](../STABILITY.md)."
+    },
+    {
+      "before": "as a follow-up — they require a suspend schema API and async SQLite integration.",
+      "after": "as a follow-up. They require a suspend schema API and async SQLite integration."
+    },
+    {
+      "before": "Android consumers need **compileSdk 34+** — the floor room3's AAR metadata\ndeclares — and **minSdk 24+**.",
+      "after": "Android consumers need **compileSdk 34+** (the floor room3's AAR metadata\ndeclares) and **minSdk 24+**."
+    },
+    {
+      "before": "its native KLIBs require Kotlin ≥2.3 with AGP ≥8.10 — it is\ngated",
+      "after": "its native KLIBs require Kotlin ≥2.3 with AGP ≥8.10. It is\ngated"
+    }
+  ],
+  "store6-realtime/README.md": [
+    {
+      "before": "candidates, not frozen — see [STABILITY.md](../STABILITY.md).",
+      "after": "candidates, not frozen. See [STABILITY.md](../STABILITY.md)."
+    },
+    {
+      "before": "- `realtimeBinding(store)` — adopting mode.",
+      "after": "- `realtimeBinding(store)`: adopting mode."
+    },
+    {
+      "before": "- `invalidatingRealtimeBinding(store)` — works on any `Store`,",
+      "after": "- `invalidatingRealtimeBinding(store)`: works on any `Store`,"
+    },
+    {
+      "before": "- `RealtimeBinding.apply(message)` — one frame, serialized per binding.",
+      "after": "- `RealtimeBinding.apply(message)`: one frame, serialized per binding."
+    },
+    {
+      "before": "- `RealtimeBinding.consume(messages)` — sequential pass until the flow completes.",
+      "after": "- `RealtimeBinding.consume(messages)`: sequential pass until the flow completes."
+    }
+  ],
+  "store6-graphql/README.md": [
+    {
+      "before": "The seam it consumes is a freeze candidate, not frozen — see [STABILITY.md](../STABILITY.md).",
+      "after": "The seam it consumes is a freeze candidate, not frozen. See [STABILITY.md](../STABILITY.md)."
+    },
+    {
+      "before": "- `GraphQlOperation(document, name)` — an executable document plus the operation name.",
+      "after": "- `GraphQlOperation(document, name)`: an executable document plus the operation name."
+    },
+    {
+      "before": "- `GraphQlOperation.key(variables)` — the `GraphQlOperationKey` for one execution.",
+      "after": "- `GraphQlOperation.key(variables)`: the `GraphQlOperationKey` for one execution."
+    },
+    {
+      "before": "- `graphQlVariables { }` — builder for `GraphQlVariables`",
+      "after": "- `graphQlVariables { }`: builder for `GraphQlVariables`"
+    },
+    {
+      "before": "- `graphQlFetcher(operation, partialDataPolicy, executor)` — the seam `Fetcher`,",
+      "after": "- `graphQlFetcher(operation, partialDataPolicy, executor)`: the seam `Fetcher`,"
+    },
+    {
+      "before": "- `GraphQlExecutor<V>` — `suspend execute(GraphQlRequest): GraphQlExecutorResult<V>`.",
+      "after": "- `GraphQlExecutor<V>`: `suspend execute(GraphQlRequest): GraphQlExecutorResult<V>`."
+    },
+    {
+      "before": "- `GraphQlOperationException(operationName, errors)` — the `StoreError.Fetch` cause when a",
+      "after": "- `GraphQlOperationException(operationName, errors)`: the `StoreError.Fetch` cause when a"
+    },
+    {
+      "before": "`FetcherResult.NotModified(etag)` — streams observe `StoreResult.Revalidated`",
+      "after": "`FetcherResult.NotModified(etag)`. Streams observe `StoreResult.Revalidated`"
+    }
+  ]
+}

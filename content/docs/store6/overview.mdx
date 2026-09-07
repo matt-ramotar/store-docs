@@ -4,21 +4,12 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
 ---
 
 <div className="mb-12 space-y-6">
-  <p className="max-w-2xl text-lg leading-8 text-foreground-secondary">
-    {"Store 6 coordinates network, persistence, and memory through one read contract. Start with a fetcher, then add only the persistence and projection seams your application needs."}
-  </p>
-
-  <Callout type="Info">
-    Store 6 is in development targeting 6.0.0-alpha01. Nothing is published yet. The `store6-core`
-    API is not frozen until the beta01 freeze candidate.
-  </Callout>
-
   <div className="flex flex-wrap gap-3">
     <Link
       className="rounded-xl bg-accent px-4 py-2.5 font-medium text-accent-foreground no-underline hover:no-underline"
       href="/docs/store6/quickstart"
     >
-      {"Read the Quickstart"}
+      {"Build your first store"}
       <Link.Icon />
     </Link>
     <Link
@@ -29,6 +20,24 @@ description: Typed Kotlin Multiplatform reads with explicit origins, freshness, 
       <Link.Icon />
     </Link>
   </div>
+
+  <p className="max-w-2xl text-lg leading-8 text-foreground-secondary">
+    {"Store 6 coordinates network, persistence, and memory through one read contract. Start with a fetcher, then add only the persistence and projections your application needs."}
+  </p>
+
+  <CodeSlab
+    code={`val users = store<UserKey, User> {
+    fetcher { key -> FakeApi.getUser(key.id) }
+}`}
+    lang="kotlin"
+    title="Fetcher-only Store"
+  />
+
+  <p className="max-w-2xl text-sm leading-6 text-foreground-secondary">
+    {"This store block is verbatim from the executable Quickstart module."}
+  </p>
+
+
 </div>
 
 ## Why Store 6?
@@ -43,14 +52,6 @@ invalidation, and bounded memory. Every zero-config behavior is named and covere
 test. The `store6-*` coordinates publish side by side with Store 5 for the whole 6.x major, so you
 can migrate one screen at a time.
 
-<CodeSlab
-  code={`val users = store<UserKey, User> {
-    fetcher { key -> FakeApi.getUser(key.id) }
-}`}
-  lang="kotlin"
-  title="Fetcher-only Store"
-/>
-
 Store 6 has these primary areas:
 
 - **Core reads** (`store6-core`): the `stream` and `get` read contract, with explicit
@@ -64,7 +65,7 @@ Store 6 has these primary areas:
 
 ## Start here
 
-Choose the guide that matches the next boundary you need to add.
+Choose the guide for what you need to add next.
 
 <StartHereList />
 

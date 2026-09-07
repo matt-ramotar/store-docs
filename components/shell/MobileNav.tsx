@@ -28,11 +28,11 @@ export function MobileNav({
   const activeTabHref = getActiveTabHref(currentPath);
 
   return (
-    <Sheet isOpen={isOpen} placement="left" onOpenChange={setIsOpen}>
+    <Sheet isOpen={isOpen} placement="left" onOpenChange={setIsOpen} shouldAutoFocus>
       <Sheet.Trigger>
         <Button
           aria-label="Open documentation navigation"
-          className="lg:hidden"
+          className="size-11 shrink-0 lg:hidden"
           isIconOnly
           size="sm"
           variant="ghost"
@@ -40,10 +40,13 @@ export function MobileNav({
           <Icon className="size-5" icon="gravity-ui:bars" />
         </Button>
       </Sheet.Trigger>
-      <Sheet.Backdrop>
-        <Sheet.Content className="w-[85vw] max-w-96 rounded-none">
+      <Sheet.Backdrop className="motion-reduce:animate-none motion-reduce:transition-none">
+        <Sheet.Content className="w-[85vw] max-w-96 rounded-none motion-reduce:animate-none motion-reduce:transition-none">
           <Sheet.Dialog className="flex h-full flex-col gap-5 overflow-y-auto p-4">
-            <Sheet.Heading className="sr-only">Documentation navigation</Sheet.Heading>
+            <div className="flex items-center justify-between gap-3">
+              <Sheet.Heading className="text-sm font-semibold">Documentation navigation</Sheet.Heading>
+              <Sheet.CloseTrigger aria-label="Close documentation navigation" className="size-11 shrink-0" />
+            </div>
             <ul className="border-separator flex flex-col gap-0.5 border-b pb-4">
               {topNavTabs.map((tab) => {
                 const isActive = tab.href === activeTabHref;

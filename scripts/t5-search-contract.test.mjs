@@ -25,7 +25,8 @@ test("the static route exports a Fumadocs source index", () => {
   const index = source("lib/search-index.ts");
   const route = source("app/api/search/route.ts");
 
-  assert.match(index, /createFromSource\(source\)/);
+  assert.match(index, /createFromSource\(source, \{/);
+  assert.match(index, /tag:/);
   assert.match(index, /fumadocs-core\/search\/server/);
   assert.match(route, /export const dynamic = ["']force-static["']/);
   assert.match(route, /export const GET = searchIndex\.staticGET/);
@@ -34,7 +35,7 @@ test("the static route exports a Fumadocs source index", () => {
 test("TopNav renders the command-search client island", () => {
   const topNav = source("components/shell/TopNav.tsx");
   assert.match(topNav, /import \{ CommandSearch \}/);
-  assert.match(topNav, /<CommandSearch\s*\/>/);
+  assert.match(topNav, /<CommandSearch\s+version=\{version\}\s*\/>/);
 });
 
 test("the palette follows the verified Command compound and accessibility contract", () => {
@@ -48,6 +49,7 @@ test("the palette follows the verified Command compound and accessibility contra
     /<Command\.Container/,
     /<Command\.Dialog/,
     /<Command\.InputGroup\s+autoFocus/,
+    /<Command\.InputGroup\.ClearButton[\s\S]*?aria-label=["']Clear search["'][\s\S]*?onPress=\{\(\) => updateSearch\(["']["']\)\}[\s\S]*?\/>/,
     /<Command\.List/,
     /<Command\.Group/,
     /<Command\.Item/,
@@ -92,6 +94,10 @@ test("result normalization uses stable source identity and rejects non-docs URLs
     title: "Fetcher setup",
     context: "Store 6 / Quickstart",
     version: "store6",
+    type: "page",
+    pageTitle: "Fetcher setup",
+    pageUrl: "/docs/store6/quickstart",
+    sectionTitle: "",
   });
   assert.match(valid.id, /^search-result-/);
   assert.notEqual(valid.id, valid.url);
@@ -349,6 +355,10 @@ test("search label normalization fails closed without overflowing on resource li
       id: "search-result-safe-result",
       url: "/docs/store6/safe",
       title: "Safe result",
+      type: "page",
+      pageTitle: "Safe result",
+      pageUrl: "/docs/store6/safe",
+      sectionTitle: "",
       context: "",
       version: "store6",
     },
@@ -735,7 +745,10 @@ test("the built-index verifier uses the public local static client", () => {
   assert.match(verifier, /normalizeSearchLabel/);
   assert.match(verifier, /rawResults\.flatMap/);
   assert.match(verifier, /residualKinds/);
-  assert.match(verifier, /rawResults\.length, 60/);
+  assert.doesNotMatch(verifier, /rawResults\.length, 60/);
+  assert.match(verifier, /concepts\/freshness/);
+  assert.match(verifier, /concepts\/store5\/fetcher/);
+  assert.match(verifier, /guides\/fetchers/);
   assert.match(verifier, /quickstart\.html/);
   assert.match(verifier, /aria-controls/);
   assert.doesNotMatch(verifier, /hasSearchMarkdownArtifacts\(result\.(?:title|context)\)/);
@@ -748,4 +761,106 @@ test("T5 does not introduce a cloud search client or browser secret", () => {
   assert.doesNotMatch(combined, /OramaCloud|oramaCloudClient|collectionID|apiKey|HEROUI_AUTH_TOKEN/);
   assert.doesNotMatch(combined, /from ["']@orama\/core["']/);
   assert.doesNotMatch(combined, /from ["']@orama\/orama["']/);
+});
+
+
+test("canonical matching pages outrank incidental text and retain parent and section context", async () => {
+  const { normalizeSearchResults } = await import("../lib/search-results.ts");
+  const rows = [
+    { id: "incidental", type: "text", url: "/docs/store6/quickstart#output", content: "Freshness policies appear in output" },
+    { id: "quickstart", type: "page", url: "/docs/store6/quickstart", content: "Quickstart", breadcrumbs: ["Store 6"] },
+    { id: "output", type: "heading", url: "/docs/store6/quickstart#output", content: "Reading the output" },
+    { id: "details", type: "text", url: "/docs/store6/quickstart#details", content: "Freshness details" },
+    { id: "freshness", type: "page", url: "/docs/store6/concepts/freshness", content: "<mark>Freshness</mark> policies", breadcrumbs: ["Store 6", "Concepts"] },
+  ];
+  const results = normalizeSearchResults(rows, "freshness");
+  assert.equal(results[0].url, "/docs/store6/concepts/freshness");
+  assert.equal(results[0].type, "page");
+  const section = results.find((result) => result.url.endsWith("#output"));
+  assert.equal(section.type, "heading");
+  assert.equal(section.pageTitle, "Quickstart");
+  assert.equal(section.sectionTitle, "Reading the output");
+  assert.equal(section.pageUrl, "/docs/store6/quickstart");
+  assert.equal(section.version, "store6");
+  const text = results.find((result) => result.url.endsWith("#details"));
+  assert.equal(text.type, "text");
+  assert.equal(text.pageTitle, "Quickstart");
+});
+
+test("scope changes invalidate same-query results, late failures, and old client activation", async () => {
+  const { SearchResultTracker, createTrackedSearchClient } = await import("../lib/search-results.ts");
+  const tracker = new SearchResultTracker();
+  const pending = [];
+  const fixture = { deps: [], search: () => new Promise((resolve, reject) => pending.push({ resolve, reject })) };
+  const store6 = createTrackedSearchClient(fixture, tracker, "store6");
+  const store5 = createTrackedSearchClient(fixture, tracker, "store5");
+  const rows = [
+    { id: "s6", type: "page", url: "/docs/store6/guides/fetchers", content: "Fetchers" },
+    { id: "s5", type: "page", url: "/docs/concepts/store5/fetcher", content: "Fetcher" },
+  ];
+  tracker.updateScope("store6");
+  tracker.updateInput("fetcher");
+  const old = store6.search("fetcher");
+  tracker.updateScope("store5");
+  pending[0].resolve(rows);
+  const oldData = await old;
+  assert.deepEqual(tracker.resolve({ data: oldData, isLoading: false }), { results: [], state: "pending" });
+  assert.equal(tracker.getActionableResult({ data: oldData, isLoading: false }, "search-result-s6"), null);
+  const current = store5.search("fetcher");
+  pending[1].resolve(rows);
+  const currentData = await current;
+  const ready = tracker.resolve({ data: currentData, isLoading: false });
+  assert.deepEqual(ready.results.map((item) => item.version), ["store5"]);
+  assert.equal(tracker.getActionableResult({ data: currentData, isLoading: false }, "search-result-s5")?.url, rows[1].url);
+  const oldFailure = store5.search("fetcher");
+  tracker.updateScope("both");
+  const error = new Error("late scope failure");
+  pending[2].reject(error);
+  await assert.rejects(oldFailure, error);
+  assert.deepEqual(tracker.resolve({ error, isLoading: false }), { results: [], state: "pending" });
+  const both = createTrackedSearchClient(fixture, tracker, "both");
+  const combined = both.search("fetcher");
+  pending[3].resolve(rows);
+  const combinedData = await combined;
+  assert.deepEqual(new Set(tracker.resolve({ data: combinedData, isLoading: false }).results.map((item) => item.version)), new Set(["store5", "store6"]));
+  const empty = both.search("missing");
+  tracker.updateInput("missing");
+  pending[4].resolve([]);
+  assert.equal(tracker.resolve({ data: await empty, isLoading: false }).state, "pending");
+  const currentEmpty = both.search("missing");
+  pending[5].resolve([]);
+  assert.deepEqual(tracker.resolve({ data: await currentEmpty, isLoading: false }), { results: [], state: "empty" });
+});
+
+test("public static client applies version tags before ranking and supports both versions", async () => {
+  const { createSearchAPI } = await import("fumadocs-core/search/server");
+  const { oramaStaticClient } = await import("fumadocs-core/search/client/orama-static");
+  const { normalizeSearchResults } = await import("../lib/search-results.ts");
+  const indexes = [
+    { id: "s5", title: "Fetcher", url: "/docs/concepts/store5/fetcher", tag: "store5", structuredData: { headings: [], contents: [] } },
+    { id: "s6", title: "Fetchers", url: "/docs/store6/guides/fetchers", tag: "store6", structuredData: { headings: [], contents: [] } },
+    { id: "fresh", title: "Freshness policies", url: "/docs/store6/concepts/freshness", tag: "store6", structuredData: { headings: [], contents: [] } },
+    { id: "quick", title: "Quickstart", url: "/docs/store6/quickstart", tag: "store6", structuredData: { headings: [], contents: [{ content: "Freshness freshness freshness", heading: "output" }] } },
+  ];
+  const api = createSearchAPI("advanced", { indexes });
+  const response = await api.staticGET();
+  const artifact = await response.text();
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(artifact, { headers: { "content-type": "application/json" } });
+  try {
+    const from = "/fixture-search-scope";
+    const both = oramaStaticClient({ from });
+    const results = normalizeSearchResults(await both.search("fetcher"), "fetcher");
+    assert.deepEqual(new Set(results.map((item) => item.version)), new Set(["store5", "store6"]));
+    for (const version of ["store5", "store6"]) {
+      const scoped = oramaStaticClient({ from, tag: version });
+      const rows = normalizeSearchResults(await scoped.search("fetcher"), "fetcher");
+      assert.ok(rows.length > 0);
+      assert.ok(rows.every((row) => row.version === version));
+    }
+    const scoped = oramaStaticClient({ from, tag: "store6" });
+    assert.equal(normalizeSearchResults(await scoped.search("freshness"), "freshness")[0].url, "/docs/store6/concepts/freshness");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

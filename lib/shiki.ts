@@ -11,19 +11,23 @@ export const storeCodeTheme = {
   tokenColors: [
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: "var(--color-store-origin-memory-on-dark)" },
+      settings: { foreground: "var(--color-store-code-comment)" },
     },
     {
       scope: ["string", "constant.other.symbol"],
-      settings: { foreground: "var(--color-store-origin-sot-on-dark)" },
+      settings: { foreground: "var(--color-store-code-string)" },
     },
     {
       scope: ["entity.name.function", "support.function", "variable.function"],
-      settings: { foreground: "var(--color-store-origin-fetcher-on-dark)" },
+      settings: { foreground: "var(--color-store-code-function)" },
+    },
+    {
+      scope: ["entity.name.type", "entity.name.class", "support.type", "support.class"],
+      settings: { foreground: "var(--color-store-code-type)" },
     },
     {
       scope: ["keyword", "storage.type", "storage.modifier"],
-      settings: { foreground: "var(--color-store-origin-overlay-on-dark)" },
+      settings: { foreground: "var(--color-store-code-keyword)" },
     },
   ],
 };

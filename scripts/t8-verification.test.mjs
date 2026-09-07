@@ -202,6 +202,19 @@ test("route derivation rejects an orphan content documentation route", async () 
   });
 });
 
+test("only the named internal component fixture is excluded from the public page census", async () => {
+  await withFixture(async (root) => {
+    writeContractFixture(root);
+    const target = join(root, "app/design-review/components/page.tsx");
+    mkdirSync(dirname(target), { recursive: true });
+    writeFileSync(target, 'export default function Page() { return null; }');
+    const contract = await deriveRouteContract({ root });
+    assert.ok(!contract.pageRoutes.includes("/design-review/components"));
+    writeFileSync(join(root, "app/design-review/components/page.jsx"), 'export default function Extra() { return null; }');
+    await assert.rejects(deriveRouteContract({ root }), /application page entrypoints differ/);
+  });
+});
+
 test("route derivation rejects unexpected application page entrypoints for every configured extension", async () => {
   for (const extension of ["mdx", "md", "jsx", "js", "tsx", "ts"]) {
     await withFixture(async (root) => {

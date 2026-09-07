@@ -2,12 +2,9 @@
 title: "Quickstart"
 ---
 
-> Store 6 is in development and **nothing is published yet**. This page is the shape of the API as
-> it stands on `main`; the install coordinates land with 6.0.0-alpha01.
-
 Store needs two things from you: a **key** that identifies what you want, and a **fetcher** that
-knows how to go get it. Everything else — sharing one in-flight request across concurrent callers,
-serving what is already resident, tracking staleness, bounding memory — is what Store does with
+knows how to go get it. Everything else, including sharing one in-flight request across concurrent callers,
+serving what is already resident, tracking staleness, and bounding memory, is what Store does with
 those two things.
 
 Here is the whole idea in five lines.
@@ -32,7 +29,7 @@ module, executed by the `./gradlew :store6-quickstart:run` step in
 [`.github/workflows/store6.yml`](https://github.com/matt-ramotar/Store6/blob/main/.github/workflows/store6.yml). If it broke, this page
 would not be shipping.
 
-Supporting declarations — the key, the model, and a stand-in service:
+Supporting declarations (the key, the model, and a stand-in service):
 
 ```kotlin
 package org.mobilenativefoundation.store6.quickstart
@@ -108,17 +105,17 @@ public fun main(): Unit =
 `stream` gives you a `StoreResult`, and there are exactly four kinds. Handle all four and there is
 no fifth case waiting to surprise you:
 
-- **`Loading`** — demand has been registered and no value is available yet.
-- **`Data`** — a value, carrying an `origin` that tells you where it came from (`FETCHER`, `SOT`,
+- **`Loading`**: demand has been registered and no value is available yet.
+- **`Data`**: a value carrying an `origin` that tells you where it came from (`FETCHER`, `SOT`,
   `MEMORY`, `OVERLAY`) and whether it is stale or refreshing. The example prints the origin because
   attribution honesty is a contract, not a debugging aid.
-- **`Revalidated`** — the server said nothing changed. You get one of these with the resident value's
+- **`Revalidated`**: the server said nothing changed. You get one of these with the resident value's
   age, rather than a redundant `Data` frame.
-- **`Error`** — the fetch failed. If a stale value was resident, you will have been served it first.
+- **`Error`**: the fetch failed. If a stale value was resident, you will have been served it first.
 
 One detail worth naming so it does not read as magic: **`take(2)` is what ends this program.**
 `stream` is an unbounded flow that stays live for as long as you collect it. The example takes the
-first two frames — `Loading`, then `Data` — and stops. In an app you collect for the lifetime of the
+first two frames (`Loading`, then `Data`) and stops. In an app you collect for the lifetime of the
 screen instead, and `close()` the store when you are done with it.
 
 Continue with [the read contract](/docs/store6/concepts/read-contract) for result and failure
@@ -127,14 +124,18 @@ uses resident and fetched data.
 
 ## Write path (experimental)
 
-> **Experimental.** `store6-mutations` is a separate artifact and every public symbol is
-> `@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01 — nothing here is published yet.
->
-> **The spelling below is the current API surface.** The module is still experimental — shapes
-> can change in any release — but the snippet below matches the implementation.
+<Callout type="Warning">
+
+**Experimental.** `store6-mutations` is a separate artifact and every public symbol is
+`@ExperimentalStoreApi`. It ships **with** 6.0.0-alpha01. Nothing here is published yet.
+
+**The spelling below is the current API surface.** The module is still experimental, so shapes
+can change in any release. The snippet below matches the implementation.
+
+</Callout>
 
 Optimistic writes go through a journal, so they survive being offline and survive process death.
-You get a mutation store instead of a plain one, and it is a `Store` — everything above still works.
+You get a mutation store instead of a plain one, and it is a `Store`. Everything above still works.
 
 ```kotlin
 @OptIn(ExperimentalStoreApi::class)   // required: the whole module is experimental

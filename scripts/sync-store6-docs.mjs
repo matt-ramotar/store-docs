@@ -7,6 +7,7 @@ import { dirname, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { reconcileOwnedOutputs, verifyOwnedOutputs } from "./generated-output-transaction.mjs";
+import proseEdits from "./store6-prose-edits.json" with { type: "json" };
 
 const execFile = promisify(execFileCallback);
 const ROOT = resolve(import.meta.dirname, "..");
@@ -147,7 +148,10 @@ export function writeStore6OutputTransaction(outputs, options = {}) {
 export function transformMarkdownSource(source, sourcePath, sourceRootValue, routes) {
   const normalized = source.replace(/\r\n/g, "\n");
   const sourceRelative = relative(sourceRootValue, sourcePath).split(sep).join("/");
-  const publicationSafe = applyLockedPublicationTransforms(normalized, sourceRelative);
+  const publicationSafe = applyPublishedProseEdits(
+    applyLockedPublicationTransforms(normalized, sourceRelative),
+    sourceRelative,
+  );
   const h1 = publicationSafe.match(/^#\s+([^\n]+)\n+/);
   if (!h1) throw new Error(`${sourceRelative}: expected one leading H1`);
 
@@ -173,6 +177,18 @@ export function rewriteMarkdownLinks(source, sourcePath, sourceRootValue, routes
     const destination = titleSuffix ? target.slice(0, -titleSuffix.length) : target;
     return `${prefix}${rewriteRepoUrl(destination, sourcePath, sourceRootValue, routes)}${titleSuffix}${suffix}`;
   });
+}
+
+// Editorial changes belong to the publisher. Exact spans make source drift fail
+// before generated files are written and keep code and source evidence intact.
+export function applyPublishedProseEdits(source, sourceRelative) {
+  for (const { before, after } of proseEdits[sourceRelative] ?? []) {
+    if (!before || source.split(before).length - 1 !== 1) {
+      throw new Error(`${sourceRelative}: prose edit boundary drift`);
+    }
+    source = source.replace(before, () => after);
+  }
+  return source;
 }
 
 export function rewriteRepoUrl(rawTarget, sourcePath, sourceRootValue, routes) {

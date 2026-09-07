@@ -46,7 +46,7 @@ export function StepItem({ children, isLast = false, label, title }: StepItemPro
   );
 
   return (
-    <li className="list-none" data-step-item="" data-step-label={label} role="listitem">
+    <li className="list-none" data-step-item="" data-step-label={label} role="presentation">
       <div className="sr-only" data-step-title="">
         <span aria-hidden="true">{label}.</span>
         <strong>{title}</strong>

@@ -226,13 +226,12 @@ export const gitHubRepo = {
 };
 
 export type VersionSwitcherItem = VersionNavItem & {
-  badge: "Latest" | "Legacy";
   name: string;
 };
 
 export const versionSwitcherItems: VersionSwitcherItem[] = [
-  { ...getDocsVersionEntry("store6"), badge: "Latest", name: "Store 6" },
-  { ...getDocsVersionEntry("store5"), badge: "Legacy", name: "Store 5" },
+  { ...getDocsVersionEntry("store6"), name: "Store 6" },
+  { ...getDocsVersionEntry("store5"), name: "Store 5" },
 ];
 
 export function getVersionSwitcherItem(id: DocsVersion): VersionSwitcherItem {

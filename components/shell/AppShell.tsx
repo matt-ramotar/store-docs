@@ -24,20 +24,21 @@ export function AppShell({ children, currentPath, pageTree, toc }: AppShellProps
   const tree = getVersionTrees(pageTree)[version];
 
   return (
-    <div className="bg-background text-foreground min-h-dvh">
+    <div className="store-docs bg-background text-foreground min-h-dvh">
+      <a className="skip-to-content" href="#main-content">Skip to content</a>
       {version === "store6" && <Store6Banner />}
       <TopNav currentPath={currentPath} tree={tree} version={version} />
       <div className="flex w-full">
         <aside aria-label="Documentation sidebar" className={`${railClass} w-64 px-3 py-6 lg:block`}>
           <SideTree currentPath={currentPath} tree={tree} />
         </aside>
-        <main className="min-w-0 flex-1">
-          <div className="mx-auto w-full max-w-4xl px-6 py-10 lg:px-10 lg:py-12">
+        <main id="main-content" tabIndex={-1} className="min-w-0 flex-1">
+          <div className="mx-auto w-full max-w-4xl px-6 py-10 max-xl:pr-16 lg:px-10 lg:py-12">
             {children}
           </div>
         </main>
         <div className={`${railClass} w-72 xl:block`}>
-          <RightRail items={toc} version={version} />
+          <RightRail items={toc} />
         </div>
       </div>
     </div>

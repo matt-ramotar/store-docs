@@ -3,9 +3,8 @@ title: "Aliases and canonical rekeying"
 ---
 
 An optimistic create starts under a provisional, client-generated identity. A successful server
-acknowledgement can name the entity's canonical identity; the mutation store then routes operations
-on the provisional key to that canonical target once the redirect activates. This page describes
-what the app observes while that redirect becomes durable and live.
+acknowledgement can name the entity's canonical identity. Once the redirect activates, the mutation
+store routes operations on the provisional key to that canonical target.
 
 <Callout type="Note">
 
@@ -25,8 +24,8 @@ A confirmed deletion cannot rekey by construction: `MutationAbsentAck` has no ca
 property, and a durable acknowledgement record rejects a canonical target unless the authoritative
 outcome is present.
 
-The create registration, enqueue, and acknowledgement fit together like this. The app types and
-codecs are abbreviated, but the Store signatures are complete:
+This example shows create registration, enqueue, and acknowledgement. The app types and codecs are
+abbreviated, but the Store signatures are complete:
 
 {/* snippet: mutations-alias-provisional-create */}
 ```kotlin
@@ -244,8 +243,8 @@ in the same journal transaction as its acknowledgement receipt. The tombstone ac
 retirement. Its three possible states are `PENDING`, `ACTIVE`, and `SUPERSEDED`.
 
 During restart replay, Store excludes entries at or below the highest `ACTIVE` tombstone sequence
-created by the same client for the terminal identity. In practical terms, intents journalled before
-a confirmed deletion do not push again after restart.
+created by the same client for the terminal identity. Intents journalled before a confirmed deletion
+do not push again after restart.
 
 Delete-then-recreate remains possible. When a later intent for the same identity retires, its
 retirement transaction supersedes the active tombstone; a `SUPERSEDED` tombstone no longer bounds

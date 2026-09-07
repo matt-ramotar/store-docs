@@ -1,0 +1,50 @@
+# Layout compatibility examples
+
+<CardGroup cols={2}>
+  <Card href="/docs/store6/overview" icon="database" title="Store overview">
+    Follow a same-origin documentation route.
+  </Card>
+  <Card href="//example.com/reference" title="External reference">
+    Protocol-relative links preserve external target semantics.
+  </Card>
+</CardGroup>
+
+<Columns cols={3}>
+  <Panel aria-label="Responsive contents">Visible below the xl breakpoint.</Panel>
+  <Tile href="#layout-colors" title="Color tokens" description="Jump to the swatches">
+    <span>Token preview</span>
+  </Tile>
+  <Frame title="Store trace" description="Wide media scrolls within this frame.">
+    <img alt="Store trace" height="240" src="/store-logo.png" width="640" />
+  </Frame>
+</Columns>
+
+<Update id="layout-release" label="September 2026" tags={["fixture", "layout"]}>
+  Layout adapters use the shared Tidal semantic tokens.
+</Update>
+
+<View
+  items={[
+    { title: "Kotlin", content: "kotlin", active: true },
+    { title: "Swift", content: "swift", active: false },
+  ]}
+  title="Kotlin"
+>
+  The explicit registry marks this view active after client mount.
+</View>
+
+<h2 id="layout-colors">Color fixtures</h2>
+
+<Color variant="compact">
+  <ColorItem name="Accent" value="#13766D" />
+  <Color.Item name="Memory origin" value={{ light: "#6D28D9", dark: "#C4A7FF" }} />
+</Color>
+
+<Color variant="table">
+  <ColorRow title="Core">
+    <ColorItem name="Ink" value="#172C2A" />
+    <ColorItem name="Paper" value="#F7F6F0" />
+  </ColorRow>
+</Color>
+
+<Icon icon="database" iconLibrary="lucide" color="#13766D" size={24} />

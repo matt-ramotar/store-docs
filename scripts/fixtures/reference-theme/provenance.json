@@ -1,0 +1,29 @@
+{
+  "sourceRepository": "https://github.com/matt-ramotar/Store6",
+  "sourceBaseRevision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+  "sourceState": "uncommitted supported Dokka customization proposal; not source approval or public integration",
+  "dokkaVersion": "2.2.0",
+  "capturedAt": "2026-09-06",
+  "resources": [
+    {
+      "fixture": "store-reference.css",
+      "source": "tooling/plugins/src/main/resources/dokka/store-reference.css",
+      "generatedPath": "styles/store-reference.css",
+      "sha256": "4ef8bbdd7f9e10add671f7e625c3e615c9e802d32b338699b1edf2d5484e2d9a"
+    },
+    {
+      "fixture": "logo-icon.svg",
+      "source": "tooling/plugins/src/main/resources/dokka/logo-icon.svg",
+      "generatedPath": "images/logo-icon.svg",
+      "sha256": "db0f47312813ca7786d5e05b63035495b654dfd3275ed95b28c40d9fd4f481c6"
+    }
+  ],
+  "workflowProposalFixture": {
+    "fixture": "drift-reference-integration.patch",
+    "target": ".github/workflows/drift.yml",
+    "targetBaseSha256": "0d68c2e25cb951c06f29105e460bf7240794a8523350ae2cce0b72537b701b9e",
+    "sha256": "005c51611cb21384da537dc8b79614700e0e1dc06dc330662f49d5a375530a46",
+    "status": "proposal-only fixture; actual workflow remains unchanged pending source authority",
+    "purpose": "Tests the proposed workflow in an isolated temporary directory without depending on transient evidence artifacts"
+  }
+}

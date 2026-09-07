@@ -3,11 +3,11 @@ title: "API tiers and opt-in annotations"
 description: "What @ExperimentalStoreApi, @DelicateStoreApi, and @InternalStoreApi mean, and where the stability tiers actually live."
 ---
 
-You are probably here because the compiler just refused an API and named an annotation. That is
-the system working as designed. Store 6 marks every API that carries less than the full stable
+When the compiler refuses an API and names an annotation, it is enforcing the stability tiers.
+Store 6 marks every API that carries less than the full stable
 guarantee with one of three opt-in markers, and all three are declared at
 `RequiresOptIn.Level.ERROR`. Using a marked API without opting in is a compile error, not a
-warning. Nothing in Store is usable by accident.
+warning.
 
 The markers are real annotations in `store6-core`, in the
 `org.mobilenativefoundation.store6.core` package, and each one's meaning is carried in its own
@@ -97,9 +97,9 @@ When a capability needs its own release rhythm, it gets its own artifact, and th
 the artifact you depend on rather than buried in an annotation on a member you have already built
 against.
 
-That placement is what scopes the compatibility promise. **SemVer applies to the stable tier.** A
+The artifact placement scopes the compatibility promise. **SemVer applies to the stable tier.** A
 breaking change to an `@ExperimentalStoreApi` surface in a minor release is not a SemVer
-violation, because that surface never claimed the guarantee. The tier is stated on the tin.
+violation, because that surface never claimed the guarantee.
 
 As of 6.0.0-alpha01 the split is:
 
@@ -132,7 +132,7 @@ freezes on schedule. The freeze timeline lives on the [roadmap](/docs/store6/roa
 
 CI enforces the 13-file list on every pull request, so the seam cannot grow quietly.
 
-One exception is worth naming: `FetcherResult` is the one seam type that carries no experimental
+`FetcherResult` is the one seam type that carries no experimental
 marker. The stable `fetcherOfResult` builder member takes a lambda returning `FetcherResult<V>`,
 and a stable signature cannot require an experimental type, so `FetcherResult` is the one seam
 type reachable without any opt-in.

@@ -1,9 +1,30 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { applyLockedPublicationTransforms } from "./sync-store6-docs.mjs";
+import { applyLockedPublicationTransforms, applyPublishedProseEdits } from "./sync-store6-docs.mjs";
 
 const exactText = (...parts) => parts.join("");
+
+test("publication punctuation edits preserve code, links, and unrelated source text", () => {
+  const boundary = "The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](../STABILITY.md).";
+  const code = "```kotlin\n// Preserve source punctuation — including this comment.\nval key = UserKey(\"1\")\n```";
+  const source = `# SQLDelight\n\n${boundary}\n\n${code}\n`;
+  assert.equal(
+    applyPublishedProseEdits(source, "store6-sqldelight/README.md"),
+    `# SQLDelight\n\nThe Store6 seam is a **freeze candidate, not frozen**. See [STABILITY.md](../STABILITY.md).\n\n${code}\n`,
+  );
+  assert.equal(applyPublishedProseEdits(source, "unrelated.md"), source);
+});
+
+test("publication punctuation edits fail when a source boundary changes or repeats", () => {
+  const boundary = "The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](../STABILITY.md).";
+  for (const source of [boundary.replace("candidate", "contract"), `${boundary}\n${boundary}`]) {
+    assert.throws(
+      () => applyPublishedProseEdits(source, "store6-sqldelight/README.md"),
+      /store6-sqldelight\/README\.md: prose edit boundary drift/,
+    );
+  }
+});
 
 test("quickstart publication transform publishes the mutations block as a Warning callout", () => {
   const experimentalPrefix = [

@@ -29,7 +29,7 @@ globalThis.fetch = async (input) => {
 try {
   const client = oramaStaticClient({ from: "/api/search" });
   const rawResults = await client.search("fetcher");
-  const normalizedResults = normalizeSearchResults(rawResults);
+  const normalizedResults = normalizeSearchResults(rawResults, "fetcher");
   const rawLabelDiagnostics = rawResults.flatMap((result) =>
     [result.content, ...(result.breadcrumbs ?? [])].map((rawLabel) => ({
       rawLabel,
@@ -39,7 +39,23 @@ try {
   const hasStore6 = normalizedResults.some((result) => result.version === "store6");
   const hasStore5 = normalizedResults.some((result) => result.version === "store5");
 
-  assert.equal(rawResults.length, 60, "the built fetcher query result count changed");
+  for (const destination of ["/docs/concepts/store5/fetcher", "/docs/store6/guides/fetchers"]) {
+    assert.ok(normalizedResults.some((result) => result.url === destination), `fetcher must include ${destination}`);
+  }
+  const store6Client = oramaStaticClient({ from: "/api/search", tag: "store6" });
+  const freshness = normalizeSearchResults(await store6Client.search("freshness"), "freshness");
+  assert.equal(freshness[0]?.url, "/docs/store6/concepts/freshness", "canonical Freshness policies must rank first");
+  assert.ok(freshness.every((result) => result.version === "store6"), "Store 6 scope must exclude Store 5");
+  for (const version of ["store5", "store6"]) {
+    const scopedClient = oramaStaticClient({ from: "/api/search", tag: version });
+    const results = normalizeSearchResults(await scopedClient.search("fetcher"), "fetcher");
+    assert.ok(results.length > 0, `${version} fetcher results must exist`);
+    assert.ok(results.every((result) => result.version === version), `${version} scope leaked another version`);
+  }
+  for (const result of normalizedResults.filter((item) => item.type !== "page")) {
+    assert.ok(result.pageTitle, `fragment missing parent page title: ${result.url}`);
+    assert.ok(result.pageUrl.startsWith("/docs/"));
+  }
   assert.ok(normalizedResults.length > 0, "the built fetcher query must normalize results");
   assert.equal(
     new Set(normalizedResults.map((result) => result.url)).size,
@@ -98,6 +114,8 @@ try {
     store5: hasStore5,
     store6: hasStore6,
     markdownPlainText: true,
+    freshnessFirst: freshness[0].url,
+    versionScopes: true,
     closedTriggerHasControls: false,
   };
   process.stdout.write(

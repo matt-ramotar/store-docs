@@ -5,24 +5,38 @@ import { Command } from "@heroui-pro/react";
 import { Icon } from "@iconify/react";
 import { useDocsSearch } from "fumadocs-core/search/client";
 import { oramaStaticClient } from "fumadocs-core/search/client/orama-static";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import type { DocsVersion } from "@/lib/nav";
 import {
   createTrackedSearchClient,
   getSearchTriggerAria,
   SearchResultTracker,
   type SearchView,
+  type SearchScope,
 } from "@/lib/search-results";
 
 const SEARCH_DIALOG_ID = "documentation-command-search";
-const localSearchClient = oramaStaticClient({ from: "/api/search" });
 
-export function CommandSearch() {
+export function CommandSearch({ version }: { version: DocsVersion }) {
+  const [selection, setSelection] = useState<{ version: DocsVersion; scope: SearchScope }>({
+    version,
+    scope: version,
+  });
+  const scope = selection.version === version ? selection.scope : version;
+  if (selection.version !== version) setSelection({ version, scope: version });
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [resultTracker] = useState(() => new SearchResultTracker());
+  resultTracker.updateScope(scope);
   const trackedSearchClient = useMemo(
-    () => createTrackedSearchClient(localSearchClient, resultTracker),
-    [resultTracker],
+    () =>
+      createTrackedSearchClient(
+        oramaStaticClient({ from: "/api/search", tag: scope === "both" ? undefined : scope }),
+        resultTracker,
+        scope,
+      ),
+    [resultTracker, scope],
   );
   const { search, setSearch, query } = useDocsSearch({
     client: trackedSearchClient,
@@ -40,12 +54,16 @@ export function CommandSearch() {
   const setOpen = useCallback(
     (nextOpen: boolean) => {
       setIsOpen(nextOpen);
-      if (!nextOpen) updateSearch("");
+      if (!nextOpen) {
+        updateSearch("");
+        requestAnimationFrame(() => triggerRef.current?.focus());
+      }
     },
     [updateSearch],
   );
   const exposeKeyboardShortcut = useCallback((node: HTMLButtonElement | null) => {
     // Installed Button source omits this global ARIA attribute from its forwarded props.
+    triggerRef.current = node;
     node?.setAttribute("aria-keyshortcuts", "Meta+K Control+K");
   }, []);
 
@@ -87,15 +105,14 @@ export function CommandSearch() {
         {...getSearchTriggerAria(isOpen, SEARCH_DIALOG_ID)}
         aria-keyshortcuts="Meta+K Control+K"
         aria-label="Search documentation"
-        className="text-muted w-full justify-start gap-2 font-normal"
-        fullWidth
+        className="text-muted size-11 min-w-11 justify-center gap-2 font-normal sm:h-11 sm:w-full sm:justify-start"
         onPress={() => setOpen(true)}
         ref={exposeKeyboardShortcut}
         variant="outline"
       >
         <Icon aria-hidden className="size-4 shrink-0" icon="gravity-ui:magnifier" />
         <span className="hidden flex-1 text-start sm:inline">Search...</span>
-        <Kbd className="text-xs">
+        <Kbd className="hidden text-xs sm:inline-flex">
           <Kbd.Abbr keyValue="command" />
           <Kbd.Content>K</Kbd.Content>
         </Kbd>
@@ -114,15 +131,44 @@ export function CommandSearch() {
               <Command.InputGroup autoFocus>
                 <Command.InputGroup.Input
                   aria-label="Search Store documentation"
-                  placeholder="Search Store 5 and Store 6 documentation"
+                  onKeyDown={(event) => {
+                    if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); setOpen(false); }
+                  }}
+                  placeholder={
+                    scope === "both"
+                      ? "Search both documentation versions"
+                      : `Search Store ${scope === "store6" ? "6" : "5"} documentation`
+                  }
                 />
-                <Command.InputGroup.ClearButton aria-label="Clear search" />
+                <Command.InputGroup.ClearButton
+                  aria-label="Clear search"
+                  onPress={() => updateSearch("")}
+                />
                 <Command.InputGroup.Suffix>
                   <Kbd className="text-xs">
                     <Kbd.Content>Esc</Kbd.Content>
                   </Kbd>
                 </Command.InputGroup.Suffix>
               </Command.InputGroup>
+
+              <div className="flex items-center gap-3 border-b border-default px-3 py-2 text-sm">
+                <label htmlFor="documentation-search-scope">Search in</label>
+                <select
+                  className="min-h-11 rounded-lg border border-default bg-surface px-3 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  id="documentation-search-scope"
+                  onKeyDown={(event) => event.stopPropagation()}
+                  onChange={(event) => {
+                    const nextScope = event.target.value as SearchScope;
+                    resultTracker.updateScope(nextScope);
+                    setSelection({ version, scope: nextScope });
+                  }}
+                  value={scope}
+                >
+                  <option value="store6">Store 6</option>
+                  <option value="store5">Store 5</option>
+                  <option value="both">Both versions</option>
+                </select>
+              </div>
 
               <SearchStatus message={status} state={searchView.state} />
 
@@ -133,16 +179,21 @@ export function CommandSearch() {
                       <Command.Item
                         id={result.id}
                         key={result.id}
-                        textValue={`${result.title} ${result.context} ${result.version}`}
+                        textValue={`${result.pageTitle} ${result.sectionTitle} ${result.title} ${result.context} ${result.version}`}
                       >
                         <span className="min-w-0 flex-1">
                           <span className="block truncate font-medium">{result.title}</span>
-                          {result.context ? (
+                          {result.pageTitle || result.context ? (
                             <span className="text-muted block truncate text-xs">
-                              {result.context}
+                              {[
+                                result.context,
+                                result.type !== "page" ? result.pageTitle : "",
+                                result.type === "text" ? result.sectionTitle : "",
+                              ].filter(Boolean).join(" / ")}
                             </span>
                           ) : null}
                         </span>
+                        <span className="text-muted text-xs">{result.type === "page" ? "Page" : result.type === "heading" ? "Section" : "Text"}</span>
                         <Chip size="sm" variant="soft">
                           <Chip.Label>{result.version}</Chip.Label>
                         </Chip>
@@ -153,7 +204,7 @@ export function CommandSearch() {
               </Command.List>
 
               <Command.Footer className="text-muted justify-between text-xs">
-                <span>Store 5 and Store 6</span>
+                <span>{scope === "both" ? "Both versions" : scope === "store6" ? "Store 6" : "Store 5"}</span>
                 <span>Enter to open</span>
               </Command.Footer>
             </Command.Dialog>
@@ -183,7 +234,7 @@ function getSearchStatus(
 ): string {
   switch (state) {
     case "idle":
-      return "Type a term to search both documentation trees.";
+      return "Type a term to search the selected documentation.";
     case "pending":
       return "Searching documentation…";
     case "error":

@@ -21,7 +21,7 @@ The patterns below come from `store6-extension-probe`, an unpublished module in 
 repository. It verifies that public Store API plus the seam package are sufficient to build these
 extension shapes without engine access.
 
-Treat the module as reference source. It is not a dependency, has no published coordinates, and
+Use the module as a reference source. It is not a dependency, has no published coordinates, and
 is not a reusable extension library. Copy the relevant pattern into your own extension and keep
 your public surface narrower than the engine capabilities it consumes.
 
@@ -65,7 +65,7 @@ reads and maintenance but leaves `runtime()` null so its raw write handle stays 
 
 ## Seam-only telemetry
 
-`MetricsTelemetry` proves that lifecycle metrics do not require an engine subclass or downcast. It
+`MetricsTelemetry` shows that lifecycle metrics do not require an engine subclass or downcast. It
 implements only `StoreTelemetry` and counts fetch starts, fetch successes, fetch failures, serves,
 invalidations, and clears.
 

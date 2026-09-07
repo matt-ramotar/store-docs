@@ -1,0 +1,160 @@
+/* Store 6 colors for Dokka's stock HTML renderer. */
+:root {
+    --default-gray: #e3f0e9;
+    --default-font-color: #172c2a;
+    --header-font-color: #172c2a;
+    --hover-link-color: #136d65;
+    --color-scrollbar: #596a65;
+    --color-scrollbar-track: #f7f6f0;
+    --default-white: #f7f6f0;
+    --background-color: #f7f6f0;
+    --color-dark: #172c2a;
+    --blockquote-background: #e3f0e9;
+    --border-color: rgba(23, 44, 42, 0.2);
+    --navigation-highlight-color: rgba(155, 214, 208, 0.12);
+    --active-tab-border-color: #13766d;
+    --inactive-tab-border-color: #596a65;
+    --active-section-color: #13766d;
+    --inactive-section-color: #596a65;
+    --sidemenu-section-active-color: #e3f0e9;
+
+    --color-key-blue: #13766d;
+    --color-key-blue-hover: #136d65;
+    --color-key-blue-50: rgba(19, 118, 109, 0.42);
+    --color-background-nav: #172c2a;
+    --color-background-nav-dt: #172c2a;
+    --color-background-page: #f7f6f0;
+    --color-background-page-dt: #172624;
+    --color-background-footer: #e3f0e9;
+    --color-background-footer-dt: #1f3431;
+    --color-text: #172c2a;
+    --color-text-dt: #dde9e5;
+    --color-text-light: #596a65;
+    --color-text-light-dt: #a8b7b0;
+    --color-background-inline-code: #e3f0e9;
+    --color-background-code-block: #e3f0e9;
+    --color-cd-punctuation: #596a65;
+    --color-cd-keyword: #13766d;
+    --color-cd-builtin: #23683f;
+    --color-cd-function: #13766d;
+    --color-cd-operator: #80520c;
+    --color-cd-number: #a43e40;
+    --color-cd-keyword-alternative: #cbb9f5;
+    --color-cd-builtin-alternative: #d8c39a;
+    --color-cd-function-alternative: #9bd6d0;
+    --color-cd-operator-alternative: #dde9e5;
+    --color-cd-number-alternative: #9bd6d0;
+    --color-background: #f7f6f0;
+    --color-background-hover: rgba(23, 44, 42, 0.08);
+    --text-color: #172c2a;
+    --text-outline: rgba(23, 44, 42, 0.25);
+    --focus-outline: 3px solid #13766d;
+}
+
+html.theme-dark {
+    --default-gray: #1f3431;
+    --default-font-color: #dde9e5;
+    --header-font-color: #dde9e5;
+    --background-color: #172624;
+    --color-dark: #dde9e5;
+    --border-color: rgba(221, 233, 229, 0.2);
+    --blockquote-background: rgba(221, 233, 229, 0.08);
+    --active-tab-border-color: #9bd6d0;
+    --inactive-tab-border-color: #a8b7b0;
+    --active-section-color: #9bd6d0;
+    --inactive-section-color: #a8b7b0;
+    --sidemenu-section-active-color: #9bd6d0;
+    --color-background: #172624;
+    --color-background-hover: rgba(221, 233, 229, 0.1);
+    --color-background-inline-code: rgba(221, 233, 229, 0.1);
+    --color-background-code-block: rgba(221, 233, 229, 0.07);
+    --text-color: #dde9e5;
+    --text-outline: rgba(221, 233, 229, 0.24);
+    --focus-outline: 3px solid #9bd6d0;
+}
+
+.navigation.theme-dark {
+    --focus-outline: 3px solid #9bd6d0;
+}
+
+#homepage-link {
+    width: auto;
+    gap: 8px;
+    padding: 0 12px 0 38px;
+    background-position: 10px 50%;
+    color: #dde9e5;
+    font: 600 14px/20px var(--font-family-default);
+    text-decoration: none;
+}
+
+.sidebar {
+    background-color: #fbfbf8;
+}
+
+html.theme-dark .sidebar {
+    background-color: #172624;
+}
+
+.main-content a:not([data-name]),
+.main-content a:not([data-name]):active,
+.main-content a:not([data-name]):focus,
+.main-content a:not([data-name]):hover {
+    color: #13766d;
+}
+
+html.theme-dark .main-content a:not([data-name]),
+html.theme-dark .main-content a:not([data-name]):active,
+html.theme-dark .main-content a:not([data-name]):focus,
+html.theme-dark .main-content a:not([data-name]):hover {
+    color: #9bd6d0;
+}
+
+.main-content a:not([data-name]):focus-visible,
+.navigation-controls--btn:focus-visible,
+.library-name--link:focus-visible,
+.platform-tag:focus-visible,
+.button:focus-visible {
+    box-shadow: none;
+    outline: var(--focus-outline);
+    outline-offset: 3px;
+}
+
+.button:active,
+.toc--part[data-active] > .toc--row .toc--button,
+.toc--part[data-active] > .toc--row .toc--link {
+    color: #ffffff;
+}
+
+.popup-wrapper {
+    color: #dde9e5;
+    border-color: #596a65 !important;
+    background-color: #172624 !important;
+}
+
+.popup-wrapper [class^="filterWrapper"] {
+    border-bottom-color: #596a65;
+}
+
+.popup-wrapper input,
+.popup-wrapper span[data-test-custom="ring-select-popup-filter-icon"],
+.popup-wrapper button[data-test="ring-input-clear"],
+.template-title {
+    color: #dde9e5 !important;
+}
+
+.template-description {
+    color: #a8b7b0;
+}
+
+.template-wrapper strong {
+    color: #dde9e5;
+    background-color: rgba(19, 118, 109, 0.48);
+}
+
+.popup-wrapper [class*="hover"] {
+    background-color: rgba(155, 214, 208, 0.12) !important;
+}
+
+.popup-wrapper :focus-visible {
+    outline-color: #9bd6d0;
+}

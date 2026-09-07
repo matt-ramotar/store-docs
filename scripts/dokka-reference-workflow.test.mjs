@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -406,3 +406,66 @@ function runCli(checkout, eventName) {
     { encoding: "utf8" },
   );
 }
+
+
+test("proposal-only strict reference workflow requires source customization before generation and publication", () => {
+  const checkout = mkdtempSync(join(tmpdir(), "store-docs-reference-workflow-proposal-"));
+  try {
+    const workflowPath = join(checkout, ".github/workflows/drift.yml");
+    mkdirSync(join(checkout, ".github/workflows"), { recursive: true });
+    writeFileSync(workflowPath, readWorkflow());
+    const patch = resolve(ROOT, "scripts/fixtures/reference-theme/drift-reference-integration.patch");
+    const proposalApplied = readWorkflow().includes("run: node scripts/test-t6b-reference.mjs --theme tidal");
+    if (!proposalApplied) {
+      execFileSync("git", ["apply", "--check", patch], { cwd: checkout });
+      execFileSync("git", ["apply", patch], { cwd: checkout });
+    }
+    const parsed = JSON.parse(execFileSync("ruby", ["-e",
+      'require "yaml"; require "json"; puts JSON.generate(YAML.load_file(ARGV.fetch(0)).fetch("jobs"))',
+      workflowPath], { encoding: "utf8" }));
+    const steps = parsed["dokka-reference"].steps;
+    const sourceGuard = steps.find(step => step.name === "Require source-owned Store reference customization");
+    const generation = steps.find(step => step.name === "Generate Dokka reference");
+    const verification = steps.find(step => step.name === "Verify reference routes");
+    assert.equal(generation["working-directory"], "../Store6");
+    // These are the supported configured tasks used in the actual candidate generation log.
+    assert.deepEqual(generation.run.split(/\s+/),
+      ["./gradlew", ":store6-core:dokkaHtml", ":store6-mutations:dokkaHtml", "--stacktrace"]);
+    assert.equal(verification.run, "node scripts/test-t6b-reference.mjs --theme tidal");
+    assert.ok(steps.indexOf(sourceGuard) < steps.indexOf(generation));
+    assert.ok(steps.indexOf(generation) < steps.indexOf(verification));
+    assert.ok(steps.indexOf(verification) < steps.findIndex(step => step.name === "Prepare validated publication artifact"));
+    assert.equal(sourceGuard.if, generation.if);
+    assert.equal(verification.if, generation.if);
+    assert.deepEqual(parsed.publish.permissions, { contents: "write", "pull-requests": "write" });
+    const originalJobs = JSON.parse(execFileSync("ruby", ["-e",
+      'require "yaml"; require "json"; puts JSON.generate(YAML.load_file(ARGV.fetch(0)).fetch("jobs"))',
+      WORKFLOW_PATH], { encoding: "utf8" }));
+    assert.deepEqual(parsed.publish, originalJobs.publish);
+    const originalSteps = originalJobs["dokka-reference"].steps;
+    assert.deepEqual(steps.filter(step => step !== sourceGuard && step !== verification),
+      originalSteps.filter(step => step.name !== "Verify reference routes" &&
+        step.name !== "Require source-owned Store reference customization"));
+
+    const resources = ["store-reference.css", "logo-icon.svg", "templates/includes/header.ftl"];
+    const resourceRoot = join(checkout, "tooling/plugins/src/main/resources/dokka");
+    mkdirSync(join(resourceRoot, "templates/includes"), { recursive: true });
+    const runGuard = () => spawnSync("bash", ["-e", "-c", sourceGuard.run],
+      { cwd: checkout, encoding: "utf8" });
+    assert.notEqual(runGuard().status, 0, "unmodified source must not reach generation");
+    for (const resource of resources) writeFileSync(join(resourceRoot, resource), "source fixture");
+    assert.equal(runGuard().status, 0);
+    for (const missing of resources) {
+      rmSync(join(resourceRoot, missing));
+      const result = runGuard();
+      assert.notEqual(result.status, 0, missing);
+      assert.match(result.stdout, /selected Store6 revision lacks/);
+      writeFileSync(join(resourceRoot, missing), "source fixture");
+    }
+    // The current workflow remains legacy until this explicit proposal is authorized and applied.
+    assert.equal(originalSteps.find(step => step.name === "Verify reference routes").run,
+      "node scripts/test-t6b-reference.mjs" + (proposalApplied ? " --theme tidal" : ""));
+  } finally {
+    rmSync(checkout, { force: true, recursive: true });
+  }
+});

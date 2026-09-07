@@ -1,3 +1,5 @@
+"use client";
+
 import { Link, Typography } from "@heroui/react";
 
 export function HeroThesis() {
@@ -7,29 +9,34 @@ export function HeroThesis() {
         Store 6
       </Typography>
       <Typography.Heading
-        className="mt-5 max-w-[10ch] text-5xl leading-[0.98] font-semibold tracking-[-0.055em] text-foreground sm:text-6xl xl:text-7xl"
+        className="mt-5 max-w-[12ch] text-5xl leading-[0.98] font-semibold tracking-[-0.055em] text-foreground sm:text-6xl xl:text-7xl"
         id="hero-thesis"
         level={1}
       >
-        Offline is just another origin.
+        One read contract for every copy of your data.
       </Typography.Heading>
-      <Typography.Paragraph className="mt-7 max-w-lg text-lg leading-8 text-foreground-secondary">
-        Under the default freshness validator, <code>Freshness.CachedOrFetch</code> can keep an
-        invalidated persisted value visible while a refresh runs. Provenance and failure remain
-        explicit.
+      <Typography.Paragraph className="mt-5 max-w-lg text-base leading-7 text-foreground-secondary sm:mt-7 sm:text-lg sm:leading-8">
+        Store coordinates network, persistence, and memory behind typed Kotlin Multiplatform reads.
+        Start with a key and a fetcher, then add persistence and projections as needed.
       </Typography.Paragraph>
-      <div className="mt-8 flex flex-wrap gap-3">
+      <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
         <Link
           className="inline-flex w-fit rounded-xl bg-accent px-5 py-3 font-semibold text-accent-foreground no-underline hover:no-underline"
-          href="/docs/store6/overview"
-        >
-          Read the docs
-        </Link>
-        <Link
-          className="inline-flex w-fit rounded-xl border border-border bg-surface px-5 py-3 font-semibold text-foreground no-underline hover:no-underline"
           href="/docs/store6/quickstart"
         >
           Build your first store
+        </Link>
+        <Link
+          className="inline-flex w-fit rounded-xl border border-border bg-surface px-5 py-3 font-semibold text-foreground no-underline hover:no-underline"
+          href="/docs/store6/overview"
+        >
+          Explore Store 6
+        </Link>
+        <Link
+          className="inline-flex w-fit px-1 py-3 font-medium text-accent no-underline hover:no-underline"
+          href="/docs/store6/concepts/read-contract#failure-trace-invalidated-persisted-data"
+        >
+          Read the failure trace
         </Link>
       </div>
     </header>

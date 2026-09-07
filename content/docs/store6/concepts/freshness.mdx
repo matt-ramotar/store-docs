@@ -15,8 +15,8 @@ in-flight fetch even when their policies differ.
 
 ## The five policies
 
-`Freshness` is a sealed interface with exactly five variants. There is no sixth fetching mode
-hiding elsewhere in the API.
+`Freshness` is a sealed interface with exactly five variants. No sixth fetching mode exists in the
+API.
 
 ### `CachedOrFetch`: the default
 
@@ -31,7 +31,7 @@ Serve a locally available value only when it has known freshness metadata, has n
 invalidated, and its age does not exceed `notOlderThan`. Otherwise withhold it and fetch a fresh
 value.
 
-One pitfall worth naming: a row hydrated by an external writer with no recorded freshness
+A row hydrated by an external writer with no recorded freshness
 metadata is **withheld** under `MaxAge`. The read fetches rather than serving it. If you want a
 metadata-less row served while it refreshes, that is `CachedOrFetch`'s job.
 
@@ -108,7 +108,7 @@ one error frame, rather than a spinner. It is also why `invalidate` is the safe 
 pull-to-refresh. The resident value keeps rendering while the refetch runs. The full comparison
 is on [Invalidate or clear](/docs/store6/invalidate-vs-clear).
 
-What the refresh does *not* do is retry. Zero retries, zero backoff: one demand cycle invokes
+The refresh does *not* retry. Zero retries, zero backoff: one demand cycle invokes
 the fetcher exactly once, a failure schedules nothing in the background, and a later call is new
 demand rather than a continuation of the failed one. If you want retries, they belong in your
 fetcher, where you control the policy. How failures surface is covered on the

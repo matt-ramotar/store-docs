@@ -140,8 +140,7 @@ Intent-scoped events carry a `mutationId` and durable identity pair:
 | `MutationParked` | The intent durably parked and left the executable FIFO. |
 | `MutationRetired` | The intent retired and advanced the contiguous local high-water. |
 
-Checkpoint events are client-scoped and deliberately do not fabricate a mutation identity or
-generation:
+Checkpoint events are client-scoped and do not include a mutation identity or generation:
 
 | Event | Observation |
 |---|---|
@@ -174,7 +173,7 @@ documented projector case, fix the projector rather than treating the report as 
 ## KeyEvents
 
 `MutationStore.keyEvents` republishes the delegated core Store's writer-event flow. The mutations
-facade deliberately returns `null` from `runtime()`, but keeps this advisory flow available as a
+facade returns `null` from `runtime()`, while keeping this advisory flow available as a
 public member.
 
 `KeyEvents` is deliberately open rather than sealed. Its current variants are `Written`,

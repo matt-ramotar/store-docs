@@ -1,56 +1,64 @@
-@layer restore, mintlify;
+@layer restore, mintlify, theme, base, components, store-status, store-disclosure, store-layout, store-code, store-overlays, store-diagrams, utilities;
 @import "@mintlify/components/styles.css" layer(mintlify);
 @import "tailwindcss";
 @import "@heroui/styles";
 @import "@heroui-pro/react/css";
+@import "../components/docs/mintlify/status/styles.css" layer(store-status);
+@import "../components/docs/mintlify/disclosure/styles.css" layer(store-disclosure);
+@import "../components/docs/mintlify/layout/styles.css" layer(store-layout);
+@import "../components/docs/mintlify/code/styles.css" layer(store-code);
+@import "../components/docs/mintlify/overlays/styles.css" layer(store-overlays);
+@import "../components/docs/mintlify/diagrams/styles.css" layer(store-diagrams);
+
 
 /* STORE TOKENS START */
-:root {
-  --background: oklch(0.968077 0.007383 80.721); /* #F7F4EF */
-  --surface: oklch(1 0 0); /* #FFF */
-  --surface-secondary: oklch(0.947272 0.010288 81.795); /* #F1EDE6 */
-  --surface-tertiary: oklch(0.924125 0.013722 78.26); /* #EBE5DC */
-  --foreground: oklch(0.237353 0.015407 256.809); /* #1A1F26 */
-  --foreground-secondary: oklch(0.439662 0.02582 259.174); /* #4A5361 */
-  --muted: oklch(0.567323 0.026997 262.024); /* #6E7787 */
-  --separator: oklch(0.905886 0.013789 78.258); /* #E5DFD6 */
-  --border: oklch(0.86632 0.016844 79.343); /* #D9D2C7 */
-  --default: oklch(0.935713 0.011995 79.783); /* #EEE9E1 */
-  --default-foreground: oklch(0.338252 0.02382 258.364); /* #303844 */
-  --overlay: oklch(0.992258 0.006185 75.408); /* #FFFCF8 */
-  --segment: oklch(0.983539 0.009021 78.282); /* #FDF9F3 */
-  --scrollbar: oklch(0.761033 0.020919 77.276); /* #B9B0A3 */
-  --accent: oklch(0.55453 0.096901 181.915); /* #0D8577 */
-  --accent-strong: oklch(0.447135 0.076448 183.758); /* #0A6259 */
-  --accent-foreground: oklch(1 0 0); /* #FFF */
-  --success: oklch(0.527299 0.137103 150.069); /* #15803D */
-  --success-foreground: oklch(1 0 0); /* #FFF */
-  --warning: oklch(0.555283 0.145505 48.998); /* #B45309 */
-  --warning-foreground: oklch(1 0 0); /* #FFF */
-  --danger: oklch(0.506824 0.177871 11.7); /* #B3244A */
-  --danger-foreground: oklch(1 0 0); /* #FFF */
-  --link: var(--accent-strong); /* #0A6259 */
+/* HeroUI Theme Builder: lightness 0.508792, chroma 0.083779, hue 186.199157, base 0.0044. */
+:root, .store-docs {
+  /* Theme Colors (Light Mode) */
+  --accent: oklch(50.88% 0.0838 186.20);
+  --accent-foreground: oklch(99.11% 0 0);
+  --background: oklch(97.02% 0.0044 186.20);
+  --border: oklch(90.00% 0.0044 186.20);
+  --danger: oklch(65.32% 0.2348 17.62);
+  --danger-foreground: oklch(99.11% 0 0);
+  --default: oklch(94.00% 0.0044 186.20);
+  --default-foreground: oklch(21.03% 0.0059 186.20);
+  --field-background: oklch(100.00% 0.0022 186.20);
+  --field-border: transparent;
+  --field-foreground: oklch(21.03% 0.0044 186.20);
+  --field-placeholder: oklch(55.17% 0.0088 186.20);
+  --focus: oklch(50.88% 0.0838 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --overlay: oklch(100.00% 0.0013 186.20);
+  --overlay-foreground: oklch(21.03% 0.0044 186.20);
+  --scrollbar: oklch(87.10% 0.0044 186.20);
+  --segment: oklch(100.00% 0.0044 186.20);
+  --segment-foreground: oklch(21.03% 0.0044 186.20);
+  --separator: oklch(92.00% 0.0044 186.20);
+  --success: oklch(73.29% 0.1952 142.69);
+  --success-foreground: oklch(21.03% 0.0059 142.69);
+  --surface: oklch(100.00% 0.0022 186.20);
+  --surface-foreground: oklch(21.03% 0.0044 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --surface-secondary-foreground: oklch(21.03% 0.0044 186.20);
+  --surface-tertiary: oklch(93.73% 0.0035 186.20);
+  --surface-tertiary-foreground: oklch(21.03% 0.0044 186.20);
+  --warning: oklch(78.19% 0.1599 64.21);
+  --warning-foreground: oklch(21.03% 0.0059 64.21);
 
-  --default-soft: oklch(0.956574 0.009083 78.281); /* #F4F0EA */
-  --default-soft-hover: oklch(0.912775 0.014328 74.418); /* #E8E1D8 */
-  --default-soft-foreground: oklch(0.338252 0.02382 258.364); /* #303844 */
-  --accent-soft: oklch(0.936672 0.021133 178.349); /* #DCEFEA */
-  --accent-soft-hover: oklch(0.901128 0.028647 180.21); /* #CBE5DF */
-  --accent-soft-foreground: oklch(0.447135 0.076448 183.758); /* #0A6259 */
-  --success-soft: oklch(0.945651 0.019125 152.812); /* #E4F1E7 */
-  --success-soft-hover: oklch(0.910294 0.031728 154.128); /* #D2E8D8 */
-  --success-soft-foreground: oklch(0.460886 0.119361 150.349); /* #0F6A32 */
-  --warning-soft: oklch(0.940594 0.027255 72.806); /* #F7E9D8 */
-  --warning-soft-hover: oklch(0.899774 0.046144 73.566); /* #F1DABD */
-  --warning-soft-foreground: oklch(0.427993 0.107985 50.892); /* #7C3A06 */
-  --danger-soft: oklch(0.931943 0.024946 2.095); /* #F8E2E7 */
-  --danger-soft-hover: oklch(0.884687 0.042379 359.403); /* #F2CED8 */
-  --danger-soft-foreground: oklch(0.431878 0.148875 11.37); /* #8F1D3B */
+  /* Border Radius */
+  --radius: 0.75rem;
+  --field-radius: 1rem;
+
+  --foreground-secondary: var(--muted);
+  --accent-strong: var(--accent);
+  --link: var(--accent);
 }
 
 @theme inline {
-  --color-accent-strong: var(--accent-strong); /* #0A6259 */
-  --color-foreground-secondary: var(--foreground-secondary); /* #4A5361 */
+  --color-accent-strong: var(--accent-strong);
+  --color-foreground-secondary: var(--foreground-secondary);
 
   --color-store-origin-memory: oklch(0.490666 0.241232 292.581); /* #6D28D9 */
   --color-store-origin-sot: oklch(0.527299 0.137103 150.069); /* #15803D */
@@ -67,32 +75,57 @@
   --color-store-origin-fetcher-on-dark: oklch(0.821203 0.113868 73.527); /* #F1B96D */
   --color-store-origin-overlay-on-dark: oklch(0.751552 0.129275 359.325); /* #F08AAC */
 
-  --color-store-code-surface: oklch(0.188201 0.019602 252.183); /* #0D141C */
-  --color-store-code-foreground: oklch(0.898202 0.015641 257.2); /* #D7DEE8 */
+  /* sRGB equivalents of the Theme Builder's dark surface and foreground. */
+  --color-store-code-surface: #141A19;
+  --color-store-code-foreground: #F9FDFC;
+  --color-store-code-header: #202424;
 }
 /* STORE TOKENS END */
+.store-docs {
+  --accent-pressed: color-mix(in srgb, var(--accent), var(--foreground) 20%);
+  --control-border: var(--muted);
+  /* GitHub Dark syntax roles on the custom HeroUI code surface. */
+  --color-store-code-keyword: #FF7B72;
+  --color-store-code-string: #A5D6FF;
+  --color-store-code-function: #D2A8FF;
+  --color-store-code-type: #7EE787;
+  --color-store-code-comment: #9AA2A1;
+}
+.store-docs :where(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.store-docs .table__scroll-container:focus-visible { outline-offset: -2px; }
+@media (prefers-reduced-motion: reduce) {
+  .store-docs *, .store-docs *::before, .store-docs *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
-:root {
+
+:root, .store-docs {
   --color-primary: var(--accent);
   --color-primary-light: var(--accent);
   --color-primary-dark: var(--accent-strong);
   --color-codeblock: var(--color-store-code-surface);
 }
 
-#content {
+.store-docs {
   --shiki-background: var(--color-store-code-surface);
   --shiki-color-background: var(--color-store-code-surface);
   --shiki-color-text: var(--color-store-code-foreground);
   --shiki-foreground: var(--color-store-code-foreground);
-  --shiki-token-comment: var(--color-store-origin-memory-on-dark);
-  --shiki-token-constant: var(--color-store-origin-overlay-on-dark);
-  --shiki-token-function: var(--color-store-origin-fetcher-on-dark);
-  --shiki-token-keyword: var(--color-store-origin-overlay-on-dark);
-  --shiki-token-link: var(--color-store-origin-sot-on-dark);
+  --shiki-token-comment: var(--color-store-code-comment);
+  --shiki-token-constant: var(--color-store-code-type);
+  --shiki-token-function: var(--color-store-code-function);
+  --shiki-token-keyword: var(--color-store-code-keyword);
+  --shiki-token-link: var(--color-store-code-string);
   --shiki-token-parameter: var(--color-store-code-foreground);
   --shiki-token-punctuation: var(--color-store-code-foreground);
-  --shiki-token-string: var(--color-store-origin-sot-on-dark);
-  --shiki-token-string-expression: var(--color-store-origin-sot-on-dark);
+  --shiki-token-string: var(--color-store-code-string);
+  --shiki-token-string-expression: var(--color-store-code-string);
   --color-stone-50: var(--surface-secondary);
   --color-stone-100: var(--surface-tertiary);
   --color-stone-200: var(--border);
@@ -107,23 +140,6 @@
 }
 
 @layer restore {
-  #content pre.shiki.bg-store-code-surface {
-    background-color: var(--color-store-code-surface) !important;
-    color: var(--color-store-code-foreground) !important;
-  }
-
-  #content .code-block,
-  #content .code-group {
-    background-color: var(--color-store-code-surface) !important;
-    border-color: var(--border) !important;
-    color: var(--color-store-code-foreground) !important;
-  }
-
-  #content [data-component-part="code-block-root"],
-  #content .code-block-background {
-    background-color: var(--color-store-code-surface) !important;
-  }
-
   #content .tab-container {
     align-items: stretch !important;
     display: flex !important;
@@ -138,4 +154,77 @@
     overflow-y: visible !important;
     width: 100% !important;
   }
+}
+
+/* Reading-shell anchors remain visible below the fixed navigation. */
+.store-docs :is(#main-content, #page-title, #content [id]) { scroll-margin-top: 112px; }
+.store-docs .skip-to-content { position: fixed; inset-block-start: .5rem; inset-inline-start: .5rem; z-index: 100; transform: translateY(-200%); padding: .75rem 1rem; border-radius: .5rem; background: var(--surface); color: var(--foreground); }
+.store-docs .skip-to-content:focus { transform: translateY(0); }
+
+/* Native search imports carry utility classes; these scoped corrections retain its icon space and readable result labels. */
+.store-docs .store-mintlify-search input[type="search"] { padding-inline: 2.75rem 3.5rem; }
+.store-docs .store-mintlify-search [role="option"] .truncate { overflow: visible; text-overflow: clip; white-space: normal; }
+.store-docs .store-disclosure-accordion > summary:focus-visible { outline-offset: -3px; }
+/* Long API identifiers must not set the mobile reading column's minimum width. */
+.store-docs #content { overflow-wrap: anywhere; }
+.store-docs #content :not(pre) > code { overflow-wrap: anywhere; }
+.store-docs #content .table__cell code { overflow-wrap: normal; }
+.store-docs .store-status-callout .alert__content { min-width: 0; }
+.store-docs #content .store-m-code { min-width: 0; max-width: 100%; }
+
+.store-docs :not(pre) > code.store-inline-code {
+  display: inline-block;
+  max-inline-size: 100%;
+  padding: 0.05em 0.4em;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--default);
+  color: var(--default-foreground);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: max(0.875rem, 0.95em);
+  font-weight: 500;
+  line-height: 1.4;
+  vertical-align: baseline;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.store-docs strong > code.store-inline-code { font-weight: 600; }
+.store-docs .store-code-caption > code.store-inline-code {
+  border-color: color-mix(in oklch, var(--color-store-code-surface), var(--color-store-code-foreground) 25%);
+  background: color-mix(in oklch, var(--color-store-code-surface), var(--color-store-code-foreground) 8%);
+  color: var(--color-store-code-foreground);
+}
+
+.store-docs .store-floating-toc {
+  position: fixed;
+  inset-inline-end: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 30;
+}
+.store-docs .store-floating-toc__trigger {
+  min-width: 44px;
+  min-height: 44px;
+  max-height: min(40svh, 20rem);
+  overflow-y: auto;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  border: 0;
+  border-radius: var(--radius-xl);
+  background: transparent;
+  box-shadow: none;
+}
+.store-docs .store-floating-toc__trigger .floating-toc__bar::after { background: var(--border); }
+.store-docs .store-floating-toc__trigger .floating-toc__bar[data-active="true"]::after { background: var(--accent); }
+.store-docs .store-floating-toc__content {
+  background: var(--overlay);
+  width: min(22rem, calc(100vw - 5rem));
+  max-height: min(60svh, 25rem);
+  z-index: 40;
+}
+.store-docs .store-floating-toc__content .floating-toc__item {
+  min-height: 44px;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
