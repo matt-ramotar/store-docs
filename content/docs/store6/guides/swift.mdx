@@ -2,9 +2,8 @@
 title: "Store 6 from Swift"
 ---
 
-Store 6 keeps committed Objective-C export and SKIE dumps beside its Kotlin API. Those dumps are
-the contract for the current Apple-facing names, sealed bridges, coroutine wrappers, and flattened
-value types described here.
+Committed Objective-C export and SKIE dumps define Store 6’s current Apple-facing names, sealed
+bridges, coroutine wrappers, and flattened value types described here.
 
 <Callout type="Note">
 
@@ -68,7 +67,7 @@ method, including:
 `close()` remains synchronous. `stream(key:freshness:)` returns a Kotlin `Flow` in the Objective-C
 header rather than a completion-handler operation.
 
-The direct Objective-C header carries a consequential exception boundary: the exported suspend
+The direct Objective-C header defines this exception boundary: the exported suspend
 methods convert `CancellationException` to an `NSError`; other uncaught Kotlin exceptions are
 fatal. Do not assume that the presence of an `NSError` completion argument makes every
 `StoreException` recoverable in that lane. A plain Objective-C integration that needs a different

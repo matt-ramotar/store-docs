@@ -150,9 +150,8 @@ private class HttpUserMutationServer(
 }
 ```
 
-No catch block is intentional. A `CancellationException` propagates unchanged. Other operational
-exceptions propagate too, allowing Store to classify non-cancellation transport failures
-correctly.
+The example has no catch block. A `CancellationException` propagates unchanged. Other operational
+exceptions also propagate, allowing Store to classify non-cancellation transport failures correctly.
 
 ## What a push carries
 

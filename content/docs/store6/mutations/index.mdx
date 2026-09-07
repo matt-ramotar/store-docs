@@ -46,7 +46,7 @@ The mutation facade adds:
 - `pending(key)`, `pendingWrites()`, and `deadLetters()` for durable inspection.
 - `poisoned` and `events`, two advisory flows for observing failures and lifecycle activity.
 
-The facade deliberately withholds the raw engine write handle. Calling `runtime()` on a
+The facade withholds the raw engine write handle. Calling `runtime()` on a
 `MutationStore` returns `null`, so consumer writes cannot bypass the journal through a second write
 path.
 

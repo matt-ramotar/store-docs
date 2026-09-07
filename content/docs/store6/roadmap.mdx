@@ -15,7 +15,7 @@ These are commitments, not aspirations.
 1. **Cut scope, never cadence.** A slip threatens a release's contents, never its date.
 2. **The read core never waits on an extension.** If paging, the Swift facade, or Store 5 interop
    slips, 6.0 still ships as a complete, stable read library without it. Mutations are not an
-   extension for this rule's purposes — writing is functionality Store 5 already shipped, and Store 6
+   extension for this rule's purposes: writing is functionality Store 5 already shipped, and Store 6
    is not publishable to this community without it. It lives in a separate artifact because its API
    is experimental, which is a packaging decision, not a dependency one.
 3. **Experimental code lives in separate artifacts.** Never annotation-gated inside a stable
@@ -39,7 +39,7 @@ History, stars, and watchers stay here.
 The list is split into a floor that defines the release and deliverables that may slip a month
 under principle 1. The confidence range above is real: treat Q1 2027 as the honest outer bound.
 
-**The floor — these are alpha01:**
+**The alpha01 floor:**
 
 | | |
 |---|---|
@@ -82,7 +82,7 @@ window for mutations graduation to stable.
 ## Cadence
 
 **Monthly alphas from 6.0.0-alpha01.** Each release names the next release's target month, and each
-one closes at least one community issue with a link to the named guarantee that resolves it — a
+one closes at least one community issue with a link to the named guarantee that resolves it: a
 conformance test, not a changelog line.
 
 Full policy, including the deprecation cycle and how to verify any of this from a released tag, is

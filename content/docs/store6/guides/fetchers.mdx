@@ -2,8 +2,8 @@
 title: "Fetchers: results, errors, and conditional fetch"
 ---
 
-A fetcher is the boundary between Store and a backend. It accepts a key and produces either a
-value or a result that tells Store what happened. Store owns residence, persistence, freshness,
+A fetcher connects Store to a backend. It accepts a key and produces either a
+value or a result describing the outcome. Store owns residence, persistence, freshness,
 and result delivery around that call. Your fetcher owns the backend request and any retry or
 fallback policy inside it.
 
@@ -39,7 +39,7 @@ val users = store<UserKey, User> {
 - `fetcher(fetcher)` installs the regular-interface `Fetcher<K, V>` seam. This overload is
   experimental and is the only form that receives a conditional-request ETag from Store.
 
-The call shapes look like this when the application has an API and a seam fetcher:
+An application with an API and a seam fetcher can use these call shapes:
 
 {/* snippet: guides-fetchers-install-points */}
 ```kotlin

@@ -10,7 +10,7 @@
 .store-docs .store-disclosure-group {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
+  border-radius: var(--radius-xl, 0.75rem);
 }
 .store-docs .store-disclosure [data-component-part="accordion-button"],
 .store-docs .store-disclosure [data-component-part="expandable-button"] {
@@ -80,7 +80,7 @@
 .store-docs .store-disclosure [data-component-part="tab-content"][aria-hidden="true"] { display: none; }
 .store-docs .store-disclosure[data-component-part="tree-root"] {
   padding: 0.5rem;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-xl, 0.75rem);
   background: var(--surface);
   border: 1px solid var(--border);
   overflow-x: auto;

@@ -12,7 +12,7 @@ const startHereItems = [
   {
     id: "important-defaults",
     title: "Important Defaults",
-    description: "See what zero configuration already decides about freshness and failures.",
+    description: "See the freshness and failure behavior you get with zero configuration.",
     experimental: false,
     links: [{ href: "/docs/store6/important-defaults", label: "Important Defaults" }],
   },
@@ -59,6 +59,7 @@ export function StartHereList() {
               <span className="font-semibold text-foreground">{item.title}</span>
               {item.experimental ? (
                 <Chip color="warning" size="sm" variant="soft">
+                  <span aria-hidden="true" className="store-status-dot" />
                   <Chip.Label>Experimental</Chip.Label>
                 </Chip>
               ) : null}

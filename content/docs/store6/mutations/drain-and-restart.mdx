@@ -47,9 +47,9 @@ Once transport becomes possible or its result is uncertain, that execution owns 
 `(clientId, namespace)` lane until it parks or retires. A keyed drain for another key in the same
 namespace returns without transport. Work in another namespace remains eligible to progress.
 
-This rule matters after cancellation: once a generation is `INFLIGHT`, remote acceptance may be
-unknown. The next explicit drain or restart must resend that exact immutable generation before a
-later key in the same namespace can reach transport.
+After cancellation, remote acceptance may be unknown once a generation is `INFLIGHT`. The next
+explicit drain or restart must resend that exact immutable generation before a later key in the
+same namespace can reach transport.
 
 ```mermaid
 flowchart LR

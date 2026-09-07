@@ -12,47 +12,48 @@
 
 
 /* STORE TOKENS START */
+/* HeroUI Theme Builder: lightness 0.508792, chroma 0.083779, hue 186.199157, base 0.0044. */
 :root, .store-docs {
-  --background: #F7F6F0;
-  --surface: #FFFFFF;
-  --surface-secondary: color-mix(in srgb, #FFFFFF 50%, #F7F6F0);
-  --surface-tertiary: #F7F6F0;
-  --foreground: #172C2A;
-  --foreground-secondary: #596A65;
-  --muted: #596A65;
-  --separator: #DCE2DC;
-  --border: #DCE2DC;
-  --default: #F7F6F0;
-  --default-foreground: #172C2A;
-  --overlay: #FFFFFF;
-  --segment: #FFFFFF;
-  --scrollbar: #596A65;
-  --accent: #13766D;
-  --accent-strong: #13766D;
-  --accent-foreground: #FFFFFF;
-  --success: #23683F;
-  --success-foreground: #FFFFFF;
-  --warning: #80520C;
-  --warning-foreground: #FFFFFF;
-  --danger: #A43E40;
-  --danger-foreground: #FFFFFF;
-  --link: var(--accent);
+  /* Theme Colors (Light Mode) */
+  --accent: oklch(50.88% 0.0838 186.20);
+  --accent-foreground: oklch(99.11% 0 0);
+  --background: oklch(97.02% 0.0044 186.20);
+  --border: oklch(90.00% 0.0044 186.20);
+  --danger: oklch(65.32% 0.2348 17.62);
+  --danger-foreground: oklch(99.11% 0 0);
+  --default: oklch(94.00% 0.0044 186.20);
+  --default-foreground: oklch(21.03% 0.0059 186.20);
+  --field-background: oklch(100.00% 0.0022 186.20);
+  --field-border: transparent;
+  --field-foreground: oklch(21.03% 0.0044 186.20);
+  --field-placeholder: oklch(55.17% 0.0088 186.20);
+  --focus: oklch(50.88% 0.0838 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --overlay: oklch(100.00% 0.0013 186.20);
+  --overlay-foreground: oklch(21.03% 0.0044 186.20);
+  --scrollbar: oklch(87.10% 0.0044 186.20);
+  --segment: oklch(100.00% 0.0044 186.20);
+  --segment-foreground: oklch(21.03% 0.0044 186.20);
+  --separator: oklch(92.00% 0.0044 186.20);
+  --success: oklch(73.29% 0.1952 142.69);
+  --success-foreground: oklch(21.03% 0.0059 142.69);
+  --surface: oklch(100.00% 0.0022 186.20);
+  --surface-foreground: oklch(21.03% 0.0044 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --surface-secondary-foreground: oklch(21.03% 0.0044 186.20);
+  --surface-tertiary: oklch(93.73% 0.0035 186.20);
+  --surface-tertiary-foreground: oklch(21.03% 0.0044 186.20);
+  --warning: oklch(78.19% 0.1599 64.21);
+  --warning-foreground: oklch(21.03% 0.0059 64.21);
 
-  --default-soft: #F7F6F0;
-  --default-soft-hover: color-mix(in srgb, #F7F6F0, #172C2A 8%);
-  --default-soft-foreground: #172C2A;
-  --accent-soft: #E3F0E9;
-  --accent-soft-hover: color-mix(in srgb, #E3F0E9, #172C2A 8%);
-  --accent-soft-foreground: #13766D;
-  --success-soft: #EAF3E9;
-  --success-soft-hover: color-mix(in srgb, #EAF3E9, #172C2A 8%);
-  --success-soft-foreground: #23683F;
-  --warning-soft: #FFF2D9;
-  --warning-soft-hover: color-mix(in srgb, #FFF2D9, #172C2A 8%);
-  --warning-soft-foreground: #80520C;
-  --danger-soft: #FCECEC;
-  --danger-soft-hover: color-mix(in srgb, #FCECEC, #172C2A 8%);
-  --danger-soft-foreground: #A43E40;
+  /* Border Radius */
+  --radius: 0.75rem;
+  --field-radius: 1rem;
+
+  --foreground-secondary: var(--muted);
+  --accent-strong: var(--accent);
+  --link: var(--accent);
 }
 
 @theme inline {
@@ -74,25 +75,21 @@
   --color-store-origin-fetcher-on-dark: oklch(0.821203 0.113868 73.527); /* #F1B96D */
   --color-store-origin-overlay-on-dark: oklch(0.751552 0.129275 359.325); /* #F08AAC */
 
-  --color-store-code-surface: #172624;
-  --color-store-code-foreground: #DDE9E5;
+  /* sRGB equivalents of the Theme Builder's dark surface and foreground. */
+  --color-store-code-surface: #141A19;
+  --color-store-code-foreground: #F9FDFC;
+  --color-store-code-header: #202424;
 }
 /* STORE TOKENS END */
 .store-docs {
-  --surface-foreground: var(--foreground);
-  --overlay-foreground: var(--foreground);
-  --field-background: var(--surface);
-  --field-foreground: var(--foreground);
-  --field-placeholder: var(--muted);
-  --focus: var(--accent);
-  --accent-hover: color-mix(in srgb, var(--accent), var(--foreground) 12%);
   --accent-pressed: color-mix(in srgb, var(--accent), var(--foreground) 20%);
   --control-border: var(--muted);
-  --color-store-code-keyword: #C4A7FF;
-  --color-store-code-string: #75D394;
-  --color-store-code-function: #F1B96D;
-  --color-store-code-type: #F08AAC;
-  --color-store-code-comment: #A8B7B0;
+  /* GitHub Dark syntax roles on the custom HeroUI code surface. */
+  --color-store-code-keyword: #FF7B72;
+  --color-store-code-string: #A5D6FF;
+  --color-store-code-function: #D2A8FF;
+  --color-store-code-type: #7EE787;
+  --color-store-code-comment: #9AA2A1;
 }
 .store-docs :where(button, a, input, select, textarea, summary, [tabindex]):focus-visible {
   outline: 2px solid var(--focus);
@@ -179,10 +176,10 @@
   display: inline-block;
   max-inline-size: 100%;
   padding: 0.05em 0.4em;
-  border: 1px solid #E5E0DC;
-  border-radius: 0.3em;
-  background: #F8F5F2;
-  color: #292524;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--default);
+  color: var(--default-foreground);
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size: max(0.875rem, 0.95em);
   font-weight: 500;
@@ -194,8 +191,8 @@
 }
 .store-docs strong > code.store-inline-code { font-weight: 600; }
 .store-docs .store-code-caption > code.store-inline-code {
-  border-color: #4C514F;
-  background: #2C3230;
+  border-color: color-mix(in oklch, var(--color-store-code-surface), var(--color-store-code-foreground) 25%);
+  background: color-mix(in oklch, var(--color-store-code-surface), var(--color-store-code-foreground) 8%);
   color: var(--color-store-code-foreground);
 }
 
@@ -214,11 +211,11 @@
   gap: 0.5rem;
   padding: 0.625rem;
   border: 0;
-  border-radius: 0.75rem;
+  border-radius: var(--radius-xl);
   background: transparent;
   box-shadow: none;
 }
-.store-docs .store-floating-toc__trigger .floating-toc__bar::after { background: #D8DADD; }
+.store-docs .store-floating-toc__trigger .floating-toc__bar::after { background: var(--border); }
 .store-docs .store-floating-toc__trigger .floating-toc__bar[data-active="true"]::after { background: var(--accent); }
 .store-docs .store-floating-toc__content {
   background: var(--overlay);

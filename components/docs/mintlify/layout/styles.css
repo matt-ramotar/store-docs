@@ -5,7 +5,7 @@
 .store-docs .store-mintlify-card {
   background: var(--surface);
   border-color: var(--border);
-  border-radius: 1rem;
+  border-radius: var(--radius-2xl, 1rem);
   color: var(--foreground);
   transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
 }
@@ -39,7 +39,7 @@
 
 .store-docs .store-mintlify-frame [data-component-part="frame"] {
   background: var(--surface-secondary);
-  border-radius: 1rem;
+  border-radius: var(--radius-2xl, 1rem);
 }
 
 .store-docs .store-mintlify-frame [data-component-part="frame-content"] {
@@ -65,13 +65,13 @@
 .store-docs .store-mintlify-panel {
   background: var(--surface-secondary);
   border: 1px solid var(--border);
-  border-radius: 0.875rem;
+  border-radius: calc(var(--radius, 0.5rem) * 1.75);
   color: var(--foreground);
   padding: 1rem;
 }
 
 .store-docs .store-mintlify-tile {
-  border-radius: 1rem;
+  border-radius: var(--radius-2xl, 1rem);
   color: var(--foreground);
 }
 

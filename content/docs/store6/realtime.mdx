@@ -8,7 +8,7 @@ WebSocket or SSE connection and does not choose a wire format.
 
 Every public entry point is `@ExperimentalStoreApi`. The Store seams it consumes
 (`StoreWriteHandle`, `Store.runtime()`, `Store.invalidate*`, `Store.clear`) are freeze
-candidates, not frozen — see [STABILITY.md](/docs/store6/stability).
+candidates, not frozen. See [STABILITY.md](/docs/store6/stability).
 
 ## Install
 
@@ -32,12 +32,12 @@ The module uses Store6's full 12-target convention: Android, JVM, `iosArm64`,
 
 ## Entry points
 
-- `realtimeBinding(store)` — adopting mode. Requires `store.runtime()`. `Upsert` commits
+- `realtimeBinding(store)`: adopting mode. Requires `store.runtime()`. `Upsert` commits
   through `StoreWriteHandle.apply` then `confirmFresh`. `Unchanged` calls `confirmFresh`.
-- `invalidatingRealtimeBinding(store)` — works on any `Store`, including `FakeStore` and
+- `invalidatingRealtimeBinding(store)`: works on any `Store`, including `FakeStore` and
   `MutationStore`. `Upsert` becomes `Store.invalidate(key)`. `Unchanged` is ignored.
-- `RealtimeBinding.apply(message)` — one frame, serialized per binding.
-- `RealtimeBinding.consume(messages)` — sequential pass until the flow completes.
+- `RealtimeBinding.apply(message)`: one frame, serialized per binding.
+- `RealtimeBinding.consume(messages)`: sequential pass until the flow completes.
 
 `realtimeBinding` throws `IllegalArgumentException` when `store.runtime()` is `null`:
 

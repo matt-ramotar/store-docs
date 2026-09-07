@@ -212,7 +212,7 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
   assert.doesNotMatch(document.body, /^#\s+/m, "overview must not contain a body H1");
   assert.match(
     document.body,
-    /Store 6 coordinates network, persistence, and memory through one read contract\. Start with a fetcher, then add only the persistence and projection seams your application needs\./,
+    /Store 6 coordinates network, persistence, and memory through one read contract\. Start with a fetcher, then add only the persistence and projections your application needs\./,
   );
   assert.deepEqual(markdownHeadings(document.body), [
     { depth: 2, title: "Why Store 6?" },

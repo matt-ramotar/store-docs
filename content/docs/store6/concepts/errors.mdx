@@ -25,8 +25,8 @@ persistence failures. One vocabulary to learn, delivered the way each call shape
 | `Missing` | No value exists for the key and none could be produced. |
 
 The variant set is frozen for the 6.x major. New failure kinds map into these categories through
-their structured detail payloads rather than as new subclasses, which is what lets the hierarchy
-bridge to an exhaustive Swift enum. The consequence is worth spelling out: an exhaustive `when`
+their structured detail payloads rather than as new subclasses, which lets the hierarchy
+bridge to an exhaustive Swift enum. An exhaustive `when`
 over `StoreError` is safe to write, with no `else` branch, on Kotlin and on the bridged Swift side.
 (The [Swift bridge guide](/docs/store6/guides/swift) covers that side.)
 

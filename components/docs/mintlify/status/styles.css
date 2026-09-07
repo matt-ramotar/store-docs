@@ -1,3 +1,48 @@
+.store-docs :is(.chip, .alert, .store-status-pill) {
+  /* Status components share the chosen palette while retaining their semantic roles. */
+  --success: var(--color-store-origin-sot);
+  --success-soft: var(--color-store-origin-sot-soft);
+  --success-soft-foreground: var(--color-store-origin-sot);
+  --success-foreground: var(--accent-foreground);
+  --warning: var(--color-store-origin-fetcher);
+  --warning-soft: var(--color-store-origin-fetcher-soft);
+  --warning-soft-foreground: var(--color-store-origin-fetcher);
+  --warning-foreground: var(--accent-foreground);
+  --danger: var(--color-store-origin-overlay);
+  --danger-soft: var(--color-store-origin-overlay-soft);
+  --danger-soft-foreground: var(--color-store-origin-overlay);
+  --danger-foreground: var(--accent-foreground);
+}
+
+.store-docs .chip {
+  --accent: var(--color-store-origin-memory);
+  --accent-strong: var(--color-store-origin-memory);
+  --accent-soft: var(--color-store-origin-memory-soft);
+  --accent-soft-foreground: var(--color-store-origin-memory);
+  --store-status-color: var(--foreground);
+}
+
+.store-docs .chip--accent { --store-status-color: var(--accent); }
+.store-docs .chip--success { --store-status-color: var(--success); }
+.store-docs .chip--warning { --store-status-color: var(--warning); }
+.store-docs .chip--danger { --store-status-color: var(--danger); }
+
+.store-docs .chip.chip--soft {
+  --chip-fg: var(--foreground);
+}
+
+.store-docs .chip.chip--soft > svg {
+  color: var(--store-status-color);
+}
+
+.store-docs .store-status-dot {
+  background: var(--store-status-color);
+  border-radius: 999px;
+  flex: none;
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
 .store-docs .store-status-badge {
   --store-status-badge-bg: var(--default-soft);
   --store-status-badge-fg: var(--default-soft-foreground);
@@ -26,7 +71,7 @@
 }
 
 .store-docs .store-status-badge[data-badge-shape="rounded"] {
-  border-radius: 0.5rem;
+  border-radius: var(--radius-lg, 0.5rem);
 }
 
 .store-docs .store-status-badge[data-badge-shape="pill"] {
@@ -138,6 +183,15 @@
   --store-status-badge-fg: var(--danger-foreground);
 }
 
+.store-docs .store-status-badge[data-badge-variant="outline"] {
+  --store-status-badge-fg: var(--foreground);
+  border-color: var(--store-status-color);
+}
+
+.store-docs .store-status-badge[data-badge-variant="outline"] :is([data-component-part="lead-icon"], [data-component-part="tail-icon"]) {
+  color: var(--store-status-color);
+}
+
 .store-docs .store-status-badge :where(svg, img) {
   display: block;
   height: 1em;
@@ -150,8 +204,16 @@
 
 .store-docs .store-status-callout__alert {
   border-color: var(--border);
-  border-radius: 1rem;
+  border-radius: var(--radius-2xl, 1rem);
   color: var(--foreground);
+}
+
+.store-docs .store-status-callout:is([data-callout-type="info"], [data-callout-type="note"]) .alert__indicator {
+  color: var(--color-store-origin-memory);
+}
+
+.store-docs .store-status-callout[data-callout-type="info"] .alert__title {
+  color: var(--color-store-origin-memory);
 }
 
 .store-docs .store-status-callout[data-callout-type="custom"] .store-status-callout__alert {
@@ -227,14 +289,14 @@
 
 .store-docs .store-status-param-head :is([data-component-part="field-meta-pre"], [data-component-part="field-meta-post"]) {
   background: var(--surface-secondary);
-  border-radius: 0.375rem;
+  border-radius: var(--radius-md, 0.375rem);
   color: var(--foreground-secondary);
   padding: 0.125rem 0.5rem;
 }
 
 .store-docs .store-status-pill {
   align-items: center;
-  border-radius: 0.375rem;
+  border-radius: var(--radius-md, 0.375rem);
   display: inline-flex;
   font-size: 0.75rem;
   font-weight: 600;
@@ -254,13 +316,13 @@
 
 .store-docs .store-status-pill--required {
   background: var(--danger-soft);
-  color: var(--danger-soft-foreground);
+  color: var(--foreground);
   white-space: nowrap;
 }
 
 .store-docs .store-status-pill--deprecated {
   background: var(--warning-soft);
-  color: var(--warning-soft-foreground);
+  color: var(--foreground);
   white-space: nowrap;
 }
 

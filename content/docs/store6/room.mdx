@@ -6,7 +6,7 @@ title: "Store6 Room"
 source of truth for application values. The adapter adds two sidecar tables for
 freshness metadata and durable invalidation.
 
-The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](/docs/store6/stability).
+The Store6 seam is a **freeze candidate, not frozen**. See [STABILITY.md](/docs/store6/stability).
 
 ## 15-minute existing-database walkthrough
 
@@ -198,17 +198,17 @@ Supported targets:
 
 **Gaps vs `store6-core`'s 12 targets: js, wasmJs, mingwX64, and iosX64.**
 `androidx.room3` publishes no iosX64 variant. js and wasmJs *are* supported by that release line and are planned
-as a follow-up — they require a suspend schema API and async SQLite integration.
+as a follow-up. They require a suspend schema API and async SQLite integration.
 Use `store6-sqldelight` or a custom source of truth on those targets meanwhile.
 
-Android consumers need **compileSdk 34+** — the floor room3's AAR metadata
-declares — and **minSdk 24+**. This repository builds the AAR at compileSdk 36.
+Android consumers need **compileSdk 34+** (the floor room3's AAR metadata
+declares) and **minSdk 24+**. This repository builds the AAR at compileSdk 36.
 An AAR built at minSdk 24 cannot be consumed by an application with a lower
 minimum.
 
 **Room 2.x is not supported by this artifact.** store6-room launched on the `androidx.room3` line;
 it never shipped a Room 2 release. That line uses new coordinates, packages, and
-type identity, and its native KLIBs require Kotlin ≥2.3 with AGP ≥8.10 — it is
+type identity, and its native KLIBs require Kotlin ≥2.3 with AGP ≥8.10. It is
 gated on both a toolchain move and a migration, not one or the other. Room 2
 applications should migrate the app database to `androidx.room3` (Google documents 2.x/3.x
 coexistence) or use `store6-sqldelight`.

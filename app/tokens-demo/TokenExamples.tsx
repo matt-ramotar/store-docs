@@ -79,16 +79,16 @@ export default function TokenExamples() {
               Semantic status
             </h2>
             <p className="mt-1 text-sm text-foreground-secondary">
-              Status chips use HeroUI semantic colors, independent of the origin palette.
+              Status chips share the origin palette. Their labels name the support or release state.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Chip color="success" size="lg" variant="soft">
-              <span aria-hidden="true" className="size-2 rounded-full bg-success" />
+              <span aria-hidden="true" className="store-status-dot" />
               <Chip.Label>Supported</Chip.Label>
             </Chip>
             <Chip color="warning" size="lg" variant="soft">
-              <span aria-hidden="true" className="size-2 rounded-full bg-warning" />
+              <span aria-hidden="true" className="store-status-dot" />
               <Chip.Label>Experimental</Chip.Label>
             </Chip>
           </div>

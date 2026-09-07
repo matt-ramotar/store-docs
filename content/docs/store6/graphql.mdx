@@ -5,7 +5,7 @@ title: "store6-graphql"
 GraphQL operation fetcher kit for Store v6. A store built with this module is a document
 cache: each execution of one GraphQL operation, identified by operation name plus canonical
 variables, caches one decoded response value. Everything here is `@ExperimentalStoreApi`.
-The seam it consumes is a freeze candidate, not frozen — see [STABILITY.md](/docs/store6/stability).
+The seam it consumes is a freeze candidate, not frozen. See [STABILITY.md](/docs/store6/stability).
 
 The module has no dependency beyond `store6-core` and ships the same Kotlin Multiplatform
 target set as `store6-core`. You bring the transport: a `GraphQlExecutor` you implement on
@@ -60,18 +60,18 @@ variable set stale.
 
 ## Entry points
 
-- `GraphQlOperation(document, name)` — an executable document plus the operation name.
+- `GraphQlOperation(document, name)`: an executable document plus the operation name.
   The document is opaque to Store and reaches the executor unparsed.
-- `GraphQlOperation.key(variables)` — the `GraphQlOperationKey` for one execution.
-- `graphQlVariables { }` — builder for `GraphQlVariables` over the `GraphQlValue` model
+- `GraphQlOperation.key(variables)`: the `GraphQlOperationKey` for one execution.
+- `graphQlVariables { }`: builder for `GraphQlVariables` over the `GraphQlValue` model
   (`NullValue`, `BooleanValue`, `IntValue`, `FloatValue`, `StringValue`, `ListValue`,
   `ObjectValue`).
-- `graphQlFetcher(operation, partialDataPolicy, executor)` — the seam `Fetcher`, also
+- `graphQlFetcher(operation, partialDataPolicy, executor)`: the seam `Fetcher`, also
   installable through the `StoreBuilder.graphQlFetcher(...)` extension.
-- `GraphQlExecutor<V>` — `suspend execute(GraphQlRequest): GraphQlExecutorResult<V>`.
+- `GraphQlExecutor<V>`: `suspend execute(GraphQlRequest): GraphQlExecutorResult<V>`.
   Throw for transport failure. Return `Data(data, errors, etag)` for any response the
   server produced, or `NotModified(etag)` to answer a conditional request.
-- `GraphQlOperationException(operationName, errors)` — the `StoreError.Fetch` cause when a
+- `GraphQlOperationException(operationName, errors)`: the `StoreError.Fetch` cause when a
   response reports errors the fetcher does not adopt.
 
 ## Cache identity
@@ -100,7 +100,7 @@ operation stale. Pass a custom namespace to `GraphQlOperationKey` to partition d
 | `Data(data != null, errors)` + `AdoptPartialData` | `FetcherResult.Success(data, etag)` |
 | `Data(data == null, errors)` | `FetcherResult.Error(GraphQlOperationException)` |
 | `Data(data == null, no errors)` | `FetcherResult.Error` naming the protocol violation |
-| `NotModified(etag)` | `FetcherResult.NotModified(etag)` — streams observe `StoreResult.Revalidated` |
+| `NotModified(etag)` | `FetcherResult.NotModified(etag)`. Streams observe `StoreResult.Revalidated` |
 | thrown exception | `FetcherResult.Error(cause)`; `CancellationException` propagates |
 | key whose `operationName` is not the fetcher's operation | `FetcherResult.Error` naming both operations, without executing |
 

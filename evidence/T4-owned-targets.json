@@ -164,7 +164,7 @@
     "sync-store6-docs": [
       {
         "path": "content/docs/store6/compose.mdx",
-        "sha256": "fc6db20221ad1ce58ffcff8d256330743455392f93198e80cc51072b41527cc1"
+        "sha256": "3ed2051e075163d839af47d9a21e899b8eb88f5768d88aed20687f8b7405e5c1"
       },
       {
         "path": "content/docs/store6/contributing.mdx",
@@ -172,15 +172,15 @@
       },
       {
         "path": "content/docs/store6/graphql.mdx",
-        "sha256": "934620b68fc81ef2dee41b909e9994095a3adcb67bb8ffa143b8ba8812a28aa3"
+        "sha256": "c26de7a319b35a39f310f1a3eb1c4d37a64e0ec5c30be5ed6ad0164f9f6476bc"
       },
       {
         "path": "content/docs/store6/important-defaults.mdx",
-        "sha256": "f2baa51b286dabb0c3c47d9302a91d8cafa8a0dc74f96e2c26bc41fb91ad4d75"
+        "sha256": "d58592e431f6ce5f32e91325ec8da9aabe890031c6de969dcb49649334d8ea47"
       },
       {
         "path": "content/docs/store6/invalidate-vs-clear.mdx",
-        "sha256": "10e9efa7d10ee3a5c68e9f204ba3562f98e790f972d9f8a97aa1dd89d9b56a96"
+        "sha256": "6cb78cba664239edc2432cdf807e4bc36f76761aacba4af47862a4a2f4afc1c2"
       },
       {
         "path": "content/docs/store6/key-design.mdx",
@@ -188,27 +188,27 @@
       },
       {
         "path": "content/docs/store6/quickstart.mdx",
-        "sha256": "767e0d9c572fac78d9da323dc74eb51dd1d766cc00c0819b576e365d5dd25b33"
+        "sha256": "2f66b9615e5e4f962e344a7559745eb7368240cc4006d9a9a586e7c0467bca96"
       },
       {
         "path": "content/docs/store6/realtime.mdx",
-        "sha256": "35df93b5670b858762cb3cd863e77c2138f78a1a3394a456831ae76caea4d1a4"
+        "sha256": "999d64aee9f5a54a79ba6fc99e9a155a75cacc0935f25d49ea1b37fec7dd7147"
       },
       {
         "path": "content/docs/store6/roadmap.mdx",
-        "sha256": "a60ea77d53b25418d8c14d48dea1d4e85e5583041ddd2581fd9afc85da30173f"
+        "sha256": "594f97118686fb97a17900f5681f558264809fc837456bfbbcb879abf2829332"
       },
       {
         "path": "content/docs/store6/room.mdx",
-        "sha256": "ca64912cb279bfeb5d4700275f36510264c4422599bc1d347bde3abed4ec9ea2"
+        "sha256": "5951b32a987f69d64a9ce13cd88af87fcfa49dd9370548b027e16a9fc14dd0ca"
       },
       {
         "path": "content/docs/store6/sqldelight.mdx",
-        "sha256": "c21e095b623109eff59239726e0ec951b5f461774ae131ab0bf3f3bf9ac9b701"
+        "sha256": "b0487cd63788865e8be99e1c8c9cdbe771b1fb8aa05bbb7c397f7b5ba71ce3a7"
       },
       {
         "path": "content/docs/store6/stability.mdx",
-        "sha256": "446226a9bf47e7d1315fc454dde9e648fdd7d7102b30078835cfe3595fe8552c"
+        "sha256": "c966d8414100f73b160818dd69a20ebece87af3487e311435323bf788b3135fb"
       },
       {
         "path": "public/llms.txt",

@@ -34,8 +34,7 @@ Extend `MutationJournalStorageContractKit` in the consumer test source set and i
   instance; a persistent implementation returns a new adapter over the same durable store without
   clearing its records.
 
-The kit tests named rule families rather than pretending every execution phase has one total
-ordering:
+The kit tests named rule families because the execution phases do not have one total ordering:
 
 | Rule family | Contract exercised |
 | --- | --- |
@@ -46,7 +45,7 @@ ordering:
 | Transactions | If the transaction callback throws, none of its operations commit. |
 | Pruning | Deletion stops at the persisted server-confirmed retirement prefix; alias redirects and the active tombstone generation survive ordinary pruning. |
 
-The following shape mirrors the SQLDelight adapter's own contract test. `JournalFixture` and
+This shape mirrors the SQLDelight adapter's own contract test. `JournalFixture` and
 `freshJournalFixture()` are test-owned helpers: each fresh fixture creates a new durable database,
 and its `driver` and `transacter` address that same database. Calling `storage()` again creates a
 new adapter over the existing database.

@@ -14,7 +14,7 @@ release. Read the [stability policy](/docs/store6/stability) before adopting it.
 
 Without a registered merge policy, a server-signalled conflict ends with server-wins. Store
 recaptures the authoritative server state, retires the intent, and sends no further push for it.
-Server-wins is always available and deliberately has no builder setter that can remove it.
+Server-wins is always available. No builder setter can remove it.
 
 <Callout type="Note">
 
@@ -120,7 +120,7 @@ merge receives the immutable generation's `base` and `mine` along with that reca
 three values use `MutationPresence`, so deletion is `MutationPresence.Absent`, never a nullable
 value.
 
-The return value chooses the terminal or retry path:
+The merge result chooses the terminal or retry path:
 
 | Merge result | Durable transition | Transport and effects |
 | --- | --- | --- |

@@ -1,0 +1,21 @@
+{
+  "checkedFiles": 13,
+  "changed": [
+    "content/docs/store6/quickstart.mdx",
+    "content/docs/store6/important-defaults.mdx",
+    "content/docs/store6/invalidate-vs-clear.mdx",
+    "content/docs/store6/stability.mdx",
+    "content/docs/store6/roadmap.mdx",
+    "content/docs/store6/compose.mdx",
+    "content/docs/store6/sqldelight.mdx",
+    "content/docs/store6/room.mdx",
+    "content/docs/store6/realtime.mdx",
+    "content/docs/store6/graphql.mdx",
+    "content/docs/store6/paging.mdx"
+  ],
+  "generatedUnchanged": [
+    "content/docs/store6/key-design.mdx",
+    "content/docs/store6/contributing.mdx"
+  ],
+  "failures": []
+}

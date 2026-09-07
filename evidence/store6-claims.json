@@ -98,7 +98,7 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
+          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
           "lines": {
             "start": 14,
             "end": 16
@@ -107,7 +107,7 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
+          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
           "lines": {
             "start": 136,
             "end": 161
@@ -262,7 +262,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 76,
             "end": 76
@@ -364,7 +364,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 72,
             "end": 72
@@ -451,7 +451,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 80,
             "end": 80
@@ -519,7 +519,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 28,
             "end": 28
@@ -570,7 +570,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 32,
             "end": 32
@@ -621,7 +621,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 12,
             "end": 12
@@ -706,7 +706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "3cc160225f68b9eea8864d02f2bfcfd535f6f6f70d3e73b56ff77e073911df8b",
+          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
           "lines": {
             "start": 16,
             "end": 16
@@ -752,18 +752,28 @@
       "id": "tokens-demo/002",
       "page": "/tokens-demo",
       "claim": "The page renders the origin token set (soft-surface chips, dots, and on-dark variants) plus Supported/Experimental semantic status chips as separate palettes.",
-      "verdict": "CONFIRMED",
+      "verdict": "REFUTED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "app/tokens-demo/TokenExamples.tsx",
-          "sha256": "2559868a6be55820b26838a25d9be9370257c23a9610fbce57a0d8a91f248e6b",
+          "sha256": "45c7785c7d0073e09a06f0a32f34eabae63cee2991a1a564ddce1fe2633ec7d4",
           "lines": {
             "start": 5,
             "end": 114
           }
+        },
+        {
+          "repository": "store-docs",
+          "path": "components/docs/mintlify/status/styles.css",
+          "sha256": "5aee4c8fc4c8e250af0b9e3967659745220f988fac3f66d180a272e2e07e18a2",
+          "lines": {
+            "start": 1,
+            "end": 44
+          }
         }
-      ]
+      ],
+      "correction": "Origin and status chips remain separate semantic groups, but they now share the chosen color palette. Status chips use dark labels over matching soft surfaces, with status indicators using the purple, green, amber, and pink values."
     },
     {
       "id": "tokens-demo/003",
@@ -776,7 +786,7 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "ba14ca32bf897dc5d3e3a8c71ec2ec4864414666d9b9a21f5b4092ef6be3d7e7",
+          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
           "lines": {
             "start": 122,
             "end": 134

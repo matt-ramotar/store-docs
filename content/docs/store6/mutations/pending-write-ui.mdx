@@ -48,8 +48,8 @@ fun <V> WriteBadges(
 }
 ```
 
-A spinner driven by `isStale` will never appear for a pending optimistic frame, and that is
-intentional. If the projector returns a value equal to the committed base, Store preserves the
+A spinner driven by `isStale` will never appear for a pending optimistic frame. If the projector
+returns a value equal to the committed base, Store preserves the
 committed envelope and its origin instead of labelling it `OVERLAY`. Use durable inspection when
 the UI needs pending counts or phases independent of whether projection changed the visible value.
 
@@ -76,7 +76,7 @@ visible transition is:
 | Durable acknowledgement and local completion | The server echo is adopted, then the optimistic intent is retired. |
 | A stream opened after the drain completes | The committed echo as `Data` attributed to `SOT` or `MEMORY`. |
 
-The origin is what narrates “saving” to “saved.” `isStale` never represents the pending phase, and
+The origin distinguishes “saving” from “saved.” `isStale` never represents the pending phase, and
 `refreshing` remains a separate report of the live fetch slot.
 
 <Callout type="Note">

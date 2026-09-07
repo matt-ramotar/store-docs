@@ -3,9 +3,9 @@ title: "Memory, eviction, and store lifecycle"
 description: "What keeps a per-key engine alive, how maxIdleKeys bounds the idle ones, and why eviction never changes what a read returns."
 ---
 
-A store keeps one engine per active key, the unit of state that tracks demand, runs the fetch
-pipeline, and feeds collectors for that key. This page explains what keeps an engine resident, what
-bounds the idle ones, why eviction never changes what a read returns, and how a store's life ends.
+A store keeps one engine per active key. That engine tracks demand, runs the fetch pipeline, and
+feeds collectors for the key. Active work keeps an engine resident, the idle-key limit bounds idle
+engines, eviction preserves read behavior, and closing ends the store's lifecycle.
 
 ## What pins an engine
 
@@ -48,7 +48,7 @@ the refetch you would have gotten.
 Invalidation watermarks go further: they survive restart as well as eviction, and a namespace or
 global invalidation is observed even by a key a fresh store has never seen.
 
-Two conclusions follow, and both are common misreadings:
+Two consequences follow:
 
 - **`maxIdleKeys(0)` does not disable caching.** It destroys every engine the moment its key goes
   quiescent, but the value still lives in the source of truth and its freshness record in the

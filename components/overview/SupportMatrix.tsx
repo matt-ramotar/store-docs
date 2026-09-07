@@ -74,6 +74,7 @@ function TierChip({ tier }: { tier: ModuleTier }) {
   if (tier === "Stable track") {
     return (
       <Chip color="success" size="sm" variant="soft">
+        <span aria-hidden="true" className="store-status-dot" />
         <Chip.Label>{tier}</Chip.Label>
       </Chip>
     );
@@ -81,6 +82,7 @@ function TierChip({ tier }: { tier: ModuleTier }) {
 
   return (
     <Chip color="warning" size="sm" variant="soft">
+      <span aria-hidden="true" className="store-status-dot" />
       <Chip.Label>{tier}</Chip.Label>
     </Chip>
   );
@@ -97,7 +99,7 @@ export function SupportMatrix() {
         {modules.map((entry) => (
           <li key={entry.module} id={entry.module} className="min-w-0 py-5" aria-describedby="module-tier-guidance">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <code className="break-all text-sm font-semibold">{entry.module}</code>
+              <code className="store-inline-code break-all text-sm font-semibold">{entry.module}</code>
               <TierChip tier={entry.tier} />
             </div>
             {entry.detail ? <p className="mt-2 text-sm leading-6 text-foreground-secondary">{entry.detail}</p> : null}

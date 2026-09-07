@@ -6,7 +6,7 @@ A zero-config `store { fetcher { … } }` (see the [Quickstart](/docs/store6/qui
 of decisions for you. This page names
 every one of them, so you can find out here rather than in production.
 
-Each line ends in the conformance test that guarantees it. Those tests are the specification — if a
+Each line ends in the conformance test that guarantees it. Those tests are the specification. If a
 line here and its test ever disagree, the test is right and this page is a bug.
 
 <Callout type="Info">
@@ -34,7 +34,7 @@ See [Freshness policies](/docs/store6/concepts/freshness) for the complete per-c
   `Missing` without a `Loading` frame and without calling the fetcher
   (`localOnlyWithoutResidentReportsMissingWithoutLoadingOrFetcherCall`).
 - **Stale-while-revalidate is the shape of every refresh.** A stale value is served immediately and
-  the refresh produces **exactly one** terminal outcome — one fresh `Data`, or one served-stale
+  the refresh produces **exactly one** terminal outcome: one fresh `Data`, or one served-stale
   `Error`, or one `Revalidated`, never two
   (`ac1a_staleWhileRevalidate_successEmitsStaleThenExactlyOneFreshData`, and its `ac1b`/`ac1c`/`ac1d`
   siblings). A `get` on a stale resident value serves the stale value and refetches in the
@@ -43,7 +43,7 @@ See [Freshness policies](/docs/store6/concepts/freshness) for the complete per-c
 ## Retry
 
 - **The engine does not retry your fetcher. Zero retries, zero backoff, at zero configuration.** One
-  demand cycle invokes the fetcher exactly once, and a failure schedules no background retry — on
+  demand cycle invokes the fetcher exactly once, and a failure schedules no background retry on
   the terminalizing `get` path and on a live `stream` collector that survives the failure. A later
   call is new demand rather than a continuation of the failed one
   (`fetcherFailure_isNotRetried_zeroConfig`, which pins all three). If you want retries, they belong
