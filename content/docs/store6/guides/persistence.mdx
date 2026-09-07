@@ -24,16 +24,7 @@ persistence mutation.
 
 The read path is:
 
-```text
-read request
-    |
-    v
-memory --> SourceOfTruth.reader(key) ------------------> stream emissions
-                         |                                      ^
-                         | absent and the read policy fetches   |
-                         v                                      |
-                      fetcher --> SourceOfTruth.write(key, value)
-```
+<StoreDiagram id="persistence-read-path" />
 
 Memory can satisfy a read before persistence is consulted. When Store collects the source of
 truth, that reader flow feeds later stream emissions. A successful fetch is written through the

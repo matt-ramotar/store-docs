@@ -51,15 +51,7 @@ After cancellation, remote acceptance may be unknown once a generation is `INFLI
 explicit drain or restart must resend that exact immutable generation before a later key in the
 same namespace can reach transport.
 
-```mermaid
-flowchart LR
-    subgraph A["Namespace A"]
-        namespaceAHead["Head generation<br/>acceptance uncertain"] --> namespaceALater["Later key<br/>blocked behind owner"]
-    end
-    subgraph B["Namespace B"]
-        namespaceBHead["Eligible head"] --> namespaceBRetired["Push and retire"]
-    end
-```
+<StoreDiagram id="namespace-ownership" />
 
 The ordering unit is the durable client sequence within one effective identity. Namespace
 ownership prevents causal leapfrogging after transport begins; it does not create a global order

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Single or multiple stores: independent sources | Store Docs</title><style>/* Light values come from app/globals.css. Dark paper and ink are Store's code theme. */
+:root {
+  color-scheme: light;
+  --background: oklch(97.02% 0.0044 186.20);
+  --surface: oklch(100% 0.0022 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --border: oklch(90% 0.0044 186.20);
+  --accent: oklch(50.88% 0.0838 186.20);
+  --link: var(--accent);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #141A19;
+    --surface: #202424;
+    --surface-secondary: #202424;
+    --foreground: #F9FDFC;
+    --muted: #9AA2A1;
+    --border: #414B49;
+    /* Same Tidal hue/chroma, lifted for contrast on Store's dark surface. */
+    --accent: oklch(76% 0.0838 186.20);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+main { max-width: 1120px; margin: auto; padding: 32px; }
+.eyebrow { color: var(--muted); font: 12px var(--font-mono); letter-spacing: .12em; }
+h1 { font-size: 28px; line-height: 1.2; font-weight: 600; }
+@media (max-width: 600px) { main { padding: 16px; } }
+@media print { :root { --background: white; --surface: white; --surface-secondary: #f0f4f3; --foreground: #141A19; --muted: #414B49; --border: #bac6c3; --accent: oklch(50.88% 0.0838 186.20); } }
+
+/* Diagram Design semantic roles inherit the Store Docs theme. */
+.store-designed-diagram {
+  --dd-paper: var(--background);
+  --dd-paper-2: var(--surface-secondary);
+  --dd-ink: var(--foreground);
+  --dd-muted: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --dd-rule: var(--border);
+  --dd-accent: var(--accent);
+  --dd-tint: color-mix(in srgb, var(--accent) 8%, var(--background));
+  --dd-link: var(--link, var(--accent));
+  margin: 2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--dd-ink);
+}
+.store-designed-diagram-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-designed-diagram-viewport:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 4px; }
+.store-designed-diagram .dd-svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.store-designed-diagram .dd-svg :where(text) { fill: var(--dd-ink); font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+.store-designed-diagram .dd-name { font-size: 16px; font-weight: 600; }
+.store-designed-diagram .dd-mono,
+.store-designed-diagram .dd-label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-tag { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; letter-spacing: .08em; fill: var(--dd-muted); }
+.store-designed-diagram .dd-legend { font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-paper { fill: var(--dd-paper); stroke: none; }
+.store-designed-diagram .dd-node { fill: var(--surface); stroke: var(--dd-ink); stroke-width: 1; }
+.store-designed-diagram .dd-focal { fill: var(--dd-tint); stroke: var(--dd-accent); stroke-width: 1.5; }
+.store-designed-diagram .dd-state { fill: var(--dd-paper-2); stroke: var(--dd-muted); stroke-width: 1; }
+.store-designed-diagram .dd-optional { fill: var(--dd-paper); stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.store-designed-diagram .dd-zone { fill: var(--dd-paper-2); fill-opacity: .5; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-rule { fill: none; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-lifeline { fill: none; stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.store-designed-diagram .dd-edge { fill: none; stroke: var(--dd-muted); stroke-width: 1.5; stroke-linejoin: round; }
+.store-designed-diagram .dd-edge-accent { stroke: var(--dd-accent); }
+.store-designed-diagram .dd-edge-link { stroke: var(--dd-link); }
+.store-designed-diagram .dd-arrow-default { fill: var(--dd-muted); }
+.store-designed-diagram .dd-arrow-accent { fill: var(--dd-accent); }
+.store-designed-diagram .dd-arrow-link { fill: var(--dd-link); }
+.store-designed-diagram figcaption { margin-top: .75rem; max-width: 72ch; font-size: .875rem; line-height: 1.6; color: var(--dd-muted); }
+.store-designed-diagram figcaption a { margin-inline-start: .5em; }
+@media print {
+  .store-designed-diagram-viewport { overflow: visible; }
+  .store-designed-diagram .dd-svg { min-width: 0; }
+  .store-designed-diagram { break-inside: avoid; }
+}
+</style></head><body><main><header><p class="eyebrow">STORE DOCS / DIAGRAMS</p><h1>Single or multiple stores: independent sources</h1></header><figure class="store-designed-diagram"><div class="store-designed-diagram-viewport" tabindex="0" role="region" aria-label="Single or multiple stores: independent sources; scroll horizontally on small screens"><svg xmlns="http://www.w3.org/2000/svg" class="dd-svg" role="img" aria-labelledby="independent-stores-title independent-stores-desc" viewBox="0 0 960 1312"><title id="independent-stores-title">Single or multiple stores: independent sources</title><desc id="independent-stores-desc">For independent sources, use multiple stores if caching or validation differs, error isolation matters, more sources are expected, or repository-level composition is feasible; otherwise use a single store.</desc><defs><marker id="independent-stores-arrow-default" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-default"/></marker><marker id="independent-stores-arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-accent"/></marker><marker id="independent-stores-arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-link"/></marker></defs><rect x="0" y="0" width="960" height="1312" rx="0" class="dd-paper"/><text x="40" y="40" class="dd-tag" text-anchor="start">02 / WHEN DATA SOURCES ARE NOT TIGHTLY COUPLED</text><path d="M600 144 H872 Q880 144 880 152 V1120" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="YES"><rect x="648.0" y="112" width="64" height="24" rx="4" class="dd-paper"/><text x="680" y="128" class="dd-label" text-anchor="middle">YES</text></g><path d="M360 224 V304" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="NO"><rect x="368.0" y="252" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="268" class="dd-label" text-anchor="middle">NO</text></g><path d="M600 384 H832 Q840 384 840 392 V1120" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="YES"><rect x="648.0" y="352" width="64" height="24" rx="4" class="dd-paper"/><text x="680" y="368" class="dd-label" text-anchor="middle">YES</text></g><path d="M360 464 V544" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="NO"><rect x="368.0" y="492" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="508" class="dd-label" text-anchor="middle">NO</text></g><path d="M600 624 H792 Q800 624 800 632 V1120" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="YES"><rect x="648.0" y="592" width="64" height="24" rx="4" class="dd-paper"/><text x="680" y="608" class="dd-label" text-anchor="middle">YES</text></g><path d="M360 704 V784" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="NO"><rect x="368.0" y="732" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="748" class="dd-label" text-anchor="middle">NO</text></g><path d="M600 864 H752 Q760 864 760 872 V1120" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="YES"><rect x="648.0" y="832" width="64" height="24" rx="4" class="dd-paper"/><text x="680" y="848" class="dd-label" text-anchor="middle">YES</text></g><path d="M360 944 V1120" class="dd-edge dd-edge-default" marker-end="url(#independent-stores-arrow-default)"/><g data-label="NO"><rect x="368.0" y="1020" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="1036" class="dd-label" text-anchor="middle">NO</text></g><g data-node="Do sources need different caching strategies or validation rules?"><polygon points="360,64 600,144 360,224 120,144" class="dd-node"/><text x="360" y="128" class="dd-name" text-anchor="middle">Do sources need different</text><text x="360" y="148" class="dd-name" text-anchor="middle">caching strategies</text><text x="360" y="168" class="dd-name" text-anchor="middle">or validation rules?</text></g><g data-node="Is independent error handling important?"><polygon points="360,304 600,384 360,464 120,384" class="dd-node"/><text x="360" y="376" class="dd-name" text-anchor="middle">Is independent</text><text x="360" y="396" class="dd-name" text-anchor="middle">error handling important?</text></g><g data-node="Do you anticipate adding more data sources in the future?"><polygon points="360,544 600,624 360,704 120,624" class="dd-node"/><text x="360" y="608" class="dd-name" text-anchor="middle">Do you anticipate adding</text><text x="360" y="628" class="dd-name" text-anchor="middle">more data sources</text><text x="360" y="648" class="dd-name" text-anchor="middle">in the future?</text></g><g data-node="Is combining data in the repository layer feasible?"><polygon points="360,784 600,864 360,944 120,864" class="dd-node"/><text x="360" y="856" class="dd-name" text-anchor="middle">Is combining data in</text><text x="360" y="876" class="dd-name" text-anchor="middle">the repository layer feasible?</text></g><g data-node="Use a single store"><rect x="200" y="1120" width="280" height="88" rx="8" class="dd-paper"/><rect x="200" y="1120" width="280" height="88" rx="8" class="dd-focal"/><text x="340.0" y="1168" class="dd-name" text-anchor="middle">Use a single store</text></g><g data-node="Use multiple stores"><rect x="600" y="1120" width="320" height="88" rx="8" class="dd-paper"/><rect x="600" y="1120" width="320" height="88" rx="8" class="dd-focal"/><text x="760.0" y="1168" class="dd-name" text-anchor="middle">Use multiple stores</text></g><path d="M40 1248 H920" class="dd-rule"/><rect x="40" y="1268" width="12" height="12" rx="4" class="dd-node"/><text x="64" y="1280" class="dd-legend" text-anchor="start">Question</text><rect x="320" y="1268" width="12" height="12" rx="4" class="dd-focal"/><text x="344" y="1280" class="dd-legend" text-anchor="start">Outcome</text></svg></div><figcaption>For independent sources, use multiple stores if caching or validation differs, error isolation matters, more sources are expected, or repository-level composition is feasible; otherwise use a single store.</figcaption></figure></main></body></html>

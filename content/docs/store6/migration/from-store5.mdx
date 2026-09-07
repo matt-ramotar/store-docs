@@ -276,15 +276,7 @@ Until `store6-store5-interop` ships, the Store 5 and Store 6 instances do not sh
 Both can use the same backend, but invalidation and residence in one version do not update the
 other.
 
-```mermaid
-flowchart LR
-    subgraph App["One app"]
-        store5Screens["N screens<br/>Store 5 cache"]
-        store6Screen["One migrated screen<br/>Store 6 cache"]
-    end
-    store5Screens --> backend["Same backend"]
-    store6Screen --> backend
-```
+<StoreDiagram id="store5-migration" />
 
 ## What to read next
 

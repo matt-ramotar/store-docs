@@ -1,0 +1,49 @@
+/* Diagram Design semantic roles inherit the Store Docs theme. */
+.store-designed-diagram {
+  --dd-paper: var(--background);
+  --dd-paper-2: var(--surface-secondary);
+  --dd-ink: var(--foreground);
+  --dd-muted: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --dd-rule: var(--border);
+  --dd-accent: var(--accent);
+  --dd-tint: color-mix(in srgb, var(--accent) 8%, var(--background));
+  --dd-link: var(--link, var(--accent));
+  margin: 2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--dd-ink);
+}
+.store-designed-diagram-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-designed-diagram-viewport:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 4px; }
+.store-designed-diagram .dd-svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.store-designed-diagram .dd-svg :where(text) { fill: var(--dd-ink); font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+.store-designed-diagram .dd-name { font-size: 16px; font-weight: 600; }
+.store-designed-diagram .dd-mono,
+.store-designed-diagram .dd-label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-tag { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; letter-spacing: .08em; fill: var(--dd-muted); }
+.store-designed-diagram .dd-legend { font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-paper { fill: var(--dd-paper); stroke: none; }
+.store-designed-diagram .dd-node { fill: var(--surface); stroke: var(--dd-ink); stroke-width: 1; }
+.store-designed-diagram .dd-focal { fill: var(--dd-tint); stroke: var(--dd-accent); stroke-width: 1.5; }
+.store-designed-diagram .dd-state { fill: var(--dd-paper-2); stroke: var(--dd-muted); stroke-width: 1; }
+.store-designed-diagram .dd-optional { fill: var(--dd-paper); stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.store-designed-diagram .dd-zone { fill: var(--dd-paper-2); fill-opacity: .5; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-rule { fill: none; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-lifeline { fill: none; stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.store-designed-diagram .dd-edge { fill: none; stroke: var(--dd-muted); stroke-width: 1.5; stroke-linejoin: round; }
+.store-designed-diagram .dd-edge-accent { stroke: var(--dd-accent); }
+.store-designed-diagram .dd-edge-link { stroke: var(--dd-link); }
+.store-designed-diagram .dd-arrow-default { fill: var(--dd-muted); }
+.store-designed-diagram .dd-arrow-accent { fill: var(--dd-accent); }
+.store-designed-diagram .dd-arrow-link { fill: var(--dd-link); }
+.store-designed-diagram figcaption { margin-top: .75rem; max-width: 72ch; font-size: .875rem; line-height: 1.6; color: var(--dd-muted); }
+.store-designed-diagram figcaption a { margin-inline-start: .5em; }
+@media print {
+  .store-designed-diagram-viewport { overflow: visible; }
+  .store-designed-diagram .dd-svg { min-width: 0; }
+  .store-designed-diagram { break-inside: avoid; }
+}

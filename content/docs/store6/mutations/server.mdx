@@ -191,34 +191,9 @@ on a duplicate request. Equality here includes the acknowledgement variant, auth
 when present, etag, and canonical target. A changed payload is not a retry: conflict resolution
 persists generation `g + 1` and its new idempotency key before sending it.
 
-```mermaid
-sequenceDiagram
-    participant E as Mutation engine
-    participant S as MutationServer
-    participant B as Backend
-    E->>S: push(generation g, idempotencyKey k)
-    S->>B: deterministic request for g and k
-    alt backend accepts
-        B-->>S: authoritative result
-        S-->>E: Present or Absent acknowledgement
-        alt receipt and ACKED transaction commits
-            E->>E: persist complete receipt and ACKED
-            E->>E: adopt echo, apply effects, retire intent
-            Note over E: Recovery may repeat local work, never push g
-        else failure or death before commit
-            Note over E: Last durable phase remains INFLIGHT
-            E->>S: later drain replays generation g and key k
-            S->>B: duplicate request for g and k
-            B-->>S: same authoritative result
-            S-->>E: same acknowledgement
-            E->>E: persist complete receipt and ACKED
-            E->>E: resume adoption, effects, and retirement
-        end
-    else precondition conflict
-        B-->>S: conflict response
-        S--xE: sanctioned StoreResults.conflict throw
-    end
-```
+<StoreDiagram id="server-outcomes" />
+
+<StoreDiagram id="server-recovery" />
 
 Transport cancellation is not a failed generation. Once `push` has entered `INFLIGHT`, Store
 rethrows `CancellationException` and leaves the generation intact because remote acceptance is

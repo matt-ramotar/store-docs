@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Recovery after backend acceptance | Store Docs</title><style>/* Light values come from app/globals.css. Dark paper and ink are Store's code theme. */
+:root {
+  color-scheme: light;
+  --background: oklch(97.02% 0.0044 186.20);
+  --surface: oklch(100% 0.0022 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --border: oklch(90% 0.0044 186.20);
+  --accent: oklch(50.88% 0.0838 186.20);
+  --link: var(--accent);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #141A19;
+    --surface: #202424;
+    --surface-secondary: #202424;
+    --foreground: #F9FDFC;
+    --muted: #9AA2A1;
+    --border: #414B49;
+    /* Same Tidal hue/chroma, lifted for contrast on Store's dark surface. */
+    --accent: oklch(76% 0.0838 186.20);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+main { max-width: 1120px; margin: auto; padding: 32px; }
+.eyebrow { color: var(--muted); font: 12px var(--font-mono); letter-spacing: .12em; }
+h1 { font-size: 28px; line-height: 1.2; font-weight: 600; }
+@media (max-width: 600px) { main { padding: 16px; } }
+@media print { :root { --background: white; --surface: white; --surface-secondary: #f0f4f3; --foreground: #141A19; --muted: #414B49; --border: #bac6c3; --accent: oklch(50.88% 0.0838 186.20); } }
+
+/* Diagram Design semantic roles inherit the Store Docs theme. */
+.store-designed-diagram {
+  --dd-paper: var(--background);
+  --dd-paper-2: var(--surface-secondary);
+  --dd-ink: var(--foreground);
+  --dd-muted: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --dd-rule: var(--border);
+  --dd-accent: var(--accent);
+  --dd-tint: color-mix(in srgb, var(--accent) 8%, var(--background));
+  --dd-link: var(--link, var(--accent));
+  margin: 2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--dd-ink);
+}
+.store-designed-diagram-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-designed-diagram-viewport:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 4px; }
+.store-designed-diagram .dd-svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.store-designed-diagram .dd-svg :where(text) { fill: var(--dd-ink); font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+.store-designed-diagram .dd-name { font-size: 16px; font-weight: 600; }
+.store-designed-diagram .dd-mono,
+.store-designed-diagram .dd-label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-tag { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; letter-spacing: .08em; fill: var(--dd-muted); }
+.store-designed-diagram .dd-legend { font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-paper { fill: var(--dd-paper); stroke: none; }
+.store-designed-diagram .dd-node { fill: var(--surface); stroke: var(--dd-ink); stroke-width: 1; }
+.store-designed-diagram .dd-focal { fill: var(--dd-tint); stroke: var(--dd-accent); stroke-width: 1.5; }
+.store-designed-diagram .dd-state { fill: var(--dd-paper-2); stroke: var(--dd-muted); stroke-width: 1; }
+.store-designed-diagram .dd-optional { fill: var(--dd-paper); stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.store-designed-diagram .dd-zone { fill: var(--dd-paper-2); fill-opacity: .5; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-rule { fill: none; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-lifeline { fill: none; stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.store-designed-diagram .dd-edge { fill: none; stroke: var(--dd-muted); stroke-width: 1.5; stroke-linejoin: round; }
+.store-designed-diagram .dd-edge-accent { stroke: var(--dd-accent); }
+.store-designed-diagram .dd-edge-link { stroke: var(--dd-link); }
+.store-designed-diagram .dd-arrow-default { fill: var(--dd-muted); }
+.store-designed-diagram .dd-arrow-accent { fill: var(--dd-accent); }
+.store-designed-diagram .dd-arrow-link { fill: var(--dd-link); }
+.store-designed-diagram figcaption { margin-top: .75rem; max-width: 72ch; font-size: .875rem; line-height: 1.6; color: var(--dd-muted); }
+.store-designed-diagram figcaption a { margin-inline-start: .5em; }
+@media print {
+  .store-designed-diagram-viewport { overflow: visible; }
+  .store-designed-diagram .dd-svg { min-width: 0; }
+  .store-designed-diagram { break-inside: avoid; }
+}
+</style></head><body><main><header><p class="eyebrow">STORE DOCS / DIAGRAMS</p><h1>Recovery after backend acceptance</h1></header><figure class="store-designed-diagram"><div class="store-designed-diagram-viewport" tabindex="0" role="region" aria-label="Recovery after backend acceptance; scroll horizontally on small screens"><svg xmlns="http://www.w3.org/2000/svg" class="dd-svg" role="img" aria-labelledby="server-recovery-title server-recovery-desc" viewBox="0 0 960 1040"><title id="server-recovery-title">Recovery after backend acceptance</title><desc id="server-recovery-desc">A committed receipt and ACKED phase prevent another push of generation g; failure before that transaction commits leaves INFLIGHT, so a later drain replays g and k, receives the same result, persists the receipt, and resumes local work.</desc><defs><marker id="server-recovery-arrow-default" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-default"/></marker><marker id="server-recovery-arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-accent"/></marker><marker id="server-recovery-arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-link"/></marker></defs><rect x="0" y="0" width="960" height="1040" rx="0" class="dd-paper"/><rect x="40" y="128" width="880" height="792" rx="4" class="dd-zone"/><path d="M48 404 H912" class="dd-rule" stroke-dasharray="4 4"/><path d="M160 104 V944" class="dd-lifeline"/><path d="M480 104 V944" class="dd-lifeline"/><path d="M800 104 V944" class="dd-lifeline"/><rect x="40" y="128" width="48" height="24" rx="4" class="dd-paper"/><text x="64" y="144" class="dd-tag" text-anchor="middle">ALT</text><g data-label="[receipt and ACKED transaction commits]"><rect x="56" y="152" width="328" height="24" rx="4" class="dd-paper"/><text x="64" y="168" class="dd-label" text-anchor="start">[receipt and ACKED transaction commits]</text></g><g data-label="[failure or death before commit]"><rect x="56" y="420" width="272" height="24" rx="4" class="dd-paper"/><text x="64" y="436" class="dd-label" text-anchor="start">[failure or death before commit]</text></g><g data-message="true"><path d="M160 208 H200 Q208 208 208 216 V232 Q208 240 200 240 H160" class="dd-edge dd-edge-accent" marker-end="url(#server-recovery-arrow-accent)"/><g data-label="persist complete receipt and ACKED"><rect x="216" y="196" width="208" height="44" rx="4" class="dd-paper"/><text x="224" y="212" class="dd-label" text-anchor="start">persist complete receipt</text><text x="224" y="232" class="dd-label" text-anchor="start">and ACKED</text></g></g><g data-message="true"><path d="M160 272 H200 Q208 272 208 280 V296 Q208 304 200 304 H160" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)"/><g data-label="adopt echo, apply effects, retire intent"><rect x="216" y="260" width="224" height="44" rx="4" class="dd-paper"/><text x="224" y="276" class="dd-label" text-anchor="start">adopt echo, apply effects,</text><text x="224" y="296" class="dd-label" text-anchor="start">retire intent</text></g></g><g data-note="true"><rect x="72" y="328" width="360" height="60" rx="4" class="dd-paper"/><path d="M72 332 V380" class="dd-rule"/><text x="88" y="352" class="dd-legend" text-anchor="start">Recovery may repeat local work,</text><text x="88" y="372" class="dd-legend" text-anchor="start">never push g</text></g><g data-note="true"><rect x="72" y="456" width="360" height="40" rx="4" class="dd-paper"/><path d="M72 460 V488" class="dd-rule"/><text x="88" y="480" class="dd-legend" text-anchor="start">Last durable phase remains INFLIGHT</text></g><g data-message="true"><path d="M160 560 H480" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)"/><g data-label="later drain replays generation g and key k"><rect x="224.0" y="508" width="192" height="44" rx="4" class="dd-paper"/><text x="320.0" y="524" class="dd-label" text-anchor="middle">later drain replays</text><text x="320.0" y="544" class="dd-label" text-anchor="middle">generation g and key k</text></g></g><g data-message="true"><path d="M480 624 H800" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)"/><g data-label="duplicate request for g and k"><rect x="564.0" y="572" width="152" height="44" rx="4" class="dd-paper"/><text x="640.0" y="588" class="dd-label" text-anchor="middle">duplicate request</text><text x="640.0" y="608" class="dd-label" text-anchor="middle">for g and k</text></g></g><g data-message="true"><path d="M800 688 H480" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)" stroke-dasharray="4 4"/><g data-label="same authoritative result"><rect x="532.0" y="656" width="216" height="24" rx="4" class="dd-paper"/><text x="640.0" y="672" class="dd-label" text-anchor="middle">same authoritative result</text></g></g><g data-message="true"><path d="M480 752 H160" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)" stroke-dasharray="4 4"/><g data-label="same acknowledgement"><rect x="232.0" y="720" width="176" height="24" rx="4" class="dd-paper"/><text x="320.0" y="736" class="dd-label" text-anchor="middle">same acknowledgement</text></g></g><g data-message="true"><path d="M160 792 H200 Q208 792 208 800 V816 Q208 824 200 824 H160" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)"/><g data-label="persist complete receipt and ACKED"><rect x="216" y="780" width="208" height="44" rx="4" class="dd-paper"/><text x="224" y="796" class="dd-label" text-anchor="start">persist complete receipt</text><text x="224" y="816" class="dd-label" text-anchor="start">and ACKED</text></g></g><g data-message="true"><path d="M160 864 H200 Q208 864 208 872 V888 Q208 896 200 896 H160" class="dd-edge dd-edge-default" marker-end="url(#server-recovery-arrow-default)"/><g data-label="resume adoption, effects, and retirement"><rect x="216" y="852" width="216" height="44" rx="4" class="dd-paper"/><text x="224" y="868" class="dd-label" text-anchor="start">resume adoption, effects,</text><text x="224" y="888" class="dd-label" text-anchor="start">and retirement</text></g></g><g data-node="Mutation engine"><rect x="60.0" y="40" width="200" height="64" rx="8" class="dd-paper"/><rect x="60.0" y="40" width="200" height="64" rx="8" class="dd-node"/><text x="160.0" y="76" class="dd-name" text-anchor="middle">Mutation engine</text></g><g data-node="MutationServer"><rect x="380.0" y="40" width="200" height="64" rx="8" class="dd-paper"/><rect x="380.0" y="40" width="200" height="64" rx="8" class="dd-node"/><text x="480.0" y="76" class="dd-name" text-anchor="middle">MutationServer</text></g><g data-node="Backend"><rect x="720.0" y="40" width="160" height="64" rx="8" class="dd-paper"/><rect x="720.0" y="40" width="160" height="64" rx="8" class="dd-node"/><text x="800.0" y="76" class="dd-name" text-anchor="middle">Backend</text></g><path d="M40 960 H920" class="dd-rule"/><path d="M40 988 H80" class="dd-edge"/><text x="92" y="992" class="dd-legend" text-anchor="start">Call / local work</text><path d="M320 988 H360" class="dd-edge" stroke-dasharray="4 4"/><text x="372" y="992" class="dd-legend" text-anchor="start">Acknowledgement / return</text></svg></div><figcaption>This sequence starts after backend acceptance. Once ACKED is durable, recovery can repeat adoption, effects, and retirement but never re-pushes generation g.</figcaption></figure></main></body></html>

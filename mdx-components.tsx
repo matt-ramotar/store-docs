@@ -76,6 +76,7 @@ import {
 } from "@/components/docs/mintlify-runtime";
 import { EmWithVerifiedCommit } from "@/components/docs/LastVerified";
 import { CodeSlab } from "@/components/shell/CodeSlab";
+import { StoreDiagram } from "@/components/docs/diagrams/StoreDiagram";
 
 const MdxAccordion = Object.assign((props: ComponentProps<typeof Accordion>) => <Accordion {...props} />, { Group: AccordionGroup });
 const MdxSteps = Object.assign((props: ComponentProps<typeof Steps>) => <Steps {...props} />, { Item: Step });
@@ -207,6 +208,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     StepItem,
     StepsGroup,
     SupportMatrix,
+    StoreDiagram,
     TabGroup,
     TabPanel,
     // Native MDX cells retain rich content and HTML attributes inside HeroUI's table shell.

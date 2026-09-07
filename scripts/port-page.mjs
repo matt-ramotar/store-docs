@@ -19,6 +19,8 @@ const ACQUIRE_OWNER = "port-page:acquire";
 const GENERATE_OWNER = "port-page:generate";
 const EXCLUDED_URL = `${LIVE_ORIGIN}/api/openapi.json`;
 const MIGRATION_DATE = "2026-08-09";
+const REDESIGNED_DECISION_PATH = "/docs/best-practices/store5/single-or-multiple-stores";
+const DECISION_REDESIGN_NOTE = "Authored diagram redesign (2026-09-07): replaced the remote decision image with two local, themed SVG figures; retained all seven questions and fourteen decision branches, omitted the Start marker, and replaced color-only instructions with explicit YES/NO guidance.";
 const OUTSIDE_ROUTE_TARGETS = new Map([
   ["/developer-newsletter/overview", "app/developer-newsletter/overview/page.tsx"],
   ["/release-notes/overview", "app/release-notes/overview/page.tsx"],
@@ -101,7 +103,8 @@ async function generateFromSnapshot() {
     const target = targetForPathname(pathname);
     if (pathname.startsWith("/docs/")) {
       const conversion = convertBodyToMdx(page.bodyHtml, page.url, page.sourceMarkdown, linkHealth);
-      const body = conversion.body;
+      const redesign = applyAuthoredDiagramRedesign(conversion.body, page.url);
+      const body = redesign.body;
       const portedChars = normalizedMarkdownChars(body);
       const portedHeadings = markdownHeadings(body);
       let assessment = assessFidelity({
@@ -113,6 +116,12 @@ async function generateFromSnapshot() {
       if (conversion.unavailableDestinations.length > 0) {
         assessment = {
           loss: `Source-authored destination ${conversion.unavailableDestinations.join(", ")} is unavailable and outside the inventory; rendered as a non-link label.`,
+          status: "ported with noted loss",
+        };
+      }
+      if (redesign.notes.length > 0) {
+        assessment = {
+          loss: [...(assessment.loss === "none" ? [] : [assessment.loss]), ...redesign.notes].join(" "),
           status: "ported with noted loss",
         };
       }
@@ -196,6 +205,24 @@ export function convertBodyToMdx(bodyHtml, pageUrl, sourceMarkdown = "", linkHea
   return {
     body: restoreTrustedTags(sanitizePortedMarkdown(markdown), context),
     unavailableDestinations: context.unavailableDestinations,
+  };
+}
+
+/** Keep the historical conversion intact, then apply the authorized diagram redesign.
+ * An upstream change must be reviewed instead of silently restoring obsolete media.
+ */
+export function applyAuthoredDiagramRedesign(body, pageUrl) {
+  if (new URL(pageUrl).pathname !== REDESIGNED_DECISION_PATH) return { body, notes: [] };
+  const image = /^!\[Decision Flow Chart\]\(https:\/\/mintcdn\.com\/[^\s)]+\/single-or-multiple-stores-light\.svg\?[^\s)]+\)$/gm;
+  const instructions = '-   Green paths represent “yes”.\n-   Red paths represent “no”.';
+  if ([...body.matchAll(image)].length !== 1 || body.split(instructions).length !== 2) {
+    throw new Error(`AUTHORED_DIAGRAM_SOURCE_CHANGED: ${pageUrl}`);
+  }
+  return {
+    body: body
+      .replace(image, '<StoreDiagram id="single-or-multiple-stores" />\n\n<StoreDiagram id="independent-stores" />')
+      .replace(instructions, '-   Follow the paths labeled “YES” or “NO”.\n-   If the sources are not tightly coupled, continue with the second diagram.'),
+    notes: [DECISION_REDESIGN_NOTE],
   };
 }
 

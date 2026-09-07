@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Single or multiple stores: coupled sources | Store Docs</title><style>/* Light values come from app/globals.css. Dark paper and ink are Store's code theme. */
+:root {
+  color-scheme: light;
+  --background: oklch(97.02% 0.0044 186.20);
+  --surface: oklch(100% 0.0022 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --border: oklch(90% 0.0044 186.20);
+  --accent: oklch(50.88% 0.0838 186.20);
+  --link: var(--accent);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #141A19;
+    --surface: #202424;
+    --surface-secondary: #202424;
+    --foreground: #F9FDFC;
+    --muted: #9AA2A1;
+    --border: #414B49;
+    /* Same Tidal hue/chroma, lifted for contrast on Store's dark surface. */
+    --accent: oklch(76% 0.0838 186.20);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+main { max-width: 1120px; margin: auto; padding: 32px; }
+.eyebrow { color: var(--muted); font: 12px var(--font-mono); letter-spacing: .12em; }
+h1 { font-size: 28px; line-height: 1.2; font-weight: 600; }
+@media (max-width: 600px) { main { padding: 16px; } }
+@media print { :root { --background: white; --surface: white; --surface-secondary: #f0f4f3; --foreground: #141A19; --muted: #414B49; --border: #bac6c3; --accent: oklch(50.88% 0.0838 186.20); } }
+
+/* Diagram Design semantic roles inherit the Store Docs theme. */
+.store-designed-diagram {
+  --dd-paper: var(--background);
+  --dd-paper-2: var(--surface-secondary);
+  --dd-ink: var(--foreground);
+  --dd-muted: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --dd-rule: var(--border);
+  --dd-accent: var(--accent);
+  --dd-tint: color-mix(in srgb, var(--accent) 8%, var(--background));
+  --dd-link: var(--link, var(--accent));
+  margin: 2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--dd-ink);
+}
+.store-designed-diagram-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-designed-diagram-viewport:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 4px; }
+.store-designed-diagram .dd-svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.store-designed-diagram .dd-svg :where(text) { fill: var(--dd-ink); font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+.store-designed-diagram .dd-name { font-size: 16px; font-weight: 600; }
+.store-designed-diagram .dd-mono,
+.store-designed-diagram .dd-label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-tag { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; letter-spacing: .08em; fill: var(--dd-muted); }
+.store-designed-diagram .dd-legend { font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-paper { fill: var(--dd-paper); stroke: none; }
+.store-designed-diagram .dd-node { fill: var(--surface); stroke: var(--dd-ink); stroke-width: 1; }
+.store-designed-diagram .dd-focal { fill: var(--dd-tint); stroke: var(--dd-accent); stroke-width: 1.5; }
+.store-designed-diagram .dd-state { fill: var(--dd-paper-2); stroke: var(--dd-muted); stroke-width: 1; }
+.store-designed-diagram .dd-optional { fill: var(--dd-paper); stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.store-designed-diagram .dd-zone { fill: var(--dd-paper-2); fill-opacity: .5; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-rule { fill: none; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-lifeline { fill: none; stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.store-designed-diagram .dd-edge { fill: none; stroke: var(--dd-muted); stroke-width: 1.5; stroke-linejoin: round; }
+.store-designed-diagram .dd-edge-accent { stroke: var(--dd-accent); }
+.store-designed-diagram .dd-edge-link { stroke: var(--dd-link); }
+.store-designed-diagram .dd-arrow-default { fill: var(--dd-muted); }
+.store-designed-diagram .dd-arrow-accent { fill: var(--dd-accent); }
+.store-designed-diagram .dd-arrow-link { fill: var(--dd-link); }
+.store-designed-diagram figcaption { margin-top: .75rem; max-width: 72ch; font-size: .875rem; line-height: 1.6; color: var(--dd-muted); }
+.store-designed-diagram figcaption a { margin-inline-start: .5em; }
+@media print {
+  .store-designed-diagram-viewport { overflow: visible; }
+  .store-designed-diagram .dd-svg { min-width: 0; }
+  .store-designed-diagram { break-inside: avoid; }
+}
+</style></head><body><main><header><p class="eyebrow">STORE DOCS / DIAGRAMS</p><h1>Single or multiple stores: coupled sources</h1></header><figure class="store-designed-diagram"><div class="store-designed-diagram-viewport" tabindex="0" role="region" aria-label="Single or multiple stores: coupled sources; scroll horizontally on small screens"><svg xmlns="http://www.w3.org/2000/svg" class="dd-svg" role="img" aria-labelledby="single-or-multiple-stores-title single-or-multiple-stores-desc" viewBox="0 0 960 1024"><title id="single-or-multiple-stores-title">Single or multiple stores: coupled sources</title><desc id="single-or-multiple-stores-desc">Tightly coupled data sources favor one store when atomic updates are required or combining data in one store is less complex; otherwise use multiple stores, and evaluate independent sources in part 2.</desc><defs><marker id="single-or-multiple-stores-arrow-default" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-default"/></marker><marker id="single-or-multiple-stores-arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-accent"/></marker><marker id="single-or-multiple-stores-arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-link"/></marker></defs><rect x="0" y="0" width="960" height="1024" rx="0" class="dd-paper"/><text x="40" y="40" class="dd-tag" text-anchor="start">01 / START WITH COUPLING</text><path d="M360 224 V304" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><path d="M600 144 H832 Q840 144 840 152 V284" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><path d="M360 464 V544" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><path d="M120 384 H80 Q72 384 72 392 V868 Q72 876 80 876 H200" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><path d="M360 704 V832" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><path d="M600 624 H712 Q720 624 720 632 V832" class="dd-edge dd-edge-default" marker-end="url(#single-or-multiple-stores-arrow-default)"/><g data-label="YES"><rect x="368.0" y="252" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="268" class="dd-label" text-anchor="middle">YES</text></g><g data-label="NO"><rect x="684.0" y="112" width="64" height="24" rx="4" class="dd-paper"/><text x="716" y="128" class="dd-label" text-anchor="middle">NO</text></g><g data-label="NO"><rect x="368.0" y="492" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="508" class="dd-label" text-anchor="middle">NO</text></g><g data-label="YES"><rect x="80.0" y="440" width="80" height="24" rx="4" class="dd-paper"/><text x="120" y="456" class="dd-label" text-anchor="middle">YES</text></g><g data-label="YES"><rect x="368.0" y="756" width="80" height="24" rx="4" class="dd-paper"/><text x="408" y="772" class="dd-label" text-anchor="middle">YES</text></g><g data-label="NO"><rect x="628.0" y="592" width="64" height="24" rx="4" class="dd-paper"/><text x="660" y="608" class="dd-label" text-anchor="middle">NO</text></g><g data-node="Are your data sources tightly coupled?"><polygon points="360,64 600,144 360,224 120,144" class="dd-node"/><text x="360" y="136" class="dd-name" text-anchor="middle">Are your data sources</text><text x="360" y="156" class="dd-name" text-anchor="middle">tightly coupled?</text></g><g data-node="Do you require atomic updates across data sources?"><polygon points="360,304 600,384 360,464 120,384" class="dd-node"/><text x="360" y="376" class="dd-name" text-anchor="middle">Do you require atomic updates</text><text x="360" y="396" class="dd-name" text-anchor="middle">across data sources?</text></g><g data-node="Is combining data within a single store less complex?"><polygon points="360,544 600,624 360,704 120,624" class="dd-node"/><text x="360" y="616" class="dd-name" text-anchor="middle">Is combining data within</text><text x="360" y="636" class="dd-name" text-anchor="middle">a single store less complex?</text></g><a class="font-medium text-accent-strong underline decoration-separator decoration-1 underline-offset-4" href="/diagrams/independent-stores.html" aria-label="Continue with independent data sources"><g data-node="Independent sources / Continue in part 2"><rect x="720" y="284" width="200" height="88" rx="8" class="dd-paper"/><rect x="720" y="284" width="200" height="88" rx="8" class="dd-optional"/><text x="820.0" y="320" class="dd-name" text-anchor="middle">Independent sources</text><text x="820.0" y="340" class="dd-name" text-anchor="middle">Continue in part 2</text></g></a><g data-node="Use a single store"><rect x="200" y="832" width="240" height="88" rx="8" class="dd-paper"/><rect x="200" y="832" width="240" height="88" rx="8" class="dd-focal"/><text x="320.0" y="880" class="dd-name" text-anchor="middle">Use a single store</text></g><g data-node="Use multiple stores"><rect x="600" y="832" width="240" height="88" rx="8" class="dd-paper"/><rect x="600" y="832" width="240" height="88" rx="8" class="dd-focal"/><text x="720.0" y="880" class="dd-name" text-anchor="middle">Use multiple stores</text></g><path d="M40 960 H920" class="dd-rule"/><rect x="40" y="980" width="12" height="12" rx="4" class="dd-node"/><text x="64" y="992" class="dd-legend" text-anchor="start">Question</text><rect x="320" y="980" width="12" height="12" rx="4" class="dd-focal"/><text x="344" y="992" class="dd-legend" text-anchor="start">Outcome</text><rect x="600" y="980" width="12" height="12" rx="4" class="dd-optional"/><text x="624" y="992" class="dd-legend" text-anchor="start">Continue in part 2</text></svg></div><figcaption>Tightly coupled data sources favor one store when atomic updates are required or combining data in one store is less complex; otherwise use multiple stores, and evaluate independent sources in part 2.</figcaption></figure></main></body></html>
