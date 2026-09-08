@@ -12,15 +12,17 @@ const canonicalSiteOrigin = "https://store.mobilenativefoundation.org";
 const localReferenceOrigin = "https://reference.invalid";
 const stockKotlinPlaygroundScript =
   "https://unpkg.com/kotlin-playground@1/dist/playground.min.js";
+// main.js differs from stock Dokka only by the reviewed Hugeicons substitutions
+// in sync-reference-icons.mjs; every other executable byte remains upstream.
 const approvedStockDokkaScriptSha256 = Object.freeze({
-  "store6-core/scripts/main.js": "f67b38f8e9805d566f137a37a95e2622aa7eb018ae24ddafdf3c7e05f9eed84e",
+  "store6-core/scripts/main.js": "f864ae3f272fbc128b184c9669ca50bdde18a0692907bdc613f0cf07472dd1cf",
   "store6-core/scripts/navigation-loader.js": "10880a206be17a3f5f2bb61af7fb2c83ba2ef1939477870badb08e02c3062868",
   "store6-core/scripts/platform-content-handler.js": "62da13cd4807ecc5ff9b18cb9f5dbb7cb3c0f7f8681cf1651ff0a96b135cb987",
   "store6-core/scripts/prism.js": "73995d49b765f3938d508a956eba6f74fead5133b78c2a351f6da226c8b93290",
   "store6-core/scripts/safe-local-storage_blocking.js": "259d21ed2a2d01a0cb5ae9fb1fcc4ec0851c8950e19994f29aeb745b03bad294",
   "store6-core/scripts/sourceset_dependencies.js": "1497ac56f2356ee91c594b05bd69ffdce2cecb3bf799e674e8845ee314d84eb7",
   "store6-core/ui-kit/ui-kit.min.js": "850086e62c237c4137fb8cbda71662c3dabe886b4507cd862164bfe69103c914",
-  "store6-mutations/scripts/main.js": "f67b38f8e9805d566f137a37a95e2622aa7eb018ae24ddafdf3c7e05f9eed84e",
+  "store6-mutations/scripts/main.js": "f864ae3f272fbc128b184c9669ca50bdde18a0692907bdc613f0cf07472dd1cf",
   "store6-mutations/scripts/navigation-loader.js": "10880a206be17a3f5f2bb61af7fb2c83ba2ef1939477870badb08e02c3062868",
   "store6-mutations/scripts/platform-content-handler.js": "62da13cd4807ecc5ff9b18cb9f5dbb7cb3c0f7f8681cf1651ff0a96b135cb987",
   "store6-mutations/scripts/prism.js": "73995d49b765f3938d508a956eba6f74fead5133b78c2a351f6da226c8b93290",

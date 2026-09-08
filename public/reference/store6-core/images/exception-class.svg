@@ -1,9 +1,1 @@
-<!--
-  - Copyright 2014-2024 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license.
-  -->
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-  <g fill="none" fill-rule="evenodd">
-    <path fill="#40B6E0" fill-opacity=".6" d="M15,8 C15,11.866 11.866,15 8,15 C4.134,15 1,11.866 1,8 C1,4.134 4.134,1 8,1 C11.866,1 15,4.134 15,8"/>
-    <polygon fill="#231F20" fill-opacity=".7" points="7 13 9 9 4 9 9 3 8 7 12 7"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" data-hugeicon="AlertCircleIcon"><circle cx="12" cy="12" r="10" stroke="#40B6E0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M12 8V12" stroke="#40B6E0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M12.125 15.75H12M12.25 15.75C12.25 15.8881 12.1381 16 12 16C11.8619 16 11.75 15.8881 11.75 15.75C11.75 15.6119 11.8619 15.5 12 15.5C12.1381 15.5 12.25 15.6119 12.25 15.75Z" stroke="#40B6E0" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>

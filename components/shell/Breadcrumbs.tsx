@@ -1,3 +1,5 @@
+import { ArrowRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import type { BreadcrumbItem } from "fumadocs-core/breadcrumb";
 import Link from "next/link";
 import { Fragment } from "react";
@@ -17,18 +19,12 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         return (
           <Fragment key={index}>
             {index > 0 ? (
-              <svg
+              <HugeiconsIcon
                 aria-hidden="true"
                 className="size-3 shrink-0"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
+                icon={ArrowRight01Icon}
+                strokeWidth={1.5}
+              />
             ) : null}
             {isCurrent ? (
               <span aria-current="page" className="text-foreground font-medium">

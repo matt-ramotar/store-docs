@@ -11,6 +11,16 @@
 @import "../components/docs/mintlify/diagrams/styles.css" layer(store-diagrams);
 
 
+/* Mintlify's previous icon masks used background/fill utilities. Hugeicons draw strokes. */
+.store-docs svg.store-hugeicon {
+  background: transparent;
+  fill: none;
+  flex-shrink: 0;
+}
+.store-docs .store-hugeicon[data-icon-dual-color="true"] { color: var(--color-light); }
+.dark .store-hugeicon[data-icon-dual-color="true"],
+.dark.store-docs .store-hugeicon[data-icon-dual-color="true"] { color: var(--color-dark); }
+
 /* STORE TOKENS START */
 /* HeroUI Theme Builder: lightness 0.508792, chroma 0.083779, hue 186.199157, base 0.0044. */
 :root, .store-docs {

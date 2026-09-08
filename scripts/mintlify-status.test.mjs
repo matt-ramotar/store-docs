@@ -127,12 +127,22 @@ test("Badge retains link, button, disabled, icon, and deprecated stroke behavior
     "thin",
   ]) {
     const $ = render(Badge, { children: iconType, iconType, leadIcon: "circle-info" });
-    assert.equal($("[data-component-part=lead-icon] svg").attr("data-icon-type"), iconType);
+    assert.equal($("[data-component-part=lead-icon] svg").attr("data-icon-library"), "hugeicons");
+    assert.ok($("[data-component-part=lead-icon] svg path").length > 0);
+    assert.doesNotMatch($("[data-component-part=lead-icon] svg").attr("style") ?? "", /(?:width|height):/);
   }
   for (const iconLibrary of ["fontawesome", "lucide"]) {
     const $ = render(Badge, { children: iconLibrary, iconLibrary, leadIcon: "circle-info" });
-    assert.equal($("[data-component-part=lead-icon] svg").attr("data-icon-library"), iconLibrary);
+    assert.equal($("[data-component-part=lead-icon] svg").attr("data-icon-library"), "hugeicons");
   }
+});
+
+test("badge image decorations do not add an asset path to the accessible name", async () => {
+  const { Badge } = await loadStatus();
+  const $ = render(Badge, { children: "Version", leadIcon: "/store-logo.png" });
+  const image = $('[data-component-part="lead-icon"] img');
+  assert.equal(image.attr("src"), "/store-logo.png");
+  assert.equal(image.closest('[aria-hidden="true"]').length, 1);
 });
 
 test("Callout covers all variants and lets explicit variant override a legacy type", async () => {
@@ -146,6 +156,12 @@ test("Callout covers all variants and lets explicit variant override a legacy ty
     assert.equal(root.attr("aria-label"), `${variant === "custom" ? "Callout" : `${variant[0].toUpperCase()}${variant.slice(1)}`} callout`);
     assert.equal(root.find("[data-callout-label]").text(), variant === "custom" ? "Callout" : `${variant[0].toUpperCase()}${variant.slice(1)}`);
     assert.equal(root.find("[data-callout-body]").text().includes("Body"), true);
+    const glyph = root.find('[data-component-part="callout-icon"] svg[data-icon-library="hugeicons"]');
+    assert.equal(glyph.length, variant === "custom" ? 0 : 1);
+    if (variant !== "custom") {
+      assert.equal(glyph.attr("aria-hidden"), "true");
+      assert.ok(glyph.children().length > 0);
+    }
   }
 
   const override = render(Callout, {
@@ -198,7 +214,7 @@ test("Callout supports named aliases plus custom icon, color, class, and accessi
   assert.equal(custom("aside").attr("aria-label"), "Migration notice");
   assert.equal(custom("aside").hasClass("author-class"), true);
   assert.equal(custom("aside").attr("style")?.includes("#6D28D9"), true);
-  assert.equal(custom('[data-component-part="callout-icon"] [data-icon-library="lucide"]').length, 1);
+  assert.equal(custom('[data-component-part="callout-icon"] [data-icon-library="hugeicons"]').length, 1);
 });
 
 test("Property and ParamHead retain metadata, labels, content, ids, and hidden state", async () => {

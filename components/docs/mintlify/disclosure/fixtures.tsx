@@ -1,5 +1,7 @@
 "use client";
 
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Tick02Icon } from "@hugeicons/core-free-icons";
 import { memo, useCallback, useEffect, useRef, useState, type KeyboardEvent } from "react";
 import type { ComponentFixture } from "../fixture-contract";
 import { Accordion, Expandable, Steps, Tabs, Tree } from "./index";
@@ -184,7 +186,7 @@ export const fixtures: ComponentFixture[] = [
           <Steps titleSize="h3"><Steps.Item title="Cache branch" id="c2-step-cache">Check local storage.</Steps.Item><Steps.Item title="Network branch" noAnchor>Refresh remote storage.</Steps.Item></Steps>
         </Steps.Item>
         <Steps.Item title="Transform" titleSize="h4" stepNumber="7">Map the result.</Steps.Item>
-        <Steps.Item title="Return" titleSize="p" icon={<span aria-label="Complete">✓</span>}>Return the value.</Steps.Item>
+        <Steps.Item title="Return" titleSize="p" icon={<HugeiconsIcon aria-label="Complete" role="img" icon={Tick02Icon} size={16} strokeWidth={1.5} />}>Return the value.</Steps.Item>
       </Steps><StepsEvents /></>,
   },
   {

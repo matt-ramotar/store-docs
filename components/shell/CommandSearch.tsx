@@ -2,7 +2,8 @@
 
 import { Button, Chip, Kbd } from "@heroui/react";
 import { Command } from "@heroui-pro/react";
-import { Icon } from "@iconify/react";
+import { ArrowDown01Icon, Cancel01Icon, Search01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import { useDocsSearch } from "fumadocs-core/search/client";
 import { oramaStaticClient } from "fumadocs-core/search/client/orama-static";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -110,7 +111,7 @@ export function CommandSearch({ version }: { version: DocsVersion }) {
         ref={exposeKeyboardShortcut}
         variant="outline"
       >
-        <Icon aria-hidden className="size-4 shrink-0" icon="gravity-ui:magnifier" />
+        <HugeiconsIcon aria-hidden className="size-4 shrink-0" icon={Search01Icon} strokeWidth={1.5} />
         <span className="hidden flex-1 text-start sm:inline">Search...</span>
         <Kbd className="hidden text-xs sm:inline-flex">
           <Kbd.Abbr keyValue="command" />
@@ -143,7 +144,15 @@ export function CommandSearch({ version }: { version: DocsVersion }) {
                 <Command.InputGroup.ClearButton
                   aria-label="Clear search"
                   onPress={() => updateSearch("")}
-                />
+                >
+                  <HugeiconsIcon
+                    aria-hidden
+                    className="size-3"
+                    data-slot="close-button-icon"
+                    icon={Cancel01Icon}
+                    strokeWidth={1.5}
+                  />
+                </Command.InputGroup.ClearButton>
                 <Command.InputGroup.Suffix>
                   <Kbd className="text-xs">
                     <Kbd.Content>Esc</Kbd.Content>
@@ -153,21 +162,29 @@ export function CommandSearch({ version }: { version: DocsVersion }) {
 
               <div className="flex items-center gap-3 border-b border-default px-3 py-2 text-sm">
                 <label htmlFor="documentation-search-scope">Search in</label>
-                <select
-                  className="min-h-11 rounded-lg border border-default bg-surface px-3 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                  id="documentation-search-scope"
-                  onKeyDown={(event) => event.stopPropagation()}
-                  onChange={(event) => {
-                    const nextScope = event.target.value as SearchScope;
-                    resultTracker.updateScope(nextScope);
-                    setSelection({ version, scope: nextScope });
-                  }}
-                  value={scope}
-                >
-                  <option value="store6">Store 6</option>
-                  <option value="store5">Store 5</option>
-                  <option value="both">Both versions</option>
-                </select>
+                <span className="relative inline-flex items-center">
+                  <select
+                    className="min-h-11 appearance-none rounded-lg border border-default bg-surface ps-3 pe-9 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    id="documentation-search-scope"
+                    onKeyDown={(event) => event.stopPropagation()}
+                    onChange={(event) => {
+                      const nextScope = event.target.value as SearchScope;
+                      resultTracker.updateScope(nextScope);
+                      setSelection({ version, scope: nextScope });
+                    }}
+                    value={scope}
+                  >
+                    <option value="store6">Store 6</option>
+                    <option value="store5">Store 5</option>
+                    <option value="both">Both versions</option>
+                  </select>
+                  <HugeiconsIcon
+                    aria-hidden
+                    className="pointer-events-none absolute end-3 size-4 text-muted"
+                    icon={ArrowDown01Icon}
+                    strokeWidth={1.5}
+                  />
+                </span>
               </div>
 
               <SearchStatus message={status} state={searchView.state} />

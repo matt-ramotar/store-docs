@@ -3,6 +3,9 @@
 import packageSlugify from "../../../../node_modules/@mintlify/components/dist/node_modules/.pnpm/@sindresorhus_slugify@2.2.1/node_modules/@sindresorhus/slugify/index.js";
 
 import { Alert, AlertContent, AlertIndicator, AlertTitle, Chip } from "@heroui/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Alert02Icon, AlertCircleIcon, BulbIcon, CheckmarkCircle02Icon, InformationCircleIcon, Link04Icon, NoteIcon } from "@hugeicons/core-free-icons";
+import { DocumentationIcon } from "../../../icons/DocumentationIcon";
 import type {
   BadgeColor,
   BadgeProps as MintlifyBadgeProps,
@@ -46,7 +49,14 @@ export type LegacyCalloutType =
 export type CalloutProps = MintlifyCalloutProps & { type?: LegacyCalloutType };
 export type ParamHeadProps = MintlifyParamHeadProps;
 
-const iconCdn = "https://d3gk2c5xim1je2.cloudfront.net";
+const calloutIcons = {
+  check: CheckmarkCircle02Icon,
+  danger: AlertCircleIcon,
+  info: InformationCircleIcon,
+  note: NoteIcon,
+  tip: BulbIcon,
+  warning: Alert02Icon,
+};
 
 const badgeColors: Record<BadgeColor, "accent" | "danger" | "default" | "success" | "warning"> = {
   blue: "accent",
@@ -83,46 +93,13 @@ function classes(...values: Array<string | false | null | undefined>) {
   return values.filter(Boolean).join(" ");
 }
 
-function iconUrl(icon: string, iconType: IconType | undefined, iconLibrary: IconLibrary | undefined) {
-  if (/^(?:https?:)?\/\//.test(icon) || icon.startsWith("/")) return icon;
-  if (iconLibrary === "lucide") return `${iconCdn}/lucide/v0.545.0/${icon.toLowerCase()}.svg`;
-  return `${iconCdn}/v7.1.0/${iconType ?? "regular"}/${icon.toLowerCase()}.svg`;
-}
-
-function StatusIcon({
-  icon,
-  iconLibrary = "fontawesome",
-  iconType,
-}: {
+function StatusIcon({ icon, iconLibrary, iconType }: {
   icon: ReactNode;
   iconLibrary?: IconLibrary;
   iconType?: IconType;
 }) {
   if (typeof icon !== "string") return <>{icon}</>;
-
-  const url = iconUrl(icon, iconType, iconLibrary);
-  if (url.startsWith("/") || (/^https?:\/\//.test(url) && /\.(?:avif|gif|jpe?g|png|webp)(?:\?.*)?$/i.test(url))) {
-    return <img alt="" aria-hidden="true" data-icon-library={iconLibrary} src={url} />;
-  }
-
-  return (
-    <svg
-      aria-hidden="true"
-      data-icon-library={iconLibrary}
-      data-icon-type={iconType ?? "regular"}
-      style={{
-        WebkitMaskImage: `url(${url})`,
-        WebkitMaskPosition: "center",
-        WebkitMaskRepeat: "no-repeat",
-        WebkitMaskSize: "contain",
-        backgroundColor: "currentColor",
-        maskImage: `url(${url})`,
-        maskPosition: "center",
-        maskRepeat: "no-repeat",
-        maskSize: "contain",
-      }}
-    />
-  );
+  return <span aria-hidden="true" className="contents"><DocumentationIcon icon={icon} iconLibrary={iconLibrary} iconType={iconType} overrideColor overrideSize /></span>;
 }
 
 function BadgeIcon({
@@ -234,7 +211,9 @@ export function Callout({
               <StatusIcon icon={icon} iconLibrary={iconLibrary} iconType={iconType} />
             </AlertIndicator>
           ) : resolved === "custom" ? null : (
-            <AlertIndicator data-component-part="callout-icon" />
+            <AlertIndicator data-component-part="callout-icon">
+              <HugeiconsIcon aria-hidden="true" icon={calloutIcons[resolved]} size={20} strokeWidth={1.5} data-icon-library="hugeicons" />
+            </AlertIndicator>
           )}
           <AlertContent>
             {title ? <AlertTitle data-component-part="callout-title">{title}</AlertTitle> : null}
@@ -354,7 +333,7 @@ export function ParamHead({
         href={id ? `#${id}` : undefined}
         onClick={navigate}
       >
-        <span aria-hidden="true">#</span>
+        <HugeiconsIcon aria-hidden="true" icon={Link04Icon} size={16} strokeWidth={1.5} data-icon-library="hugeicons" />
       </a>
       <div className="store-status-param-head__content">
         <div className="store-status-param-head__row">

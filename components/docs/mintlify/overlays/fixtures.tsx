@@ -1,5 +1,7 @@
 "use client";
 
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ReloadIcon } from "@hugeicons/core-free-icons";
 import { useCallback, useRef, useState } from "react";
 import type { ComponentFixture } from "../fixture-contract";
 import {
@@ -24,7 +26,7 @@ export const searchResults: SearchResult[] = [
     id: "network-fallback",
     header: "Network fallback",
     content: "Continue showing cached data while a remote refresh is unavailable.",
-    icon: <span aria-hidden="true">↻</span>,
+    icon: <HugeiconsIcon aria-hidden="true" icon={ReloadIcon} size={16} strokeWidth={1.5} />,
     link: "/docs/store6/concepts/freshness",
     metadata: { breadcrumbs: ["Store 6", "Fetching"], version: "6" },
   },

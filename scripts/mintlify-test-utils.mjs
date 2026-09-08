@@ -6,6 +6,7 @@ import { dirname, join, resolve } from "node:path";
 const require = createRequire(import.meta.url);
 const esbuild = require(require.resolve("esbuild", { paths: [dirname(require.resolve("fumadocs-mdx"))] }));
 const transformMintlify = require("../lib/mintlify-cjs-require-loader.cjs");
+const transformMintlifyIcons = require("../lib/mintlify-hugeicons-loader.cjs");
 const root = resolve(import.meta.dirname, "..");
 
 /** Bundle real adapters into an isolated temporary module, preserving one React instance. */
@@ -19,7 +20,10 @@ export async function loadFixtureModule(entry) {
       plugins: [{ name: "installed-component-interop", setup(build) {
         build.onResolve({ filter: /^(react|react-dom)(\/.*)?$/ }, args => ({path: require.resolve(args.path), external: true}));
         build.onResolve({ filter: /^next(\/.*)?$/ }, args => ({path: require.resolve(args.path), external: true}));
-        build.onLoad({ filter: /@mintlify\/components\/.*\.js$/ }, async args => ({contents: transformMintlify(await readFile(args.path, "utf8")), loader: "js"}));
+        build.onLoad({ filter: /@mintlify\/components\/.*\.js$/ }, async args => ({
+          contents: transformMintlify(transformMintlifyIcons.call({ resourcePath: args.path }, await readFile(args.path, "utf8"))),
+          loader: "js",
+        }));
       }}],
     });
     return require(output);
