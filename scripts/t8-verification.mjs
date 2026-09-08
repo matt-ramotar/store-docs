@@ -27,6 +27,7 @@ const CONTRACT_SOURCES = Object.freeze({
 
 const FIXED_EXTRA_SOURCES = Object.freeze([
   { path: "/", source: "app/page.tsx" },
+  { path: "/diagrams", source: "app/diagrams/page.tsx" },
   { path: "/docs", source: "content/docs/index.mdx" },
   { path: "/docs/store6/overview", source: "content/docs/store6/overview.mdx" },
   {

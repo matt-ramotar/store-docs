@@ -1,4 +1,5 @@
 /
+/diagrams
 /docs
 /docs/store6/compose
 /docs/store6/concepts/api-tiers
