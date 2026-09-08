@@ -1,0 +1,49 @@
+---
+title: Lowering fidelity fixture
+description: Exercises every supported Store 6 MDX adapter without executing MDX.
+---
+
+```kotlin
+val users: Store<UserKey, User> = users
+println("Name=${user.name}")
+```
+
+<Callout type="Warning" title="Keep every detail">
+
+This body survives lowering.
+
+- First callout item
+- Second callout item with `inlineCode`
+
+```kotlin
+val nested = "callout fence"
+```
+
+</Callout>
+
+<a id="fidelity-anchor"></a>
+
+{"Static text from expression."}
+
+{/* This fixture comment must not be exported. */}
+
+<div className="fixture-shell">
+  <p className="fixture-copy">
+    {"Read the "}<Link href="/docs/store6/quickstart">quickstart<Link.Icon /></Link>{" next."}
+  </p>
+</div>
+
+<CodeSlab
+  code={`val sql = \`SELECT \${column}\`
+println("$price")`}
+  lang="kotlin"
+  title="Escaped template characters"
+/>
+
+<ReadResolutionTable />
+
+<StartHereList />
+
+<SupportMatrix />
+
+<StoreDiagram id="alias-activation" />
