@@ -43,16 +43,22 @@ export default async function Page(props: {
       <article className="mx-auto w-full min-w-0 max-w-3xl">
         <header className="space-y-4">
           <Breadcrumbs items={breadcrumbItems} />
-          <h1 id="page-title" className="text-4xl font-semibold tracking-tight">
-            {page.data.title}
-          </h1>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <h1 id="page-title" className="text-4xl font-semibold tracking-tight">
+              {page.data.title}
+            </h1>
+            {agentPage ? (
+              <AgentPageActions
+                markdownUrl={agentPage.markdownUrl}
+                title={agentPage.title}
+                canonicalUrl={agentPage.canonicalUrl}
+              />
+            ) : null}
+          </div>
           {page.data.description ? (
             <p className="text-foreground-secondary max-w-2xl text-lg leading-8">
               {page.data.description}
             </p>
-          ) : null}
-          {agentPage ? (
-            <AgentPageActions markdownUrl={new URL(agentPage.markdownUrl).pathname} />
           ) : null}
           <OnThisPage items={toc} compact />
           <Separator />

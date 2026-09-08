@@ -107,6 +107,23 @@
   outline-offset: 3px;
 }
 .store-docs .table__scroll-container:focus-visible { outline-offset: -2px; }
+
+/* HeroUI dropdowns share one inset keyboard indicator on triggers and all menu item roles. */
+.store-docs [data-slot="dropdown-menu"] {
+  outline: none;
+}
+.store-docs [data-slot="dropdown-trigger"],
+.store-docs [data-slot="dropdown-menu"] [data-slot="menu-item"] {
+  outline: none;
+  box-shadow: none;
+}
+.store-docs [data-slot="dropdown-trigger"][data-focus-visible="true"],
+.store-docs [data-slot="dropdown-menu"] [data-slot="menu-item"][data-focus-visible="true"] {
+  background-color: var(--default);
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .store-docs *, .store-docs *::before, .store-docs *::after {
     animation-duration: 0.01ms !important;

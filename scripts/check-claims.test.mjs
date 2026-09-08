@@ -8,12 +8,13 @@ import test from "node:test";
 
 const REVISION = "a6a156e99db29cebf7da238263b007802bff2bfb";
 
-test("claims can anchor whole files in Store6 and store-docs", async () => {
+test("claims can anchor whole files independently in all three repositories", async () => {
   const { checkClaims } = await import("./check-claims.mjs");
 
-  await withFixture(async ({ root, sourceRoot }) => {
+  await withFixture(async ({ root, sourceRoot, skillsRoot }) => {
     writeFixture(sourceRoot, "src/Value.kt", "class Value\n");
     writeFixture(root, "lib/value.mjs", "export const value = true;\n");
+    writeFixture(skillsRoot, "lib/value.mjs", "export const value = 'skill';\n");
     writeFixture(root, "content/docs/store6/concepts/value.mdx", "---\ntitle: Value\n---\n");
     const revision = commitStore6(sourceRoot);
     writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
@@ -24,7 +25,7 @@ test("claims can anchor whole files in Store6 and store-docs", async () => {
         {
           id: "docs/store6/concepts/value/001",
           page: "/docs/store6/concepts/value",
-          claim: "Value is available to both repositories.",
+          claim: "Value is available to all repositories.",
           verdict: "UNSAMPLED",
           anchors: [
             {
@@ -38,18 +39,94 @@ test("claims can anchor whole files in Store6 and store-docs", async () => {
               path: "lib/value.mjs",
               sha256: sha256("export const value = true;\n"),
             },
+            {
+              repository: "store-agent-skills",
+              path: "lib/value.mjs",
+              sha256: sha256("export const value = 'skill';\n"),
+            },
           ],
         },
       ],
     });
 
-    assert.deepEqual(await checkClaims({ root, sourceRoot }), {
-      anchorCount: 2,
+    assert.deepEqual(await checkClaims({ root, sourceRoot, skillsRoot }), {
+      anchorCount: 3,
       claimCount: 1,
       mutated: false,
       reconciledClaimCount: 0,
       revision,
     });
+  });
+});
+
+test("skill anchors require an explicit source root and never fall back to the site copy", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot, skillsRoot }) => {
+    writeFixture(sourceRoot, ".fixture", "fixture\n");
+    const revision = commitStore6(sourceRoot);
+    const path = "skills/store6/scripts/retrieve.mjs";
+    writeFixture(root, path, "matching site copy\n");
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    writeJson(root, "evidence/store6-claims.json", {
+      schemaVersion: 1,
+      revision,
+      claims: [claim({
+        anchor: { repository: "store-agent-skills", path, sha256: sha256("matching site copy\n") },
+        id: "docs/store6/concepts/value/001",
+        statement: "The skill checks consumer identity.",
+      })],
+    });
+    await assert.rejects(checkClaims({ root, sourceRoot }), /--skills-root <checkout> is required for store-agent-skills anchors/);
+    await assert.rejects(
+      checkClaims({ root, sourceRoot, skillsRoot }),
+      /anchors store-agent-skills\/skills\/store6\/scripts\/retrieve\.mjs, whose whole-file hash no longer matches/,
+    );
+  });
+});
+
+test("skill anchor drift reconciles only the explicit skill checkout", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot, skillsRoot }) => {
+    writeFixture(sourceRoot, ".fixture", "fixture\n");
+    const revision = commitStore6(sourceRoot);
+    const path = "skills/store6/scripts/retrieve.mjs";
+    writeFixture(root, path, "site copy\n");
+    writeFixture(skillsRoot, path, "current skill\n");
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    writeJson(root, "evidence/store6-claims.json", {
+      schemaVersion: 1,
+      revision,
+      claims: [claim({
+        anchor: { repository: "store-agent-skills", path, sha256: sha256("old skill\n") },
+        id: "docs/store6/concepts/value/001",
+        statement: "The skill checks consumer identity.",
+      })],
+    });
+    await assert.rejects(checkClaims({ root, sourceRoot, skillsRoot }), /anchors store-agent-skills\//);
+    const result = await checkClaims({ root, sourceRoot, skillsRoot, reconcileId: "docs/store6/concepts/value/001" });
+    assert.equal(result.mutated, true);
+    assert.equal(readJson(root, "evidence/store6-claims.json").claims[0].anchors[0].sha256, sha256("current skill\n"));
+  });
+});
+
+test("skill anchors may not escape their source root through a symlink", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot, skillsRoot }) => {
+    writeFixture(sourceRoot, ".fixture", "fixture\n");
+    const revision = commitStore6(sourceRoot);
+    writeFixture(root, "outside.mjs", "outside\n");
+    symlinkSync(resolve(root, "outside.mjs"), resolve(skillsRoot, "retrieve.mjs"));
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    writeJson(root, "evidence/store6-claims.json", {
+      schemaVersion: 1,
+      revision,
+      claims: [claim({
+        anchor: { repository: "store-agent-skills", path: "retrieve.mjs", sha256: sha256("outside\n") },
+        id: "docs/store6/concepts/value/001",
+        statement: "The skill checks consumer identity.",
+      })],
+    });
+    await assert.rejects(checkClaims({ root, sourceRoot, skillsRoot }), /resolves outside the store-agent-skills root through a symlink/);
   });
 });
 
@@ -400,24 +477,38 @@ test("CLI parsing requires a source root and recognizes only explicit reconcilia
     reconcileAll: false,
     reconcileId: undefined,
     sourceRoot: "../Store6",
+    skillsRoot: undefined,
   });
   assert.deepEqual(parseArguments(["--source-root", "../Store6", "--reconcile", "value/id"]), {
     reconcileAll: false,
     reconcileId: "value/id",
     sourceRoot: "../Store6",
+    skillsRoot: undefined,
   });
   assert.deepEqual(parseArguments(["--reconcile-all", "--source-root", "../Store6"]), {
     reconcileAll: true,
     reconcileId: undefined,
     sourceRoot: "../Store6",
+    skillsRoot: undefined,
   });
+  assert.deepEqual(parseArguments(["--source-root", "../Store6", "--skills-root", "../store-agent-skills"]), {
+    reconcileAll: false,
+    reconcileId: undefined,
+    sourceRoot: "../Store6",
+    skillsRoot: "../store-agent-skills",
+  });
+  assert.throws(
+    () => parseArguments(["--source-root", "../Store6", "--skills-root", "one", "--skills-root", "two"]),
+    /--skills-root may be specified only once/,
+  );
+  assert.throws(() => parseArguments(["--source-root", "../Store6", "--skills-root"]), /usage: check-claims\.mjs/);
   assert.throws(
     () => parseArguments(["--source-root", "../Store6", "--reconcile", "value/id", "--reconcile-all"]),
     /--reconcile and --reconcile-all are mutually exclusive/,
   );
   assert.throws(
     () => parseArguments([]),
-    /usage: check-claims\.mjs --source-root <checkout> \[--reconcile <id> \| --reconcile-all\]/,
+    /usage: check-claims\.mjs --source-root <checkout> \[--skills-root <checkout>\] \[--reconcile <id> \| --reconcile-all\]/,
   );
   assert.throws(() => parseArguments(["--source-root", "../Store6", "--check"]), /unknown argument: --check/);
 });
@@ -940,10 +1031,12 @@ async function withFixture(callback) {
   const fixtureRoot = mkdtempSync(join(tmpdir(), "store-docs-claims-"));
   const root = resolve(fixtureRoot, "store-docs");
   const sourceRoot = resolve(fixtureRoot, "Store6");
+  const skillsRoot = resolve(fixtureRoot, "store-agent-skills");
   mkdirSync(root, { recursive: true });
   mkdirSync(sourceRoot, { recursive: true });
+  mkdirSync(skillsRoot, { recursive: true });
   try {
-    await callback({ root, sourceRoot });
+    await callback({ root, sourceRoot, skillsRoot });
   } finally {
     rmSync(fixtureRoot, { force: true, recursive: true });
   }

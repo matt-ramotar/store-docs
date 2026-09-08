@@ -8,9 +8,16 @@ description: Find Markdown guides and understand their recorded source identity.
 [/llms.txt](/llms.txt) is the discovery index. It links to individual guides and the complete Store6
 guide corpus. It does not contain the complete documentation itself.
 
-Use a page's **View Markdown** action or open a URL such as
-[/llms/store6/quickstart.md](/llms/store6/quickstart.md). **Copy page** copies that complete Markdown
+Use **View as Markdown** from a page's dropdown or open a URL such as
+[/llms/store6/quickstart.md](/llms/store6/quickstart.md). **Copy Markdown** copies that complete Markdown
 document, including its title and source information, when your browser permits clipboard access.
+
+**Copy Prompt** copies Store6 environment setup instructions: check skill availability, install
+the skill in the project, and verify discovery and documentation retrieval. Paste it into your coding agent.
+
+The dropdown also links to editor setup guides and opens ChatGPT or Claude with the page's public
+Markdown URL in a prompt. These chats use the public site, so they cannot read unpublished local
+preview changes. If the page is unavailable to the chat, paste its content with **Copy Markdown**.
 
 For a tool with a larger context window, [/llms-full.txt](/llms-full.txt) contains all Store6 guides
 and agent setup pages. It excludes Store5 documentation and generated Dokka API HTML. Links to

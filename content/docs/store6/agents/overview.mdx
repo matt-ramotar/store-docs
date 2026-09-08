@@ -11,8 +11,11 @@ revision in your project. A matching name or major version alone does not establ
 
 | Method | Use it when |
 | --- | --- |
-| **Copy page** | You want to paste one complete guide into a conversation. |
-| **View Markdown** | Your agent can open a documentation URL and select the pages it needs. |
+| **Copy Prompt** | You want a coding agent to check skill availability, install the Store6 skill in your project, and verify its setup. |
+| **Copy Markdown** | You want to paste one complete guide into a conversation. |
+| **View as Markdown** (in the dropdown) | Your agent can open a documentation URL and select the pages it needs. |
+| **Set up in Cursor / VS Code** (in the dropdown) | You want the skill setup guide for your editor. |
+| **Open in ChatGPT / Claude** (in the dropdown) | You want to ask questions about the page in a new chat. The link includes its public Markdown URL. |
 | [Store6 skill](/docs/store6/agents/agent-skills) | Your coding agent supports skills and should check the project version before retrieving task-specific guides. |
 
 The page actions appear on Store6 guides with a Markdown export. See
@@ -22,7 +25,13 @@ The page actions appear on Store6 guides with a Markdown export. See
 
 Give the agent the repository, desired behavior, and relevant platform. For example:
 
-> Inspect this project's Store6 dependency or source revision. Use the matching Store6 documentation from https://store.mobilenativefoundation.org/llms.txt to implement a typed user repository. Cite the read and lifetime contracts, then run the project's relevant checks. If the version is unsupported, identify the mismatch before generating code.
+<div className="[&_pre]:whitespace-pre-wrap [&_pre]:[overflow-wrap:anywhere]">
+  <CodeSlab
+    lang="text"
+    title="Example prompt"
+    code={`Inspect this project's Store6 dependency or source revision. Use the matching Store6 documentation from https://store.mobilenativefoundation.org/llms.txt to implement a typed user repository. Cite the read and lifetime contracts, then run the project's relevant checks. If the version is unsupported, identify the mismatch before generating code.`}
+  />
+</div>
 
 For a persistence or mutation task, state what must survive a restart and which database and
 platforms your application uses. Ask the agent to distinguish what it checked in source from what

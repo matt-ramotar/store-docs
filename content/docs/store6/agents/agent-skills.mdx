@@ -15,17 +15,48 @@ Node's built-in APIs and needs no additional package installation.
 
 ## Install in your project
 
-Run the following command from your project directory. It selects the skill from a specific release
-and copies it into the project's skill directory using the
-[skills CLI](https://github.com/vercel-labs/skills).
+The skill lives in [matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills)
+as a development candidate. Its paired Markdown bundle is not yet available on the public
+documentation site, so retrieval cannot succeed yet. Use **Copy Markdown** for page context meanwhile.
+**Copy Prompt** checks that the repository exposes the `store6` skill before installing.
+
+To install the candidate, run this command from your project directory using the
+[skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
-npx skills add https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6 --skill store6 -a codex --copy
+npx skills add matt-ramotar/store-agent-skills
 ```
 
-For Claude Code, replace `-a codex` with `-a claude-code`. For Cursor, use `-a cursor`. These commands
-select project scope; they do not request a global installation. Review the installer's reported
-destination, then start a fresh agent session in that project.
+Select `store6` and your coding agent when prompted. Use project scope and choose Copy for the
+installation method. To select an agent explicitly, append `--agent codex` or `--agent claude-code`.
+Review the installer's reported destination, then start a fresh agent session in that project.
+
+This command installs from the repository's default branch. The installed skill retains its
+packaged documentation manifest and still requires matching source and content. For a reproducible
+installation, use a reviewed commit or release URL and record the installed source revision.
+
+### Cursor
+
+Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent cursor
+```
+
+Start a fresh agent session, then find `store6` in Cursor's skills or slash menu. Follow the version
+and retrieval checks below before asking it to generate code.
+
+### VS Code
+
+Use GitHub Copilot's agent skills support. Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent github-copilot
+```
+
+Start a fresh Copilot chat and select `/store6`. See
+[VS Code's agent skills guide](https://code.visualstudio.com/docs/agent-customization/agent-skills)
+if the skill is not discovered. Follow the same version and retrieval checks below.
 
 ## Invoke the skill
 
@@ -60,12 +91,12 @@ used and the checks actually run.
 | `CONTENT_MISMATCH` | Stop using the returned context and verify the document source; its bytes differ from the packaged record. |
 | `NETWORK_ERROR` | Restore access and request the guides again. The helper returns no partial page set. |
 
-To update a pinned installation, explicitly select a newer tested release ref and repeat the
-installation and version checks. A site build does not update the skill's packaged manifest.
+To update, deliberately repeat the installation and version checks. For installations from a fixed
+commit or release, explicitly select a newer tested ref. A site build does not update the skill's
+packaged manifest.
 
 ## Source and license
 
-The skill is distributed under Apache-2.0. Its
-[source, license, and notices](https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6)
-are included with the package. The skill links to Store6 documentation rather than maintaining a
-second API manual.
+The skill is licensed under Apache-2.0. Its source, license, and notices are maintained in
+[matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills).
+The skill links to Store6 documentation rather than maintaining a second API manual.

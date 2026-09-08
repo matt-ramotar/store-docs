@@ -242,6 +242,18 @@ test("release tags regenerate even at the pinned SHA and require same-PR editori
   );
 });
 
+test("drift checks out the pinned skill once before re-pin and reuses it for claims", () => {
+  const generator = workflowJob(readWorkflow(), "dokka-reference", "publish");
+  const clone = "git clone --no-checkout https://github.com/matt-ramotar/store-agent-skills ../store-agent-skills";
+  const checkout = "git -C ../store-agent-skills checkout --detach 1aadb4a8ba816cfb90129b30db5f5eebc5446848";
+  const repin = "node scripts/repin-store6-lock.mjs --source-root ../Store6 --skills-root ../store-agent-skills";
+  const claims = "node scripts/check-claims.mjs --source-root ../Store6 --skills-root ../store-agent-skills";
+  assert.equal(generator.split(clone).length - 1, 1);
+  assert.ok(requiredIndex(generator, clone) < requiredIndex(generator, checkout));
+  assert.ok(requiredIndex(generator, checkout) < requiredIndex(generator, repin));
+  assert.ok(requiredIndex(generator, repin) < requiredIndex(generator, claims));
+});
+
 test("generator emits only an allowlisted binary patch plus bounded verified metadata", () => {
   const generator = workflowJob(readWorkflow(), "dokka-reference", "publish");
   const prepare = requiredIndex(generator, "- name: Prepare validated publication artifact");

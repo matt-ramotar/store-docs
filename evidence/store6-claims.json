@@ -262,7 +262,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 258,
             "end": 259
@@ -364,7 +364,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 254,
             "end": 255
@@ -451,7 +451,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 262,
             "end": 263
@@ -519,7 +519,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 210,
             "end": 211
@@ -570,7 +570,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 214,
             "end": 215
@@ -621,7 +621,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 194,
             "end": 195
@@ -706,7 +706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "81960674ffca5eaa1c515da5cecdd3534ded5e7e8b187d193197ea8de2aca5f9",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
             "start": 198,
             "end": 199
@@ -8553,7 +8553,7 @@
       "verdict": "CONFIRMED",
       "anchors": [
         {
-          "repository": "store-docs",
+          "repository": "store-agent-skills",
           "path": "skills/store6/scripts/retrieve.mjs",
           "sha256": "d05b88cf8900e238dcdbe544abc9025cd252fd9496bf62d30a45d0d6d6109c76",
           "lines": {
@@ -8613,7 +8613,7 @@
       "verdict": "CONFIRMED",
       "anchors": [
         {
-          "repository": "store-docs",
+          "repository": "store-agent-skills",
           "path": "skills/store6/scripts/retrieve.mjs",
           "sha256": "d05b88cf8900e238dcdbe544abc9025cd252fd9496bf62d30a45d0d6d6109c76",
           "lines": {

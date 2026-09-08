@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+  "bundleId": "sha256:4a50a009347e7f4ebdbe226449322464d52b66fabb5bce7505c850b9e1ab5d7b",
   "origin": "https://store.mobilenativefoundation.org",
   "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
   "verifiedArtifacts": [],
@@ -10,12 +10,12 @@
       "title": "Agent skills",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/agent-skills",
       "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md",
-      "sha256": "7b17929be8b0e51a9fa4cd7d5164976bf904c7f6ef994ae95b1bb72cf10a4c5e",
+      "sha256": "95ec6bd40297928fff811d361d897824db56e902ea62de2fa4afc23e4676f4a9",
       "provenance": {
         "kind": "site-authored",
         "sourcePath": "content/docs/store6/agents/agent-skills.mdx",
         "sourceRevision": null,
-        "sourceSha256": "7becb047cac5addf9f0340966805af6adb5b44d3d63e995ddcb0bba68ec4f3bf",
+        "sourceSha256": "3eae213f5ffb3c770825cf092c3af2cc95e849818bb43707d91a5fbea8727192",
         "recordedAttribution": null
       }
     },
@@ -24,12 +24,12 @@
       "title": "LLM context",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/llm-context",
       "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/llm-context.md",
-      "sha256": "648aa0c4684571033ac3dda3c1460721f65bbf7e2220d77cac611e091616734a",
+      "sha256": "2da1a511063291ad8c988238cd608250c1bfa333540e6bd80cb50cded20109bc",
       "provenance": {
         "kind": "site-authored",
         "sourcePath": "content/docs/store6/agents/llm-context.mdx",
         "sourceRevision": null,
-        "sourceSha256": "d2407e505bb1ed6c3c661e9000b271cee59ce256cd8a9e77270af7691327fcf4",
+        "sourceSha256": "294b47771371047ae2ab46afc468606f068a4a08fe1fd907075f76f545ad8a47",
         "recordedAttribution": null
       }
     },
@@ -38,12 +38,12 @@
       "title": "Agents and LLMs",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/overview",
       "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/overview.md",
-      "sha256": "2e3288df30ae74427a9ebaff6c7be4e62b43e5ace0fe1be10c21a5f5a813c818",
+      "sha256": "c1393f8b4212209ef11d6964f78814f8c149913563dfa6c3a40b56114bccc030",
       "provenance": {
         "kind": "site-authored",
         "sourcePath": "content/docs/store6/agents/overview.mdx",
         "sourceRevision": null,
-        "sourceSha256": "728abed648045605234e98ebb134ad4f7a8a982fe3dfc5a1dc3fe3e2c29a3470",
+        "sourceSha256": "31f524fe7b4840f199a0c2ba7f5ebaa7678391c8ab332429932807dc3a844b29",
         "recordedAttribution": null
       }
     },

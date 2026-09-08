@@ -1,4 +1,0 @@
-interface:
-  display_name: "Store6"
-  short_description: "Build Store6 integrations from versioned documentation"
-  default_prompt: "Use $store6 to implement this Store6 task using matching documentation."

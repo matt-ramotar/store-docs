@@ -24,17 +24,48 @@ Node's built-in APIs and needs no additional package installation.
 
 ## Install in your project
 
-Run the following command from your project directory. It selects the skill from a specific release
-and copies it into the project's skill directory using the
-[skills CLI](https://github.com/vercel-labs/skills).
+The skill lives in [matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills)
+as a development candidate. Its paired Markdown bundle is not yet available on the public
+documentation site, so retrieval cannot succeed yet. Use **Copy Markdown** for page context meanwhile.
+**Copy Prompt** checks that the repository exposes the `store6` skill before installing.
+
+To install the candidate, run this command from your project directory using the
+[skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
-npx skills add https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6 --skill store6 -a codex --copy
+npx skills add matt-ramotar/store-agent-skills
 ```
 
-For Claude Code, replace `-a codex` with `-a claude-code`. For Cursor, use `-a cursor`. These commands
-select project scope; they do not request a global installation. Review the installer's reported
-destination, then start a fresh agent session in that project.
+Select `store6` and your coding agent when prompted. Use project scope and choose Copy for the
+installation method. To select an agent explicitly, append `--agent codex` or `--agent claude-code`.
+Review the installer's reported destination, then start a fresh agent session in that project.
+
+This command installs from the repository's default branch. The installed skill retains its
+packaged documentation manifest and still requires matching source and content. For a reproducible
+installation, use a reviewed commit or release URL and record the installed source revision.
+
+### Cursor
+
+Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent cursor
+```
+
+Start a fresh agent session, then find `store6` in Cursor's skills or slash menu. Follow the version
+and retrieval checks below before asking it to generate code.
+
+### VS Code
+
+Use GitHub Copilot's agent skills support. Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent github-copilot
+```
+
+Start a fresh Copilot chat and select `/store6`. See
+[VS Code's agent skills guide](https://code.visualstudio.com/docs/agent-customization/agent-skills)
+if the skill is not discovered. Follow the same version and retrieval checks below.
 
 ## Invoke the skill
 
@@ -69,15 +100,15 @@ used and the checks actually run.
 | `CONTENT_MISMATCH` | Stop using the returned context and verify the document source; its bytes differ from the packaged record. |
 | `NETWORK_ERROR`    | Restore access and request the guides again. The helper returns no partial page set.                       |
 
-To update a pinned installation, explicitly select a newer tested release ref and repeat the
-installation and version checks. A site build does not update the skill's packaged manifest.
+To update, deliberately repeat the installation and version checks. For installations from a fixed
+commit or release, explicitly select a newer tested ref. A site build does not update the skill's
+packaged manifest.
 
 ## Source and license
 
-The skill is distributed under Apache-2.0. Its
-[source, license, and notices](https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6)
-are included with the package. The skill links to Store6 documentation rather than maintaining a
-second API manual.
+The skill is licensed under Apache-2.0. Its source, license, and notices are maintained in
+[matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills).
+The skill links to Store6 documentation rather than maintaining a second API manual.
 
 ---
 
@@ -96,9 +127,16 @@ Find Markdown guides and understand their recorded source identity.
 [/llms.txt](https://store.mobilenativefoundation.org/llms.txt) is the discovery index. It links to individual guides and the complete Store6
 guide corpus. It does not contain the complete documentation itself.
 
-Use a page's **View Markdown** action or open a URL such as
-[/llms/store6/quickstart.md](https://store.mobilenativefoundation.org/llms/store6/quickstart.md). **Copy page** copies that complete Markdown
+Use **View as Markdown** from a page's dropdown or open a URL such as
+[/llms/store6/quickstart.md](https://store.mobilenativefoundation.org/llms/store6/quickstart.md). **Copy Markdown** copies that complete Markdown
 document, including its title and source information, when your browser permits clipboard access.
+
+**Copy Prompt** copies Store6 environment setup instructions: check skill availability, install
+the skill in the project, and verify discovery and documentation retrieval. Paste it into your coding agent.
+
+The dropdown also links to editor setup guides and opens ChatGPT or Claude with the page's public
+Markdown URL in a prompt. These chats use the public site, so they cannot read unpublished local
+preview changes. If the page is unavailable to the chat, paste its content with **Copy Markdown**.
 
 For a tool with a larger context window, [/llms-full.txt](https://store.mobilenativefoundation.org/llms-full.txt) contains all Store6 guides
 and agent setup pages. It excludes Store5 documentation and generated Dokka API HTML. Links to
@@ -154,11 +192,14 @@ revision in your project. A matching name or major version alone does not establ
 
 ## Choose your context
 
-| Method                                                                                      | Use it when                                                                                                    |
-| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| **Copy page**                                                                               | You want to paste one complete guide into a conversation.                                                      |
-| **View Markdown**                                                                           | Your agent can open a documentation URL and select the pages it needs.                                         |
-| [Store6 skill](https://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md) | Your coding agent supports skills and should check the project version before retrieving task-specific guides. |
+| Method                                                                                      | Use it when                                                                                                          |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Copy Prompt**                                                                             | You want a coding agent to check skill availability, install the Store6 skill in your project, and verify its setup. |
+| **Copy Markdown**                                                                           | You want to paste one complete guide into a conversation.                                                            |
+| **View as Markdown** (in the dropdown)                                                      | Your agent can open a documentation URL and select the pages it needs.                                               |
+| **Set up in Cursor / VS Code** (in the dropdown)                                            | You want the skill setup guide for your editor.                                                                      |
+| **Open in ChatGPT / Claude** (in the dropdown)                                              | You want to ask questions about the page in a new chat. The link includes its public Markdown URL.                   |
+| [Store6 skill](https://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md) | Your coding agent supports skills and should check the project version before retrieving task-specific guides.       |
 
 The page actions appear on Store6 guides with a Markdown export. See
 [LLM context](https://store.mobilenativefoundation.org/llms/store6/agents/llm-context.md) for the index, complete guide corpus, and source records.
@@ -167,7 +208,11 @@ The page actions appear on Store6 guides with a Markdown export. See
 
 Give the agent the repository, desired behavior, and relevant platform. For example:
 
-> Inspect this project's Store6 dependency or source revision. Use the matching Store6 documentation from <https://store.mobilenativefoundation.org/llms.txt> to implement a typed user repository. Cite the read and lifetime contracts, then run the project's relevant checks. If the version is unsupported, identify the mismatch before generating code.
+**Example prompt**
+
+```text
+Inspect this project's Store6 dependency or source revision. Use the matching Store6 documentation from https://store.mobilenativefoundation.org/llms.txt to implement a typed user repository. Cite the read and lifetime contracts, then run the project's relevant checks. If the version is unsupported, identify the mismatch before generating code.
+```
 
 For a persistence or mutation task, state what must survive a restart and which database and
 platforms your application uses. Ask the agent to distinguish what it checked in source from what

@@ -196,9 +196,15 @@ jobs:
         if: steps.drift.outputs.changed == 'true'
         run: cp evidence/T4-store6-source-lock.json "$RUNNER_TEMP/store6-lock-before.json"
 
+      - name: Check out the pinned Store6 skill
+        if: steps.drift.outputs.changed == 'true'
+        run: |
+          git clone --no-checkout https://github.com/matt-ramotar/store-agent-skills ../store-agent-skills
+          git -C ../store-agent-skills checkout --detach 1aadb4a8ba816cfb90129b30db5f5eebc5446848
+
       - name: Re-pin Store6 sources
         if: steps.drift.outputs.changed == 'true'
-        run: node scripts/repin-store6-lock.mjs --source-root ../Store6
+        run: node scripts/repin-store6-lock.mjs --source-root ../Store6 --skills-root ../store-agent-skills
 
       - name: Verify synchronized Store6 output
         if: steps.drift.outputs.changed == 'true'
@@ -330,7 +336,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          node scripts/check-claims.mjs --source-root ../Store6 2>&1 | tee "$RUNNER_TEMP/store6-claims-report.txt"
+          node scripts/check-claims.mjs --source-root ../Store6 --skills-root ../store-agent-skills 2>&1 | tee "$RUNNER_TEMP/store6-claims-report.txt"
           status=${PIPESTATUS[0]}
           set -e
           classification="$(node scripts/repin-store6-lock.mjs --classify-reverification scripts/check-claims.mjs "$status" "$RUNNER_TEMP/store6-claims-report.txt")"
