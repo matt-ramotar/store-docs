@@ -164,7 +164,7 @@
   "plannedReleaseRef": "store6-skill-v0.1.0",
   "sourcePublication": "local-candidate-only",
   "httpsRetrieval": "pending-publication",
-  "recordedAt": "2026-09-08T08:58:20.132124+00:00",
+  "recordedAt": "2026-09-08T10:23:19.794085+00:00",
   "explicitUpdateFixture": {
     "classification": "TEST FIXTURE package only; not a real new release",
     "packageDigest": "8a99abfcf95aa20f691941ddcaec9451b00a71ab8f25b5cedbba480e42e8c74e",
@@ -203,5 +203,70 @@
     "stderrLog": "evidence/agent-docs-runs/s5-update-transport-negative.stderr.log",
     "stdoutLog": "evidence/agent-docs-runs/s5-update-transport-negative.stdout.log",
     "statusLog": "evidence/agent-docs-runs/s5-update-transport-negative-status.log"
-  }
+  },
+  "promotionStatus": "held",
+  "evaluationStatus": "local-evaluation-complete",
+  "evaluationGate": {
+    "status": "failed",
+    "casesWithoutSuccessfulSkillOutcome": [
+      "first-store",
+      "freshness",
+      "persistence",
+      "ui-lifecycle",
+      "durable-mutation",
+      "store5-migration"
+    ],
+    "publicSource": "local-candidate-only",
+    "immutablePublicInstall": "pending-publication",
+    "httpsDelivery": "pending-publication",
+    "successfulBaselineCases": [],
+    "baselineCasesWithoutSuccessfulSkillOutcome": [],
+    "substantiveBaselineCases": [
+      "first-store"
+    ],
+    "substantiveBaselineCasesWithoutSubstantiveSkillOutcome": [
+      "first-store"
+    ],
+    "interpretation": "The full-submission outcome retains missing required result files as incomplete. Substantive API, semantics, and citation satisfaction is also recorded independently, so a missing result file cannot hide useful baseline behavior."
+  },
+  "evaluationCounts": {
+    "planned": 54,
+    "finished": 54,
+    "reviewed": 54,
+    "completeSubmissions": 0,
+    "sourceReviewedSuccesses": 0,
+    "partial": 7,
+    "failed": 47,
+    "invalid": 0,
+    "criticalCells": 1,
+    "kotlinArtifacts": 9,
+    "compilePassed": 8,
+    "compileFailed": 1,
+    "behaviorPassed": 7,
+    "behaviorFailed": 1,
+    "timedOut": 54,
+    "elapsedSeconds": {
+      "minimum": 180.0134889580002,
+      "mean": 180.0272233409259,
+      "maximum": 180.03288841700007
+    },
+    "tokenUsage": "unavailable for interrupted sessions unless individual row records a completed-turn usage report"
+  },
+  "executedTestTotals": {
+    "tests": 27,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reviewPath": "evidence/store6-agent-release-review.md",
+  "observedLocalChecksComplete": true,
+  "fullReleaseValidated": false,
+  "remainingChecks": [
+    "Immutable reviewed Store6 source available to intended readers",
+    "Successful independently reviewed skill outcome for every frozen case",
+    "Actual immutable public skill ref and deployment",
+    "Actual HTTPS manifest/page delivery and immutable installs",
+    "Claude Code and Cursor native invocation/unrelated activation",
+    "Native browser opening of text/markdown"
+  ]
 }
