@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Namespace ownership prevents leapfrogging | Store Docs</title><style>/* Light values come from app/globals.css. Dark paper and ink are Store's code theme. */
+:root {
+  color-scheme: light;
+  --background: oklch(97.02% 0.0044 186.20);
+  --surface: oklch(100% 0.0022 186.20);
+  --surface-secondary: oklch(95.24% 0.0035 186.20);
+  --foreground: oklch(21.03% 0.0044 186.20);
+  --muted: oklch(55.17% 0.0088 186.20);
+  --border: oklch(90% 0.0044 186.20);
+  --accent: oklch(50.88% 0.0838 186.20);
+  --link: var(--accent);
+  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #141A19;
+    --surface: #202424;
+    --surface-secondary: #202424;
+    --foreground: #F9FDFC;
+    --muted: #9AA2A1;
+    --border: #414B49;
+    /* Same Tidal hue/chroma, lifted for contrast on Store's dark surface. */
+    --accent: oklch(76% 0.0838 186.20);
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--foreground); font-family: var(--font-sans); }
+main { max-width: 1120px; margin: auto; padding: 32px; }
+.eyebrow { color: var(--muted); font: 12px var(--font-mono); letter-spacing: .12em; }
+h1 { font-size: 28px; line-height: 1.2; font-weight: 600; }
+@media (max-width: 600px) { main { padding: 16px; } }
+@media print { :root { --background: white; --surface: white; --surface-secondary: #f0f4f3; --foreground: #141A19; --muted: #414B49; --border: #bac6c3; --accent: oklch(50.88% 0.0838 186.20); } }
+
+/* Diagram Design semantic roles inherit the Store Docs theme. */
+.store-designed-diagram {
+  --dd-paper: var(--background);
+  --dd-paper-2: var(--surface-secondary);
+  --dd-ink: var(--foreground);
+  --dd-muted: color-mix(in srgb, var(--foreground) 76%, var(--background));
+  --dd-rule: var(--border);
+  --dd-accent: var(--accent);
+  --dd-tint: color-mix(in srgb, var(--accent) 8%, var(--background));
+  --dd-link: var(--link, var(--accent));
+  margin: 2rem 0;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--dd-ink);
+}
+.store-designed-diagram-viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--muted) var(--background);
+}
+.store-designed-diagram-viewport:focus-visible { outline: 2px solid var(--focus, var(--accent)); outline-offset: 4px; }
+.store-designed-diagram .dd-svg { display: block; width: 100%; min-width: 720px; height: auto; }
+.store-designed-diagram .dd-svg :where(text) { fill: var(--dd-ink); font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif); }
+.store-designed-diagram .dd-name { font-size: 16px; font-weight: 600; }
+.store-designed-diagram .dd-mono,
+.store-designed-diagram .dd-label { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-tag { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; letter-spacing: .08em; fill: var(--dd-muted); }
+.store-designed-diagram .dd-legend { font-size: 12px; fill: var(--dd-muted); }
+.store-designed-diagram .dd-paper { fill: var(--dd-paper); stroke: none; }
+.store-designed-diagram .dd-node { fill: var(--surface); stroke: var(--dd-ink); stroke-width: 1; }
+.store-designed-diagram .dd-focal { fill: var(--dd-tint); stroke: var(--dd-accent); stroke-width: 1.5; }
+.store-designed-diagram .dd-state { fill: var(--dd-paper-2); stroke: var(--dd-muted); stroke-width: 1; }
+.store-designed-diagram .dd-optional { fill: var(--dd-paper); stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.store-designed-diagram .dd-zone { fill: var(--dd-paper-2); fill-opacity: .5; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-rule { fill: none; stroke: var(--dd-rule); stroke-width: 1; }
+.store-designed-diagram .dd-lifeline { fill: none; stroke: var(--dd-muted); stroke-width: 1; stroke-dasharray: 4 4; opacity: .5; }
+.store-designed-diagram .dd-edge { fill: none; stroke: var(--dd-muted); stroke-width: 1.5; stroke-linejoin: round; }
+.store-designed-diagram .dd-edge-accent { stroke: var(--dd-accent); }
+.store-designed-diagram .dd-edge-link { stroke: var(--dd-link); }
+.store-designed-diagram .dd-arrow-default { fill: var(--dd-muted); }
+.store-designed-diagram .dd-arrow-accent { fill: var(--dd-accent); }
+.store-designed-diagram .dd-arrow-link { fill: var(--dd-link); }
+.store-designed-diagram figcaption { margin-top: .75rem; max-width: 72ch; font-size: .875rem; line-height: 1.6; color: var(--dd-muted); }
+.store-designed-diagram figcaption a { margin-inline-start: .5em; }
+@media print {
+  .store-designed-diagram-viewport { overflow: visible; }
+  .store-designed-diagram .dd-svg { min-width: 0; }
+  .store-designed-diagram { break-inside: avoid; }
+}
+</style></head><body><main><header><p class="eyebrow">STORE DOCS / DIAGRAMS</p><h1>Namespace ownership prevents leapfrogging</h1></header><figure class="store-designed-diagram"><div class="store-designed-diagram-viewport" tabindex="0" role="region" aria-label="Namespace ownership prevents leapfrogging; scroll horizontally on small screens"><svg xmlns="http://www.w3.org/2000/svg" class="dd-svg" role="img" aria-labelledby="namespace-ownership-title namespace-ownership-desc" viewBox="0 0 960 600"><title id="namespace-ownership-title">Namespace ownership prevents leapfrogging</title><desc id="namespace-ownership-desc">An uncertain head generation in Namespace A blocks a later key, while an eligible head in Namespace B can push and retire.</desc><defs><marker id="namespace-ownership-arrow-default" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-default"/></marker><marker id="namespace-ownership-arrow-accent" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-accent"/></marker><marker id="namespace-ownership-arrow-link" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M0 0 L8 4 L0 8 Z" class="dd-arrow-link"/></marker></defs><rect x="0" y="0" width="960" height="600" rx="0" class="dd-paper"/><rect x="48" y="64" width="864" height="200" rx="8" class="dd-zone"/><text x="64" y="88" class="dd-tag" text-anchor="start">NAMESPACE A</text><rect x="48" y="304" width="864" height="200" rx="8" class="dd-zone"/><text x="64" y="328" class="dd-tag" text-anchor="start">NAMESPACE B</text><path d="M360 176 H600" class="dd-edge dd-edge-default" marker-end="url(#namespace-ownership-arrow-default)"/><path d="M360 416 H600" class="dd-edge dd-edge-default" marker-end="url(#namespace-ownership-arrow-default)"/><g data-node="Head generation"><rect x="88" y="128" width="272" height="96" rx="8" class="dd-paper"/><rect x="88" y="128" width="272" height="96" rx="8" class="dd-focal"/><text x="224.0" y="172" class="dd-name" text-anchor="middle">Head generation</text><text x="224.0" y="196" class="dd-mono" text-anchor="middle">acceptance uncertain</text></g><g data-node="Later key"><rect x="600" y="128" width="272" height="96" rx="8" class="dd-paper"/><rect x="600" y="128" width="272" height="96" rx="8" class="dd-optional"/><text x="736.0" y="172" class="dd-name" text-anchor="middle">Later key</text><text x="736.0" y="196" class="dd-mono" text-anchor="middle">blocked behind owner</text></g><g data-node="Eligible head"><rect x="88" y="368" width="272" height="96" rx="8" class="dd-paper"/><rect x="88" y="368" width="272" height="96" rx="8" class="dd-node"/><text x="224.0" y="420" class="dd-name" text-anchor="middle">Eligible head</text></g><g data-node="Push and retire"><rect x="600" y="368" width="272" height="96" rx="8" class="dd-paper"/><rect x="600" y="368" width="272" height="96" rx="8" class="dd-node"/><text x="736.0" y="420" class="dd-name" text-anchor="middle">Push and retire</text></g><path d="M40 536 H920" class="dd-rule"/><rect x="64" y="556" width="12" height="12" rx="4" class="dd-focal"/><text x="88" y="568" class="dd-legend" text-anchor="start">Lane owner</text><rect x="328" y="556" width="12" height="12" rx="4" class="dd-optional"/><text x="352" y="568" class="dd-legend" text-anchor="start">Blocked work</text><rect x="624" y="556" width="12" height="12" rx="4" class="dd-node"/><text x="648" y="568" class="dd-legend" text-anchor="start">Eligible work</text></svg></div><figcaption>Namespace A&#x27;s arrow means the head blocks the later key; it is not a transport attempt. Namespace B remains eligible to progress independently.</figcaption></figure></main></body></html>

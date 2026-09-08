@@ -218,15 +218,9 @@ boundary. It wraps a `TransactionalSourceOfTruth` and exposes a paired overlay. 
 
 The sequence is:
 
-```text
-success:  transaction open → retirement signal (coalesced) → commit
-          → apply + confirmFresh → collection restart
-          → authoritative first-row recapture → row delivery → one retirement signal
+<StoreDiagram id="extension-lifecycle" />
 
-rollback: transaction rollback → collection restart
-          → authoritative first-row recapture → discard retirement signals
-          (confirmFresh is not an observation step)
-```
+<StoreDiagram id="extension-lifecycle-rollback" />
 
 1. Close the key's gate and open the source-of-truth transaction.
 2. Write the confirmed echo and retire the journal entry in that transaction. Retirement signal

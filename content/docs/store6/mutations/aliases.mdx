@@ -82,21 +82,7 @@ edge advances to `ACTIVE` in retirement finalization, after every declared inval
 the intent has reached a terminal disposition. A live facade stream changes delegates at that
 activation boundary, not merely when the acknowledgement arrives.
 
-```mermaid
-sequenceDiagram
-    participant A as App
-    participant M as MutationStore
-    participant S as MutationServer
-    participant J as Durable journal
-    A->>M: mutate(provisionalKey, createRef, args)
-    M->>S: push(provisional identity)
-    S-->>M: PresentAck(canonicalKey)
-    M->>J: transaction: ACKED receipt + PENDING alias
-    M->>M: adopt authoritative echo
-    M->>M: finish declared invalidation effects
-    M->>J: transaction: retire intent + alias ACTIVE
-    M-->>A: existing stream collection swaps to canonical delegate
-```
+<StoreDiagram id="alias-activation" />
 
 <Callout type="Note">
 

@@ -22,7 +22,7 @@
       },
       {
         "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-        "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a"
+        "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30"
       },
       {
         "path": "content/docs/challenges-at-scale.mdx",
@@ -158,7 +158,7 @@
       },
       {
         "path": "evidence/T4-manifest.md",
-        "sha256": "b521be39260c0ed7838238136a803d944329df83f5911756577bd91cebc30f45"
+        "sha256": "6d1c4e9d870e9d6cfcf663631021234270873626e565f8c3d039ad112b72a54f"
       }
     ],
     "sync-store6-docs": [

@@ -22,6 +22,7 @@ const READ_RESOLUTION_TABLE_PATH = resolve(ROOT, "components/overview/ReadResolu
 const SUPPORT_MATRIX_PATH = resolve(ROOT, "components/overview/SupportMatrix.tsx");
 const NAV_PATH = resolve(ROOT, "lib/nav.ts");
 const LIVE_ORIGIN = "https://store.mobilenativefoundation.org";
+const REDESIGNED_DECISION_PATH = "/docs/best-practices/store5/single-or-multiple-stores";
 const SITEMAP_URL = `${LIVE_ORIGIN}/sitemap.xml`;
 const EXCLUDED_URL = `${LIVE_ORIGIN}/api/openapi.json`;
 const EXPECTED_OUTSIDE_ROUTES = new Map([
@@ -526,13 +527,41 @@ test("component-aware migration preserves cards, steps, callouts, descriptions, 
     "utf8",
   );
   assert.equal(markdownImageTargets(meet).length, 3);
-  assert.equal(markdownImageTargets(decision).length, 1);
+  assert.equal(markdownImageTargets(decision).length, 0);
+  assert.deepEqual([...decision.matchAll(/<StoreDiagram id="([^"]+)"\s*\/>/g)].map((match) => match[1]), [
+    "single-or-multiple-stores", "independent-stores",
+  ]);
   assert.match(readFrontmatterDocument(resolve(ROOT, "content/docs/meet-store.mdx")).description, /Store/);
+});
+
+test("the declared diagram redesign survives regeneration without changing its historical snapshot", async () => {
+  const { applyAuthoredDiagramRedesign, convertBodyToMdx } = await import("./port-page.mjs");
+  const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
+  const page = snapshot.pages.find((entry) => new URL(entry.url).pathname === REDESIGNED_DECISION_PATH);
+  const original = convertBodyToMdx(page.bodyHtml, page.url, page.sourceMarkdown,
+    new Map(snapshot.linkHealth.map((entry) => [entry.url, entry.status]))).body;
+  assert.match(original, /single-or-multiple-stores-light\.svg/);
+  assert.match(original, /Green paths represent/);
+  const redesign = applyAuthoredDiagramRedesign(original, page.url);
+  assert.equal(redesign.body.trim(), readFrontmatterDocument(resolve(ROOT, `content${REDESIGNED_DECISION_PATH}.mdx`)).body.trim());
+  assert.deepEqual(markdownHeadings(redesign.body), markdownHeadings(original));
+  assert.equal(redesign.notes.length, 1);
+  assert.match(redesign.notes[0], /Authored diagram redesign.*seven questions and fourteen decision branches.*Start marker.*YES\/NO/);
+  assert.throws(() => applyAuthoredDiagramRedesign(original.replace("Green paths represent", "Different source guidance"), page.url), /AUTHORED_DIAGRAM_SOURCE_CHANGED/);
+  assert.deepEqual(applyAuthoredDiagramRedesign(original, `${LIVE_ORIGIN}/docs/intro`), { body: original, notes: [] });
+  const manifest = readManifestRows().find((row) => row.url === page.url);
+  assert.equal(manifest.loss, redesign.notes[0]);
 });
 
 test("migrated widgets retain grouped steps, code panels, callouts, and parameter definitions", () => {
   const snapshot = JSON.parse(readFileSync(SNAPSHOT_PATH, "utf8"));
   const expected = sourceWidgetContract(snapshot);
+  // This single source callout was intentionally amended alongside its diagram.
+  // Every other historical widget still requires exact source-body parity.
+  const guides = expected.callouts.filter((callout) => callout.page === REDESIGNED_DECISION_PATH && callout.body.startsWith("HowtoUsetheFlowChart"));
+  assert.equal(guides.length, 1);
+  assert.match(guides[0].body, /Greenpathsrepresent"yes"\.Redpathsrepresent"no"\./);
+  guides[0].body = normalizeWidgetBody('How to Use the Flow Chart: Start at the top of the chart. Answer each question with “yes” or “no”. Follow the paths labeled “YES” or “NO”. If the sources are not tightly coupled, continue with the second diagram.');
   const actual = {
     callouts: [],
     paramListSizes: [],
@@ -968,13 +997,15 @@ test("manifest fidelity values match ported bodies and warrant every status", ()
     const meetsRatio = liveChars === 0 ? portedChars === 0 : portedChars / liveChars >= 0.6;
     const warrantedClean = headingsMatch && meetsRatio;
     const unavailableDestination = row.url.endsWith("/docs/use-cases/store5/overview");
+    const authoredRedesign = new URL(row.url).pathname === REDESIGNED_DECISION_PATH;
     assert.equal(
       row.status,
-      unavailableDestination ? "ported with noted loss" : warrantedClean ? "ported clean" : "ported with noted loss",
+      unavailableDestination || authoredRedesign ? "ported with noted loss" : warrantedClean ? "ported clean" : "ported with noted loss",
       row.url,
     );
-    assert.equal(row.loss === "none", warrantedClean && !unavailableDestination, row.url);
+    assert.equal(row.loss === "none", warrantedClean && !unavailableDestination && !authoredRedesign, row.url);
     if (unavailableDestination) assert.match(row.loss, /multiplatform-integration.*unavailable/i);
+    if (authoredRedesign) assert.match(row.loss, /Authored diagram redesign.*seven questions and fourteen decision branches/);
 
     if (liveChars === 0) {
       assert.equal(portedChars, 0);
@@ -1038,7 +1069,7 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
       assert.ok($(heading).attr("id"), `${pathname}: heading lacks id`);
       assert.ok($(heading).hasClass(`typography--h${depth}`), `${pathname}: heading lacks typography class`);
     });
-    content.find("a[href]").each((_, anchor) => {
+    content.find("a[href]").filter((_, anchor) => $(anchor).closest("figure[data-diagram]").length === 0).each((_, anchor) => {
       assert.ok($(anchor).hasClass("text-accent-strong"), `${pathname}: prose link lacks renderer class`);
       assert.equal($(anchor).attr("data-slot"), undefined, `${pathname}: prose link is not native`);
     });
@@ -1054,13 +1085,30 @@ test("compiled migrated articles preserve renderer semantics, meaningful links, 
       page.url,
       new Map(snapshot.linkHealth.map((entry) => [entry.url, entry.status])),
     );
-    const actualLinks = content
+    const originalProse = content.clone();
+    if (pathname === REDESIGNED_DECISION_PATH) {
+      const figures = content.find("figure[data-diagram]");
+      assert.deepEqual(figures.map((_, figure) => $(figure).attr("data-diagram")).get(), ["single-or-multiple-stores", "independent-stores"]);
+      figures.each((_, figure) => {
+        const id = $(figure).attr("data-diagram");
+        assert.equal($(figure).find('svg[role="img"][aria-labelledby]').length, 1);
+        assert.equal($(figure).find(`figcaption a[href="/diagrams/${id}.html"]`).length, 1);
+      });
+      assert.equal(figures.find('svg a[href="/diagrams/independent-stores.html"]').length, 1);
+      originalProse.find("figure[data-diagram]").remove();
+      const replaced = expected.media.filter((media) => /\/single-or-multiple-stores-light\.svg\?[^\u0000]+\u0000Decision Flow Chart$/.test(media));
+      assert.equal(replaced.length, 1, "only the declared historical decision image is replaced");
+      expected.media = expected.media.filter((media) => media !== replaced[0]);
+    } else {
+      assert.equal(content.find("figure[data-diagram]").length, 0, `${pathname}: undeclared replacement of historical content`);
+    }
+    const actualLinks = originalProse
       .find("a[href]")
       .toArray()
       .filter((anchor) => normalizeText($(anchor).text()).length > 0)
       .map((anchor) => $(anchor).attr("href"))
       .sort();
-    const actualMedia = content
+    const actualMedia = originalProse
       .find("img[src]")
       .toArray()
       .map((image) => `${$(image).attr("src")}\u0000${$(image).attr("alt") ?? ""}`)

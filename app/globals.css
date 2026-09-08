@@ -9,6 +9,7 @@
 @import "../components/docs/mintlify/code/styles.css" layer(store-code);
 @import "../components/docs/mintlify/overlays/styles.css" layer(store-overlays);
 @import "../components/docs/mintlify/diagrams/styles.css" layer(store-diagrams);
+@import "../components/docs/diagrams/styles.css" layer(store-diagrams);
 
 
 /* Mintlify's previous icon masks used background/fill utilities. Hugeicons draw strokes. */

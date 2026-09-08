@@ -262,7 +262,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 76,
             "end": 76
@@ -364,7 +364,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 72,
             "end": 72
@@ -451,7 +451,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 80,
             "end": 80
@@ -519,7 +519,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 28,
             "end": 28
@@ -570,7 +570,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 32,
             "end": 32
@@ -621,7 +621,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 12,
             "end": 12
@@ -706,7 +706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "e241ad0f770cffb7930a7c9a1b1056b99b440300d58d5ec14832832dad0bc025",
+          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
           "lines": {
             "start": 16,
             "end": 16
@@ -8453,7 +8453,7 @@
         {
           "repository": "store-docs",
           "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-          "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+          "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30",
           "lines": {
             "start": 8,
             "end": 8
@@ -8470,10 +8470,10 @@
         {
           "repository": "store-docs",
           "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-          "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+          "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30",
           "lines": {
             "start": 37,
-            "end": 37
+            "end": 41
           }
         }
       ]
@@ -8487,10 +8487,10 @@
         {
           "repository": "store-docs",
           "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-          "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+          "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30",
           "lines": {
             "start": 25,
-            "end": 25
+            "end": 29
           }
         }
       ]
@@ -8498,16 +8498,16 @@
     {
       "id": "docs/best-practices/store5/single-or-multiple-stores/003",
       "page": "/docs/best-practices/store5/single-or-multiple-stores",
-      "claim": "The decision flowchart is an external image hosted on mintcdn.com.",
+      "claim": "The decision guide embeds two StoreDiagram figures: single-or-multiple-stores and independent-stores.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-          "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+          "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30",
           "lines": {
             "start": 122,
-            "end": 122
+            "end": 124
           }
         }
       ]
@@ -8521,10 +8521,10 @@
         {
           "repository": "store-docs",
           "path": "content/docs/best-practices/store5/single-or-multiple-stores.mdx",
-          "sha256": "1fa18f693a4bb0fd196735fa867f6e257c6fadfbd7fdba9c52e81af68979827a",
+          "sha256": "a6ed6a24c6db4b41df8bf2411a297ebdefa07d94e309e2fde9e2412d61fabc30",
           "lines": {
-            "start": 126,
-            "end": 126
+            "start": 128,
+            "end": 134
           }
         }
       ]
