@@ -3,7 +3,8 @@
 import type * as PageTree from "fumadocs-core/page-tree";
 import { Button } from "@heroui/react";
 import { Sheet } from "@heroui-pro/react";
-import { Icon } from "@iconify/react";
+import { Cancel01Icon, Menu01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -37,7 +38,7 @@ export function MobileNav({
           size="sm"
           variant="ghost"
         >
-          <Icon className="size-5" icon="gravity-ui:bars" />
+          <HugeiconsIcon aria-hidden className="size-5" icon={Menu01Icon} strokeWidth={1.5} />
         </Button>
       </Sheet.Trigger>
       <Sheet.Backdrop className="motion-reduce:animate-none motion-reduce:transition-none">
@@ -45,7 +46,9 @@ export function MobileNav({
           <Sheet.Dialog className="flex h-full flex-col gap-5 overflow-y-auto p-4">
             <div className="flex items-center justify-between gap-3">
               <Sheet.Heading className="text-sm font-semibold">Documentation navigation</Sheet.Heading>
-              <Sheet.CloseTrigger aria-label="Close documentation navigation" className="size-11 shrink-0" />
+              <Sheet.CloseTrigger aria-label="Close documentation navigation" className="size-11 shrink-0">
+                <HugeiconsIcon aria-hidden className="size-4" icon={Cancel01Icon} strokeWidth={1.5} />
+              </Sheet.CloseTrigger>
             </div>
             <ul className="border-separator flex flex-col gap-0.5 border-b pb-4">
               {topNavTabs.map((tab) => {

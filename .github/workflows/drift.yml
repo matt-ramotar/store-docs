@@ -249,6 +249,7 @@ jobs:
           done
           rsync -a --delete ../Store6/store6-core/build/dokka/html/ public/reference/store6-core/
           rsync -a --delete ../Store6/store6-mutations/build/dokka/html/ public/reference/store6-mutations/
+          node scripts/sync-reference-icons.mjs
 
       - name: Reject unresolved Dokka links
         if: steps.drift.outputs.changed == 'true'

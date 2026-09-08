@@ -17,9 +17,12 @@ importers:
       '@heroui/styles':
         specifier: ^3.2.4
         version: 3.2.4(tailwind-merge@3.4.0)(tailwindcss@4.3.3)
-      '@iconify/react':
-        specifier: ^6.0.2
-        version: 6.0.2(react@19.2.8)
+      '@hugeicons/core-free-icons':
+        specifier: ^4.3.0
+        version: 4.3.0
+      '@hugeicons/react':
+        specifier: ^1.1.10
+        version: 1.1.10(react@19.2.8)
       '@mintlify/components':
         specifier: ^1.0.18
         version: 1.0.18(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -69,9 +72,6 @@ importers:
         specifier: ^7.2.4
         version: 7.2.4
     devDependencies:
-      '@iconify-json/gravity-ui':
-        specifier: ^1.2.14
-        version: 1.2.14
       '@tailwindcss/postcss':
         specifier: ^4.3.3
         version: 4.3.3
@@ -383,13 +383,13 @@ packages:
     peerDependencies:
       tailwindcss: '>=4.0.0'
 
-  '@iconify-json/gravity-ui@1.2.14':
-    resolution: {integrity: sha512-d6ENT1S3YBs0ltTiuQIucun90C1mk//TVpe63tcIlzibujLMw9tpvZQ3Rb35xUyr5vcpxILEKr2spHD6uKaj5w==}
+  '@hugeicons/core-free-icons@4.3.0':
+    resolution: {integrity: sha512-5DC5gq2psNDKBQThOjpuFCtMco8nl2FkrBzZgG15cFGM0kSwUoych/pw0DmjBygF9qRDITdBPtmzJqLsOeImMg==}
 
-  '@iconify/react@6.0.2':
-    resolution: {integrity: sha512-SMmC2sactfpJD427WJEDN6PMyznTFMhByK9yLW0gOTtnjzzbsi/Ke/XqsumsavFPwNiXs8jSiYeZTmLCLwO+Fg==}
+  '@hugeicons/react@1.1.10':
+    resolution: {integrity: sha512-9tAsd92yMVVGP+E+d8cM+wc0VnXuYZHNbWQi7TOe8k2neawmhiaFmVFbzyruejhOMa197/LbgvSED32ayUo3ZA==}
     peerDependencies:
-      react: '>=16'
+      react: '>=16.0.0'
 
   '@iconify/types@2.0.0':
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
@@ -3083,13 +3083,10 @@ snapshots:
     transitivePeerDependencies:
       - tailwind-merge
 
-  '@iconify-json/gravity-ui@1.2.14':
-    dependencies:
-      '@iconify/types': 2.0.0
+  '@hugeicons/core-free-icons@4.3.0': {}
 
-  '@iconify/react@6.0.2(react@19.2.8)':
+  '@hugeicons/react@1.1.10(react@19.2.8)':
     dependencies:
-      '@iconify/types': 2.0.0
       react: 19.2.8
 
   '@iconify/types@2.0.0': {}

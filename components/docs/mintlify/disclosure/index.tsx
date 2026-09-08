@@ -1,5 +1,7 @@
 "use client";
 
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowDown01Icon, ArrowRight01Icon } from "@hugeicons/core-free-icons";
 import { createContext, useContext, useEffect, useId, useRef, useState, type ReactNode } from "react";
 // Frozen package dependency: use its exact transliteration/slug algorithm for URL compatibility.
 import slugify from "../../../../node_modules/@mintlify/components/dist/node_modules/.pnpm/@sindresorhus_slugify@2.2.1/node_modules/@sindresorhus/slugify/index.js";
@@ -93,7 +95,7 @@ function AccordionRoot({
           if (_disabled) event.preventDefault();
         }}>
         <span ref={urlAnchorRef} className={topOffset} data-accordion-url-id={typeof title === "string" ? urlId : undefined} aria-hidden="true" />
-        <span data-component-part="accordion-caret-right" aria-hidden="true">{open ? "▾" : "▸"}</span>
+        <HugeiconsIcon data-component-part="accordion-caret-right" data-icon-library="hugeicons" aria-hidden="true" icon={open ? ArrowDown01Icon : ArrowRight01Icon} size={16} strokeWidth={1.5} className="shrink-0" />
         {icon && <span data-component-part="accordion-icon">{typeof icon === "string" ? <Icon icon={icon} iconType={iconType} /> : icon}</span>}
         <span data-component-part="accordion-title-container">
           <span data-component-part="accordion-title">{title}</span>

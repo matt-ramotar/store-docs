@@ -177,6 +177,7 @@ test("generator validates cadence, exact revision, Dokka outputs, and full verif
   const java = requiredIndex(generator, "uses: actions/setup-java@v4");
   const gradle = requiredIndex(generator, "./gradlew :store6-core:dokkaHtml :store6-mutations:dokkaHtml --stacktrace");
   const replace = requiredIndex(generator, "- name: Replace public Dokka reference trees");
+  const icons = requiredIndex(generator, "node scripts/sync-reference-icons.mjs");
   const unresolved = requiredIndex(generator, "- name: Reject unresolved Dokka links");
   const build = requiredIndex(generator, "run: pnpm build");
   const tests = requiredIndex(generator, "run: node --test scripts/*.test.mjs");
@@ -185,7 +186,7 @@ test("generator validates cadence, exact revision, Dokka outputs, and full verif
   const t6b = requiredIndex(generator, "node scripts/test-t6b-reference.mjs");
 
   assert.ok(clone < cadence && cadence < repin && repin < sync && sync < revision);
-  assert.ok(revision < java && java < gradle && gradle < replace && replace < unresolved);
+  assert.ok(revision < java && java < gradle && gradle < replace && replace < icons && icons < unresolved);
   assert.ok(unresolved < build && build < tests && tests < crawl && crawl < search && search < t6b);
   assert.match(generator, /git -C \.\.\/Store6 fetch --force --tags origin "\$STORE6_REF"/);
   assert.match(generator, /distribution: zulu/);

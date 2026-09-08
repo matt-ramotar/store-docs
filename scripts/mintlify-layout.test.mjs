@@ -193,12 +193,15 @@ test("native Color tooltips gain and release an accessible trigger association",
   }
 });
 
-test("Icon preserves library, type, color, size, and override behavior", () => {
+test("Icon renders Hugeicons while preserving legacy input, color, size, and overrides", () => {
   const colored = render(React.createElement(layout.Icon, { icon: "database", iconLibrary: "lucide", color: "#6D28D9", size: 28 }));
   assert.match(colored, /store-mintlify-icon/);
-  assert.match(colored, /background-color:#6D28D9/);
+  assert.match(colored, /color:#6D28D9/);
   assert.match(colored, /width:28px/);
-  assert.match(colored, /lucide\/v0\.545\.0\/database\.svg/);
+  assert.match(colored, /data-icon-library="hugeicons"/);
+  assert.match(colored, /data-icon-name="database"/);
+  assert.match(colored, /<path /);
+  assert.doesNotMatch(colored, /mask-image|cloudfront\.net|lucide\/v0/);
   const overridden = render(React.createElement(layout.Icon, { icon: "database", overrideColor: true, overrideSize: true }));
   assert.doesNotMatch(overridden, /width:/);
   assert.doesNotMatch(overridden, /height:/);

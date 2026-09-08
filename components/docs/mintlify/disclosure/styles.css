@@ -35,7 +35,7 @@
 .store-docs .store-disclosure [data-component-part="accordion-title"],
 .store-docs .store-disclosure [data-component-part="step-title"] { color: var(--foreground); }
 .store-docs .store-disclosure [data-component-part="accordion-description"] { color: var(--muted); }
-.store-docs .store-disclosure [data-component-part="expandable-icon"] { background-color: var(--muted); }
+.store-docs .store-disclosure [data-component-part="expandable-icon"] { color: var(--muted); }
 .store-docs .store-disclosure [data-component-part="accordion-caret-right"] { color: var(--muted); }
 .store-docs .store-disclosure summary:hover,
 .store-docs .store-disclosure [role="treeitem"]:hover {
@@ -76,7 +76,7 @@
 }
 .store-docs .store-disclosure [data-component-part="tab-button"] { color: var(--muted); }
 .store-docs .store-disclosure [data-component-part="tab-button"][data-active="true"] { color: var(--accent); }
-.store-docs .store-disclosure [data-component-part="tab-button"] [data-component-part="icon"] { background-color: currentColor; }
+.store-docs .store-disclosure [data-component-part="tab-button"] [data-component-part="icon"] { color: inherit; }
 .store-docs .store-disclosure [data-component-part="tab-content"][aria-hidden="true"] { display: none; }
 .store-docs .store-disclosure[data-component-part="tree-root"] {
   padding: 0.5rem;

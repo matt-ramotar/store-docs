@@ -1,7 +1,8 @@
 "use client";
 
 import type * as PageTree from "fumadocs-core/page-tree";
-import { Icon } from "@iconify/react";
+import { ArrowRight01Icon, ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
 import {
   isValidElement,
@@ -139,9 +140,11 @@ function FolderRow({
 }) {
   const isExpanded = context.expandedIds.has(id);
   const chevron = (
-    <Icon
+    <HugeiconsIcon
+      aria-hidden
       className={`size-3.5 shrink-0 transition-transform ${isExpanded ? "rotate-90" : ""}`}
-      icon="gravity-ui:chevron-right"
+      icon={ArrowRight01Icon}
+      strokeWidth={1.5}
     />
   );
   const isIndexCurrent = folder.index?.url === context.currentPath;
@@ -205,7 +208,7 @@ function PageLink({
     <>
       <span className="min-w-0 flex-1 truncate">{label ?? page.name}</span>
       {page.external ? (
-        <Icon aria-hidden className="text-muted size-3 shrink-0" icon="gravity-ui:arrow-up-right" />
+        <HugeiconsIcon aria-hidden className="text-muted size-3 shrink-0" icon={ArrowUpRight01Icon} strokeWidth={1.5} />
       ) : null}
     </>
   );

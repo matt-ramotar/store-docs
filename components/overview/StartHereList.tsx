@@ -1,3 +1,5 @@
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowUpRight01Icon } from "@hugeicons/core-free-icons";
 import { Chip } from "@heroui/react/chip";
 import { Link } from "@heroui/react/link";
 
@@ -73,7 +75,7 @@ export function StartHereList() {
                   key={link.href}
                 >
                   {link.label}
-                  <Link.Icon className="size-3.5 shrink-0" />
+                  <Link.Icon className="size-3.5 shrink-0"><HugeiconsIcon aria-hidden="true" className="size-3.5" icon={ArrowUpRight01Icon} strokeWidth={1.5} /></Link.Icon>
                 </Link>
               ))}
             </div>

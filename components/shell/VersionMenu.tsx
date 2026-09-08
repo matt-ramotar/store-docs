@@ -1,7 +1,8 @@
 "use client";
 
 import { Dropdown } from "@heroui/react";
-import { Icon } from "@iconify/react";
+import { ArrowDown01Icon, Tick02Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 import {
   getVersionSwitcherItem,
@@ -20,7 +21,7 @@ export function VersionMenu({ version }: { version: DocsVersion }) {
         className="text-foreground hover:bg-default flex min-h-11 items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-semibold transition-colors"
       >
         {current.name.replace("Store ", "")}
-        <Icon className="text-muted size-3.5" icon="gravity-ui:chevron-down" />
+        <HugeiconsIcon aria-hidden className="text-muted size-3.5" icon={ArrowDown01Icon} strokeWidth={1.5} />
       </Dropdown.Trigger>
       <Dropdown.Popover placement="bottom start">
         <Dropdown.Menu
@@ -36,9 +37,11 @@ export function VersionMenu({ version }: { version: DocsVersion }) {
               textValue={item.name}
             >
               <span className="truncate text-sm font-medium">{item.name}</span>
-              <Icon
+              <HugeiconsIcon
+                aria-hidden
                 className="ms-auto size-4 shrink-0 text-foreground opacity-0 in-data-selected:opacity-100"
-                icon="gravity-ui:check"
+                icon={Tick02Icon}
+                strokeWidth={1.5}
               />
             </Dropdown.Item>
           ))}

@@ -5,13 +5,14 @@ import { createMDX } from "fumadocs-mdx/next";
 const withMDX = createMDX();
 const root = path.dirname(fileURLToPath(import.meta.url));
 const mintlifyCjsLoader = path.join(root, "lib/mintlify-cjs-require-loader.cjs");
+const mintlifyHugeiconsLoader = path.join(root, "lib/mintlify-hugeicons-loader.cjs");
 
 export default withMDX({
   transpilePackages: ["@mintlify/components"],
   turbopack: {
     root,
     rules: {
-      "*.js": {
+      "*.js": [{
         condition: {
           all: [
             { path: /@mintlify\/components\// },
@@ -20,11 +21,18 @@ export default withMDX({
         },
         loaders: [mintlifyCjsLoader],
         as: "*.js",
-      },
+      }, {
+        condition: { path: /@mintlify\/components\/dist\// },
+        loaders: [mintlifyHugeiconsLoader],
+        as: "*.js",
+      }],
     },
   },
   webpack: (config) => {
     config.module.rules.push({
+      test: /[\\/]@mintlify[\\/]components[\\/]dist[\\/].+\.js$/,
+      use: [mintlifyHugeiconsLoader],
+    }, {
       test: /[\\/]@mintlify[\\/]components[\\/]dist[\\/]_virtual[\\/].+\.js$/,
       use: [mintlifyCjsLoader],
     });
