@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate",
+  "skillVersion": "0.1.0",
+  "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+  "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+  "packageContentDigest": {
+    "sha256": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+    "algorithm": "sha256(JSON.stringify(sorted [relativePath, sha256(fileBytes)] pairs)); UTF-8 lexical path order"
+  },
+  "license": "Apache-2.0",
+  "installerVersion": "1.5.24",
+  "clients": {
+    "codex": {
+      "status": "in-progress"
+    },
+    "claude-code": {
+      "status": "in-progress"
+    },
+    "cursor": {
+      "status": "in-progress"
+    }
+  },
+  "evaluationSummaryPath": "evidence/store6-agent-evaluation.json",
+  "publicReleaseRef": null,
+  "plannedReleaseRef": "store6-skill-v0.1.0",
+  "sourcePublication": "local-candidate-only",
+  "httpsRetrieval": "pending-publication",
+  "recordedAt": "2026-09-08T08:37:17.077Z"
+}

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { copyFile, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -9,6 +9,7 @@ import test from 'node:test';
 
 const repositoryRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const sourceScripts = join(repositoryRoot, 'skills/store6/scripts');
+const packageScript = join(repositoryRoot, 'scripts/package-store6-skill.mjs');
 const revision = '5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71';
 const origin = 'https://store.mobilenativefoundation.org';
 const quickstart = '# Quickstart\n';
@@ -61,6 +62,35 @@ async function fixture() {
 
 function invoke(cli, cwd, args) {
   return spawnSync(process.execPath, [cli, ...args], { cwd, encoding: 'utf8' });
+}
+
+async function pairingFixture({ live = `${JSON.stringify(manifest, null, 2)}\n`, pinned = live } = {}) {
+  const root = await mkdtemp(join(tmpdir(), 'store6-skill-pairing-'));
+  const scripts = join(root, 'scripts');
+  const skillScripts = join(root, 'skills/store6/scripts');
+  const references = join(root, 'skills/store6/references');
+  const publicDocs = join(root, 'public/llms');
+  const elsewhere = join(root, 'different-cwd');
+  await Promise.all([
+    mkdir(scripts, { recursive: true }),
+    mkdir(skillScripts, { recursive: true }),
+    mkdir(references, { recursive: true }),
+    mkdir(publicDocs, { recursive: true }),
+    mkdir(elsewhere, { recursive: true }),
+  ]);
+  await Promise.all([
+    copyFile(packageScript, join(scripts, 'package-store6-skill.mjs')),
+    copyFile(join(sourceScripts, 'retrieve.mjs'), join(skillScripts, 'retrieve.mjs')),
+    live === null ? Promise.resolve() : writeFile(join(publicDocs, 'store6-manifest.json'), live),
+    writeFile(join(references, 'docs-manifest.json'), pinned),
+  ]);
+  return {
+    root,
+    elsewhere,
+    cli: join(scripts, 'package-store6-skill.mjs'),
+    live: join(publicDocs, 'store6-manifest.json'),
+    pinned: join(references, 'docs-manifest.json'),
+  };
 }
 
 test('lists paired pages offline from a different working directory', async t => {
@@ -133,4 +163,73 @@ test('buffers retrieval output when a later page fails', async t => {
   assert.equal(result.status, 1, result.stderr);
   assert.equal(result.stdout, '');
   assert.equal(JSON.parse(result.stderr).code, 'CONTENT_MISMATCH');
+});
+
+test('pairing rejects a missing or invalid live manifest without changing the packaged bytes', async t => {
+  for (const live of [null, '{"schemaVersion":1}\n']) {
+    const pinned = 'packaged bytes stay exact\n';
+    const paths = await pairingFixture({ live, pinned });
+    t.after(() => rm(paths.root, { recursive: true, force: true }));
+
+    const result = invoke(paths.cli, paths.elsewhere, []);
+
+    assert.equal(result.status, 1, result.stdout);
+    assert.equal(result.stdout, '');
+    assert.equal(await readFile(paths.pinned, 'utf8'), pinned);
+    assert.match(result.stderr, live === null ? /ENOENT/ : /MANIFEST_INVALID/);
+  }
+});
+
+test('--check reports a changed bundle and preserves every fixture byte from a foreign CWD', async t => {
+  const pinned = `${JSON.stringify(manifest, null, 2)}\n`;
+  const changed = { ...manifest, bundleId: `sha256:${'b'.repeat(64)}` };
+  const live = `${JSON.stringify(changed, null, 2)}\n`;
+  const paths = await pairingFixture({ live, pinned });
+  t.after(() => rm(paths.root, { recursive: true, force: true }));
+  const before = await Promise.all([
+    readFile(paths.cli),
+    readFile(join(paths.root, 'skills/store6/scripts/retrieve.mjs')),
+    readFile(paths.live),
+    readFile(paths.pinned),
+  ]);
+
+  const result = invoke(paths.cli, paths.elsewhere, ['--check']);
+
+  assert.equal(result.status, 1, result.stdout);
+  assert.equal(result.stdout, '');
+  assert.match(result.stderr, /SKILL_PAIR_MISMATCH: explicitly pair and revalidate this skill candidate/);
+  const after = await Promise.all([
+    readFile(paths.cli),
+    readFile(join(paths.root, 'skills/store6/scripts/retrieve.mjs')),
+    readFile(paths.live),
+    readFile(paths.pinned),
+  ]);
+  assert.deepEqual(after, before);
+});
+
+test('ordinary corpus drift preserves the skill pin until an explicit candidate pairing', async t => {
+  const pinned = `${JSON.stringify(manifest, null, 2)}\n`;
+  const changed = { ...manifest, bundleId: `sha256:${'b'.repeat(64)}` };
+  const live = `${JSON.stringify(changed, null, 2)}\n`;
+  const paths = await pairingFixture({ live: pinned, pinned });
+  t.after(() => rm(paths.root, { recursive: true, force: true }));
+
+  await writeFile(paths.live, live);
+  assert.equal(await readFile(paths.pinned, 'utf8'), pinned);
+
+  const rejected = invoke(paths.cli, paths.elsewhere, ['--check']);
+  assert.equal(rejected.status, 1, rejected.stdout);
+  assert.match(rejected.stderr, /SKILL_PAIR_MISMATCH/);
+  assert.equal(await readFile(paths.pinned, 'utf8'), pinned);
+
+  const paired = invoke(paths.cli, paths.elsewhere, []);
+  assert.equal(paired.status, 0, paired.stderr);
+  assert.equal(paired.stderr, '');
+  assert.equal(paired.stdout, 'paired Store6 skill candidate; validation is still required\n');
+  assert.equal(await readFile(paths.pinned, 'utf8'), live);
+
+  const checked = invoke(paths.cli, paths.elsewhere, ['--check']);
+  assert.equal(checked.status, 0, checked.stderr);
+  assert.equal(checked.stderr, '');
+  assert.equal(checked.stdout, 'checked Store6 skill/corpus pair\n');
 });
