@@ -213,9 +213,9 @@ function PageLink({
     </>
   );
 
-  // Only /docs routes live in this app; Dokka reference pages and external
-  // sites need a full navigation.
-  if (page.external || !page.url.startsWith("/docs")) {
+  // Documentation and the diagram gallery support client navigation;
+  // standalone Dokka reference pages and external sites need a full navigation.
+  if (page.external || (!page.url.startsWith("/docs") && page.url !== "/diagrams")) {
     return (
       <a
         className={linkClass}

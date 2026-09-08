@@ -1,0 +1,53 @@
+.row {
+  position: relative;
+  display: grid;
+  gap: 1.5rem;
+  padding-block: 2rem;
+  border-bottom: 1px solid var(--separator);
+}
+
+.thumbnail {
+  width: 100%;
+  height: 200px;
+  margin: 0;
+  padding: 0.5rem;
+  overflow: hidden;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.thumbnail :global(.dd-svg) {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/* The title's link covers the row without nesting the SVG's authored links. */
+.titleLink::after {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  content: "";
+}
+
+.titleLink:hover {
+  color: var(--accent-strong);
+}
+
+.titleLink:focus-visible {
+  outline: none;
+}
+
+.titleLink:focus-visible::after {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (min-width: 640px) {
+  .row {
+    grid-template-columns: 280px minmax(0, 1fr);
+    align-items: center;
+    gap: 2rem;
+  }
+}
