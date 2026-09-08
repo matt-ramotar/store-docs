@@ -1,4 +1,5 @@
 /
+/diagrams
 /docs
 /docs/store6/agents/agent-skills
 /docs/store6/agents/llm-context

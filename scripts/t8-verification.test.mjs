@@ -64,6 +64,8 @@ test("committed sources derive the inventory, separate exclusion, extras, and pa
   assert.deepEqual(contract.exclusionsWithinInventory, []);
   assert.deepEqual(contract.store6SyncedRoutes, lockedStore6Routes);
   assert.deepEqual(contract.extras, extras);
+  assert.ok(contract.extras.includes("/diagrams"));
+  assert.ok(contract.routeSources.applicationPages.includes("app/diagrams/page.tsx"));
   assert.equal(new Set(contract.pageRoutes).size, contract.pageRoutes.length);
   assert.equal(contract.pageRoutes.length, contract.inventoryPaths.length + contract.extras.length);
   assert.deepEqual(contract.nonPageSurfaces, [
@@ -758,6 +760,7 @@ function writeContractFixture(root, options = {}) {
     "/docs/store6/agents/llm-context",
     "/docs/store6/agents/agent-skills",
     "/",
+    "/diagrams",
     "/docs",
     "/docs/store6/concepts/api-tiers",
     "/docs/store6/concepts/errors",
@@ -835,6 +838,7 @@ function writeContractFixture(root, options = {}) {
   writeFixture(root, "evidence/T8-extras.txt", `${extras.join("\n")}\n`);
   for (const path of [
     "app/(docs)/docs/[[...slug]]/page.tsx",
+    "app/diagrams/page.tsx",
     "app/page.tsx",
     "app/tokens-demo/page.tsx",
     "content/docs/index.mdx",

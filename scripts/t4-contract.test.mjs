@@ -134,6 +134,7 @@ test("B5 docs root metadata presents Store 6 before the maintained legacy shelf"
       "best-practices/store5",
       "---Resources---",
       "community/overview",
+      "[Diagrams](/diagrams)",
       "[Migrate to Store 6](/docs/store6/migration/from-store5)",
     ],
   });

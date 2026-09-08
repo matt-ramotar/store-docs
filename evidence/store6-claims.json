@@ -797,16 +797,16 @@
     {
       "id": "tokens-demo/004",
       "page": "/tokens-demo",
-      "claim": "/tokens-demo is one of 36 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.",
+      "claim": "/tokens-demo is one of 37 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "b2942dbca337225dc314f69b08aed450e51e434478d5528b1537f0f7131d1e5d",
+          "sha256": "5199a989fd393b8d98578dd0c7d98f77483e43297068328095d62bd8b9c627e5",
           "lines": {
             "start": 28,
-            "end": 152
+            "end": 153
           }
         }
       ]
