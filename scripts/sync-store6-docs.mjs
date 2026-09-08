@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 
 import { reconcileOwnedOutputs, verifyOwnedOutputs } from "./generated-output-transaction.mjs";
 import proseEdits from "./store6-prose-edits.json" with { type: "json" };
+import agentDocsConfig from "./agent-docs/config.json" with { type: "json" };
+import { pageIdentity, rewriteAgentLink } from "./agent-docs/links.mjs";
 
 const execFile = promisify(execFileCallback);
 const ROOT = resolve(import.meta.dirname, "..");
@@ -116,7 +118,7 @@ async function buildLockedOutputs(sourceRoot, lock) {
     } else if (entry.target === "public/llms.txt") {
       outputs.set(
         entry.target,
-        ensureFinalNewline(rewriteMarkdownLinks(source.replace(/\r\n/g, "\n"), sourcePath, sourceRoot, routeBySource)),
+        ensureFinalNewline(rewriteAgentIndex(rewriteMarkdownLinks(source.replace(/\r\n/g, "\n"), sourcePath, sourceRoot, routeBySource))),
       );
     } else {
       throw new Error(`unsupported locked target: ${entry.target}`);
@@ -176,6 +178,18 @@ export function rewriteMarkdownLinks(source, sourcePath, sourceRootValue, routes
     const titleSuffix = target.match(/\s+(?:"[^"]*"|'[^']*')$/)?.[0] ?? "";
     const destination = titleSuffix ? target.slice(0, -titleSuffix.length) : target;
     return `${prefix}${rewriteRepoUrl(destination, sourcePath, sourceRootValue, routes)}${titleSuffix}${suffix}`;
+  });
+}
+
+export function rewriteAgentIndex(source) {
+  const { origin } = agentDocsConfig;
+  const identities = agentDocsConfig.pages.map(path => pageIdentity(path, origin));
+  const routes = new Map(identities.map(identity => [identity.canonicalUrl, identity]));
+  return source.replace(/(!?\[[^\]]*\]\()([^)]+)(\))/g, (_match, prefix, rawTarget, suffix) => {
+    const target = rawTarget.trim();
+    const titleSuffix = target.match(/\s+(?:"[^"]*"|'[^']*')$/)?.[0] ?? "";
+    const destination = titleSuffix ? target.slice(0, -titleSuffix.length) : target;
+    return `${prefix}${rewriteAgentLink(destination, `${origin}/llms.txt`, routes, origin)}${titleSuffix}${suffix}`;
   });
 }
 

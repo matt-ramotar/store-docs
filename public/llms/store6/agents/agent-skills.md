@@ -1,0 +1,76 @@
+# Agent skills
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/agents/agent-skills
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md
+
+Source kind: site-authored; source path: content/docs/store6/agents/agent-skills.mdx
+
+Install the Store6 coding skill and retrieve documentation for your project's source version.
+
+The Store6 skill provides task routing and a documentation retrieval helper. It checks the project's
+Store6 identity, selects relevant guides, and requires citations and appropriate verification when
+generating code. It retrieves current pages only when they match its packaged documentation manifest.
+
+## Prerequisites
+
+Use a coding agent that supports the [Agent Skills format](https://agentskills.io/specification),
+Node.js 22.18 or newer, and network access to the documentation site. The retrieval helper uses
+Node's built-in APIs and needs no additional package installation.
+
+## Install in your project
+
+Run the following command from your project directory. It selects the skill from a specific release
+and copies it into the project's skill directory using the
+[skills CLI](https://github.com/vercel-labs/skills).
+
+```sh
+npx skills add https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6 --skill store6 -a codex --copy
+```
+
+For Claude Code, replace `-a codex` with `-a claude-code`. For Cursor, use `-a cursor`. These commands
+select project scope; they do not request a global installation. Review the installer's reported
+destination, then start a fresh agent session in that project.
+
+## Invoke the skill
+
+* **Codex:** select `store6` from `/skills` or include `$store6` in your request.
+* **Claude Code:** invoke `/store6`.
+* **Cursor:** find `store6` under Customize → Skills and select it from the slash menu.
+
+Ask the agent to identify the installed skill path and list its available guide IDs. It can run
+`node scripts/get-docs.mjs --list` from the installed skill directory without network access.
+
+## Match your project before coding
+
+Ask the agent to inspect your dependency declaration or source checkout. The helper accepts one
+`--source-revision` or `--coordinate` argument followed by one to four guide IDs. A coordinate must
+be explicitly listed in the packaged manifest. A full source revision must match the manifest
+exactly; copying the documentation revision into a prompt does not establish your project's identity.
+
+Mutable `SNAPSHOT` labels and an unlisted Store6 version are insufficient. When a match cannot be
+established, resolve the version or supply matching documentation before generating code.
+
+Useful tasks include building a typed repository, adding pull-to-refresh, selecting a persistence
+adapter, binding collection to a UI lifetime, preserving queued mutations across restart, and
+migrating a Store5 repository. State the desired behavior and platform, and ask for the contracts
+used and the checks actually run.
+
+## Handle retrieval failures
+
+| Error              | Next step                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `VERSION_MISMATCH` | Verify the project's dependency or source revision and obtain matching documentation.                      |
+| `BUNDLE_MISMATCH`  | Choose an explicitly updated skill release paired with the documentation, or provide matching context.     |
+| `CONTENT_MISMATCH` | Stop using the returned context and verify the document source; its bytes differ from the packaged record. |
+| `NETWORK_ERROR`    | Restore access and request the guides again. The helper returns no partial page set.                       |
+
+To update a pinned installation, explicitly select a newer tested release ref and repeat the
+installation and version checks. A site build does not update the skill's packaged manifest.
+
+## Source and license
+
+The skill is distributed under Apache-2.0. Its
+[source, license, and notices](https://github.com/matt-ramotar/store-docs/tree/store6-skill-v0.1.0/skills/store6)
+are included with the package. The skill links to Store6 documentation rather than maintaining a
+second API manual.

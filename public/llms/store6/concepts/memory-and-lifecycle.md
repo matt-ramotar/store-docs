@@ -1,0 +1,132 @@
+# Memory, eviction, and store lifecycle
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/concepts/memory-and-lifecycle
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/concepts/memory-and-lifecycle.md
+
+Source kind: site-authored; source path: content/docs/store6/concepts/memory-and-lifecycle.mdx
+
+What keeps a per-key engine alive, how maxIdleKeys bounds the idle ones, and why eviction never changes what a read returns.
+
+A store keeps one engine per active key. That engine tracks demand, runs the fetch pipeline, and
+feeds collectors for the key. Active work keeps an engine resident, the idle-key limit bounds idle
+engines, eviction preserves read behavior, and closing ends the store's lifecycle.
+
+## What pins an engine
+
+Engines whose key has active collectors, in-flight work, or an in-flight fetch are always resident
+and are never evicted. Eviction considers only quiescent engines: keys nobody is currently
+watching or fetching.
+
+This holds under churn: cycling demand across many keys never evicts a held engine, and total
+residency stays bounded while it happens. Like the other zero-config memory guarantees on this
+page, it is pinned by a named conformance test. [Important defaults](https://store.mobilenativefoundation.org/llms/store6/important-defaults.md)
+lists the test behind each one, and if this page and a test ever disagree, the test is right.
+
+## Bounding idle keys: maxIdleKeys
+
+Once a key becomes quiescent its engine parks in an LRU idle set holding at most `count` engines.
+The eldest quiescent engine beyond the bound is destroyed. The default is 128, and the zero-config
+cap behaves identically to an explicit `maxIdleKeys(128)`. Passing `0` destroys every engine at
+quiescence. The count must be `>= 0`. A negative count fails at configuration time with
+`IllegalArgumentException`.
+
+```kotlin
+val users = store<UserKey, User> {
+    fetcher { key -> api.getUser(key.id) }
+    maxIdleKeys(256)
+}
+```
+
+`maxIdleKeys` is the one stable builder knob other than the fetcher itself. It needs no
+experimental opt-in. Every other configuration point on the builder is an `@ExperimentalStoreApi`
+seam install (see the note below).
+
+## Eviction is semantically invisible
+
+Eviction discards only derived in-memory state. Durable rows, freshness metadata, stale marks, and
+invalidation watermarks live in the source of truth and the bookkeeper, not in the engine, so a
+later read of an evicted key is semantically identical to one that was never evicted. Destroying
+and recreating an engine preserves per-key stale marks and namespace watermarks, and still drives
+the refetch you would have gotten.
+
+Invalidation watermarks go further: they survive restart as well as eviction, and a namespace or
+global invalidation is observed even by a key a fresh store has never seen.
+
+Two consequences follow:
+
+* **`maxIdleKeys(0)` does not disable caching.** It destroys every engine the moment its key goes
+  quiescent, but the value still lives in the source of truth and its freshness record in the
+  bookkeeper. The next read rebuilds an engine over the same truth.
+* **Eviction does not lose invalidation state.** A stale mark or watermark is durable truth, not
+  engine state. Evicting a key you just invalidated changes nothing about what happens when you
+  read it next.
+
+## What "durable" means with zero config
+
+The defaults are an in-memory source of truth and an in-memory bookkeeper. Nothing is written to
+disk until you install `persistence(...)`.
+
+So with zero configuration, "durable" means: outside the engine. That state survives eviction,
+which is why eviction is invisible, but it does not survive process death. To keep values and
+freshness bookkeeping across restarts, install a
+[persistence adapter](https://store.mobilenativefoundation.org/llms/store6/guides/persistence.md). [store6-sqldelight](https://store.mobilenativefoundation.org/llms/store6/sqldelight.md)
+is a complete one, and a [Room adapter](https://store.mobilenativefoundation.org/llms/store6/room.md) ships alongside it.
+
+> **Note**
+>
+> `persistence`, `bookkeeper`, `telemetry`, `overlay`, `wallClock`, and `freshnessValidator` are
+> `@ExperimentalStoreApi` seam installs. The zero-config path (a fetcher plus `maxIdleKeys`) needs
+> no opt-in. [API tiers](https://store.mobilenativefoundation.org/llms/store6/concepts/api-tiers.md) explains what the experimental tier does
+> and does not promise.
+
+## Single-flight deduplication
+
+Concurrent demand for one key shares one fetch. Fifty getters and fifty collectors demanding the
+same key produce exactly one fetch, and all one hundred observe its outcome. A stream that arrives
+while a fetch is in flight piggybacks on it rather than starting a second one.
+
+Cancelling a waiter does not cancel the shared fetch. The work commits anyway, and the next caller
+reuses the committed value instead of refetching. This is also one of the pins from the first
+section: an in-flight fetch keeps its engine resident until the work resolves, so eviction can
+never strand a fetch that callers are waiting on.
+
+## Reader grace
+
+When the last collector for a key leaves, the pipeline does not tear down instantly. A
+re-subscription within a short window resumes the existing pipeline rather than starting over with
+a fresh `Loading` frame, so a recomposition or a quick navigation round-trip does not flash a
+loading state over a value the store already has.
+
+The window's millisecond value is an internal constant, and it is deliberately not documented or
+test-pinned. It is not contractual: do not design against a specific number, and do not write tests
+that depend on one. If your UI collects through a lifecycle-aware entry point (see
+[store6-compose](https://store.mobilenativefoundation.org/llms/store6/compose.md) for lifecycle-gated collection), grace is what absorbs the
+gap between stop and restart.
+
+## The end of the store's life: close()
+
+`close()` releases the resources the store owns and cancels its in-flight work. Collectors and
+value requests waiting on in-flight work are cancelled. Every subsequent operation fails with
+`IllegalStateException` and the exact message `Store is closed.` Calling `close()` more than once
+has no additional effect.
+
+Scope a store to a lifecycle you own (an application, a user session, a dependency-injection
+scope) and close it when that lifecycle ends. Nothing else ends it for you: a `stream` flow
+remains active until its collector is cancelled or the store is closed, as the
+[read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md) spells out. If a store you expected to be
+long-lived starts throwing `IllegalStateException`, something closed it early. If streams outlive
+the screen that started them, something is collecting outside the lifecycle it should be scoped to.
+
+## Where to go next
+
+* [Important defaults](https://store.mobilenativefoundation.org/llms/store6/important-defaults.md): the test-pinned specification of every
+  zero-config decision this page describes.
+* [The read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md): what `stream` and `get` promise,
+  including the failure channels `close()` cuts off.
+* [store6-compose](https://store.mobilenativefoundation.org/llms/store6/compose.md): lifecycle-gated collection in Compose UIs.
+* [store6-sqldelight](https://store.mobilenativefoundation.org/llms/store6/sqldelight.md): persistence that survives process death.
+
+***
+
+Source recorded 2026-08-10 · [`main@be470620`](https://github.com/matt-ramotar/Store6/commit/be47062070eba8f8a327279e9c5a68caa0ef06ca) · pre-6.0.0-alpha01

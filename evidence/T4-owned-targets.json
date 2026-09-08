@@ -1,6 +1,188 @@
 {
   "schemaVersion": 1,
   "owners": {
+    "build-agent-docs": [
+      {
+        "path": "public/llms-full.txt",
+        "sha256": "6fef6297846ef491286599436bb528970789ad599f48d00240118aabe33867a6"
+      },
+      {
+        "path": "public/llms/store6-manifest.json",
+        "sha256": "5394e9ee0272fb9f1a95252aa9bc59cb26697462deb7fd45dd7d2c77e8468c51"
+      },
+      {
+        "path": "public/llms/store6/agents/agent-skills.md",
+        "sha256": "7b17929be8b0e51a9fa4cd7d5164976bf904c7f6ef994ae95b1bb72cf10a4c5e"
+      },
+      {
+        "path": "public/llms/store6/agents/llm-context.md",
+        "sha256": "648aa0c4684571033ac3dda3c1460721f65bbf7e2220d77cac611e091616734a"
+      },
+      {
+        "path": "public/llms/store6/agents/overview.md",
+        "sha256": "2e3288df30ae74427a9ebaff6c7be4e62b43e5ace0fe1be10c21a5f5a813c818"
+      },
+      {
+        "path": "public/llms/store6/compose.md",
+        "sha256": "e6619c2e5e7dece042383e259e496fced0b06fab1fe5f4eaf954a52eb2a05b8f"
+      },
+      {
+        "path": "public/llms/store6/concepts/api-tiers.md",
+        "sha256": "5b51a42ffec1793434d132a0162cacec85c52ea20ea2b9075c7a680acc9d9ecd"
+      },
+      {
+        "path": "public/llms/store6/concepts/errors.md",
+        "sha256": "5296cda09eeb8c9fba582e331d47225328a39493c0ce710e54114b5000b53f27"
+      },
+      {
+        "path": "public/llms/store6/concepts/freshness.md",
+        "sha256": "5e47a77f7bbc928687c28944f9f1dfd117840d6cb986441077caaa733f4c8e4d"
+      },
+      {
+        "path": "public/llms/store6/concepts/memory-and-lifecycle.md",
+        "sha256": "be5c7dfec38b2709893dd0d97942a3e7d20e63ffd0e3d163c1bf0569cf67e1ba"
+      },
+      {
+        "path": "public/llms/store6/concepts/read-contract.md",
+        "sha256": "96b67436750ee4cd8e1b22b62514d8b83a8f33d61c092adb42dce9b407be95b5"
+      },
+      {
+        "path": "public/llms/store6/contributing.md",
+        "sha256": "ffbf6af2ad045fd6fbb8def76241e30c5bcd37608dd114a2d7a53e3bae529b63"
+      },
+      {
+        "path": "public/llms/store6/graphql.md",
+        "sha256": "2d17077d924f30dd4031e776c479dfb7f282c03cbde8439cf70ce96891edfac6"
+      },
+      {
+        "path": "public/llms/store6/guides/devtools.md",
+        "sha256": "66a9782ce1fd2778d833be9891364cbb8feb69b3147e15770c65bdb83ccf2f11"
+      },
+      {
+        "path": "public/llms/store6/guides/extending.md",
+        "sha256": "088b883b7729e7aeff5ca6afe6502f08b34ce9abca3f941f77cb4c60db4209a5"
+      },
+      {
+        "path": "public/llms/store6/guides/fetchers.md",
+        "sha256": "869332d480b1a41989f36258b82dbed7c1793a9087c791deb40c3d3e5efc53ac"
+      },
+      {
+        "path": "public/llms/store6/guides/performance.md",
+        "sha256": "f8e3bfbb2e866ebd077e9a8084fa273d32b1b734545cc8f42c7eb80e7e0fb77e"
+      },
+      {
+        "path": "public/llms/store6/guides/persistence.md",
+        "sha256": "635f96c945bfcc1e289d79004d869939cb25ca73d9ab9d641897f68249ad8402"
+      },
+      {
+        "path": "public/llms/store6/guides/swift.md",
+        "sha256": "91cb43aa91ddae619707c3e6b52caed56f4440b03f1e6a51d4344a5ace70311e"
+      },
+      {
+        "path": "public/llms/store6/guides/testing.md",
+        "sha256": "ad2f73555e60facfefe962720cb1f77ca145d5630181aadb3046d4434b8f7079"
+      },
+      {
+        "path": "public/llms/store6/important-defaults.md",
+        "sha256": "5df693ecba8ac61247874ae81f565ab0cb368d0dcd2a3b43617843969cacdc3e"
+      },
+      {
+        "path": "public/llms/store6/invalidate-vs-clear.md",
+        "sha256": "e803deac3dc4a48a80cd4d8a43dd579ec797bc538f1cec359bf3314a0d1507c8"
+      },
+      {
+        "path": "public/llms/store6/key-design.md",
+        "sha256": "f7922f999b2ee59ae07fece5e4bc2bcedda0055a6f56b11e16ff7dae192789fa"
+      },
+      {
+        "path": "public/llms/store6/migration/component-map.md",
+        "sha256": "69aa3d8f787d85495ee811aee21114e7abaef89e1fd7f00a33bfb44c74884173"
+      },
+      {
+        "path": "public/llms/store6/migration/from-store4.md",
+        "sha256": "783d732362af4f143336da6316dbc9b4bc2344b5e76d5c2efcc414db5d0c571f"
+      },
+      {
+        "path": "public/llms/store6/migration/from-store5.md",
+        "sha256": "293f51d0cf8c7778f5b7fd8ab91f78b87924e6bd602920659aa2cdb480e71daa"
+      },
+      {
+        "path": "public/llms/store6/mutations.md",
+        "sha256": "7bacb3b1625db1d45084b1ef80f4ff947a7ab06b325150c23e347e418dfda921"
+      },
+      {
+        "path": "public/llms/store6/mutations/aliases.md",
+        "sha256": "17d318288dd62149575e603c7a4c74c5822b96ad7505fa7a875dcbfcde2b134a"
+      },
+      {
+        "path": "public/llms/store6/mutations/conflicts.md",
+        "sha256": "a41bec153c183053b7a631b852d6e048e5db31db3c7209afa6c91df0d0176114"
+      },
+      {
+        "path": "public/llms/store6/mutations/drain-and-restart.md",
+        "sha256": "06fa584a20178bfe2ee2defefb72b407c3de57c9fd529719ff2c424d44706792"
+      },
+      {
+        "path": "public/llms/store6/mutations/inspection.md",
+        "sha256": "6d601a2d453971ec5a3602d57a6119ff99514fecca244237c13745d3ea50e8af"
+      },
+      {
+        "path": "public/llms/store6/mutations/journal-storage.md",
+        "sha256": "8b319838e73ebd4a120db67be95a72ff5463d8c3255ffd63c65c67ab3960779a"
+      },
+      {
+        "path": "public/llms/store6/mutations/mutators.md",
+        "sha256": "83c98f2c0f39786a248d1e6f4bd32de28dd301fabb328faf7df7fb9b74ebbecd"
+      },
+      {
+        "path": "public/llms/store6/mutations/pending-write-ui.md",
+        "sha256": "ab3b775d0526452b52e26be85c4a4519dc01b76405adb04972299fb5418b39d5"
+      },
+      {
+        "path": "public/llms/store6/mutations/quickstart.md",
+        "sha256": "d22c049cc75263edd63119f62dfd814cca0cd3f4a614dcb5956b6015973ff596"
+      },
+      {
+        "path": "public/llms/store6/mutations/server.md",
+        "sha256": "a448a5e66a0ff323cf4380dc5822a9768c431d03e071d18bf68bdc5387c534fa"
+      },
+      {
+        "path": "public/llms/store6/mutations/testing.md",
+        "sha256": "c6129c921e75e5128af9047fb91ad4fc6ba3521a04d707d8dd9ee35171427c5f"
+      },
+      {
+        "path": "public/llms/store6/overview.md",
+        "sha256": "4c5acd517608a664b6efd6d2c65b8472b0b1bb5a64216bbd25f0d0d719b03f6a"
+      },
+      {
+        "path": "public/llms/store6/paging.md",
+        "sha256": "7abcaad5010a1b9fe9108c6eac20a08cf370ba15145ca8a369fe28182380cd9d"
+      },
+      {
+        "path": "public/llms/store6/quickstart.md",
+        "sha256": "881c16e231f06a9056aed467db94144cc2317878b686c809dc0c541cc835629f"
+      },
+      {
+        "path": "public/llms/store6/realtime.md",
+        "sha256": "1a53d6e57793156c9a0680bc0b0b2452d66fd0b938231ebc635150dd17c6e201"
+      },
+      {
+        "path": "public/llms/store6/roadmap.md",
+        "sha256": "26fe7a490a5257636b930091693508eeaf616408c8f0fb7c316b25dce1efb577"
+      },
+      {
+        "path": "public/llms/store6/room.md",
+        "sha256": "b4b26e271b6d742adb1c17ab0c7ae52ceb7ae62cedd8e89e8e579ce0d5efa383"
+      },
+      {
+        "path": "public/llms/store6/sqldelight.md",
+        "sha256": "ddd1aae0e484d24d72d72f6ddd8379ce8ad35a043848eaa35dc60a6664ce09db"
+      },
+      {
+        "path": "public/llms/store6/stability.md",
+        "sha256": "9c7d620a7ca1b762a0516f3419b40658f2ca1d5a4a4dc95fde753d18a84bb6c9"
+      }
+    ],
     "port-page:acquire": [
       {
         "path": "evidence/T4-live-snapshot.json",
@@ -188,7 +370,7 @@
       },
       {
         "path": "content/docs/store6/quickstart.mdx",
-        "sha256": "2f66b9615e5e4f962e344a7559745eb7368240cc4006d9a9a586e7c0467bca96"
+        "sha256": "940f45ecb6ea7afdeaa96482157e6a00e9ba916407416491051cec99591e25c6"
       },
       {
         "path": "content/docs/store6/realtime.mdx",
@@ -212,7 +394,7 @@
       },
       {
         "path": "public/llms.txt",
-        "sha256": "902bbb3a8f0e532f19f56fbc5e50bfc72885d24ce611f235d4c46b102a3a84e7"
+        "sha256": "526df57a518f0da7ea883320dd58c147ee62d6cb24bffd5159080b44227ff1ba"
       }
     ]
   }

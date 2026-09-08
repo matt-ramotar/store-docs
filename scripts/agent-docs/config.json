@@ -3,6 +3,9 @@
   "contractVersion": "store6-agent-docs-v1",
   "origin": "https://store.mobilenativefoundation.org",
   "pages": [
+    "content/docs/store6/agents/agent-skills.mdx",
+    "content/docs/store6/agents/llm-context.mdx",
+    "content/docs/store6/agents/overview.mdx",
     "content/docs/store6/compose.mdx",
     "content/docs/store6/concepts/api-tiers.mdx",
     "content/docs/store6/concepts/errors.mdx",

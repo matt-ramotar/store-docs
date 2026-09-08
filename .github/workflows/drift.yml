@@ -55,6 +55,7 @@ jobs:
         id: docs-base
         env:
           TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
+          AGENT_TARGETS: ${{ runner.temp }}/agent-doc-targets-before.json
         shell: bash
         run: |
           echo "revision=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
@@ -71,6 +72,14 @@ jobs:
           process.stdout.write(`${JSON.stringify(targets)}\n`);
           NODE
           test -s "$TRUSTED_TARGETS"
+          node --input-type=module <<'NODE' > "$AGENT_TARGETS"
+          import config from "./scripts/agent-docs/config.json" with { type: "json" };
+          import { pageIdentity } from "./scripts/agent-docs/links.mjs";
+          const targets = ["public/llms-full.txt", "public/llms/store6-manifest.json",
+            ...config.pages.map(path => "public" + pageIdentity(path, config.origin).markdownPath)];
+          if (new Set(targets).size !== targets.length) throw new Error("Duplicate agent export target");
+          process.stdout.write(JSON.stringify(targets) + "\n");
+          NODE
 
       - name: Check out the requested Store6 revision
         env:
@@ -199,6 +208,7 @@ jobs:
         if: steps.drift.outputs.changed == 'true'
         env:
           TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
+          AGENT_TARGETS: ${{ runner.temp }}/agent-doc-targets-before.json
         run: |
           jq -e --slurpfile trusted "$TRUSTED_TARGETS" \
             '[.sources[].target] == $trusted[0]' \
@@ -368,6 +378,7 @@ jobs:
             sleep 1
           done
           node scripts/t8-verification.mjs --local
+          node scripts/verify-agent-docs.mjs --base-url http://127.0.0.1:3222
 
       - name: Verify the search index
         if: steps.drift.outputs.changed == 'true'
@@ -383,12 +394,15 @@ jobs:
         env:
           ARTIFACT_DIR: ${{ runner.temp }}/store6-drift-artifact
           TRUSTED_TARGETS: ${{ runner.temp }}/store6-targets-before.json
+          AGENT_TARGETS: ${{ runner.temp }}/agent-doc-targets-before.json
         shell: bash
         run: |
           mkdir -p "$ARTIFACT_DIR"
           mapfile -t trusted_targets < <(jq -r '.[]' "$TRUSTED_TARGETS")
+          mapfile -t agent_targets < <(jq -r '.[]' "$AGENT_TARGETS")
           allowed_paths=(
             "${trusted_targets[@]}"
+            "${agent_targets[@]}"
             evidence/T4-store6-source-lock.json
             evidence/T4-owned-targets.json
             evidence/store6-claims.json
@@ -399,7 +413,7 @@ jobs:
           git add -A -- "${allowed_paths[@]}"
           while IFS= read -r -d '' path; do
             allowed=false
-            for target in "${trusted_targets[@]}"; do
+            for target in "${trusted_targets[@]}" "${agent_targets[@]}"; do
               [[ "$path" == "$target" ]] && allowed=true
             done
             case "$path" in
@@ -501,6 +515,11 @@ jobs:
           ref: main
           persist-credentials: false
 
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Download validated publication artifact
         uses: actions/download-artifact@v4
         with:
@@ -511,6 +530,7 @@ jobs:
         env:
           ARTIFACT_DIR: ${{ runner.temp }}/store6-drift-artifact
           BASE_TRUSTED_TARGETS: ${{ runner.temp }}/store6-publisher-targets.json
+          BASE_AGENT_TARGETS: ${{ runner.temp }}/agent-doc-publisher-targets.json
           EXPECTED_BASE: ${{ needs.dokka-reference.outputs.base_revision }}
           EXPECTED_LOCKED: ${{ needs.dokka-reference.outputs.locked_revision }}
           EXPECTED_STORE6: ${{ needs.dokka-reference.outputs.store6_revision }}
@@ -530,6 +550,14 @@ jobs:
              (($targets | unique | length) == ($targets | length)) |
              $targets' \
             evidence/T4-store6-source-lock.json > "$BASE_TRUSTED_TARGETS"
+          node --input-type=module <<'NODE' > "$BASE_AGENT_TARGETS"
+          import config from "./scripts/agent-docs/config.json" with { type: "json" };
+          import { pageIdentity } from "./scripts/agent-docs/links.mjs";
+          const targets = ["public/llms-full.txt", "public/llms/store6-manifest.json",
+            ...config.pages.map(path => "public" + pageIdentity(path, config.origin).markdownPath)];
+          if (new Set(targets).size !== targets.length) throw new Error("Duplicate agent export target");
+          process.stdout.write(JSON.stringify(targets) + "\n");
+          NODE
           (
             cd "$ARTIFACT_DIR"
             sha256sum --check sha256
@@ -551,12 +579,13 @@ jobs:
           git apply --check --index --binary "$ARTIFACT_DIR/changes.patch"
           git apply --index --binary "$ARTIFACT_DIR/changes.patch"
           mapfile -t trusted_targets < <(jq -r '.[]' "$BASE_TRUSTED_TARGETS")
+          mapfile -t agent_targets < <(jq -r '.[]' "$BASE_AGENT_TARGETS")
           jq -e --slurpfile trusted "$BASE_TRUSTED_TARGETS" \
             '[.sources[].target] == $trusted[0]' \
             evidence/T4-store6-source-lock.json > /dev/null
           while IFS= read -r -d '' path; do
             allowed=false
-            for target in "${trusted_targets[@]}"; do
+            for target in "${trusted_targets[@]}" "${agent_targets[@]}"; do
               [[ "$path" == "$target" ]] && allowed=true
             done
             case "$path" in

@@ -4,6 +4,7 @@ import { getBreadcrumbItems } from "fumadocs-core/breadcrumb";
 import { findNeighbour } from "fumadocs-core/page-tree";
 import { notFound } from "next/navigation";
 
+import { AgentPageActions } from "@/components/docs/AgentPageActions";
 import { AppShell } from "@/components/shell/AppShell";
 import { Breadcrumbs } from "@/components/shell/Breadcrumbs";
 import { OnThisPage } from "@/components/shell/OnThisPage";
@@ -11,6 +12,13 @@ import { PageFooterNav } from "@/components/shell/PageFooterNav";
 import { getMDXComponents } from "@/mdx-components";
 import { getDocsVersion, getVersionTrees } from "@/lib/nav";
 import { source } from "@/lib/source";
+import agentDocsManifest from "@/public/llms/store6-manifest.json";
+
+function findAgentPage(pageUrl: string) {
+  return agentDocsManifest.pages.find(
+    (entry) => new URL(entry.canonicalUrl).pathname === pageUrl,
+  );
+}
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -28,6 +36,7 @@ export default async function Page(props: {
   const versionTree = getVersionTrees(source.pageTree)[getDocsVersion(page.url)];
   const breadcrumbItems = getBreadcrumbItems(page.url, versionTree, { includePage: true });
   const { previous, next } = findNeighbour(versionTree, page.url);
+  const agentPage = findAgentPage(page.url);
 
   return (
     <AppShell currentPath={page.url} pageTree={source.pageTree} toc={toc}>
@@ -41,6 +50,9 @@ export default async function Page(props: {
             <p className="text-foreground-secondary max-w-2xl text-lg leading-8">
               {page.data.description}
             </p>
+          ) : null}
+          {agentPage ? (
+            <AgentPageActions markdownUrl={new URL(agentPage.markdownUrl).pathname} />
           ) : null}
           <OnThisPage items={toc} compact />
           <Separator />
@@ -67,9 +79,13 @@ export async function generateMetadata(props: {
   const params = await props.params;
   const page = source.getPage(params.slug);
   if (!page) notFound();
+  const agentPage = findAgentPage(page.url);
 
   return {
     title: page.data.title,
     description: page.data.description,
+    alternates: agentPage
+      ? { types: { "text/markdown": agentPage.markdownUrl } }
+      : undefined,
   };
 }

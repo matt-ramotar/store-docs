@@ -1,5 +1,8 @@
 /
 /docs
+/docs/store6/agents/agent-skills
+/docs/store6/agents/llm-context
+/docs/store6/agents/overview
 /docs/store6/compose
 /docs/store6/concepts/api-tiers
 /docs/store6/concepts/errors

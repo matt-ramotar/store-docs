@@ -1,0 +1,54 @@
+# LLM context
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/agents/llm-context
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/agents/llm-context.md
+
+Source kind: site-authored; source path: content/docs/store6/agents/llm-context.mdx
+
+Find Markdown guides and understand their recorded source identity.
+
+## Find the right amount of documentation
+
+[/llms.txt](https://store.mobilenativefoundation.org/llms.txt) is the discovery index. It links to individual guides and the complete Store6
+guide corpus. It does not contain the complete documentation itself.
+
+Use a page's **View Markdown** action or open a URL such as
+[/llms/store6/quickstart.md](https://store.mobilenativefoundation.org/llms/store6/quickstart.md). **Copy page** copies that complete Markdown
+document, including its title and source information, when your browser permits clipboard access.
+
+For a tool with a larger context window, [/llms-full.txt](https://store.mobilenativefoundation.org/llms-full.txt) contains all Store6 guides
+and agent setup pages. It excludes Store5 documentation and generated Dokka API HTML. Links to
+those references remain available.
+
+## Read the provenance
+
+[/llms/store6-manifest.json](https://store.mobilenativefoundation.org/llms/store6-manifest.json) records the bundle identity, Store6 source
+revision, exact page hashes, and canonical and Markdown URLs.
+
+* A `source-synced` page records its upstream path, revision, and source-file hash.
+* A `site-authored` page records its documentation source path and hash. Its `sourceRevision` is
+  `null` unless that page has individually evidenced source attribution.
+* A visible **Source recorded** line preserves the page's authored attribution. It does not assert
+  a new verification date or a broader compatibility guarantee.
+
+The page hash describes the emitted Markdown bytes. The bundle identity also includes the inputs
+that supply component text and diagrams. The [skill](https://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md) checks these
+identities before returning retrieved pages.
+
+## Follow links and select context
+
+Links between complete Store6 guides lead to Markdown when possible. Links to specific sections
+keep their canonical HTML destinations so the section anchors remain usable. API links continue
+to the generated reference documentation.
+
+Select the guides for the task: the read and lifetime contracts for a first repository, freshness
+for refresh behavior, adapter documentation for persistence, or the journal and restart guides for
+durable mutations. Ask for citations to the applicable contracts and keep the project's actual
+source revision or dependency coordinate in the prompt.
+
+## Update references deliberately
+
+The live guides can change as their sources change. Reopen the index when selecting new context.
+If an installed skill reports `BUNDLE_MISMATCH`, select an explicitly updated, matching skill
+release or supply matching documentation. The skill does not silently replace its recorded bundle.

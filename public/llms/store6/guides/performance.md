@@ -1,0 +1,113 @@
+# Performance and overhead
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/guides/performance
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/guides/performance.md
+
+Source kind: site-authored; source path: content/docs/store6/guides/performance.mdx
+
+> **Note**
+>
+> None of the benchmark numbers below is a performance guarantee. Hosted results are smoke-grade,
+> and only a local
+> `calibrateBenchmark` run on a documented, quiet, plugged-in machine may support a proposal for a
+> performance target.
+
+## What the harness is
+
+`store6-benchmarks` is an unpublished JVM harness in the Store 6 repository. It measures
+end-to-end collector attachment plus write-to-final-observation against a raw source-of-truth flow,
+and it records structural-plus-measured evidence for telemetry overhead. It is neither a published
+artifact nor a public API.
+
+Run one of its three profiles from the Store 6 repository root:
+
+```shell
+./gradlew :store6-benchmarks:benchmark
+./gradlew :store6-benchmarks:smokeBenchmark
+./gradlew :store6-benchmarks:calibrateBenchmark
+```
+
+| Profile              | Intended use                          | Evidence boundary                                                                                                  |
+| -------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `benchmark`          | Default local profile                 | Local measurement. It cannot support a target proposal.                                                            |
+| `smokeBenchmark`     | Short, report-only CI shape           | Execution and result-shape evidence, not a performance target.                                                     |
+| `calibrateBenchmark` | Longer local profile with three forks | The only profile whose results may support a target proposal, and only on a documented, quiet, plugged-in machine. |
+
+Result JSON is discovered recursively beneath
+`store6-benchmarks/build/reports/benchmarks/`. The timestamped layout observed with the current
+benchmark tooling is evidence from that run, not a stable path contract.
+
+## What the ratio means, and what it does not
+
+The headline metric is the `storeStream` / `rawSotFlow` average-time ratio for one complete timed
+invocation. Both sides use the same `FakeSourceOfTruth` and the same write schedule. The 1,000-write
+workload begins only after every collector has received a public result and observed an
+epoch-unique readiness marker. That readiness step is outside the 1,000 writes, but it remains
+inside the timed operation.
+
+The reported score therefore includes collector launch, attachment, readiness, the write schedule,
+and final observation. It is not pure write-only latency, per-emission latency, or a guarantee that
+every intermediate write was observed. Both sides may conflate intermediate writes.
+`paced=true` cooperatively yields the writer. It is not an acknowledgement protocol.
+`paced=false` is the burst/conflation schedule.
+
+| Cell           | What it compares                                                          | How to read it                                                                 |
+| -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `collectors=1` | One Store collector and one raw reader over the same fake source of truth | The engine-overhead headline because reader multiplicity and write cost match. |
+| `collectors=8` | Store shares one upstream and fans out. Raw opens eight reader chains     | Fan-out and topology data, not an isolated engine-overhead ratio.              |
+
+Store's `Dispatchers.Default` engine hops are included in Store cost. The raw side cooperates on the
+`runBlocking` thread. The ratio does not normalize away that asymmetry.
+
+## Evidence grades
+
+Hosted CI is smoke-grade. Its numbers may show that the harness ran and produced structurally valid
+results, but they may not support a performance target. Only the local calibration profile, run on
+a documented quiet machine, may support a target proposal.
+
+There is no numeric CI performance gate. The blocking benchmark build compiles the harness and runs
+each benchmark body once through smoke tests. That protects the harness from code rot. It does not
+judge performance. A separate report-only workflow runs `smokeBenchmark`, validates the result
+schema, and uploads the JSON outside release gating. Neither workflow asserts a timing or allocation
+threshold.
+
+The directory root is discoverable, but timestamped descendants are output evidence rather than
+stable integration paths.
+
+## Telemetry: unset versus configured no-op
+
+The telemetry-off overhead claim combines structural and measured evidence. With telemetry unset,
+the install point remains null, call sites take their null fast path, and fetches allocate no
+duration mark. The `none`-versus-`noop` benchmark compares that unset path with a configured sink
+whose handlers keep their default no-op bodies. Its delta includes non-null branches, the fetch
+duration mark, and virtual calls into those no-op bodies.
+
+The current JMH comparison reports µs/op as score ± 99.9% score error:
+
+| Path              |               Unset |    Configured no-op |
+| ----------------- | ------------------: | ------------------: |
+| `fetchGet`        |   9.85882 ± 0.95009 |   8.76580 ± 0.09741 |
+| `residentServe`   | 0.206781 ± 0.002764 | 0.199851 ± 0.002588 |
+| `streamEmissions` |    84.6412 ± 3.4787 |    82.2187 ± 1.4784 |
+
+No positive configured-no-op timing overhead was resolved. The negative point estimates do not
+prove that the no-op sink is faster. The null-guarded unset path is structurally established, but
+these comparisons do not prove literal zero cost or bound all telemetry machinery against an engine
+without the seam. A separate optional JDK 17 direct-JMH GC-profiler run found resident allocations
+indistinguishable and fetch and stream allocation deltas within uncertainty.
+
+The [devtools guide](https://store.mobilenativefoundation.org/llms/store6/guides/devtools.md) explains the nonzero operational cost once a
+logger or monitor is installed.
+
+## Where next
+
+* [Important defaults](https://store.mobilenativefoundation.org/llms/store6/important-defaults.md) lists the zero-configuration behavior that
+  benchmark setup depends on.
+* [Memory, eviction, and store lifecycle](https://store.mobilenativefoundation.org/llms/store6/concepts/memory-and-lifecycle.md) explains the
+  per-key engines and shared reader pipeline represented in the measurements.
+* [Devtools and the inspector](https://store.mobilenativefoundation.org/llms/store6/guides/devtools.md) covers the installed telemetry path.
+
+***
+
+Source recorded 2026-08-10 · [`main@be470620`](https://github.com/matt-ramotar/Store6/commit/be47062070eba8f8a327279e9c5a68caa0ef06ca) · pre-6.0.0-alpha01
