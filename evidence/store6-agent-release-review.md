@@ -1,6 +1,6 @@
 # Store6 agent and LLM support: candidate review
 
-The fixed local evaluation is complete. The skill candidate has not met the release gate. No source push, pull request, merge, tag, or deployment has been performed.
+The fixed local evaluation is complete. The skill candidate has not met the release gate. At this local validation checkpoint, no source push, pull request, merge, tag, or deployment had been performed.
 
 Local validation finished within the approved four-hour limit. The branch is `matt-ramotar/store6-agent-llm-support`; [execution evidence](agent-docs-execution.json) records the exact commits, changed paths, and verification times.
 
