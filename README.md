@@ -17,6 +17,57 @@ are installed. See `evidence/T0-package-mode.md` for the resolved versions.
 
 Run `pnpm build` for a production build. The build does not start a server.
 
+## Agent access
+
+The homepage, documentation pages, and diagram gallery serve Markdown at their
+usual URLs when the request prefers `Accept: text/markdown`. HTML is the default.
+Negotiation honors quality values and exclusions and returns `406` when neither
+format is acceptable. Both variants include `Accept` in `Vary` along with encoding
+and Next.js navigation headers.
+
+The production build reuses the source-synchronized Store6 Markdown corpus byte
+for byte. For other pages, it generates Markdown from prerendered content,
+retaining code, tables, callouts, diagram descriptions, and inactive tab content.
+The generated route inventory and `public/agent-markdown/` files are ignored by
+Git. Run `pnpm build` after content changes; use `pnpm start` to verify the generated
+responses. Markdown export is a production-build step, not a live development
+renderer. New MDX components must have their complete content verified by the
+exporter before the build will publish them.
+
+Next.js 16.3 overwrites proxy `Vary` headers when serving HTML. The final build step
+merges the required keys into each negotiated page's prerender metadata while
+preserving existing metadata. This integration depends on Next's build format;
+the build and HTTP checks must pass when upgrading Next. Serve the completed
+`pnpm build` output, including the generated public files and finalized metadata.
+
+Unknown page URLs return `404` with recovery links. Markdown requests and ordinary
+command-line requests receive a short Markdown body; browsers receive the styled
+404 page. Unknown `/api` paths and unsupported search methods return RFC 9457
+`application/problem+json`, including a stable error code and a resolution hint.
+
+- `/llms.txt` is the existing source-synchronized documentation index.
+- `/sitemap.xml` lists the homepage, documentation pages, and diagram gallery.
+- `/robots.txt` permits crawling and identifies the sitemap.
+- `/openapi.json` describes the existing static `/api/search` index, its supported
+  methods, and error format. The site does not expose a hosted Store data API.
+
+After `pnpm build`, run the contract suite with Node.js 22.18 or newer:
+
+```sh
+node --test scripts/*.test.mjs
+```
+
+With the production server running, verify every page, generated Markdown
+variant, public file, API method, and recovery response:
+
+```sh
+node scripts/verify-agent-readiness.mjs http://127.0.0.1:3222
+```
+
+The same verifier accepts a deployment URL. Run it against the matching deployed
+build to verify CDN content negotiation and cache headers before rerunning an
+agent-readiness audit.
+
 ## Required CSS configuration
 
 Keep these imports in this order in `app/globals.css`:

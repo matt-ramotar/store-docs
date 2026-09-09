@@ -85,6 +85,7 @@ jobs:
           done
           node scripts/t8-verification.mjs --local
           node scripts/verify-agent-docs.mjs --base-url http://127.0.0.1:3222
+          node scripts/verify-agent-readiness.mjs http://127.0.0.1:3222
 
       - name: Verify the search index
         run: node scripts/verify-search-index.mjs

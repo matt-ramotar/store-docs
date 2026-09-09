@@ -37,7 +37,7 @@ test("the static route exports a Fumadocs source index", () => {
   assert.match(index, /tag:/);
   assert.match(index, /fumadocs-core\/search\/server/);
   assert.match(route, /export const dynamic = ["']force-static["']/);
-  assert.match(route, /export const GET = searchIndex\.staticGET/);
+  assert.match(route, /export const GET = withSearchApiErrors\(searchIndex\.staticGET\)/);
 });
 
 test("TopNav renders the command-search client island", () => {

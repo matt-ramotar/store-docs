@@ -3,6 +3,8 @@ node_modules/
 .source/
 *.tsbuildinfo
 next-env.d.ts
+/lib/agent-routes.generated.json
+/public/agent-markdown/
 
 # Local run artifacts. Required evidence manifests remain tracked.
 /evidence/design-revision/

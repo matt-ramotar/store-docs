@@ -11,6 +11,7 @@ const mintlifyCjsLoader = path.join(root, "lib/mintlify-cjs-require-loader.cjs")
 const mintlifyHugeiconsLoader = path.join(root, "lib/mintlify-hugeicons-loader.cjs");
 
 export default withMDX({
+  skipProxyUrlNormalize: true,
   async headers() {
     const markdownPaths = agentDocs.pages.map(source => pageIdentity(source, agentDocs.origin).markdownPath);
     return [...markdownPaths, "/llms-full.txt", "/llms.txt"].map(source => ({
