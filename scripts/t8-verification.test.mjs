@@ -756,6 +756,9 @@ function writeContractFixture(root, options = {}) {
   const syncedTarget = "content/docs/store6/quickstart.mdx";
   const syncedRoomTarget = "content/docs/store6/room.mdx";
   const extras = [
+    "/docs/store6/agents/overview",
+    "/docs/store6/agents/llm-context",
+    "/docs/store6/agents/agent-skills",
     "/",
     "/diagrams",
     "/docs",
@@ -839,6 +842,9 @@ function writeContractFixture(root, options = {}) {
     "app/page.tsx",
     "app/tokens-demo/page.tsx",
     "content/docs/index.mdx",
+    "content/docs/store6/agents/overview.mdx",
+    "content/docs/store6/agents/llm-context.mdx",
+    "content/docs/store6/agents/agent-skills.mdx",
     "content/docs/store6/concepts/api-tiers.mdx",
     "content/docs/store6/concepts/errors.mdx",
     "content/docs/store6/concepts/freshness.mdx",

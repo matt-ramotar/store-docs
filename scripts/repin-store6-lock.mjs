@@ -59,9 +59,13 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
   }
 }
 
-export async function run({ sourceRoot }) {
+export async function run({ sourceRoot, skillsRoot }) {
   const checkout = resolve(sourceRoot);
   await assertDirectory(checkout, "--source-root must identify a Store6 checkout directory");
+  const skillsCheckout = skillsRoot === undefined ? undefined : resolve(skillsRoot);
+  if (skillsCheckout !== undefined) {
+    await assertDirectory(skillsCheckout, "--skills-root must identify a skill checkout directory");
+  }
 
   const lock = JSON.parse(await readFile(LOCK_PATH, "utf8"));
   validateSourceLock(lock);
@@ -69,6 +73,10 @@ export async function run({ sourceRoot }) {
   const nextLock = await recomputeSourceLock(lock, checkout, revision);
   await assertLockedTransformBoundaries(checkout, nextLock);
   const claims = JSON.parse(await readFile(CLAIMS_PATH, "utf8"));
+  if (skillsCheckout === undefined && claims.claims.some((claim) =>
+    claim.anchors.some((anchor) => anchor.repository === "store-agent-skills"))) {
+    throw new Error("--skills-root <checkout> is required for store-agent-skills anchors");
+  }
   const nextClaims = advanceClaimsRevision(claims, lock.revision, nextLock.revision);
 
   const priorOutputs = await readCurrentOutputs(nextLock);
@@ -89,7 +97,7 @@ export async function run({ sourceRoot }) {
       console.log(`source ${entry.path} -> ${entry.target}`);
       console.log(diff || "(no changes)");
     }
-    return runReverificationScripts(checkout);
+    return runReverificationScripts(checkout, { skillsRoot: skillsCheckout });
   });
 
   if (failures.length > 0) {
@@ -175,17 +183,25 @@ function assertTransformCatalogMatchesSync(syncSource) {
 
 export function parseArguments(argumentsList) {
   let sourceRoot;
+  let skillsRoot;
   for (let index = 0; index < argumentsList.length; index += 1) {
     const argument = argumentsList[index];
     if (argument === "--source-root") {
       sourceRoot = argumentsList[index + 1];
       index += 1;
+    } else if (argument === "--skills-root") {
+      if (skillsRoot !== undefined) throw new Error("--skills-root may be specified only once");
+      skillsRoot = argumentsList[index + 1];
+      if (!skillsRoot || skillsRoot.startsWith("--")) {
+        throw new Error("--skills-root requires a checkout path");
+      }
+      index += 1;
     } else {
       throw new Error(`unknown argument: ${argument}`);
     }
   }
-  if (!sourceRoot) throw new Error("usage: repin-store6-lock.mjs --source-root <checkout>");
-  return { sourceRoot };
+  if (!sourceRoot) throw new Error("usage: repin-store6-lock.mjs --source-root <checkout> [--skills-root <checkout>]");
+  return { sourceRoot, skillsRoot };
 }
 
 function validateSourceLock(lock) {
@@ -339,13 +355,17 @@ async function executeNodeScript(script, argumentsList) {
 
 export async function runReverificationScripts(
   checkout,
-  { execute = executeNodeScript, print = printCommandOutput, scripts = REVERIFICATION_SCRIPTS } = {},
+  { execute = executeNodeScript, print = printCommandOutput, scripts = REVERIFICATION_SCRIPTS, skillsRoot } = {},
 ) {
   const failures = [];
   for (const script of scripts) {
-    console.log(`re-verification: node ${script} --source-root ${checkout}`);
+    const args = ["--source-root", checkout];
+    if (script.endsWith("check-claims.mjs") && skillsRoot !== undefined) {
+      args.push("--skills-root", skillsRoot);
+    }
+    console.log(`re-verification: node ${script} ${args.join(" ")}`);
     try {
-      const result = await execute(resolve(ROOT, script), ["--source-root", checkout]);
+      const result = await execute(resolve(ROOT, script), args);
       print(result.stdout ?? "", result.stderr ?? "");
     } catch (error) {
       print(error?.stdout ?? "", error?.stderr ?? String(error));

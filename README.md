@@ -55,3 +55,26 @@ Keep verification inputs and maintained contracts in Git. Build logs, browser du
 screenshots from local runs stay in ignored artifact directories. CI run outputs belong in workflow
 artifacts. The `design-revision` and `sidebar-navigation` directories under `evidence/` are local
 run archives and are not required to build or verify the site.
+
+Claim verification also needs an explicit checkout of
+[`store-agent-skills`](https://github.com/matt-ramotar/store-agent-skills), which owns
+the Store6 retrieval helper:
+
+```sh
+node scripts/check-claims.mjs --source-root ../Store6 --skills-root ../store-agent-skills
+```
+
+The re-pin helper runs claim verification too. Pass the same skill checkout when
+updating the Store6 source revision:
+
+```sh
+node scripts/repin-store6-lock.mjs --source-root ../Store6 --skills-root ../store-agent-skills
+```
+
+Store6 anchors are checked against the pinned source revision and checkout bytes.
+Site and skill anchors are checked against the whole-file hashes recorded in the
+claims ledger. A skill change requires claim review before explicitly reconciling
+its hash. Both CI workflows check out the skill repository at
+`1aadb4a8ba816cfb90129b30db5f5eebc5446848`; update that pin together with any reviewed
+skill-anchor hash changes. Publish this skill commit before landing the
+corresponding documentation change.

@@ -9,10 +9,11 @@ const execFile = promisify(execFileCallback);
 const ROOT = resolve(import.meta.dirname, "..");
 const CLAIMS_FILE = "evidence/store6-claims.json";
 const LOCK_FILE = "evidence/T4-store6-source-lock.json";
-const USAGE = "usage: check-claims.mjs --source-root <checkout> [--reconcile <id> | --reconcile-all]";
+const USAGE = "usage: check-claims.mjs --source-root <checkout> [--skills-root <checkout>] [--reconcile <id> | --reconcile-all]";
 const COMMIT_PATTERN = /^[0-9a-f]{40}$/;
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 const VERDICTS = new Set(["CONFIRMED", "REFUTED", "UNSAMPLED"]);
+const REPOSITORIES = new Set(["store6", "store-docs", "store-agent-skills"]);
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   try {
@@ -36,6 +37,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
 
 export function parseArguments(argumentsList) {
   let sourceRoot;
+  let skillsRoot;
   let reconcileAll = false;
   let reconcileId;
   for (let index = 0; index < argumentsList.length; index += 1) {
@@ -44,6 +46,11 @@ export function parseArguments(argumentsList) {
       if (sourceRoot !== undefined) throw new Error("--source-root may be specified only once");
       sourceRoot = argumentsList[index + 1];
       if (!sourceRoot || sourceRoot.startsWith("--")) throw new Error(USAGE);
+      index += 1;
+    } else if (argument === "--skills-root") {
+      if (skillsRoot !== undefined) throw new Error("--skills-root may be specified only once");
+      skillsRoot = argumentsList[index + 1];
+      if (!skillsRoot || skillsRoot.startsWith("--")) throw new Error(USAGE);
       index += 1;
     } else if (argument === "--reconcile") {
       if (reconcileId !== undefined) throw new Error("--reconcile may be specified only once");
@@ -60,10 +67,10 @@ export function parseArguments(argumentsList) {
   if (reconcileAll && reconcileId !== undefined) {
     throw new Error("--reconcile and --reconcile-all are mutually exclusive");
   }
-  return { reconcileAll, reconcileId, sourceRoot };
+  return { reconcileAll, reconcileId, sourceRoot, skillsRoot };
 }
 
-export async function checkClaims({ reconcileAll = false, reconcileId, root = ROOT, sourceRoot }) {
+export async function checkClaims({ reconcileAll = false, reconcileId, root = ROOT, sourceRoot, skillsRoot }) {
   if (reconcileAll && reconcileId !== undefined) {
     throw new Error("--reconcile and --reconcile-all are mutually exclusive");
   }
@@ -90,6 +97,13 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
 
   const store6Context = await preflightStore6Root(sourceRoot, claims.revision);
   const storeDocsContext = await prepareRepositoryRoot(repositoryRoot, "store-docs");
+  const contexts = { store6: store6Context, "store-docs": storeDocsContext };
+  if (claims.claims.some((claim) => claim.anchors.some((anchor) => anchor.repository === "store-agent-skills"))) {
+    if (typeof skillsRoot !== "string" || skillsRoot.trim().length === 0) {
+      throw new Error("--skills-root <checkout> is required for store-agent-skills anchors");
+    }
+    contexts["store-agent-skills"] = await prepareRepositoryRoot(skillsRoot, "store-agent-skills");
+  }
   const candidate = structuredClone(claims);
   const pinnedBlobs = new Map();
   const workingFiles = new Map();
@@ -106,7 +120,7 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
       const content =
         anchor.repository === "store6"
           ? pinned?.content
-          : await readWorkingFile(storeDocsContext, anchor.path, CLAIMS_FILE, `${jsonPath}.path`, workingFiles);
+          : await readWorkingFile(contexts[anchor.repository], anchor.path, CLAIMS_FILE, `${jsonPath}.path`, workingFiles);
       if (content === undefined) {
         const message =
           anchor.repository === "store6"
@@ -122,8 +136,7 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
     claims: candidate,
     pinnedBlobs,
     revision: claims.revision,
-    store6Context,
-    storeDocsContext,
+    contexts,
     workingFiles,
   });
   if (inspection.integrityIssues.length > 0) {
@@ -194,7 +207,7 @@ function validateClaimsLedger(value) {
       const anchor = claim.anchors[anchorIndex];
       const anchorPath = `${claimPath}.anchors[${anchorIndex}]`;
       assertObject(anchor, CLAIMS_FILE, anchorPath, "expected an object");
-      if (anchor.repository !== "store6" && anchor.repository !== "store-docs") {
+      if (!REPOSITORIES.has(anchor.repository)) {
         schemaError(
           CLAIMS_FILE,
           `${anchorPath}.repository`,
@@ -401,7 +414,7 @@ async function readPinnedBlob(context, revision, path, cache) {
   return pinned;
 }
 
-async function inspectAnchors({ claims, pinnedBlobs, revision, store6Context, storeDocsContext, workingFiles }) {
+async function inspectAnchors({ claims, pinnedBlobs, revision, contexts, workingFiles }) {
   const integrityIssues = [];
   const driftIssues = [];
   let anchorCount = 0;
@@ -412,7 +425,7 @@ async function inspectAnchors({ claims, pinnedBlobs, revision, store6Context, st
       const anchor = claim.anchors[anchorIndex];
       const jsonPath = `$.claims[${claimIndex}].anchors[${anchorIndex}]`;
       if (anchor.repository === "store6") {
-        const pinned = await readPinnedBlob(store6Context, revision, anchor.path, pinnedBlobs);
+        const pinned = await readPinnedBlob(contexts.store6, revision, anchor.path, pinnedBlobs);
         if (pinned === undefined) {
           integrityIssues.push(missingPinnedAnchorMessage(claim, anchor, revision));
           continue;
@@ -427,7 +440,7 @@ async function inspectAnchors({ claims, pinnedBlobs, revision, store6Context, st
           continue;
         }
       }
-      const context = anchor.repository === "store6" ? store6Context : storeDocsContext;
+      const context = contexts[anchor.repository];
       const content = await readWorkingFile(context, anchor.path, CLAIMS_FILE, `${jsonPath}.path`, workingFiles);
       if (content === undefined || sha256(content) !== anchor.sha256) {
         driftIssues.push(changedAnchorMessage(claim, anchor, revision));
@@ -490,9 +503,9 @@ function isWithinOrEqual(root, path) {
 function changedAnchorMessage(claim, anchor, revision) {
   const path = displayAnchorPath(anchor);
   const drift =
-    anchor.repository === "store-docs"
-      ? "whose whole-file hash no longer matches store6-claims.json"
-      : `which changed since ${revision}`;
+    anchor.repository === "store6"
+      ? `which changed since ${revision}`
+      : "whose whole-file hash no longer matches store6-claims.json";
   return `claim ${claim.id} on ${claim.page} anchors ${path}, ${drift}; re-verify the claim, then run check-claims.mjs --reconcile ${claim.id}\n  claim: ${claim.claim}`;
 }
 
@@ -509,7 +522,7 @@ function committedSymlinkMessage(claim, anchor, claimIndex, anchorIndex, revisio
 }
 
 function displayAnchorPath(anchor) {
-  return anchor.repository === "store-docs" ? `store-docs/${anchor.path}` : anchor.path;
+  return anchor.repository === "store6" ? anchor.path : `${anchor.repository}/${anchor.path}`;
 }
 
 async function collectCensusIssues(root, lock, claims) {

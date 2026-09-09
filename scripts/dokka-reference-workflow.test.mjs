@@ -242,6 +242,18 @@ test("release tags regenerate even at the pinned SHA and require same-PR editori
   );
 });
 
+test("drift checks out the pinned skill once before re-pin and reuses it for claims", () => {
+  const generator = workflowJob(readWorkflow(), "dokka-reference", "publish");
+  const clone = "git clone --no-checkout https://github.com/matt-ramotar/store-agent-skills ../store-agent-skills";
+  const checkout = "git -C ../store-agent-skills checkout --detach 1aadb4a8ba816cfb90129b30db5f5eebc5446848";
+  const repin = "node scripts/repin-store6-lock.mjs --source-root ../Store6 --skills-root ../store-agent-skills";
+  const claims = "node scripts/check-claims.mjs --source-root ../Store6 --skills-root ../store-agent-skills";
+  assert.equal(generator.split(clone).length - 1, 1);
+  assert.ok(requiredIndex(generator, clone) < requiredIndex(generator, checkout));
+  assert.ok(requiredIndex(generator, checkout) < requiredIndex(generator, repin));
+  assert.ok(requiredIndex(generator, repin) < requiredIndex(generator, claims));
+});
+
 test("generator emits only an allowlisted binary patch plus bounded verified metadata", () => {
   const generator = workflowJob(readWorkflow(), "dokka-reference", "publish");
   const prepare = requiredIndex(generator, "- name: Prepare validated publication artifact");
@@ -268,6 +280,42 @@ test("generator emits only an allowlisted binary patch plus bounded verified met
   assert.match(step, /metadata_size="\$\(wc -c[\s\S]*metadata_size" -le 65536/);
   assert.match(generator.slice(upload), /uses: actions\/upload-artifact@v4/);
   assert.doesNotMatch(generator.slice(upload), /path: \.\/?$|path: \.\.\/Store6/m);
+});
+
+test("agent exports are checked before build and drift uses trusted base targets", () => {
+  const verify = readFileSync(resolve(ROOT, ".github/workflows/verify.yml"), "utf8");
+  assert.ok(requiredIndex(verify, "node scripts/build-agent-docs.mjs --check") < requiredIndex(verify, "run: pnpm build"));
+  assert.match(verify, /node scripts\/verify-agent-docs\.mjs --base-url http:\/\/127\.0\.0\.1:3222/);
+  const workflow = readWorkflow();
+  const generator = workflowJob(workflow, "dokka-reference", "publish");
+  const publisher = workflowJob(workflow, "publish");
+  for (const section of [generator, publisher]) {
+    assert.match(section, /agent-docs\/config\.json/);
+    assert.match(section, /agent-docs\/links\.mjs/);
+    assert.match(section, /public\/llms-full\.txt/);
+    assert.match(section, /public\/llms\/store6-manifest\.json/);
+    assert.match(section, /agent_targets/);
+    assert.doesNotMatch(section, /public\/llms\/store6\/\*/);
+    assert.doesNotMatch(section, /skills\/store6\/references\/docs-manifest\.json/);
+  }
+  assert.ok(requiredIndex(generator, '> "$AGENT_TARGETS"') < requiredIndex(generator, "- name: Detect Store6 drift"));
+  assert.ok(requiredIndex(publisher, '> "$BASE_AGENT_TARGETS"') < requiredIndex(publisher, "git apply --index --binary"));
+});
+
+test("both drift allowlists accept exact agent outputs and reject other paths", () => {
+  const workflow = readWorkflow();
+  const targets = ["public/llms-full.txt", "public/llms/store6-manifest.json", "public/llms/store6/quickstart.md"];
+  const rejected = [
+    "skills/store6/references/docs-manifest.json", "evidence/store6-skill-release.json",
+    "public/llms/store6/unlisted.md", "public/llms/store6/quickstart.html",
+    "public/llms/store6/../../private.md", "public/llms/store6/%2e%2e/private.md", "unrelated.txt",
+  ];
+  for (const section of [workflowJob(workflow, "dokka-reference", "publish"), workflowJob(workflow, "publish")]) {
+    const guard = section.match(/for target in [\s\S]*?\besac/)[0];
+    const script = 'path="$1"\nshift\ntrusted_targets=()\nagent_targets=("$@")\nallowed=false\n' + guard + '\n[[ "$allowed" == "true" ]]';
+    for (const path of targets) assert.equal(spawnSync("bash", ["-c", script, "guard", path, ...targets]).status, 0, path);
+    for (const path of rejected) assert.equal(spawnSync("bash", ["-c", script, "guard", path, ...targets]).status, 1, path);
+  }
 });
 
 test("publisher validates base, artifact, indexed apply, allowlist, and residue before one commit", () => {

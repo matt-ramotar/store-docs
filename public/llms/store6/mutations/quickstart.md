@@ -1,0 +1,269 @@
+# Mutations quickstart
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/mutations/quickstart
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/mutations/quickstart.md
+
+Source kind: site-authored; source path: content/docs/store6/mutations/quickstart.mdx
+
+> **Note**
+>
+> **Experimental tier.** `store6-mutations` is a separate artifact in the 6.0.0-alpha01 floor, and
+> every public symbol carries `@ExperimentalStoreApi`. Its shapes may change or be removed in any
+> release. Read the [stability policy](https://store.mobilenativefoundation.org/llms/store6/stability.md) before adopting it.
+
+> **Note**
+>
+> **Your mutation endpoint must tolerate a re-sent push.** If the server accepts a push but Store fails
+> or dies before the local acknowledgement-receipt transaction commits, the last durable phase remains
+> `INFLIGHT`. A later explicit drain may replay the same immutable generation and `idempotencyKey`.
+> Replay after process death requires journal storage that survives restart. This page's default
+> in-memory journal does not. Once `ACKED` is durable, recovery may repeat adoption, invalidation
+> effects, and retirement, but never the push. Keep the endpoint idempotent. The
+> [server guide](https://store.mobilenativefoundation.org/llms/store6/mutations/server.md) defines the full acknowledgement contract.
+
+## What you are building
+
+A `MutationStore` keeps ordinary Store 6 reads and maintenance operations, but narrows consumer
+writes to one journalled path. You enqueue a typed intent with `mutate`, observe its optimistic
+projection on `stream`, and explicitly push pending work with `drain`.
+
+This walkthrough uses the default in-memory journal. It can queue work while the process is alive,
+but it does not provide restart durability. Install durable journal storage before relying on replay
+after process death. If the read path is new to you, start with the
+[Store 6 quickstart](https://store.mobilenativefoundation.org/llms/store6/quickstart.md).
+
+## The five required inputs
+
+The factory shape is
+`mutationStore(registry, server, keyResolver, valueCodecVersion, valueCodec) { configure }`. All
+five values are factory parameters, never builder doors.
+
+| Input               | Contract                                                                                                    |
+| ------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `registry`          | A `MutatorRegistry<K, V>` containing the named, typed intents this store accepts.                           |
+| `server`            | The app-owned `MutationServer<K, V>` that implements `push` and `retire`.                                   |
+| `keyResolver`       | A `MutationKeyResolver<K>` that reconstructs a process-local key from the exact durable identity pair.      |
+| `valueCodecVersion` | The positive schema version used for persisted `V` values. Values below `1` fail before construction.       |
+| `valueCodec`        | A pure, deterministic `MutationCodec<V>` that encodes values and decodes the persisted version it receives. |
+
+### A minimal registry
+
+`mutatorRegistry` returns a registry and each registration returns its typed `MutatorRef`. The
+example uses `update(id, version, codec, stales, project)`: `project` receives an existing value and
+the typed arguments, while `stales` declares any keys or namespaces to invalidate after adoption.
+The [mutators guide](https://store.mobilenativefoundation.org/llms/store6/mutations/mutators.md) covers the other registration shapes, presence
+semantics, and codec evolution.
+
+### A minimal server
+
+`MutationServer.push` receives one immutable `MutationPush` generation and returns a
+`MutationAck`. `retire` confirms a monotonic retirement checkpoint. The example server keeps a
+receipt by `request.idempotencyKey`, so a repeated generation returns the same acknowledgement
+without applying the rename twice. A production backend must make that receipt lookup and effect
+atomic.
+
+### The resolver and codecs
+
+For a key that can be reconstructed from its durable identity, the resolver can be one expression:
+`MutationKeyResolver { identity -> UserKey(identity.canonicalId) }`. The resolver is required because
+a restart-safe drain cannot reconstruct a process-local `K` without it. Store validates the returned
+key's namespace and canonical id against the requested pair before transport.
+
+Both the mutator-argument codec and the value codec receive the version persisted with their bytes.
+When a format changes, retain old decoders until every row using them has retired and been pruned.
+
+## The configure lambda
+
+The lambda must install one fetcher through `fetcher { }`, `fetcherOfResult { }`, or
+`fetcher(Fetcher)`. The last of those three registrations wins. Omitting all three fails with
+`IllegalArgumentException`.
+
+It can also configure these doors:
+
+* Core Store doors: `persistence`, `bookkeeper`, `telemetry`, `wallClock`,
+  `freshnessValidator`, and `maxIdleKeys`, whose default is `128`.
+* Mutation doors: `conflicts { }` and `journalStorage(...)`.
+
+There is no `overlay` door. The mutation engine installs the store's sole projection
+layer. When `persistence` or `bookkeeper` is unset, the builder creates a mutations-owned in-memory
+default and forwards that same instance to both the delegated Store and the mutation engine. An
+unset `journalStorage` creates an in-memory journal with no process-restart durability. See
+[Journal storage](https://store.mobilenativefoundation.org/llms/store6/mutations/journal-storage.md) before taking this path offline.
+
+## First mutate, first drain
+
+This complete program uses the current registry, server, resolver, codec, factory, `mutate`, and
+`drain` signatures. The server is an in-process example. Its idempotency receipt map models the
+required endpoint behavior but is not a substitute for an atomic backend transaction.
+
+```kotlin
+@file:OptIn(org.mobilenativefoundation.store6.core.ExperimentalStoreApi::class)
+
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.mobilenativefoundation.store6.core.Origin
+import org.mobilenativefoundation.store6.core.StoreKey
+import org.mobilenativefoundation.store6.core.StoreNamespace
+import org.mobilenativefoundation.store6.core.StoreResult
+import org.mobilenativefoundation.store6.mutations.MutationAck
+import org.mobilenativefoundation.store6.mutations.MutationCodec
+import org.mobilenativefoundation.store6.mutations.MutationKeyResolver
+import org.mobilenativefoundation.store6.mutations.MutationPresence
+import org.mobilenativefoundation.store6.mutations.MutationPresentAck
+import org.mobilenativefoundation.store6.mutations.MutationPush
+import org.mobilenativefoundation.store6.mutations.MutationRetirement
+import org.mobilenativefoundation.store6.mutations.MutationRetirementAck
+import org.mobilenativefoundation.store6.mutations.MutationServer
+import org.mobilenativefoundation.store6.mutations.MutatorRef
+import org.mobilenativefoundation.store6.mutations.StaleSet
+import org.mobilenativefoundation.store6.mutations.mutationStore
+import org.mobilenativefoundation.store6.mutations.mutatorRegistry
+
+private class UserKey(val id: String) : StoreKey {
+    override val namespace: StoreNamespace = StoreNamespace("users")
+    override fun canonicalId(): String = id
+}
+
+private data class User(val id: String, val name: String)
+private data class Rename(val name: String)
+
+private object RenameCodec : MutationCodec<Rename> {
+    override fun encode(value: Rename): ByteArray = value.name.encodeToByteArray()
+
+    override fun decode(version: Int, bytes: ByteArray): Rename {
+        require(version == 1) { "Unsupported Rename version: $version" }
+        return Rename(bytes.decodeToString())
+    }
+}
+
+private object UserCodec : MutationCodec<User> {
+    override fun encode(value: User): ByteArray =
+        "${value.id}\n${value.name}".encodeToByteArray()
+
+    override fun decode(version: Int, bytes: ByteArray): User {
+        require(version == 1) { "Unsupported User version: $version" }
+        val fields = bytes.decodeToString().split('\n', limit = 2)
+        require(fields.size == 2) { "Malformed User payload" }
+        return User(id = fields[0], name = fields[1])
+    }
+}
+
+private object UserServer : MutationServer<UserKey, User> {
+    private val rows = mutableMapOf("42" to User("42", "Ada"))
+    private val receipts = mutableMapOf<String, MutationAck<UserKey, User>>()
+
+    fun load(key: UserKey): User = checkNotNull(rows[key.id])
+
+    override suspend fun push(request: MutationPush<UserKey, User>): MutationAck<UserKey, User> =
+        receipts.getOrPut(request.idempotencyKey) {
+            when (val mine = request.mine) {
+                is MutationPresence.Present -> {
+                    rows[request.identity.canonicalId] = mine.value
+                    MutationPresentAck<UserKey, User>(
+                        authoritative = mine.value,
+                        etag = null,
+                        canonicalKey = null,
+                    )
+                }
+                MutationPresence.Absent -> error("This example registers no delete mutator.")
+            }
+        }
+
+    override suspend fun retire(request: MutationRetirement): MutationRetirementAck =
+        MutationRetirementAck(
+            confirmedThroughSequence = request.retiredThroughSequence,
+        )
+}
+
+public fun main(): Unit =
+    runBlocking {
+        lateinit var renameRef: MutatorRef<UserKey, User, Rename>
+        val registry =
+            mutatorRegistry<UserKey, User> {
+                renameRef =
+                    update(
+                        id = "rename",
+                        version = 1,
+                        codec = RenameCodec,
+                        stales = { _, _ ->
+                            StaleSet(keys = emptySet(), namespaces = emptySet())
+                        },
+                        project = { user, rename -> user.copy(name = rename.name) },
+                    )
+            }
+
+        val users =
+            mutationStore(
+                registry = registry,
+                server = UserServer,
+                keyResolver = MutationKeyResolver { identity -> UserKey(identity.canonicalId) },
+                valueCodecVersion = 1,
+                valueCodec = UserCodec,
+            ) {
+                fetcher { key -> UserServer.load(key) }
+            }
+
+        try {
+            val key = UserKey("42")
+            println("base=${users.get(key).name}")
+
+            val mutationId = users.mutate(key, renameRef, Rename("Grace"))
+            val optimistic =
+                users.stream(key)
+                    .filterIsInstance<StoreResult.Data<User>>()
+                    .first { data -> data.origin == Origin.OVERLAY }
+            println("mutation=$mutationId optimistic=${optimistic.value.name}")
+
+            // get() reads committed truth, so it still returns Ada before drain.
+            println("committed-before-drain=${users.get(key).name}")
+
+            users.drain(key)
+
+            // Open a new stream after acknowledgement; an already-active collector is not promised
+            // to converge across that boundary yet.
+            val confirmed =
+                users.stream(key)
+                    .filterIsInstance<StoreResult.Data<User>>()
+                    .first { data -> data.origin == Origin.SOT || data.origin == Origin.MEMORY }
+            println("confirmed=${confirmed.value.name} origin=${confirmed.origin}")
+        } finally {
+            users.close()
+        }
+    }
+```
+
+`mutate` appends one intent, returns its opaque mutation id, and pushes nothing. `drain(key)` then
+runs one idempotent, scheduler-agnostic foreground pass for the effective key. It pushes the pending
+FIFO prefix once, performs no fetch, and has no retry or backoff policy of its own.
+
+## Watching OVERLAY become confirmed
+
+The example hydrates a committed base before enqueueing the update. After `mutate`, a new
+`stream(key)` collection observes the projected value with `origin == Origin.OVERLAY`. The point
+read immediately after it still returns `Ada`, because `get` is deliberately unprojected.
+
+After `drain(key)` adopts the acknowledgement, the example opens another stream. That new
+collection sees the server echo attributed `Origin.SOT` or `Origin.MEMORY`. Convergence for a
+collector already active across acknowledgement is not yet promised. The
+[pending-write UI guide](https://store.mobilenativefoundation.org/llms/store6/mutations/pending-write-ui.md) covers the rendering contract.
+
+## Where to go next
+
+* [Authoring mutators](https://store.mobilenativefoundation.org/llms/store6/mutations/mutators.md) for registration shapes, projection rules,
+  and codec evolution.
+* [Implementing a MutationServer](https://store.mobilenativefoundation.org/llms/store6/mutations/server.md) for idempotency, acknowledgements,
+  and retirement checkpoints.
+* [Draining, offline, and restart](https://store.mobilenativefoundation.org/llms/store6/mutations/drain-and-restart.md) for keyed and global
+  passes plus restart hydration.
+* [Journal storage](https://store.mobilenativefoundation.org/llms/store6/mutations/journal-storage.md) for durable queues across process death.
+
+For Store 6, this page supersedes the Store 5
+[setup walkthrough](https://store.mobilenativefoundation.org/docs/use-cases/store5/setting-up-store-for-crud-operations) and
+[implementation walkthrough](https://store.mobilenativefoundation.org/docs/use-cases/store5/implementing-crud-operations-in-store). Those
+pages remain the Store 5 path.
+
+***
+
+Source recorded 2026-08-12 · [`main@539614c0`](https://github.com/matt-ramotar/Store6/commit/539614c06be1a8f20dead562585e47394551ebae) · pre-6.0.0-alpha01

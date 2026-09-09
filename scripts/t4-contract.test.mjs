@@ -6,6 +6,7 @@ import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import test from "node:test";
 
 import * as cheerio from "cheerio";
+import { pageIdentity } from "./agent-docs/links.mjs";
 
 const ROOT = resolve(import.meta.dirname, "..");
 const INVENTORY_PATH = resolve(ROOT, "evidence/live-url-inventory.txt");
@@ -205,6 +206,9 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
   const startHere = readFileSync(START_HERE_LIST_PATH, "utf8");
   const readResolution = readFileSync(READ_RESOLUTION_TABLE_PATH, "utf8");
   const supportMatrix = readFileSync(SUPPORT_MATRIX_PATH, "utf8");
+  const startHereContent = readFileSync(resolve(ROOT, "components/overview/content/start-here.ts"), "utf8");
+  const readResolutionContent = readFileSync(resolve(ROOT, "components/overview/content/read-resolution.ts"), "utf8");
+  const supportMatrixContent = readFileSync(resolve(ROOT, "components/overview/content/support-matrix.ts"), "utf8");
 
   assert.equal(document.title, "Introduction");
   assert.equal(
@@ -233,12 +237,14 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     "/docs/community/overview",
     "https://github.com/MobileNativeFoundation/Store",
     "/llms.txt",
+    "/llms-full.txt",
+    "/docs/store6/agents/overview",
     "/docs/store6/quickstart",
     "/docs/store6/important-defaults",
   ]);
   assert.equal([...document.body.matchAll(/<Callout\b/g)].length, 0, "release notice is consolidated in the shell");
   assert.match(readFileSync(resolve(ROOT, "components/shell/Store6Banner.tsx"), "utf8"), /Nothing in Store 6 is published yet/);
-  assert.match(supportMatrix, /not frozen until the beta01 freeze candidate/);
+  assert.match(supportMatrixContent, /not frozen until the beta01 freeze candidate/);
   assert.match(document.body, /Build your first store/);
   assert.match(
     document.body,
@@ -249,8 +255,8 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     /\n---\n\n\*Last verified: 2026-08-12 · `main` @ `c67a94ed`, pre-6\.0\.0-alpha01\*\n$/,
   );
 
-  const startHereBlock = startHere.match(/const startHereItems = \[([\s\S]*?)\] as const;/)?.[1];
-  assert.ok(startHereBlock, "StartHereList must keep a static server-rendered item model");
+  const startHereBlock = startHereContent.match(/export const startHereItems = \[([\s\S]*?)\] as const;/)?.[1];
+  assert.ok(startHereBlock, "StartHereList must keep a shared static item model");
   assert.deepEqual(
     [...startHereBlock.matchAll(/\bid: "([^"]+)"/g)].map((match) => match[1]),
     ["quickstart", "important-defaults", "read-contract", "data-seams", "mutations", "migration"],
@@ -272,18 +278,18 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
   assert.doesNotMatch(experimentalChip, /\b(?:href|onClick|onPress)=/, "tier chip must not be interactive");
 
   assert.deepEqual(
-    [...readResolution.matchAll(/\blabel: "(Origin\.[A-Z]+)"/g)].map((match) => match[1]),
+    [...readResolutionContent.matchAll(/\blabel: "(Origin\.[A-Z]+)"/g)].map((match) => match[1]),
     ["Origin.MEMORY", "Origin.SOT", "Origin.FETCHER", "Origin.OVERLAY"],
   );
-  assert.match(readResolution, /wall-clock age alone never makes/);
-  assert.match(readResolution, /Data\(origin=Origin\.SOT, isStale=true, refreshing=true\)/);
+  assert.match(readResolutionContent, /wall-clock age alone never makes/);
+  assert.match(readResolutionContent, /Data\(origin=Origin\.SOT, isStale=true, refreshing=true\)/);
   assert.deepEqual(
-    [...readResolution.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
+    [...readResolutionContent.matchAll(/\bhref: "([^"]+)"/g)].map((match) => match[1]),
     ["/docs/store6/concepts/read-contract", "/docs/store6/concepts/freshness"],
   );
 
   assert.deepEqual(
-    [...supportMatrix.matchAll(/\bmodule: "([^"]+)"/g)].map((match) => match[1]),
+    [...supportMatrixContent.matchAll(/\bmodule: "([^"]+)"/g)].map((match) => match[1]),
     [
       "store6-core",
       "store6-testing",
@@ -296,15 +302,15 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
     ],
   );
   assert.match(
-    supportMatrix,
+    supportMatrixContent,
     /Canonical 12: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, watchosArm64, tvosArm64, JS, WasmJS, linuxX64, and mingwX64\./,
   );
   assert.match(
-    supportMatrix,
+    supportMatrixContent,
     /Inspector 8: Android, JVM, iosArm64, iosSimulatorArm64, iosX64, macosArm64, JS, and WasmJS\./,
   );
   assert.deepEqual(
-    [...supportMatrix.matchAll(/\{\s*module: "([^"]+)",\s*tier: "([^"]+)",\s*release: "([^"]+)",/g)].map(
+    [...supportMatrixContent.matchAll(/\{\s*module: "([^"]+)",\s*tier: "([^"]+)",\s*release: "([^"]+)",/g)].map(
       ([, module, tier, release]) => ({ module, tier, release }),
     ),
     [
@@ -338,14 +344,14 @@ test("B5 Store6 overview preserves the entry contract and exposes the complete a
       },
     ],
   );
-  assert.match(supportMatrix, /not frozen until the beta01 freeze candidate/);
+  assert.match(supportMatrixContent, /not frozen until the beta01 freeze candidate/);
   assert.match(supportMatrix, /<li[^>]+id=\{entry\.module\}/);
   assert.match(supportMatrix, /aria-describedby="module-tier-guidance"/);
   assert.match(supportMatrix, /<TierChip tier=\{entry\.tier\} \/>/);
   assert.match(supportMatrix, /id="module-tier-guidance"/);
   assertNoNestedInteractiveLinks(supportMatrix, "components/overview/SupportMatrix.tsx");
   assert.deepEqual(
-    [...supportMatrix.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]),
+    [...supportMatrixContent.matchAll(/\bhref: "([^"]+)"/g)].map((match) => match[1]),
     [
       "/docs/store6/stability",
       "/docs/store6/concepts/api-tiers",
@@ -1260,8 +1266,22 @@ test("llms copy preserves its locked link inventory and maps every target on-sit
   const target = readFileSync(resolve(ROOT, "public/llms.txt"), "utf8");
   const targetLinks = markdownAndHtmlTargets(target);
   assert.equal(targetLinks.length, sourceEntry.markdownLinkCount);
-  assert.equal(targetLinks.every((link) => link.startsWith("/docs/store6/")), true);
-  for (const link of targetLinks) assertLocalTargetExists(link, "public/llms.txt");
+  const config = JSON.parse(readFileSync(resolve(ROOT, "scripts/agent-docs/config.json"), "utf8"));
+  const pages = config.pages.map(path => pageIdentity(path, config.origin));
+  const markdownPaths = new Set(pages.map(page => page.markdownPath));
+  const canonicalPaths = new Set(pages.map(page => page.canonicalPath));
+  for (const link of targetLinks) {
+    const url = new URL(link);
+    assert.equal(url.origin, LIVE_ORIGIN, link);
+    assert.equal(url.search, "", link);
+    if (url.hash) {
+      assert.ok(canonicalPaths.has(url.pathname), link);
+      assertLocalTargetExists(url.pathname + url.hash, "public/llms.txt");
+    } else {
+      assert.ok(markdownPaths.has(url.pathname) || url.pathname === "/llms-full.txt", link);
+      assert.ok(existsSync(resolve(ROOT, `public${url.pathname}`)), link);
+    }
+  }
 });
 
 test("public source contains no symlinks", () => {

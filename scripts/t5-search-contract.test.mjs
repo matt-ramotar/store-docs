@@ -5,6 +5,14 @@ import test from "node:test";
 
 const ROOT = resolve(import.meta.dirname, "..");
 
+test("the built-index verifier checks all three agent setup destinations", () => {
+  const verifier = source("scripts/verify-search-index.mjs");
+  for (const suffix of ["overview", "llm-context", "agent-skills"]) {
+    assert.ok(verifier.includes(`/docs/store6/agents/${suffix}`), suffix);
+  }
+  assert.match(verifier, /agentSetupDestinations/);
+});
+
 const targets = [
   "app/api/search/route.ts",
   "components/shell/CommandSearch.tsx",

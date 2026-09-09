@@ -8,3 +8,4 @@ next-env.d.ts
 /evidence/design-revision/
 /evidence/sidebar-navigation/
 /evidence/**/*.log
+/evidence/agent-docs-runs/

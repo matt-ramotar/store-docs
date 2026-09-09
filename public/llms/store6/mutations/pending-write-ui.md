@@ -1,0 +1,144 @@
+# Pending-write UI
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/mutations/pending-write-ui
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/mutations/pending-write-ui.md
+
+Source kind: site-authored; source path: content/docs/store6/mutations/pending-write-ui.mdx
+
+> **Note**
+>
+> **Experimental tier.** `store6-mutations` is a separate artifact in the 6.0.0-alpha01 floor, and
+> every public symbol carries `@ExperimentalStoreApi`. Its shapes may change or be removed in any
+> release. Read the [stability policy](https://store.mobilenativefoundation.org/llms/store6/stability.md) before adopting it.
+
+## Two affordances that look alike and are not
+
+> **Note**
+>
+> **Key pending-write UI on `origin == Origin.OVERLAY`, never on `isStale`.** A stale-cache affordance
+> uses `isStale`. These are independent conditions with different meanings.
+
+When the projector returns a different non-null value, Store emits a `StoreResult.Data` frame with
+`origin = Origin.OVERLAY`, `age = Duration.ZERO`, and `isStale = false`. That freshness stamp is
+unconditional. The optimistic value is new because the user just wrote it. Only `refreshing` remains
+live on an overlay frame, reflecting whether a fetch is in flight for the key.
+
+Keep the two badges independent in UI code:
+
+```kotlin
+import androidx.compose.runtime.Composable
+import org.mobilenativefoundation.store6.core.Origin
+import org.mobilenativefoundation.store6.core.StoreResult
+
+@Composable
+fun <V> WriteBadges(
+    result: StoreResult<V>,
+    saving: @Composable () -> Unit,
+    stale: @Composable () -> Unit,
+) {
+    when (result) {
+        is StoreResult.Data -> {
+            if (result.origin == Origin.OVERLAY) saving()
+            if (result.isStale) stale()
+        }
+        else -> Unit
+    }
+}
+```
+
+A spinner driven by `isStale` will never appear for a pending optimistic frame. If the projector
+returns a value equal to the committed base, Store preserves the
+committed envelope and its origin instead of labelling it `OVERLAY`. Use durable inspection when
+the UI needs pending counts or phases independent of whether projection changed the visible value.
+
+## `get` never sees pending writes
+
+The overlay applies only to `stream`. `MutationStore.get` resolves the terminal canonical key and
+then performs an unprojected point read of committed truth. An optimistic mutation is therefore
+invisible to `get`, even while `stream` can show its projection.
+
+Observe `stream` when the screen must see its own optimistic write. The
+[read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md) explains why Store keeps the point-read and
+observation doors distinct.
+
+## Narrating the OVERLAY → SOT flip
+
+When Store durably records an acknowledgement as `ACKED`, it will not push that generation again. It
+then adopts the server echo as committed truth, applies invalidation effects, and retires the intent.
+After those local steps finish, that intent no longer contributes an optimistic projection. The
+visible transition is:
+
+| Moment                                       | What the UI may observe                                                                         |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Pending projection                           | `Data(origin = OVERLAY, age = Duration.ZERO, isStale = false, refreshing = <live fetch state>)` |
+| Durable acknowledgement and local completion | The server echo is adopted, then the optimistic intent is retired.                              |
+| A stream opened after the drain completes    | The committed echo as `Data` attributed to `SOT` or `MEMORY`.                                   |
+
+The origin distinguishes “saving” from “saved.” `isStale` never represents the pending phase, and
+`refreshing` remains a separate report of the live fetch slot.
+
+> **Note**
+>
+> A stream opened after the drain completes sees the committed echo. Convergence for a collector that
+> was already active across the acknowledgement is not currently a promised behavior. Do not make a
+> required UI state transition depend on that exact next emission.
+
+Remote acceptance is earlier than durable acknowledgement. If Store fails or dies before the local
+acknowledgement-receipt transaction commits, the last durable phase remains `INFLIGHT`, and a later
+explicit drain may replay the same immutable generation and `idempotencyKey`. Replay after process
+death requires journal storage that survives restart. Once `ACKED` is durable, recovery may repeat
+adoption, effects, or retirement, but never the push. Keep the endpoint idempotent. The
+[server guide](https://store.mobilenativefoundation.org/llms/store6/mutations/server.md) defines that contract.
+
+## Optimistic creates and deletes on screen
+
+Projection is defined over both a committed value and committed absence:
+
+| Committed base  | Projection result | Stream presentation                                         |
+| --------------- | ----------------- | ----------------------------------------------------------- |
+| Absent (`null`) | Non-null          | Overlay data: an optimistic create.                         |
+| Non-null        | `null`            | The normal absent/loading transition: an optimistic delete. |
+
+An optimistic create can render the new item immediately with `origin = OVERLAY`. An optimistic
+delete looks like removal through the normal absence path, not like a mutation error.
+
+## Richer affordances
+
+Use durable inspection for queue counts, per-intent phases, and settlement state:
+
+| API               | Snapshot                                                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `pending(key)`    | Pending intents for the key's terminal identity in durable client-sequence FIFO order.                                   |
+| `pendingWrites()` | Every nonterminal active intent across durable identities in durable client-sequence order. Retired history is excluded. |
+
+The five public pending states are the complete mapping of nonterminal execution phases:
+
+| Public state       | Nonterminal execution phase |
+| ------------------ | --------------------------- |
+| `PENDING`          | `UNPREPARED` or `READY`     |
+| `INFLIGHT`         | `INFLIGHT`                  |
+| `REFRESHING`       | `REFRESH_REQUIRED`          |
+| `ADOPTING`         | `ACKED`                     |
+| `APPLYING_EFFECTS` | `EFFECTS_PENDING`           |
+
+`events` is useful for transient presentation such as toasts or timeline chips, but it is advisory
+and lossy. Its shared flow has replay `0`, extra buffer capacity `64`, and `DROP_OLDEST` overflow.
+Events can disappear under pressure, new collectors receive no history, and restart replays no
+completed events. Never use event delivery as drain, acknowledgement, retry, or settlement truth.
+Re-read durable inspection instead. The [inspection guide](https://store.mobilenativefoundation.org/llms/store6/mutations/inspection.md) covers
+pending state, dead letters, and advisory telemetry together.
+
+## In Compose
+
+The Compose adapter's `collectAsState`, lifecycle-aware collectors, and
+`storeResultMutationPolicy()` compare `Data` structurally. Value, `origin`, `isStale`, and
+`refreshing` all participate. `age` does not. An `OVERLAY` → `SOT` or `MEMORY` origin change is
+therefore not equivalent, even when the value is equal, so an origin-keyed affordance recomposes on
+the observed flip.
+
+See [store6-compose](https://store.mobilenativefoundation.org/llms/store6/compose.md) for collection and recomposition details.
+
+***
+
+Source recorded 2026-08-12 · [`main@539614c0`](https://github.com/matt-ramotar/Store6/commit/539614c06be1a8f20dead562585e47394551ebae) · pre-6.0.0-alpha01

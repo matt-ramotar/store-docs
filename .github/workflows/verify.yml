@@ -42,6 +42,9 @@ jobs:
       - name: Verify synchronized Store6 output
         run: node scripts/sync-store6-docs.mjs --source-root ../Store6 --check
 
+      - name: Verify generated agent documentation
+        run: node scripts/build-agent-docs.mjs --check
+
       - name: Build the site
         run: pnpm build
 
@@ -52,7 +55,10 @@ jobs:
         run: node scripts/repin-store6-lock.mjs --self-test
 
       - name: Verify Store6 claims
-        run: node scripts/check-claims.mjs --source-root ../Store6
+        run: |
+          git clone --no-checkout https://github.com/matt-ramotar/store-agent-skills ../store-agent-skills
+          git -C ../store-agent-skills checkout --detach 1aadb4a8ba816cfb90129b30db5f5eebc5446848
+          node scripts/check-claims.mjs --source-root ../Store6 --skills-root ../store-agent-skills
 
       - name: Verify Store6 snippets
         run: node scripts/check-snippets.mjs --source-root ../Store6
@@ -78,6 +84,7 @@ jobs:
             sleep 1
           done
           node scripts/t8-verification.mjs --local
+          node scripts/verify-agent-docs.mjs --base-url http://127.0.0.1:3222
 
       - name: Verify the search index
         run: node scripts/verify-search-index.mjs

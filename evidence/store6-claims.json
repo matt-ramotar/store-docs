@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+  "revision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
   "claims": [
     {
       "id": "home/001",
@@ -256,16 +256,16 @@
       "page": "/docs/meet-store",
       "claim": "The file's bytes are owned by the port-page:generate ledger, so hand edits are detected and block the generator's reconciliation.",
       "verdict": "REFUTED",
-      "note": "Ownership half is true: line 76-77 lists content/docs/meet-store.mdx under owners['port-page:generate'] with a pinned sha256. But the enforcement half is wrong: reconcileOwnedOutputs (store-docs/scripts/generated-output-transaction.mjs:45-58) never compares the current on-disk bytes of a CONTINUING owned output against its ledger hash — it stages and overwrites them unconditionally. Byte-mismatch blocking exists only for stale entries leaving the output set (OWNED_STALE_MODIFIED, line 55-57) and for newly claimed paths that already exist (OWNED_TARGET_UNCLAIMED, line 47-49); neither applies to meet-store.mdx, which stays in the inventory-derived output set. The byte-verifying verifyOwnedOutputs (line 201-219) is wired only to the sync-store6-docs owner via sync-store6-docs.mjs --check; port-page.mjs supports only --acquire | --generate (port-page.mjs:1349-1350), and neither package.json nor t8-verification.mjs hash-checks port-page:generate outputs against disk. So a hand edit to meet-store.mdx is silently overwritten on the next generate run, not detected-and-blocked — the practical conclusion for planning (do not hand-edit; edits will not survive) still holds, but via silent overwrite, not a blocking check.",
+      "note": "Ownership half is true: line 258-259 lists content/docs/meet-store.mdx under owners['port-page:generate'] with a pinned sha256. But the enforcement half is wrong: reconcileOwnedOutputs (store-docs/scripts/generated-output-transaction.mjs:45-58) never compares the current on-disk bytes of a CONTINUING owned output against its ledger hash — it stages and overwrites them unconditionally. Byte-mismatch blocking exists only for stale entries leaving the output set (OWNED_STALE_MODIFIED, line 55-57) and for newly claimed paths that already exist (OWNED_TARGET_UNCLAIMED, line 47-49); neither applies to meet-store.mdx, which stays in the inventory-derived output set. The byte-verifying verifyOwnedOutputs (line 201-219) is wired only to the sync-store6-docs owner via sync-store6-docs.mjs --check; port-page.mjs supports only --acquire | --generate (port-page.mjs:1349-1350), and neither package.json nor t8-verification.mjs hash-checks port-page:generate outputs against disk. So a hand edit to meet-store.mdx is silently overwritten on the next generate run, not detected-and-blocked — the practical conclusion for planning (do not hand-edit; edits will not survive) still holds, but via silent overwrite, not a blocking check.",
       "correction": "Hand edits to port-page-owned files are silently overwritten by reconcileOwnedOutputs on the next generate run, not detected-and-blocked; no byte-verifying --check is wired to the port-page:generate owner.",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 76,
-            "end": 76
+            "start": 258,
+            "end": 259
           }
         }
       ]
@@ -364,10 +364,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 72,
-            "end": 72
+            "start": 254,
+            "end": 255
           }
         }
       ]
@@ -415,10 +415,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/verify-search-index.mjs",
-          "sha256": "aefb2565da1b83a1501f183ba182fdbb72223ff1ea07feef0595df3fdeb4db52",
+          "sha256": "72621c1942db516b6a8149fbaa53b42c0de0b127c58fddd0ef9d8e754747d835",
           "lines": {
-            "start": 88,
-            "end": 97
+            "start": 98,
+            "end": 107
           }
         }
       ]
@@ -434,10 +434,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/verify-search-index.mjs",
-          "sha256": "aefb2565da1b83a1501f183ba182fdbb72223ff1ea07feef0595df3fdeb4db52",
+          "sha256": "72621c1942db516b6a8149fbaa53b42c0de0b127c58fddd0ef9d8e754747d835",
           "lines": {
             "start": 31,
-            "end": 86
+            "end": 96
           }
         }
       ]
@@ -451,10 +451,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 80,
-            "end": 80
+            "start": 262,
+            "end": 263
           }
         }
       ]
@@ -519,10 +519,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 28,
-            "end": 28
+            "start": 210,
+            "end": 211
           }
         }
       ]
@@ -570,10 +570,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 32,
-            "end": 32
+            "start": 214,
+            "end": 215
           }
         }
       ]
@@ -621,10 +621,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 12,
-            "end": 12
+            "start": 194,
+            "end": 195
           }
         }
       ]
@@ -706,10 +706,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "0fafd2e3bfc9c3ae498f35605619c57456496f43863f9ddfe836838ef59a3d5f",
+          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
           "lines": {
-            "start": 16,
-            "end": 16
+            "start": 198,
+            "end": 199
           }
         }
       ]
@@ -797,16 +797,16 @@
     {
       "id": "tokens-demo/004",
       "page": "/tokens-demo",
-      "claim": "/tokens-demo is one of 34 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.",
+      "claim": "/tokens-demo is one of 37 fixed extra routes in the contract-locked route census; the 12 sync-owned Store6 routes are derived separately from the source lock.",
       "verdict": "CONFIRMED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "scripts/t8-verification.mjs",
-          "sha256": "821400abee83d0b0fd0934addad5ead4795f1d5d9903ba0b9f361c6e0a2c908e",
+          "sha256": "5199a989fd393b8d98578dd0c7d98f77483e43297068328095d62bd8b9c627e5",
           "lines": {
             "start": 28,
-            "end": 150
+            "end": 153
           }
         }
       ]
@@ -1109,10 +1109,10 @@
         {
           "repository": "store6",
           "path": "docs/store6/quickstart.md",
-          "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
+          "sha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
           "lines": {
-            "start": 177,
-            "end": 179
+            "start": 179,
+            "end": 181
           }
         }
       ]
@@ -1161,10 +1161,10 @@
         {
           "repository": "store6",
           "path": "docs/store6/quickstart.md",
-          "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
+          "sha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
           "lines": {
-            "start": 169,
-            "end": 173
+            "start": 171,
+            "end": 175
           }
         }
       ]
@@ -1680,7 +1680,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 21,
             "end": 21
@@ -1782,7 +1782,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 16,
             "end": 16
@@ -2564,7 +2564,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 50,
             "end": 54
@@ -2683,7 +2683,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 45,
             "end": 49
@@ -3095,7 +3095,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 55,
             "end": 59
@@ -3250,7 +3250,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 60,
             "end": 64
@@ -4118,10 +4118,10 @@
         {
           "repository": "store6",
           "path": "docs/store6/quickstart.md",
-          "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
+          "sha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
           "lines": {
-            "start": 151,
-            "end": 153
+            "start": 153,
+            "end": 155
           }
         }
       ]
@@ -4152,10 +4152,10 @@
         {
           "repository": "store6",
           "path": "docs/store6/quickstart.md",
-          "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
+          "sha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
           "lines": {
-            "start": 167,
-            "end": 173
+            "start": 169,
+            "end": 175
           }
         }
       ]
@@ -6352,13 +6352,13 @@
     {
       "id": "docs/store6/contributing/005",
       "page": "/docs/store6/contributing",
-      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision 5a8c956b with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
+      "claim": "The site copy is generated from CONTRIBUTING.md pinned at revision ad435df1 with sha256 4fee66fc..., targeting content/docs/store6/contributing.mdx; every link in the source is an absolute https URL, so the sync's link rewriter leaves all destinations unchanged.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 3,
             "end": 3
@@ -6367,7 +6367,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-store6-source-lock.json",
-          "sha256": "8f8a11a9597449a29ffdd07bee1c70c391956e63d42c0254b8ea3dfe5e23aaac",
+          "sha256": "49e98a483b8189ed274ed374a701d76b5d4a9a02eae65fa65c085557575f9698",
           "lines": {
             "start": 36,
             "end": 38
@@ -8542,6 +8542,83 @@
           "lines": {
             "start": 82,
             "end": 82
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/agents/overview/001",
+      "page": "/docs/store6/agents/overview",
+      "claim": "The retrieval helper checks the consumer revision or an explicitly verified artifact before requesting documentation; a mutable SNAPSHOT label does not establish a match.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store-agent-skills",
+          "path": "skills/store6/scripts/retrieve.mjs",
+          "sha256": "d05b88cf8900e238dcdbe544abc9025cd252fd9496bf62d30a45d0d6d6109c76",
+          "lines": {
+            "start": 119,
+            "end": 129
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/agents/llm-context/001",
+      "page": "/docs/store6/agents/llm-context",
+      "claim": "The generator publishes one Markdown document per configured Store6 guide, a manifest, and a full guide corpus; the selected page census excludes Store5 and generated Dokka HTML.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store-docs",
+          "path": "scripts/agent-docs/bundle.mjs",
+          "sha256": "6bf5cbfa7dd0043fecea75b8bbc4275993a4a289757c805c9120ac6d8551b872",
+          "lines": {
+            "start": 29,
+            "end": 80
+          }
+        },
+        {
+          "repository": "store-docs",
+          "path": "scripts/agent-docs/bundle.mjs",
+          "sha256": "6bf5cbfa7dd0043fecea75b8bbc4275993a4a289757c805c9120ac6d8551b872",
+          "lines": {
+            "start": 138,
+            "end": 147
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/agents/llm-context/002",
+      "page": "/docs/store6/agents/llm-context",
+      "claim": "Source-synced page provenance uses the source lock path, revision, and hash; site-authored page provenance uses its own source path and hash with a null source revision.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store-docs",
+          "path": "scripts/agent-docs/bundle.mjs",
+          "sha256": "6bf5cbfa7dd0043fecea75b8bbc4275993a4a289757c805c9120ac6d8551b872",
+          "lines": {
+            "start": 171,
+            "end": 185
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs/store6/agents/agent-skills/001",
+      "page": "/docs/store6/agents/agent-skills",
+      "claim": "The helper accepts one to four distinct known page IDs, rejects unsupported consumer versions, and rejects changed live bundle identity or changed page bytes without updating the pin.",
+      "verdict": "CONFIRMED",
+      "anchors": [
+        {
+          "repository": "store-agent-skills",
+          "path": "skills/store6/scripts/retrieve.mjs",
+          "sha256": "d05b88cf8900e238dcdbe544abc9025cd252fd9496bf62d30a45d0d6d6109c76",
+          "lines": {
+            "start": 108,
+            "end": 161
           }
         }
       ]

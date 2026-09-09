@@ -1,9 +1,25 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { applyLockedPublicationTransforms, applyPublishedProseEdits } from "./sync-store6-docs.mjs";
+import { applyLockedPublicationTransforms, applyPublishedProseEdits, rewriteAgentIndex } from "./sync-store6-docs.mjs";
 
 const exactText = (...parts) => parts.join("");
+
+test("agent index maps only known Store6 pages and preserves canonical fragments", () => {
+  const origin = "https://store.mobilenativefoundation.org";
+  const input = [
+    "[Quickstart](/docs/store6/quickstart)",
+    '[Named section](/docs/store6/quickstart#write-path "Section")',
+    "[Full corpus](/llms-full.txt)",
+    "[External](https://example.org/guide)",
+  ].join("\n");
+  assert.equal(rewriteAgentIndex(input), [
+    `[Quickstart](${origin}/llms/store6/quickstart.md)`,
+    `[Named section](${origin}/docs/store6/quickstart#write-path "Section")`,
+    `[Full corpus](${origin}/llms-full.txt)`,
+    "[External](https://example.org/guide)",
+  ].join("\n"));
+});
 
 test("publication punctuation edits preserve code, links, and unrelated source text", () => {
   const boundary = "The Store6 seam is a **freeze candidate, not frozen** — see [STABILITY.md](../STABILITY.md).";

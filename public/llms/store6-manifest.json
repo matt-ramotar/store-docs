@@ -1,0 +1,611 @@
+{
+  "schemaVersion": 1,
+  "bundleId": "sha256:4a50a009347e7f4ebdbe226449322464d52b66fabb5bce7505c850b9e1ab5d7b",
+  "origin": "https://store.mobilenativefoundation.org",
+  "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+  "verifiedArtifacts": [],
+  "pages": [
+    {
+      "id": "agents/agent-skills",
+      "title": "Agent skills",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/agent-skills",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md",
+      "sha256": "95ec6bd40297928fff811d361d897824db56e902ea62de2fa4afc23e4676f4a9",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/agents/agent-skills.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "3eae213f5ffb3c770825cf092c3af2cc95e849818bb43707d91a5fbea8727192",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "agents/llm-context",
+      "title": "LLM context",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/llm-context",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/llm-context.md",
+      "sha256": "2da1a511063291ad8c988238cd608250c1bfa333540e6bd80cb50cded20109bc",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/agents/llm-context.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "294b47771371047ae2ab46afc468606f068a4a08fe1fd907075f76f545ad8a47",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "agents/overview",
+      "title": "Agents and LLMs",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/agents/overview",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/agents/overview.md",
+      "sha256": "c1393f8b4212209ef11d6964f78814f8c149913563dfa6c3a40b56114bccc030",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/agents/overview.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "31f524fe7b4840f199a0c2ba7f5ebaa7678391c8ab332429932807dc3a844b29",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "compose",
+      "title": "store6-compose",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/compose",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/compose.md",
+      "sha256": "e6619c2e5e7dece042383e259e496fced0b06fab1fe5f4eaf954a52eb2a05b8f",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "store6-compose/README.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "1a8f0ee674ba200fe0ace9a6ac571608e9c13eee34d0f497711299429f659e28",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "concepts/api-tiers",
+      "title": "API tiers and opt-in annotations",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/concepts/api-tiers",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/concepts/api-tiers.md",
+      "sha256": "5b51a42ffec1793434d132a0162cacec85c52ea20ea2b9075c7a680acc9d9ecd",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/concepts/api-tiers.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "d49a7212f78b372a01fbbeee2b2de1dd302409af15ec06da3d06a137730b661c",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "concepts/errors",
+      "title": "Errors and failure handling",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/concepts/errors",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/concepts/errors.md",
+      "sha256": "5296cda09eeb8c9fba582e331d47225328a39493c0ce710e54114b5000b53f27",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/concepts/errors.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "94c4404cd5ac9d0aa0be715ec4415d174825d50f8bd6d721372c4f84cc975480",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ be470620, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "concepts/freshness",
+      "title": "Freshness policies",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/concepts/freshness",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/concepts/freshness.md",
+      "sha256": "5e47a77f7bbc928687c28944f9f1dfd117840d6cb986441077caaa733f4c8e4d",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/concepts/freshness.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "850934d6b496f813c749ee5e8acfb588dcc4910a631d536159862f63f2933bc3",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "concepts/memory-and-lifecycle",
+      "title": "Memory, eviction, and store lifecycle",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/concepts/memory-and-lifecycle",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/concepts/memory-and-lifecycle.md",
+      "sha256": "be5c7dfec38b2709893dd0d97942a3e7d20e63ffd0e3d163c1bf0569cf67e1ba",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/concepts/memory-and-lifecycle.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "5ded9efcf7148deb453cce072d4089085f8e1a58868323575e8eed8a7d67e62f",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ be470620, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "concepts/read-contract",
+      "title": "The read contract: stream, get, and origins",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/concepts/read-contract",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md",
+      "sha256": "96b67436750ee4cd8e1b22b62514d8b83a8f33d61c092adb42dce9b407be95b5",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/concepts/read-contract.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "59b3e26160fe5cd6d5a0ae76e6f4dcff23499fecf3ce03a456d0d61f50b823a5",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "contributing",
+      "title": "Contributing to Store",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/contributing",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/contributing.md",
+      "sha256": "ffbf6af2ad045fd6fbb8def76241e30c5bcd37608dd114a2d7a53e3bae529b63",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "CONTRIBUTING.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "4fee66fc7805e1efd26a581152f5651a58a140bdbb4819b4dbadc6417378930a",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "graphql",
+      "title": "store6-graphql",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/graphql",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/graphql.md",
+      "sha256": "2d17077d924f30dd4031e776c479dfb7f282c03cbde8439cf70ce96891edfac6",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "store6-graphql/README.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "ee14b176e69fe5742b7ea6a30820b80d5105d72afca00dfb66b195d62cfef0e5",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "guides/devtools",
+      "title": "Devtools and the inspector",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/devtools",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/devtools.md",
+      "sha256": "66a9782ce1fd2778d833be9891364cbb8feb69b3147e15770c65bdb83ccf2f11",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/devtools.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "629690d272a9515381467dfabc80ebc98b1b8bc2930f71ef7b9b5ffb3a79a843",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/extending",
+      "title": "Extending Store through the seam",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/extending",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/extending.md",
+      "sha256": "088b883b7729e7aeff5ca6afe6502f08b34ce9abca3f941f77cb4c60db4209a5",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/extending.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "5ea84e98b29d12233bf118e43007f7979346921059ae48746f6174fd0821c354",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/fetchers",
+      "title": "Fetchers: results, errors, and conditional fetch",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/fetchers",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/fetchers.md",
+      "sha256": "869332d480b1a41989f36258b82dbed7c1793a9087c791deb40c3d3e5efc53ac",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/fetchers.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "00c8988ebcda63d01d9596883d57abe691b10d7f97c09597bb670cc584956545",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/performance",
+      "title": "Performance and overhead",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/performance",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/performance.md",
+      "sha256": "f8e3bfbb2e866ebd077e9a8084fa273d32b1b734545cc8f42c7eb80e7e0fb77e",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/performance.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "8aba386b4d22f14f60e0241871243ebee23ec08772707e2183220a56c2547e9c",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ be470620, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/persistence",
+      "title": "Persistence: the SourceOfTruth contract",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/persistence",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/persistence.md",
+      "sha256": "635f96c945bfcc1e289d79004d869939cb25ca73d9ab9d641897f68249ad8402",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/persistence.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "82c1d6cdd719ee5d47bb60789e3b43061567c77f0db2aae5a88687860acc768e",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ be470620, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/swift",
+      "title": "Store 6 from Swift",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/swift",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/swift.md",
+      "sha256": "91cb43aa91ddae619707c3e6b52caed56f4440b03f1e6a51d4344a5ace70311e",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/swift.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "fed389eb64f5a36741739cb09e7ffae19a92ca7292bccafcc8f92d2046b552b7",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "guides/testing",
+      "title": "Testing with store6-testing",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/guides/testing",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/guides/testing.md",
+      "sha256": "ad2f73555e60facfefe962720cb1f77ca145d5630181aadb3046d4434b8f7079",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/guides/testing.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "298f18d69f461017944199beae5704cacfd3dced09491bb1b3f1aa95c9994615",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "important-defaults",
+      "title": "Important defaults",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/important-defaults",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/important-defaults.md",
+      "sha256": "5df693ecba8ac61247874ae81f565ab0cb368d0dcd2a3b43617843969cacdc3e",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "docs/store6/important-defaults.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "f798e5cfff6fceb26abb6b6ea47edc072ff214f48fe4485d5b44ef8f22e311f6",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ a6a156e9, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "invalidate-vs-clear",
+      "title": "Invalidate or clear",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/invalidate-vs-clear",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/invalidate-vs-clear.md",
+      "sha256": "e803deac3dc4a48a80cd4d8a43dd579ec797bc538f1cec359bf3314a0d1507c8",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "docs/store6/invalidate-vs-clear.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "12da7ca244fb6e0c0172afd3ad4808594da30382c217e50bb97b85d0505d69f1",
+        "recordedAttribution": "Last verified: 2026-07-26 · main @ c4fbaf4, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "key-design",
+      "title": "Keys and namespaces",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/key-design",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/key-design.md",
+      "sha256": "f7922f999b2ee59ae07fece5e4bc2bcedda0055a6f56b11e16ff7dae192789fa",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "docs/store6/key-design.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "a76685013f143b8d7d9648cdb7b7a7442c92472c0f7dc385aa3ecdf2eb5f99e5",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ a6a156e9, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "migration/component-map",
+      "title": "Store 5 component → Store 6 map",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/migration/component-map",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/migration/component-map.md",
+      "sha256": "69aa3d8f787d85495ee811aee21114e7abaef89e1fd7f00a33bfb44c74884173",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/migration/component-map.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "662f33149db20360b53d59c66af2a740ee00e4c22e71cfb5bc3d35276fbf3ba5",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "migration/from-store4",
+      "title": "Migrating from Store 4",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/migration/from-store4",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/migration/from-store4.md",
+      "sha256": "783d732362af4f143336da6316dbc9b4bc2344b5e76d5c2efcc414db5d0c571f",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/migration/from-store4.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "494ef8cf88b719ab3d3231c8be204ca72c9b0d98949925a5766ef7c7010cbc75",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "migration/from-store5",
+      "title": "Migrating from Store 5",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/migration/from-store5",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/migration/from-store5.md",
+      "sha256": "293f51d0cf8c7778f5b7fd8ab91f78b87924e6bd602920659aa2cdb480e71daa",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/migration/from-store5.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "800222f35205ccbd06b089ddc3a1437166d5b310a3845f8b1bb40fc0f99c19e0",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations",
+      "title": "Mutations: the journalled write path",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations.md",
+      "sha256": "7bacb3b1625db1d45084b1ef80f4ff947a7ab06b325150c23e347e418dfda921",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/index.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "f711c92305c7270ca73e8826d53d0c85ead26d3c0b8133a7153d974b44b7be56",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/aliases",
+      "title": "Aliases and canonical rekeying",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/aliases",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/aliases.md",
+      "sha256": "17d318288dd62149575e603c7a4c74c5822b96ad7505fa7a875dcbfcde2b134a",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/aliases.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "c79ef19a4f63088aae5e877c87dd0cd9d7257b606bd16547551d9986b4bd777a",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/conflicts",
+      "title": "Conflict resolution",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/conflicts",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/conflicts.md",
+      "sha256": "a41bec153c183053b7a631b852d6e048e5db31db3c7209afa6c91df0d0176114",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/conflicts.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "fc242ac4961c9a41fa8f4db2a4ec6ed2d828287aa2caab720faa4af8dc328559",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/drain-and-restart",
+      "title": "Draining, offline, and restart",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/drain-and-restart",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/drain-and-restart.md",
+      "sha256": "06fa584a20178bfe2ee2defefb72b407c3de57c9fd529719ff2c424d44706792",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/drain-and-restart.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "601c374d0905aeaa08b447aed0592878df7afa974938a095756a24ef7fffb008",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/inspection",
+      "title": "Inspection and observability",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/inspection",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/inspection.md",
+      "sha256": "6d601a2d453971ec5a3602d57a6119ff99514fecca244237c13745d3ea50e8af",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/inspection.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "8985261a5b68e2fdfb9e740bc64b34cbe24b5d77d192149a443b572ef72ebb91",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/journal-storage",
+      "title": "Journal storage",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/journal-storage",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/journal-storage.md",
+      "sha256": "8b319838e73ebd4a120db67be95a72ff5463d8c3255ffd63c65c67ab3960779a",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/journal-storage.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "401447c20a1c600a7e033de347adf6b8f396fd5a61723e966311dcb6980817dd",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/mutators",
+      "title": "Authoring mutators",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/mutators",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/mutators.md",
+      "sha256": "83c98f2c0f39786a248d1e6f4bd32de28dd301fabb328faf7df7fb9b74ebbecd",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/mutators.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "7ff67c24eb46f9e529cef2c6b88fee998177ad38a5e2f9db785869e22bc8f260",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/pending-write-ui",
+      "title": "Pending-write UI",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/pending-write-ui",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/pending-write-ui.md",
+      "sha256": "ab3b775d0526452b52e26be85c4a4519dc01b76405adb04972299fb5418b39d5",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/pending-write-ui.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "4239ac60add61088a71368eb62e870dfd610535ec18f52ea375f21710af0ee20",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/quickstart",
+      "title": "Mutations quickstart",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/quickstart",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/quickstart.md",
+      "sha256": "d22c049cc75263edd63119f62dfd814cca0cd3f4a614dcb5956b6015973ff596",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/quickstart.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "8ecc28b11a40276bd3176df7ed193b4cbb84e7d448fe9d0e90261b69aa4dfb8a",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/server",
+      "title": "Implementing a MutationServer",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/server",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/server.md",
+      "sha256": "a448a5e66a0ff323cf4380dc5822a9768c431d03e071d18bf68bdc5387c534fa",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/server.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "3bd8e834336397a7b11e7fb9361d667284f657253066deca6adebbea9468e121",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/testing",
+      "title": "Testing mutations",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/testing",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/testing.md",
+      "sha256": "c6129c921e75e5128af9047fb91ad4fc6ba3521a04d707d8dd9ee35171427c5f",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/testing.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "7f6e32c689146071d03f45786d347b7754b80e671ba3bb65718cb14be9cc5a8e",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "overview",
+      "title": "Introduction",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/overview",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/overview.md",
+      "sha256": "4c5acd517608a664b6efd6d2c65b8472b0b1bb5a64216bbd25f0d0d719b03f6a",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/overview.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "6ae0d71fd4aa7015808e06f6474cdfd022071b452c88dc869e330251e55fafe9",
+        "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "paging",
+      "title": "Paging: androidx PagingSource and RemoteMediator",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/paging",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/paging.md",
+      "sha256": "7abcaad5010a1b9fe9108c6eac20a08cf370ba15145ca8a369fe28182380cd9d",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/paging.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "c0779c5282ca860aae964f0c4c07d4d5c4f0ec72bc4836b8a785eb11e003f7da",
+        "recordedAttribution": "Last verified: 2026-08-16 · main @ 5a8c956b, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "quickstart",
+      "title": "Quickstart",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/quickstart",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/quickstart.md",
+      "sha256": "881c16e231f06a9056aed467db94144cc2317878b686c809dc0c541cc835629f",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "docs/store6/quickstart.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
+        "recordedAttribution": "Last verified: 2026-08-10 · main @ a6a156e9, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "realtime",
+      "title": "store6-realtime",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/realtime",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/realtime.md",
+      "sha256": "1a53d6e57793156c9a0680bc0b0b2452d66fd0b938231ebc635150dd17c6e201",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "store6-realtime/README.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "fc11c5161863577b414ccdfcd13f74853f040cfd277d6c0678a5254be8724b80",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "roadmap",
+      "title": "Store 6 roadmap",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/roadmap",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/roadmap.md",
+      "sha256": "26fe7a490a5257636b930091693508eeaf616408c8f0fb7c316b25dce1efb577",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "ROADMAP.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "c83a05933544f6f2484de1f28babe4073ee469cdb619cdf7240db9dcb7e2f14f",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "room",
+      "title": "Store6 Room",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/room",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/room.md",
+      "sha256": "b4b26e271b6d742adb1c17ab0c7ae52ceb7ae62cedd8e89e8e579ce0d5efa383",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "store6-room/README.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "5183db2e0515d8e4d177834ddb30fd3fadb9e9c108c2c679e885f624fa582d03",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "sqldelight",
+      "title": "Store6 SQLDelight adapter",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/sqldelight",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/sqldelight.md",
+      "sha256": "ddd1aae0e484d24d72d72f6ddd8379ce8ad35a043848eaa35dc60a6664ce09db",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "store6-sqldelight/README.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "40920ee1fbc4f9ae4c3c2ddbcac8587114b97e57506c56fe49934197ff84965d",
+        "recordedAttribution": null
+      }
+    },
+    {
+      "id": "stability",
+      "title": "Store 6 stability policy",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/stability",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/stability.md",
+      "sha256": "9c7d620a7ca1b762a0516f3419b40658f2ca1d5a4a4dc95fde753d18a84bb6c9",
+      "provenance": {
+        "kind": "source-synced",
+        "sourcePath": "STABILITY.md",
+        "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+        "sourceSha256": "311aa87cca0550d8e890262e5010362a49dc6e93843b8e697666dc4c630386cd",
+        "recordedAttribution": null
+      }
+    }
+  ]
+}

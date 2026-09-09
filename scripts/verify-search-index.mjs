@@ -43,6 +43,16 @@ try {
     assert.ok(normalizedResults.some((result) => result.url === destination), `fetcher must include ${destination}`);
   }
   const store6Client = oramaStaticClient({ from: "/api/search", tag: "store6" });
+  const agentSetupDestinations = [
+    ["Agents and LLMs", "/docs/store6/agents/overview"],
+    ["LLM context", "/docs/store6/agents/llm-context"],
+    ["Agent skills", "/docs/store6/agents/agent-skills"],
+  ];
+  for (const [query, destination] of agentSetupDestinations) {
+    const results = normalizeSearchResults(await store6Client.search(query), query);
+    assert.ok(results.some(result => result.url === destination || result.pageUrl === destination),
+      `${query} must include ${destination}`);
+  }
   const freshness = normalizeSearchResults(await store6Client.search("freshness"), "freshness");
   assert.equal(freshness[0]?.url, "/docs/store6/concepts/freshness", "canonical Freshness policies must rank first");
   assert.ok(freshness.every((result) => result.version === "store6"), "Store 6 scope must exclude Store 5");
@@ -115,6 +125,7 @@ try {
     store6: hasStore6,
     markdownPlainText: true,
     freshnessFirst: freshness[0].url,
+    agentSetupDestinations: agentSetupDestinations.map(([, destination]) => destination),
     versionScopes: true,
     closedTriggerHasControls: false,
   };

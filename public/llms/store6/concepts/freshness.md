@@ -1,0 +1,213 @@
+# Freshness policies
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/concepts/freshness
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/concepts/freshness.md
+
+Source kind: site-authored; source path: content/docs/store6/concepts/freshness.mdx
+
+The five per-call Freshness policies, exactly what triggers a fetch, stale-while-revalidate, typed StoreMeta, and the expert read-planning seam.
+
+Freshness is a **per-call parameter**, not store-level configuration. Every `stream` and every
+`get` takes a `Freshness` policy describing how fresh a value must be before it is served, and
+each read is planned from resident availability, invalidation state, typed metadata, and that
+policy. Both `stream` and `get` default to `Freshness.CachedOrFetch`.
+
+Because the policy travels with the call, two screens can read the same key with different
+demands (a list view happy with anything resident, a checkout flow that insists on a fresh
+fetch) without configuring two stores. Concurrent requests for one key still share a single
+in-flight fetch even when their policies differ.
+
+## The five policies
+
+`Freshness` is a sealed interface with exactly five variants. No sixth fetching mode exists in the
+API.
+
+### `CachedOrFetch`: the default
+
+Serve a locally available value immediately. Invalidated values and source-of-truth rows without
+freshness metadata are served as stale while one background revalidation runs. Fetch when no
+local value exists. This is stale-while-revalidate, and it is the default shape of every read.
+More on that below.
+
+### `MaxAge(notOlderThan)`
+
+Serve a locally available value only when it has known freshness metadata, has not been
+invalidated, and its age does not exceed `notOlderThan`. Otherwise withhold it and fetch a fresh
+value.
+
+A row hydrated by an external writer with no recorded freshness
+metadata is **withheld** under `MaxAge`. The read fetches rather than serving it. If you want a
+metadata-less row served while it refreshes, that is `CachedOrFetch`'s job.
+
+### `MustBeFresh`
+
+Never serve a cached value. Block until a fresh fetch succeeds and fail when it does not. A
+source-of-truth row without freshness metadata is also withheld.
+
+`MustBeFresh` is the one policy whose initial-cycle failure terminates a stream: an initial-cycle
+fetch or revalidation failure emits one error and completes the flow, where every other failure
+leaves the flow live. The full rules for which failures end a stream are on the
+[read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md) page.
+
+### `StaleIfError`
+
+Prefer fresh data after invalidation or when a local value has no freshness metadata, but fall
+back to that stale value when the fetch fails. A local value with current known metadata is
+served without fetching.
+
+On `get`, the difference from the default is blocking behavior: `StaleIfError` blocks after
+invalidation and returns the resident value only when the refresh fails, whereas `CachedOrFetch`
+returns the resident value immediately and refreshes it in the background.
+
+### `LocalOnly`
+
+Never invoke the fetcher. Serve only locally available data and report `StoreError.Missing` when
+none exists. On a memory miss, the configured source of truth is probed once, so a pre-existing
+persisted row counts as locally available data. When nothing is resident anywhere, the read
+fails `Missing` without a `Loading` frame and without calling the fetcher.
+
+Pitfall: the builder still requires a fetcher even if every read you ever issue is `LocalOnly`.
+`store<K, V> { }` without one fails at build time with a message that says so. `LocalOnly`
+changes what a read does, not what a store needs.
+
+The policy goes at the call site:
+
+**Per-call freshness**
+
+```kotlin
+val profile = users.get(UserKey("1"), Freshness.MaxAge(5.minutes))
+
+users.stream(UserKey("1"), Freshness.LocalOnly).collect { result ->
+  render(result)
+}
+```
+
+## What triggers a fetch, and what does not
+
+| Read                                                                           | Fetches?                                                |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------- |
+| Absent key, under any policy except `LocalOnly`                                | Yes                                                     |
+| `MustBeFresh`, even against a fresh resident value                             | Always                                                  |
+| `MaxAge` with the resident value over its bound, invalidated, or metadata-less | Yes                                                     |
+| `StaleIfError` after invalidation, or with a metadata-less local value         | Yes. The stale value is served only if the fetch fails. |
+| Stale resident value under `CachedOrFetch`                                     | Yes, in the background, after serving the stale value   |
+| Fresh resident value under `CachedOrFetch`                                     | No                                                      |
+| `MaxAge` with the resident value within its bound                              | No                                                      |
+| `StaleIfError` with a local value whose metadata is current                    | No                                                      |
+| `LocalOnly`                                                                    | Never                                                   |
+
+The default behaviors in this table are each pinned by a named conformance test on
+[Important defaults](https://store.mobilenativefoundation.org/llms/store6/important-defaults.md). That page is the specification of record
+for defaults, and the remaining rows restate the documented `Freshness` contract. If this table
+and those tests ever disagree, the tests are right.
+
+## Stale-while-revalidate is the default shape
+
+Under `CachedOrFetch`, a stale resident value is served immediately and one refresh runs. That
+refresh produces **exactly one** terminal outcome (one fresh `Data`, or one served-stale
+`Error`, or one `Revalidated`), never two.
+
+This shape degrades gracefully offline: a user with a stale cache and no network sees data, then
+one error frame, rather than a spinner. It is also why `invalidate` is the safe primitive for
+pull-to-refresh. The resident value keeps rendering while the refetch runs. The full comparison
+is on [Invalidate or clear](https://store.mobilenativefoundation.org/llms/store6/invalidate-vs-clear.md).
+
+The refresh does *not* retry. Zero retries, zero backoff: one demand cycle invokes
+the fetcher exactly once, a failure schedules nothing in the background, and a later call is new
+demand rather than a continuation of the failed one. If you want retries, they belong in your
+fetcher, where you control the policy. How failures surface is covered on the
+[errors](https://store.mobilenativefoundation.org/llms/store6/concepts/errors.md) page. Writing fetchers gets its own guide.
+
+## One fetch, many policies
+
+N concurrent readers of one key share one fetch. Fifty getters and fifty collectors demanding
+the same key produce exactly one fetch, and all one hundred observe its outcome. A stream that
+arrives while a fetch is in flight piggybacks on it rather than starting a second one, and this
+holds even when the callers passed different `Freshness` policies. Cancelling one waiter does
+not cancel the shared fetch. The work commits, and the next caller reuses it.
+
+## Typed metadata: StoreMeta
+
+The freshness and identity metadata behind all of this is typed. An untyped metadata channel
+does not exist anywhere in Store.
+
+```kotlin
+public interface StoreMeta {
+    /** The wall-clock time at which the value was written, in Unix epoch milliseconds. */
+    public val writtenAtEpochMillis: Long
+
+    /** The optional entity tag associated with the value. */
+    public val etag: String?
+}
+```
+
+`StoreResult.Data.age` and the age-bounded policies derive from this metadata. Milliseconds
+since the Unix epoch are used because no stable cross-platform instant type exists on the
+current language floor.
+
+The rule that ties the policies together is **conservative staleness**: a resident value with
+null metadata is treated as conservatively stale by read planning. That single rule is why
+`CachedOrFetch` serves a metadata-less row and revalidates it in the background, while `MaxAge`
+and `MustBeFresh` (whose contracts require *known* freshness) withhold it and fetch.
+
+## Advanced: the read-planning seam
+
+> **Warning**
+>
+> **Experimental.** Everything in this section is `@ExperimentalStoreApi` and lives in the
+> `seam` package, which is a freeze candidate, not frozen. Implementing a seam interface is an
+> explicit opt-in, and shapes can change in any release. See
+> [the stability policy](https://store.mobilenativefoundation.org/llms/store6/stability.md) for what candidate-versus-frozen means.
+
+You will probably never touch this seam. The five policies absorb the cases that needed custom
+validation logic in earlier Store versions. It exists for the rare read-planning decision the
+policies cannot express.
+
+A `FreshnessValidator` selects a fetch plan as a pure function of one coherent
+`FreshnessContext`: resident availability, the resident value's recorded `StoreMeta` (or null),
+epoch staleness, the read's `Freshness` policy, the wall-clock reading captured for the plan,
+and the durable bookkeeping posture:
+
+```kotlin
+@ExperimentalStoreApi
+@SubclassOptInRequired(DelicateStoreApi::class)
+public interface FreshnessValidator {
+    /** Plans whether and how the current read should fetch as a pure function of [context]. */
+    public fun plan(context: FreshnessContext): FetchPlan
+}
+```
+
+`FetchPlan` has three outcomes:
+
+* **`Skip`**: no fetch. Skip with no resident value yields `StoreError.Missing` (`get` throws,
+  `stream` emits `Error`).
+* **`Fetch(servesResidentWhileFetching)`**: an unconditional fetch, optionally serving the
+  resident value while it runs.
+* **`Conditional(etag, servesResidentWhileFetching)`**: a conditional fetch for the recorded
+  ETag.
+
+A `Conditional` plan is how ETags reach a seam fetcher: the fetcher receives the ETag the plan
+selected, and a `FetcherResult.NotModified` response comes back to collectors as exactly one
+`Revalidated` frame, with the resident value's age, never a redundant `Data` frame, and clears
+staleness. Deep coverage of conditional fetching and custom validators belongs to the fetchers
+[guide](https://store.mobilenativefoundation.org/llms/store6/guides/fetchers.md) and the [extending-Store guide](https://store.mobilenativefoundation.org/llms/store6/guides/extending.md).
+
+## Coming from Store 5
+
+Store 5 asked you to supply a [Validator](https://store.mobilenativefoundation.org/docs/concepts/store5/validator), a hook the store
+called to decide whether cached data was still good, defaulting to "always valid" when absent.
+Store 6 absorbs that job natively: per-call policies say how fresh each read must be, durable
+invalidation marks data stale from the write side, and the `FreshnessValidator` seam remains for
+the rare custom case.
+
+| Store 5                                                          | Store 6                                                                                                                        |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `Validator<Output>` supplied at build time, one answer per store | Per-call `Freshness` policies + durable `invalidate`, with the experimental `FreshnessValidator` seam for custom read planning |
+
+Use [Migrating from Store 5](https://store.mobilenativefoundation.org/llms/store6/migration/from-store5.md) for the full path and the
+[component map](https://store.mobilenativefoundation.org/llms/store6/migration/component-map.md) for component-by-component translation.
+
+***
+
+Source recorded 2026-08-12 · [`main@c67a94ed`](https://github.com/matt-ramotar/Store6/commit/c67a94ed30460a35161c2cbc3e725f127caf055e) · pre-6.0.0-alpha01

@@ -134,7 +134,9 @@ can change in any release. The snippet below matches the implementation.
 
 </Callout>
 
-Optimistic writes go through a journal, so they survive being offline and survive process death.
+Optimistic writes use a journal. The default journal is in memory and keeps queued writes only for
+that instance's lifetime. To preserve queued writes across process death, configure persistent
+journal storage and reopen the same durable store.
 You get a mutation store instead of a plain one, and it is a `Store`. Everything above still works.
 
 ```kotlin

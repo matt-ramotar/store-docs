@@ -1,0 +1,161 @@
+# Store 6 from Swift
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/guides/swift
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/guides/swift.md
+
+Source kind: site-authored; source path: content/docs/store6/guides/swift.mdx
+
+Committed Objective-C export and SKIE dumps define Store 6’s current Apple-facing names, sealed
+bridges, coroutine wrappers, and flattened value types described here.
+
+> **Note**
+>
+> `store6-core` is stable-track, but its API is not frozen until the beta01 freeze candidate. The
+> seam package is also a freeze candidate, not frozen. Every public `store6-mutations` symbol remains
+> `@ExperimentalStoreApi`, including symbols visible through generated Swift. See
+> [Stability and compatibility](https://store.mobilenativefoundation.org/llms/store6/stability.md) for the tier boundaries.
+
+## Sealed hierarchies arrive as exhaustive Swift case sets
+
+SKIE generates a `@frozen __Sealed` enum and an `onEnum(of:)` function for each Kotlin sealed
+hierarchy. The committed core dump contains these exact case sets:
+
+| Kotlin hierarchy | Generated Swift cases                                                                 |
+| ---------------- | ------------------------------------------------------------------------------------- |
+| `StoreError`     | `conflict`, `conversion`, `fetch`, `freshnessUnsatisfiable`, `missing`, `persistence` |
+| `StoreResult`    | `data`, `error`, `loading`, `revalidated`                                             |
+| `Freshness`      | `cachedOrFetch`, `localOnly`, `maxAge`, `mustBeFresh`, `staleIfError`                 |
+| `FetcherResult`  | `deleted`, `error`, `notModified`, `success`                                          |
+
+Switch on the bridged value rather than downcasting the Kotlin protocol yourself. A
+`StoreResult` switch has four cases and no default branch:
+
+```swift
+switch onEnum(of: result) {
+case .data(let data):
+    print("data: \(String(describing: data.value))")
+case .error(let failure):
+    print("error: \(failure.error)")
+case .loading:
+    print("loading")
+case .revalidated:
+    print("revalidated")
+}
+```
+
+`StoreError` has an additional source-level guarantee: its six-variant set is frozen for the 6.x
+major. New failure kinds must fit an existing category through structured detail payloads. The
+[error contract](https://store.mobilenativefoundation.org/llms/store6/concepts/errors.md) explains those categories, and the
+[read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md) explains the four result states.
+
+The generated `@frozen` marker makes these switches exhaustive for the generated framework. It does
+not promote an API to a more stable tier. Before core reaches its freeze candidate, a changed core
+case set would appear as dump drift. A generated enum from `store6-mutations` remains Experimental
+even when SKIE marks that generated enum `@frozen`.
+
+## The operational surface is suspend and Flow
+
+Kotlin `Store` has suspend operations for `get`, invalidate, and clear, plus namespace and global
+variants. The plain Objective-C export presents each suspend operation as a completion-handler
+method, including:
+
+* `get(key:freshness:completionHandler:)`
+* `invalidate(key:completionHandler:)`, `invalidateNamespace(namespace:completionHandler:)`, and
+  `invalidateAll(completionHandler:)`
+* `clear(key:completionHandler:)`, `clearNamespace(namespace:completionHandler:)`, and
+  `clearAll(completionHandler:)`
+
+`close()` remains synchronous. `stream(key:freshness:)` returns a Kotlin `Flow` in the Objective-C
+header rather than a completion-handler operation.
+
+The direct Objective-C header defines this exception boundary: the exported suspend
+methods convert `CancellationException` to an `NSError`; other uncaught Kotlin exceptions are
+fatal. Do not assume that the presence of an `NSError` completion argument makes every
+`StoreException` recoverable in that lane. A plain Objective-C integration that needs a different
+failure contract should expose it through an application-owned Kotlin interop facade.
+
+SKIE adds Swift-concurrency wrappers. The committed dump exposes Store's suspend operations as
+`async throws`, including `get`, every invalidate variant, and every clear variant. Its generated
+`SkieSwiftFlowProtocol<Element>` conforms to `AsyncSequence`, and `SkieSwiftFlow` creates a
+`SkieSwiftFlowIterator`, so a bridged `stream` can be consumed with Swift async iteration. Scope
+that iteration to the owning Swift task so task cancellation also cancels collection.
+
+## Duration flattens in Objective-C
+
+Objective-C export erases both Kotlin `Duration` and Kotlin `Long` to `int64_t`. Those values do
+not all use the same unit:
+
+| Kotlin property                           | Exported type | Actual meaning                                |
+| ----------------------------------------- | ------------- | --------------------------------------------- |
+| `Freshness.MaxAge.notOlderThan: Duration` | `int64_t`     | Kotlin `Duration`'s tagged raw representation |
+| `StoreResult.Data.age: Duration`          | `int64_t`     | Kotlin `Duration`'s tagged raw representation |
+| `StoreResult.Revalidated.age: Duration`   | `int64_t`     | Kotlin `Duration`'s tagged raw representation |
+| `StoreMeta.writtenAtEpochMillis: Long`    | `int64_t`     | Milliseconds since the Unix epoch             |
+
+With the pinned Kotlin 2.3.20 toolchain, a raw `Duration` contains a unit discriminator and a
+payload stored in either nanoseconds or milliseconds. It is not a fixed-unit scalar. Passing
+`5_000` to `FreshnessMaxAge(notOlderThan:)` does not mean five seconds, and reading an exported
+`age` as milliseconds is not valid. `writtenAtEpochMillis` is different: its Kotlin API explicitly
+defines Unix epoch milliseconds.
+
+> **Tip**
+>
+> Do not hand-encode Kotlin `Duration` in Swift or Objective-C. Put an interop facade in shared Kotlin
+> that accepts and returns a plainly named unit such as `maxAgeMillis` or `ageMillis`, then constructs
+> or converts `Duration` on the Kotlin side. This keeps Kotlin's tagged inline representation out of
+> application code.
+
+The [freshness guide](https://store.mobilenativefoundation.org/llms/store6/concepts/freshness.md) covers what the age bound means once it has
+been constructed correctly.
+
+## Targets differ per module
+
+Kotlin Multiplatform target support is declared per artifact. Depending on core from an Apple
+target does not imply that every adapter or tool publishes that target.
+
+| Module                      | Published target shape                                                                | Apple consequence                                                                                                                          |
+| --------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `store6-core`               | Full 12-target convention                                                             | Includes `iosX64`, `iosArm64`, `iosSimulatorArm64`, `macosArm64`, `watchosArm64`, and `tvosArm64`                                          |
+| `store6-room`               | 8 targets; omits JS, WasmJS, `mingwX64`, and `iosX64`                                 | `androidx.room3` publishes no `iosX64` variant; `iosArm64` and `iosSimulatorArm64` are present                                             |
+| `store6-devtools`           | Full 12-target convention                                                             | Same Apple target set as core                                                                                                              |
+| `store6-devtools-inspector` | Android, JVM, `iosX64`, `iosArm64`, `iosSimulatorArm64`, `macosArm64`, JS, and WasmJS | No watchOS or tvOS artifact                                                                                                                |
+| `store6-sqldelight`         | Full 12-target convention                                                             | Apple and other native targets have driver-backed support; JS and WasmJS are compile-only because the adapter requires synchronous drivers |
+
+Check the specific module before adding it to a shared source set. In particular, an x64 iOS
+simulator cannot resolve `store6-room`; use an available simulator target or a different persistence
+implementation for that build.
+
+## How the Swift surface is verified
+
+The repository commits generated dumps for both current bridge lanes:
+
+* `store6-core/api/swift/objc/Store6Core.h`
+* `store6-core/api/swift/skie/Store6CoreSkie.h` and `Store6CoreSkie.swift`
+* matching Objective-C and SKIE dumps under `store6-mutations/api/swift`
+
+The pull-request verification entry point is:
+
+```shell
+./gradlew checkSwiftDumps
+```
+
+Today that aggregate checks four lanes: core Objective-C, core SKIE, mutations Objective-C, and
+mutations SKIE. Each lane links an `iosArm64` debug framework, generates a sanitized dump, and
+compares the complete generated file set with the committed directory. Missing, stale, or
+byte-changed files fail the check. The SKIE lane also verifies the pinned generated-source layout
+before combining its Swift files deterministically.
+
+This is a surface-drift check, not a runtime conformance test and not proof that every Store module
+publishes every Apple target. It also does not change stability tiers: the mutations dump makes its
+current Experimental surface reviewable; it does not freeze it. Mutation-specific Swift guidance
+starts with the [mutations overview](https://store.mobilenativefoundation.org/llms/store6/mutations.md).
+
+Objective-C export and SKIE are the supported bridges today. The stability commitment is to keep
+generated-Swift verification for the supported bridge set, not to preserve those two lane names
+forever. ABI dumps are also committed at every released tag, so a released surface can be diffed
+directly from the repository without resolving an artifact.
+
+***
+
+Source recorded 2026-08-12 · [`main@539614c0`](https://github.com/matt-ramotar/Store6/commit/539614c06be1a8f20dead562585e47394551ebae) · pre-6.0.0-alpha01

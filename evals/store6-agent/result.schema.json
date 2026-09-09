@@ -1,0 +1,98 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "caseId",
+    "arm",
+    "replicate",
+    "model",
+    "sourceRevision",
+    "bundleId",
+    "artifactPaths",
+    "citations",
+    "commands",
+    "verificationStatus",
+    "limitations"
+  ],
+  "properties": {
+    "caseId": {
+      "type": "string"
+    },
+    "arm": {
+      "type": "string",
+      "enum": [
+        "html",
+        "markdown",
+        "skill"
+      ]
+    },
+    "replicate": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "model": {
+      "type": "string"
+    },
+    "sourceRevision": {
+      "type": "string"
+    },
+    "bundleId": {
+      "type": "string"
+    },
+    "artifactPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "citations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text",
+          "started",
+          "exitCode"
+        ],
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "started": {
+            "type": "boolean"
+          },
+          "exitCode": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "verificationStatus": {
+      "type": "string",
+      "enum": [
+        "source-reviewed",
+        "compiled",
+        "behavior-tested",
+        "failed",
+        "unverified"
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

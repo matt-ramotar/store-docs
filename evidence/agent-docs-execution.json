@@ -1,0 +1,584 @@
+{
+  "schemaVersion": 1,
+  "status": "local-candidate-complete-release-held",
+  "startedAt": "2026-09-08T07:40:26Z",
+  "deadline": "2026-09-08T11:40:26Z",
+  "docsBaseRevision": "25b253bb52458756ecb374956d97c7d6929dec40",
+  "sourceBaseRevision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+  "branch": "matt-ramotar/store6-agent-llm-support",
+  "baseline": {
+    "sync": {
+      "exitCode": 0,
+      "trace": "evidence/agent-docs-runs/p1-sync.log"
+    },
+    "build": {
+      "exitCode": 0,
+      "trace": "evidence/agent-docs-runs/p1-build.log"
+    },
+    "tests": {
+      "exitCode": 0,
+      "passed": 355,
+      "skipped": 1,
+      "failed": 0,
+      "trace": "evidence/agent-docs-runs/p1-tests.log"
+    }
+  },
+  "adjustments": [
+    "Persistence evaluation files use the actual JVM-capable test source sets containing real-driver harnesses; case prompts, filenames, and narrow Gradle commands remain unchanged.",
+    "Current search verifier has no fixed index count or overview byte pin to update; verify the new page destinations in the actual rebuilt index instead.",
+    "Current official Codex CLI 0.153.4 replaces incompatible installed 0.149.0 for evaluation. Its documented --approve-for-me selects workspace-write with automatic approval review, matching the parent task and allowing approved localhost reads; no user configuration or model override.",
+    "Codex evaluation disables memory delivery only via supported per-invocation --disable memories after clean-context preflight; all arms retain the same repository rules and inherited model/settings. No saved profile edits."
+  ],
+  "tasks": {
+    "P1": "verified",
+    "P2": "local-source-candidate-verified-publication-pending",
+    "F1": "verified",
+    "S1": "verified",
+    "S6": "54-cells-complete-and-independently-reviewed",
+    "F2": "verified",
+    "S2": "verified",
+    "F6": "verified",
+    "F8": "verified-with-browser-markdown-navigation-limitation",
+    "F3": "verified",
+    "F4": "verified",
+    "F5": "verified",
+    "F7": "verified-with-browser-markdown-navigation-limitation",
+    "S3": "verified",
+    "S4": "paired-candidate-verified",
+    "S5": "available-local-checks-complete-client-invocations-partially-unverified",
+    "S7": "review-complete-release-held"
+  },
+  "reviews": [
+    {
+      "task": "F1",
+      "spec": "passed",
+      "quality": "passed",
+      "checkpoint": "f9ee4c1",
+      "tests": {
+        "passed": 5,
+        "failed": 0,
+        "trace": "evidence/agent-docs-runs/f1-tests.log"
+      },
+      "firstRed": "evidence/agent-docs-runs/f1-first-red.log"
+    },
+    {
+      "task": "F2",
+      "spec": "passed",
+      "quality": "passed",
+      "checkpoint": "f9c8a72",
+      "tests": {
+        "passed": 14,
+        "failed": 0,
+        "trace": "evidence/agent-docs-runs/f2-tests.log"
+      },
+      "firstRed": "evidence/agent-docs-runs/f2-first-red.log"
+    },
+    {
+      "task": "S1",
+      "spec": "passed",
+      "quality": "passed",
+      "checkpoint": "be5516b",
+      "tests": {
+        "passed": 23,
+        "failed": 0
+      },
+      "firstRed": "evidence/agent-docs-runs/s1-first-red.log"
+    },
+    {
+      "task": "S2",
+      "spec": "passed",
+      "quality": "passed",
+      "tests": {
+        "passed": 3,
+        "failed": 0
+      }
+    },
+    {
+      "task": "P2-source",
+      "spec": "passed",
+      "quality": "passed",
+      "checkpoint": "ad435df1095673709a22f1b52a82aa03748cd9b3"
+    },
+    {
+      "task": "F3",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "F4",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "F5",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "F6",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "F7",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "F8",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "S3",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "bounded independent implementation review"
+    },
+    {
+      "task": "S4",
+      "spec": "passed",
+      "quality": "passed",
+      "scope": "root reviewed independent worker implementation and six focused tests"
+    }
+  ],
+  "limitations": [
+    "Source revision ad435df1095673709a22f1b52a82aa03748cd9b3 is a local candidate; publication remains pending.",
+    "In-app Browser blocks direct text/markdown navigation with net::ERR_BLOCKED_BY_CLIENT. Exact href, HTTP response, MIME/hash and clipboard delivery passed; native browser opening remains unverified.",
+    "Automatic approval review rejected Claude Code and Cursor API invocations because local project and skill context transmission to these providers was not specifically authorized; native invocation remains unverified.",
+    "All 54 evaluation sessions reached the fixed 180-second allowance without a complete submission. Seven useful partial solutions and actual test outcomes are retained; this experiment does not establish general agent reliability or a skill improvement over baselines."
+  ],
+  "sourceCandidateRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+  "frozenEvaluation": {
+    "cases": "8878ac2afd0df4f9bd6cb72f6b536e6668e43ae535b522d8d4a4a71211efbceb",
+    "rubric": "e6d4edb5870c666e3a6dfe04d5575b01b1c9679ef1b418878506a003b9340410",
+    "schema": "f115911d10193805e637bb61fb62cda4a9c24df5c6f61941650dc7127eb7428a"
+  },
+  "foundation": {
+    "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+    "outputs": 45,
+    "pages": 43,
+    "build": {
+      "exitCode": 0,
+      "trace": "evidence/agent-docs-runs/f7-copy-fixed-build.log"
+    },
+    "http": {
+      "markdownPages": 43,
+      "bundleFiles": 3,
+      "internalLinks": 105,
+      "trace": "evidence/agent-docs-runs/f8-http.log"
+    },
+    "humanFidelity": {
+      "compared": 40,
+      "unchanged": 38,
+      "intentionalChanges": [
+        "overview discovery paragraph",
+        "quickstart journal durability qualification"
+      ],
+      "trace": "evidence/agent-docs-runs/f8-human-fidelity.json"
+    },
+    "browser": {
+      "copyKeyboard": "passed",
+      "clipboardExactMatch": true,
+      "clipboardSha256": "2e3288df30ae74427a9ebaff6c7be4e62b43e5ace0fe1be10c21a5f5a813c818",
+      "successStatus": "Page copied.",
+      "failureStatus": "Could not copy the page. Use View Markdown to open it.",
+      "mobile": {
+        "width": 390,
+        "documentWidth": 390,
+        "controlHeights": [
+          44,
+          44
+        ]
+      },
+      "metadataAlternate": "https://store.mobilenativefoundation.org/llms/store6/agents/overview.md",
+      "store5Actions": 0,
+      "nativeMarkdownNavigation": "blocked-by-client-unverified",
+      "fixedDefect": "Avoid rebinding native browser fetch to dependency object; red regression, green focused test and exact browser clipboard check retained."
+    },
+    "tests": {
+      "passed": 450,
+      "skipped": 1,
+      "failed": 0,
+      "trace": "evidence/agent-docs-runs/f8-final-tests.log"
+    },
+    "claims": {
+      "passed": 479,
+      "anchors": 532,
+      "trace": "evidence/agent-docs-runs/f8-final-claims.log"
+    },
+    "snippets": {
+      "snippets": 33,
+      "pageReferences": 38,
+      "status": "passed"
+    },
+    "staticPayloadComparison": {
+      "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+      "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+      "pageCount": 43,
+      "htmlBytes": 5742473,
+      "markdownBytes": 420156,
+      "method": "Exact bytes of final built HTML and verified generated Markdown for the same 43 routes; no HTTP compression, browser parsing, or model token inference.",
+      "markdownFractionOfHtmlBytes": 0.07316638667695956,
+      "trace": "evidence/agent-docs-runs/static-payload-comparison.json"
+    }
+  },
+  "evaluationRun": {
+    "path": "evidence/agent-docs-runs/matrix-20260908-local-v1",
+    "docsRevision": "ef2e439",
+    "startedAt": "2026-09-08T08:56:55Z",
+    "plannedCells": 54,
+    "maximumConcurrency": 2,
+    "allowanceSeconds": 180,
+    "finishedAt": "2026-09-08T10:18:01.353Z",
+    "startedCells": 54,
+    "notStartedCells": 0,
+    "finalCorpusStatus": "unchanged",
+    "invalidatedCells": [],
+    "summaryPath": "evidence/store6-agent-evaluation.json",
+    "counts": {
+      "planned": 54,
+      "finished": 54,
+      "reviewed": 54,
+      "completeSubmissions": 0,
+      "sourceReviewedSuccesses": 0,
+      "partial": 7,
+      "failed": 47,
+      "invalid": 0,
+      "criticalCells": 1,
+      "kotlinArtifacts": 9,
+      "compilePassed": 8,
+      "compileFailed": 1,
+      "behaviorPassed": 7,
+      "behaviorFailed": 1,
+      "timedOut": 54,
+      "elapsedSeconds": {
+        "minimum": 180.0134889580002,
+        "mean": 180.0272233409259,
+        "maximum": 180.03288841700007
+      },
+      "tokenUsage": "unavailable for interrupted sessions unless individual row records a completed-turn usage report"
+    },
+    "executedTests": {
+      "tests": 27,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "finalOwnerAudit": {
+      "status": "passed",
+      "checkedAt": "2026-09-08T10:21:50.763443+00:00",
+      "issues": [],
+      "cells": 54,
+      "independentReviews": 54,
+      "retainedArtifacts": 10,
+      "installedPackages": 18,
+      "gradleChecks": 9,
+      "path": "evidence/agent-docs-runs/matrix-20260908-local-v1/final-owner-audit.json",
+      "sha256": "55abbbf66882124357b850dccb113defb9fd4dd1cc143fe035dcac3e3eefbd82"
+    },
+    "reviewers": [
+      {
+        "agent": "s6_review_core",
+        "model": "gpt-5.6-sol",
+        "reasoningEffort": "high",
+        "cells": 18,
+        "scope": "first-store and freshness"
+      },
+      {
+        "agent": "s6_review_persistence",
+        "model": "gpt-5.6-sol",
+        "reasoningEffort": "high",
+        "cells": 18,
+        "scope": "persistence and durable-mutation"
+      },
+      {
+        "agent": "s6_review_integration",
+        "model": "gpt-5.6-sol",
+        "reasoningEffort": "high",
+        "cells": 18,
+        "scope": "ui-lifecycle and store5-migration"
+      }
+    ],
+    "harnessTests": {
+      "command": "node --test evals/store6-agent/run.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "trace": "evidence/agent-docs-runs/final-eval-harness-tests.log",
+      "sha256": "e618c8ddd8989856039e7c40bd545fabd1c8119f68b232e110f473ff184d91f7",
+      "scope": "Repeated once after the matrix to retain a standalone final harness log; no model or Gradle session was rerun."
+    }
+  },
+  "sourcePublicationRequirement": "Make the exact reviewed source commit ad435df1095673709a22f1b52a82aa03748cd9b3 reachable to intended readers before promoting this pin. A replacement source identity requires a new re-pin, corpus/skill pairing and affected evaluation.",
+  "implementationCheckpoint": {
+    "revision": "c4465855a1b6124ebf5feaf125a681391adbd6c5",
+    "commits": [
+      {
+        "revision": "f9ee4c1f21d1de830e0743c9c1f91c885ee1e98f",
+        "subject": "feat(agents): define faithful MDX export parsing"
+      },
+      {
+        "revision": "f9c8a721b475dcd23b2a1d5f2793410a66be8594",
+        "subject": "feat(agents): preserve documentation routes and provenance"
+      },
+      {
+        "revision": "be5516b7a653320144f8636eda40d26615e02b6c",
+        "subject": "feat(agents): retrieve version-matched Store6 documentation"
+      },
+      {
+        "revision": "4cf47623fbe41525a3944bf309b2d20f39ff05bd",
+        "subject": "feat(agents): add portable Store6 documentation CLI"
+      },
+      {
+        "revision": "28806cc4618463dc42c19ed49bc19da92b73dd17",
+        "subject": "feat(agents): preserve component semantics in Markdown exports"
+      },
+      {
+        "revision": "117f529edf3db8615ef59c3b56790f2b47904585",
+        "subject": "feat(docs): publish faithful Store6 agent context and page actions"
+      },
+      {
+        "revision": "705853c3e743d9e47c66516656cd79f9f5fc8602",
+        "subject": "feat(agents): pair the Apache-2.0 Store6 skill candidate"
+      },
+      {
+        "revision": "ef2e439c3a9fea2523b63e8caaa451848a0dca81",
+        "subject": "test(agents): freeze evaluation cases and bounded runner"
+      },
+      {
+        "revision": "c4465855a1b6124ebf5feaf125a681391adbd6c5",
+        "subject": "test(agents): record local installation and transport evidence"
+      }
+    ],
+    "diffCommand": "git diff 25b253bb52458756ecb374956d97c7d6929dec40 c4465855a1b6124ebf5feaf125a681391adbd6c5",
+    "changedFiles": [
+      ".github/workflows/drift.yml",
+      ".github/workflows/verify.yml",
+      ".gitignore",
+      "app/(docs)/docs/[[...slug]]/page.tsx",
+      "components/docs/AgentPageActions.tsx",
+      "components/docs/LastVerified.tsx",
+      "components/overview/InlineContent.tsx",
+      "components/overview/ReadResolutionTable.tsx",
+      "components/overview/StartHereList.tsx",
+      "components/overview/SupportMatrix.tsx",
+      "components/overview/content/inline.ts",
+      "components/overview/content/read-resolution.ts",
+      "components/overview/content/start-here.ts",
+      "components/overview/content/support-matrix.ts",
+      "content/docs/store6/agents/agent-skills.mdx",
+      "content/docs/store6/agents/llm-context.mdx",
+      "content/docs/store6/agents/meta.json",
+      "content/docs/store6/agents/overview.mdx",
+      "content/docs/store6/meta.json",
+      "content/docs/store6/overview.mdx",
+      "content/docs/store6/quickstart.mdx",
+      "evals/store6-agent/README.md",
+      "evals/store6-agent/cases.json",
+      "evals/store6-agent/client-smoke.md",
+      "evals/store6-agent/result.schema.json",
+      "evals/store6-agent/route-local-docs.mjs",
+      "evals/store6-agent/rubric.md",
+      "evals/store6-agent/run.mjs",
+      "evals/store6-agent/run.test.mjs",
+      "evidence/T4-owned-targets.json",
+      "evidence/T4-store6-source-lock.json",
+      "evidence/T8-extras.txt",
+      "evidence/store6-claims.json",
+      "evidence/store6-skill-release.json",
+      "lib/copy-agent-page.ts",
+      "lib/source-recorded.ts",
+      "next.config.mjs",
+      "package.json",
+      "pnpm-lock.yaml",
+      "public/llms-full.txt",
+      "public/llms.txt",
+      "public/llms/store6-manifest.json",
+      "public/llms/store6/agents/agent-skills.md",
+      "public/llms/store6/agents/llm-context.md",
+      "public/llms/store6/agents/overview.md",
+      "public/llms/store6/compose.md",
+      "public/llms/store6/concepts/api-tiers.md",
+      "public/llms/store6/concepts/errors.md",
+      "public/llms/store6/concepts/freshness.md",
+      "public/llms/store6/concepts/memory-and-lifecycle.md",
+      "public/llms/store6/concepts/read-contract.md",
+      "public/llms/store6/contributing.md",
+      "public/llms/store6/graphql.md",
+      "public/llms/store6/guides/devtools.md",
+      "public/llms/store6/guides/extending.md",
+      "public/llms/store6/guides/fetchers.md",
+      "public/llms/store6/guides/performance.md",
+      "public/llms/store6/guides/persistence.md",
+      "public/llms/store6/guides/swift.md",
+      "public/llms/store6/guides/testing.md",
+      "public/llms/store6/important-defaults.md",
+      "public/llms/store6/invalidate-vs-clear.md",
+      "public/llms/store6/key-design.md",
+      "public/llms/store6/migration/component-map.md",
+      "public/llms/store6/migration/from-store4.md",
+      "public/llms/store6/migration/from-store5.md",
+      "public/llms/store6/mutations.md",
+      "public/llms/store6/mutations/aliases.md",
+      "public/llms/store6/mutations/conflicts.md",
+      "public/llms/store6/mutations/drain-and-restart.md",
+      "public/llms/store6/mutations/inspection.md",
+      "public/llms/store6/mutations/journal-storage.md",
+      "public/llms/store6/mutations/mutators.md",
+      "public/llms/store6/mutations/pending-write-ui.md",
+      "public/llms/store6/mutations/quickstart.md",
+      "public/llms/store6/mutations/server.md",
+      "public/llms/store6/mutations/testing.md",
+      "public/llms/store6/overview.md",
+      "public/llms/store6/paging.md",
+      "public/llms/store6/quickstart.md",
+      "public/llms/store6/realtime.md",
+      "public/llms/store6/roadmap.md",
+      "public/llms/store6/room.md",
+      "public/llms/store6/sqldelight.md",
+      "public/llms/store6/stability.md",
+      "scripts/agent-docs-bundle.test.mjs",
+      "scripts/agent-docs-config.test.mjs",
+      "scripts/agent-docs-http.test.mjs",
+      "scripts/agent-docs-lowering.test.mjs",
+      "scripts/agent-docs-semantics.test.mjs",
+      "scripts/agent-docs.test.mjs",
+      "scripts/agent-docs/bundle.mjs",
+      "scripts/agent-docs/config.json",
+      "scripts/agent-docs/export-contract.md",
+      "scripts/agent-docs/fixtures/fidelity.mdx",
+      "scripts/agent-docs/links.mjs",
+      "scripts/agent-docs/literals.mjs",
+      "scripts/agent-docs/lower-mdx.mjs",
+      "scripts/agent-docs/parse.mjs",
+      "scripts/agent-docs/semantic-components.mjs",
+      "scripts/agent-docs/semantic-context.mjs",
+      "scripts/agent-page-actions.test.mjs",
+      "scripts/build-agent-docs.mjs",
+      "scripts/dokka-reference-workflow.test.mjs",
+      "scripts/package-store6-skill.mjs",
+      "scripts/store6-skill-content.test.mjs",
+      "scripts/store6-skill-packaging.test.mjs",
+      "scripts/store6-skill.test.mjs",
+      "scripts/sync-store6-docs.mjs",
+      "scripts/sync-store6-docs.test.mjs",
+      "scripts/t4-contract.test.mjs",
+      "scripts/t5-search-contract.test.mjs",
+      "scripts/t8-verification.mjs",
+      "scripts/t8-verification.test.mjs",
+      "scripts/verify-agent-docs.mjs",
+      "scripts/verify-search-index.mjs",
+      "skills/store6/LICENSE.txt",
+      "skills/store6/NOTICE",
+      "skills/store6/SKILL.md",
+      "skills/store6/agents/openai.yaml",
+      "skills/store6/references/docs-manifest.json",
+      "skills/store6/references/task-map.md",
+      "skills/store6/scripts/get-docs.mjs",
+      "skills/store6/scripts/retrieve.mjs"
+    ]
+  },
+  "sourceCorrection": {
+    "revision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+    "baseRevision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+    "changedFiles": [
+      "docs/store6/quickstart.md",
+      "llms.txt"
+    ],
+    "checkout": "/private/tmp/store6-agent-docs-source-20260908",
+    "diffCommand": "git diff 5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71 ad435df1095673709a22f1b52a82aa03748cd9b3",
+    "mainLibraryCheckoutPreserved": true
+  },
+  "finalFreshnessChecks": {
+    "checkedAt": "2026-09-08T10:08:19.648329+00:00",
+    "sourceSync": {
+      "status": "passed",
+      "lockedOutputs": 13,
+      "trace": "evidence/agent-docs-runs/final-sync.log"
+    },
+    "corpus": {
+      "status": "passed",
+      "generatedOutputs": 45,
+      "trace": "evidence/agent-docs-runs/final-corpus.log"
+    },
+    "skillPair": {
+      "status": "passed",
+      "trace": "evidence/agent-docs-runs/final-pair.log"
+    },
+    "diffWhitespace": "passed",
+    "scope": "Read-only checks at unchanged product/corpus/skill identities; final evidence files were still being completed."
+  },
+  "ownedProcesses": {
+    "matrix": {
+      "sessionId": 11889,
+      "exitCode": 0,
+      "status": "finished"
+    },
+    "localServer": {
+      "sessionId": 63607,
+      "command": "pnpm start",
+      "port": 3222,
+      "status": "stopped-by-owner-after-matrix",
+      "exitCode": 130
+    },
+    "gradle": "all artifact commands finished; no active lease"
+  },
+  "localValidationCompletedAt": "2026-09-08T10:23:19.794085+00:00",
+  "elapsedSecondsAtValidationCompletion": 9773.794085,
+  "withinFourHourLimit": true,
+  "releaseDecision": {
+    "status": "held",
+    "gate": {
+      "status": "failed",
+      "casesWithoutSuccessfulSkillOutcome": [
+        "first-store",
+        "freshness",
+        "persistence",
+        "ui-lifecycle",
+        "durable-mutation",
+        "store5-migration"
+      ],
+      "publicSource": "local-candidate-only",
+      "immutablePublicInstall": "pending-publication",
+      "httpsDelivery": "pending-publication",
+      "successfulBaselineCases": [],
+      "baselineCasesWithoutSuccessfulSkillOutcome": [],
+      "substantiveBaselineCases": [
+        "first-store"
+      ],
+      "substantiveBaselineCasesWithoutSubstantiveSkillOutcome": [
+        "first-store"
+      ],
+      "interpretation": "The full-submission outcome retains missing required result files as incomplete. Substantive API, semantics, and citation satisfaction is also recorded independently, so a missing result file cannot hide useful baseline behavior."
+    },
+    "reviewPath": "evidence/store6-agent-release-review.md",
+    "published": false,
+    "criticalFindingTriage": {
+      "cellId": "ui-lifecycle.html.2",
+      "finding": "Generated baseline class implements Store without the required DelicateStoreApi subclass opt-in.",
+      "sourceEvidence": "Store6 store6-core/src/commonMain/kotlin/org/mobilenativefoundation/store6/core/Store.kt:16 at ad435df1095673709a22f1b52a82aa03748cd9b3",
+      "docsEvidence": "public/llms/store6/concepts/api-tiers.md:66 and public/llms/store6/guides/extending.md:15",
+      "disposition": "Retained failed candidate; no evidence that the source or skill states the wrong requirement. No skill/content correction or candidate rerun was made."
+    },
+    "behaviorFailure": "ui-lifecycle.markdown.1 compiled but one structural-identity test failed with ClassCastException; original output/XML retained."
+  },
+  "evidenceValidation": {
+    "status": "passed",
+    "checkedAt": "2026-09-08T10:25:47.431382+00:00",
+    "checks": [
+      "54 unique reviewed case/arm/replicate records",
+      "Review file hashes and requirement/dimension enums",
+      "Shared source, bundle, and count identities across evidence",
+      "27 executed tests with original one failure and zero errors",
+      "17 explicit task statuses",
+      "Held release state with no public release ref",
+      "Final skill/corpus pairing and diff whitespace"
+    ]
+  }
+}

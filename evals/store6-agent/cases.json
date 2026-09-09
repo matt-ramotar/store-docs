@@ -1,0 +1,464 @@
+{
+  "schemaVersion": 1,
+  "status": "fixtures-prepared-no-evaluations",
+  "canonicalOrigin": "https://store.mobilenativefoundation.org",
+  "deliveryOrigin": "http://127.0.0.1:3222",
+  "sourceInspection": {
+    "revision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+    "method": "read-only source/build-file inspection",
+    "gradleCommandsExecuted": 0,
+    "runtimeTaskAvailability": "unverified",
+    "note": "Freeze the final corrected source revision and paired corpus in the run record before any cell. This inspection revision is not automatically that final evaluation revision."
+  },
+  "protocol": {
+    "arms": [
+      "html",
+      "markdown",
+      "skill"
+    ],
+    "replicates": 3,
+    "cellCount": 54,
+    "wallClockSecondsPerSession": 180,
+    "maximumConcurrentSessions": 2,
+    "model": "same inherited model in every cell",
+    "settings": "same inherited settings in every cell",
+    "tools": "same verified tool availability in every cell",
+    "source": "same verified immutable corrected Store6 revision in every cell",
+    "corpus": "same corrected documentation snapshot and bundle in every cell",
+    "candidateScope": "one new Kotlin test file at fixture.testPath plus explanation/result files",
+    "reviewerRubricIncludedInCandidatePrompt": false,
+    "order": "replicate, case, then rotate arm order by case index plus replicate index"
+  },
+  "cases": [
+    {
+      "id": "first-store",
+      "prompt": "Create a typed user Store6 repository from a fetch function, with explicit ownership of its lifetime and result handling.",
+      "publicReferencePaths": [
+        "/docs/store6/quickstart",
+        "/docs/store6/important-defaults",
+        "/docs/store6/key-design",
+        "/docs/store6/concepts/read-contract",
+        "/docs/store6/concepts/memory-and-lifecycle",
+        "/docs/store6/concepts/errors"
+      ],
+      "fixture": {
+        "module": "store6-core",
+        "sourceSet": "commonTest",
+        "testPath": "store6-core/src/commonTest/kotlin/org/mobilenativefoundation/store6/agents/FirstStoreAgentTest.kt",
+        "command": "./gradlew :store6-core:jvmTest --tests '*FirstStoreAgentTest*'"
+      }
+    },
+    {
+      "id": "freshness",
+      "prompt": "Add pull-to-refresh for a visible cached user. Explain the effect of invalidate and clear while a fetch is in flight.",
+      "publicReferencePaths": [
+        "/docs/store6/concepts/freshness",
+        "/docs/store6/invalidate-vs-clear",
+        "/docs/store6/concepts/read-contract",
+        "/docs/store6/important-defaults"
+      ],
+      "fixture": {
+        "module": "store6-core",
+        "sourceSet": "commonTest",
+        "testPath": "store6-core/src/commonTest/kotlin/org/mobilenativefoundation/store6/agents/FreshnessAgentTest.kt",
+        "command": "./gradlew :store6-core:jvmTest --tests '*FreshnessAgentTest*'"
+      }
+    },
+    {
+      "id": "persistence",
+      "prompt": "Add persistent user storage and explain what is guaranteed after a crash. Choose between the available SQLDelight and Room adapters.",
+      "publicReferencePaths": [
+        "/docs/store6/guides/persistence",
+        "/docs/store6/sqldelight",
+        "/docs/store6/room",
+        "/docs/store6/concepts/read-contract"
+      ],
+      "fixture": {
+        "module": "store6-sqldelight",
+        "sourceSet": "jvmTest",
+        "testPath": "store6-sqldelight/src/jvmTest/kotlin/org/mobilenativefoundation/store6/agents/PersistenceAgentTest.kt",
+        "command": "./gradlew :store6-sqldelight:jvmTest --tests '*PersistenceAgentTest*'",
+        "placementCorrection": "The plan proposed commonTest. Existing physical SQL harnesses are in commonSqlTest, which depends on commonTest; jvmTest depends on commonSqlTest and supplies the real JDBC SQLite driver. Use jvmTest for this same physical persistence probe."
+      }
+    },
+    {
+      "id": "ui-lifecycle",
+      "prompt": "Integrate a user stream into a lifecycle-bound Compose screen and describe the ownership needed for Swift consumers.",
+      "publicReferencePaths": [
+        "/docs/store6/compose",
+        "/docs/store6/concepts/memory-and-lifecycle",
+        "/docs/store6/guides/swift",
+        "/docs/store6/concepts/api-tiers",
+        "/docs/store6/stability"
+      ],
+      "fixture": {
+        "module": "store6-compose",
+        "sourceSet": "commonTest",
+        "testPath": "store6-compose/src/commonTest/kotlin/org/mobilenativefoundation/store6/agents/UiLifecycleAgentTest.kt",
+        "command": "./gradlew :store6-compose:jvmTest --tests '*UiLifecycleAgentTest*'"
+      }
+    },
+    {
+      "id": "durable-mutation",
+      "prompt": "Rename a user optimistically while offline and preserve the queued write across process death.",
+      "publicReferencePaths": [
+        "/docs/store6/mutations/quickstart",
+        "/docs/store6/mutations/journal-storage",
+        "/docs/store6/mutations/drain-and-restart",
+        "/docs/store6/mutations/pending-write-ui",
+        "/docs/store6/mutations/testing",
+        "/docs/store6/concepts/api-tiers"
+      ],
+      "fixture": {
+        "module": "store6-mutations-sqldelight",
+        "sourceSet": "jvmTest",
+        "testPath": "store6-mutations-sqldelight/src/jvmTest/kotlin/org/mobilenativefoundation/store6/agents/DurableMutationAgentTest.kt",
+        "command": "./gradlew :store6-mutations-sqldelight:jvmTest --tests '*DurableMutationAgentTest*'",
+        "placementCorrection": "The plan proposed commonTest. Existing physical SQL harnesses are in commonSqlTest, which depends on commonTest; jvmTest depends on commonSqlTest and supplies the real JDBC SQLite driver. Use jvmTest for this same physical persistence probe."
+      }
+    },
+    {
+      "id": "store5-migration",
+      "prompt": "Port a Store5 repository using a Converter, Updater, custom cache behavior, and local-only reads to Store6.",
+      "publicReferencePaths": [
+        "/docs/store6/migration/from-store5",
+        "/docs/store6/migration/component-map",
+        "/docs/store6/quickstart",
+        "/docs/store6/guides/testing",
+        "/docs/store6/concepts/api-tiers"
+      ],
+      "fixture": {
+        "module": "store6-testing",
+        "sourceSet": "commonTest",
+        "testPath": "store6-testing/src/commonTest/kotlin/org/mobilenativefoundation/store6/agents/Store5MigrationAgentTest.kt",
+        "command": "./gradlew :store6-testing:jvmTest --tests '*Store5MigrationAgentTest*'"
+      }
+    }
+  ],
+  "cells": [
+    {
+      "cellId": "first-store.html.1",
+      "caseId": "first-store",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "first-store.markdown.1",
+      "caseId": "first-store",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "first-store.skill.1",
+      "caseId": "first-store",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "freshness.markdown.1",
+      "caseId": "freshness",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "freshness.skill.1",
+      "caseId": "freshness",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "freshness.html.1",
+      "caseId": "freshness",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "persistence.skill.1",
+      "caseId": "persistence",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "persistence.html.1",
+      "caseId": "persistence",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "persistence.markdown.1",
+      "caseId": "persistence",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "ui-lifecycle.html.1",
+      "caseId": "ui-lifecycle",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "ui-lifecycle.markdown.1",
+      "caseId": "ui-lifecycle",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "ui-lifecycle.skill.1",
+      "caseId": "ui-lifecycle",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "durable-mutation.markdown.1",
+      "caseId": "durable-mutation",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "durable-mutation.skill.1",
+      "caseId": "durable-mutation",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "durable-mutation.html.1",
+      "caseId": "durable-mutation",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "store5-migration.skill.1",
+      "caseId": "store5-migration",
+      "arm": "skill",
+      "replicate": 1
+    },
+    {
+      "cellId": "store5-migration.html.1",
+      "caseId": "store5-migration",
+      "arm": "html",
+      "replicate": 1
+    },
+    {
+      "cellId": "store5-migration.markdown.1",
+      "caseId": "store5-migration",
+      "arm": "markdown",
+      "replicate": 1
+    },
+    {
+      "cellId": "first-store.markdown.2",
+      "caseId": "first-store",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "first-store.skill.2",
+      "caseId": "first-store",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "first-store.html.2",
+      "caseId": "first-store",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "freshness.skill.2",
+      "caseId": "freshness",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "freshness.html.2",
+      "caseId": "freshness",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "freshness.markdown.2",
+      "caseId": "freshness",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "persistence.html.2",
+      "caseId": "persistence",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "persistence.markdown.2",
+      "caseId": "persistence",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "persistence.skill.2",
+      "caseId": "persistence",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "ui-lifecycle.markdown.2",
+      "caseId": "ui-lifecycle",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "ui-lifecycle.skill.2",
+      "caseId": "ui-lifecycle",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "ui-lifecycle.html.2",
+      "caseId": "ui-lifecycle",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "durable-mutation.skill.2",
+      "caseId": "durable-mutation",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "durable-mutation.html.2",
+      "caseId": "durable-mutation",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "durable-mutation.markdown.2",
+      "caseId": "durable-mutation",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "store5-migration.html.2",
+      "caseId": "store5-migration",
+      "arm": "html",
+      "replicate": 2
+    },
+    {
+      "cellId": "store5-migration.markdown.2",
+      "caseId": "store5-migration",
+      "arm": "markdown",
+      "replicate": 2
+    },
+    {
+      "cellId": "store5-migration.skill.2",
+      "caseId": "store5-migration",
+      "arm": "skill",
+      "replicate": 2
+    },
+    {
+      "cellId": "first-store.skill.3",
+      "caseId": "first-store",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "first-store.html.3",
+      "caseId": "first-store",
+      "arm": "html",
+      "replicate": 3
+    },
+    {
+      "cellId": "first-store.markdown.3",
+      "caseId": "first-store",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "freshness.html.3",
+      "caseId": "freshness",
+      "arm": "html",
+      "replicate": 3
+    },
+    {
+      "cellId": "freshness.markdown.3",
+      "caseId": "freshness",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "freshness.skill.3",
+      "caseId": "freshness",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "persistence.markdown.3",
+      "caseId": "persistence",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "persistence.skill.3",
+      "caseId": "persistence",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "persistence.html.3",
+      "caseId": "persistence",
+      "arm": "html",
+      "replicate": 3
+    },
+    {
+      "cellId": "ui-lifecycle.skill.3",
+      "caseId": "ui-lifecycle",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "ui-lifecycle.html.3",
+      "caseId": "ui-lifecycle",
+      "arm": "html",
+      "replicate": 3
+    },
+    {
+      "cellId": "ui-lifecycle.markdown.3",
+      "caseId": "ui-lifecycle",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "durable-mutation.html.3",
+      "caseId": "durable-mutation",
+      "arm": "html",
+      "replicate": 3
+    },
+    {
+      "cellId": "durable-mutation.markdown.3",
+      "caseId": "durable-mutation",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "durable-mutation.skill.3",
+      "caseId": "durable-mutation",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "store5-migration.markdown.3",
+      "caseId": "store5-migration",
+      "arm": "markdown",
+      "replicate": 3
+    },
+    {
+      "cellId": "store5-migration.skill.3",
+      "caseId": "store5-migration",
+      "arm": "skill",
+      "replicate": 3
+    },
+    {
+      "cellId": "store5-migration.html.3",
+      "caseId": "store5-migration",
+      "arm": "html",
+      "replicate": 3
+    }
+  ]
+}

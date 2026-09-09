@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate",
+  "skillVersion": "0.1.0",
+  "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+  "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+  "packageContentDigest": {
+    "sha256": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+    "algorithm": "sha256(JSON.stringify(sorted [relativePath, sha256(fileBytes)] pairs)); UTF-8 lexical path order"
+  },
+  "license": "Apache-2.0",
+  "installerVersion": "1.5.24",
+  "clients": {
+    "codex": {
+      "status": "local-smoke-passed",
+      "clientVersion": "0.153.4",
+      "model": "gpt-6-astra",
+      "reasoningEffort": "ultra",
+      "source": "/Users/matt/.codex/worktrees/bfea/store-docs/skills/store6",
+      "installedPath": "/private/tmp/store6-skill-clients-20260908/codex/.agents/skills/store6",
+      "packageSha256": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+      "installerVersion": "1.5.24",
+      "invocation": "explicit-$store6-passed",
+      "offlineList": "43-pages-passed",
+      "localRetrieval": "quickstart-passed-with-version-and-byte-checks",
+      "httpsRetrieval": "pending-publication",
+      "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+      "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+      "unrelatedActivation": "no-tool-or-skill-activation-observed",
+      "date": "2026-09-08",
+      "trace": "evidence/agent-docs-runs/s5-codex-invocation.jsonl",
+      "unrelatedTrace": "evidence/agent-docs-runs/s5-codex-unrelated.jsonl",
+      "explicitUpdate": {
+        "before": {
+          "packageDigest": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+          "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+          "skillVersion": "0.1.0",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "after": {
+          "packageDigest": "8a99abfcf95aa20f691941ddcaec9451b00a71ab8f25b5cedbba480e42e8c74e",
+          "bundleId": "sha256:ebef5c4b666b8e323a97ffbd1b276235c19fd450cdae4966c81661a776e8ae81",
+          "skillVersion": "0.1.1-fixture.1",
+          "fixtureVersion": "s5-explicit-update-test-only-1",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "installedBytesChanged": true
+      }
+    },
+    "claude-code": {
+      "client": "Claude Code",
+      "clientVersion": "2.1.220",
+      "model": null,
+      "project": "/private/tmp/store6-skill-clients-20260908/claude-code",
+      "installedPath": "/private/tmp/store6-skill-clients-20260908/claude-code/.claude/skills/store6",
+      "installerExtraPaths": [
+        "/private/tmp/store6-skill-clients-20260908/claude-code/skills-lock.json"
+      ],
+      "installerComputedHash": "193e83581bf415a07c48c4f2c99738e1bcb81706a3bfa35d71db3196026626d0",
+      "listing": "passed",
+      "install": "passed",
+      "parity": "passed",
+      "offlineList": {
+        "status": "passed",
+        "documentCount": 43
+      },
+      "discovery": "unverified",
+      "invocation": "unverified",
+      "invocationLimitation": "Sandboxed client reached API Error ENOTFOUND after 171 seconds. Automatic approval review rejected an external-API retry because it would transmit local project/skill context without specific approval.",
+      "unrelatedActivation": "unverified",
+      "localRetrieval": {
+        "status": "passed",
+        "documentId": "quickstart",
+        "documentSha256": "881c16e231f06a9056aed467db94144cc2317878b686c809dc0c541cc835629f",
+        "delivery": "local-delivery"
+      },
+      "immutablePublicInstall": "pending-publication",
+      "httpsRetrieval": "pending-publication",
+      "trace": "evidence/agent-docs-runs/s5-claude-code-local.txt",
+      "status": "package-and-local-helper-passed-client-unverified",
+      "packageSha256": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+      "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+      "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+      "date": "2026-09-08T08:45:10Z",
+      "explicitUpdate": {
+        "before": {
+          "packageDigest": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+          "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+          "skillVersion": "0.1.0",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "after": {
+          "packageDigest": "8a99abfcf95aa20f691941ddcaec9451b00a71ab8f25b5cedbba480e42e8c74e",
+          "bundleId": "sha256:ebef5c4b666b8e323a97ffbd1b276235c19fd450cdae4966c81661a776e8ae81",
+          "skillVersion": "0.1.1-fixture.1",
+          "fixtureVersion": "s5-explicit-update-test-only-1",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "installedBytesChanged": true
+      }
+    },
+    "cursor": {
+      "client": "Cursor",
+      "clientVersion": "3.19.13",
+      "model": null,
+      "project": "/private/tmp/store6-skill-clients-20260908/cursor",
+      "installedPath": "/private/tmp/store6-skill-clients-20260908/cursor/.agents/skills/store6",
+      "installerExtraPaths": [
+        "/private/tmp/store6-skill-clients-20260908/cursor/skills-lock.json"
+      ],
+      "installerComputedHash": "193e83581bf415a07c48c4f2c99738e1bcb81706a3bfa35d71db3196026626d0",
+      "listing": "passed",
+      "install": "passed",
+      "parity": "passed",
+      "offlineList": {
+        "status": "passed",
+        "documentCount": 43
+      },
+      "discovery": "unverified",
+      "invocation": "unverified",
+      "invocationLimitation": "The single corrected startup/invocation attempt was rejected before execution by automatic approval review because contacting Cursor's third-party API may transmit local project/skill context without specific payload-and-destination approval. No alternate route was attempted.",
+      "unrelatedActivation": "unverified",
+      "localRetrieval": {
+        "status": "passed",
+        "documentId": "quickstart",
+        "documentSha256": "881c16e231f06a9056aed467db94144cc2317878b686c809dc0c541cc835629f",
+        "delivery": "local-delivery"
+      },
+      "immutablePublicInstall": "pending-publication",
+      "httpsRetrieval": "pending-publication",
+      "trace": "evidence/agent-docs-runs/s5-cursor-local.txt",
+      "status": "package-and-local-helper-passed-client-unverified",
+      "packageSha256": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+      "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+      "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
+      "date": "2026-09-08T08:45:10Z",
+      "runtimeStateDecision": "Normal per-project runtime state under ~/.cursor/projects/private-tmp-store6-skill-clients-20260908-cursor was authorized as part of the S5 smoke.",
+      "explicitUpdate": {
+        "before": {
+          "packageDigest": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+          "bundleId": "sha256:b3ea53d182cc6e88d3b706000b8d180ba93c70bf603c2558df84b50ad75f65ac",
+          "skillVersion": "0.1.0",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "after": {
+          "packageDigest": "8a99abfcf95aa20f691941ddcaec9451b00a71ab8f25b5cedbba480e42e8c74e",
+          "bundleId": "sha256:ebef5c4b666b8e323a97ffbd1b276235c19fd450cdae4966c81661a776e8ae81",
+          "skillVersion": "0.1.1-fixture.1",
+          "fixtureVersion": "s5-explicit-update-test-only-1",
+          "offlineListExitCode": 0,
+          "offlineListPageCount": 43
+        },
+        "installedBytesChanged": true
+      }
+    }
+  },
+  "evaluationSummaryPath": "evidence/store6-agent-evaluation.json",
+  "publicReleaseRef": null,
+  "plannedReleaseRef": "store6-skill-v0.1.0",
+  "sourcePublication": "local-candidate-only",
+  "httpsRetrieval": "pending-publication",
+  "recordedAt": "2026-09-08T10:23:19.794085+00:00",
+  "explicitUpdateFixture": {
+    "classification": "TEST FIXTURE package only; not a real new release",
+    "packageDigest": "8a99abfcf95aa20f691941ddcaec9451b00a71ab8f25b5cedbba480e42e8c74e",
+    "bundleId": "sha256:ebef5c4b666b8e323a97ffbd1b276235c19fd450cdae4966c81661a776e8ae81",
+    "skillVersion": "0.1.1-fixture.1",
+    "fixtureVersion": "s5-explicit-update-test-only-1",
+    "changedFiles": [
+      "SKILL.md",
+      "references/docs-manifest.json"
+    ]
+  },
+  "localTransportNegative": {
+    "status": "passed",
+    "commandExitCode": 1,
+    "expectedErrorCode": "CONTENT_MISMATCH",
+    "observedErrorCode": "CONTENT_MISMATCH",
+    "stdoutBytes": 0,
+    "installedCli": "/private/tmp/store6-s5-update-20260908/transport/project/.agents/skills/store6/scripts/get-docs.mjs",
+    "installedCliSha256": "4e6dafb990a86a5d8630aa5cd653c308256e2d17598a39932def1042e7fa1420",
+    "actualRouteAdapter": "/Users/matt/.codex/worktrees/bfea/store-docs/evals/store6-agent/route-local-docs.mjs",
+    "actualRouteAdapterSha256": "d4e5d6a7170faae687e0054d416473aae0b9fb1c980dc9908131fae803173474",
+    "supplementalPreload": "/private/tmp/store6-s5-update-20260908/transport/remap-3222-to-fixture.mjs",
+    "supplementalPreloadScope": "test-only remap of exactly http://127.0.0.1:3222 to the ephemeral fixture origin",
+    "canonicalManifestUrl": "https://store.mobilenativefoundation.org/llms/store6-manifest.json",
+    "canonicalPageUrl": "https://store.mobilenativefoundation.org/llms/store6/quickstart.md",
+    "routeAdapterDeliveryOrigin": "http://127.0.0.1:3222",
+    "fixtureOrigin": "http://127.0.0.1:61621",
+    "fixtureManifestSha256": "5394e9ee0272fb9f1a95252aa9bc59cb26697462deb7fd45dd7d2c77e8468c51",
+    "manifestExpectedQuickstartSha256": "881c16e231f06a9056aed467db94144cc2317878b686c809dc0c541cc835629f",
+    "deliveredChangedQuickstartSha256": "c45e36519c853d8d82d5bd25369d70de135a218899fe06cd5782a48950e13b42",
+    "packageDigestBefore": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+    "packageDigestAfter": "9165539ac007438873c3cf9eed51db293a3798a4146eb648fdedfe96951010a4",
+    "installedFileHashesUnchanged": true,
+    "realServer3222": "untouched; the supplemental fetch wrapper intercepted the adapter output before any socket connection to port 3222",
+    "fixtureServerStopped": true,
+    "stderrLog": "evidence/agent-docs-runs/s5-update-transport-negative.stderr.log",
+    "stdoutLog": "evidence/agent-docs-runs/s5-update-transport-negative.stdout.log",
+    "statusLog": "evidence/agent-docs-runs/s5-update-transport-negative-status.log"
+  },
+  "promotionStatus": "held",
+  "evaluationStatus": "local-evaluation-complete",
+  "evaluationGate": {
+    "status": "failed",
+    "casesWithoutSuccessfulSkillOutcome": [
+      "first-store",
+      "freshness",
+      "persistence",
+      "ui-lifecycle",
+      "durable-mutation",
+      "store5-migration"
+    ],
+    "publicSource": "local-candidate-only",
+    "immutablePublicInstall": "pending-publication",
+    "httpsDelivery": "pending-publication",
+    "successfulBaselineCases": [],
+    "baselineCasesWithoutSuccessfulSkillOutcome": [],
+    "substantiveBaselineCases": [
+      "first-store"
+    ],
+    "substantiveBaselineCasesWithoutSubstantiveSkillOutcome": [
+      "first-store"
+    ],
+    "interpretation": "The full-submission outcome retains missing required result files as incomplete. Substantive API, semantics, and citation satisfaction is also recorded independently, so a missing result file cannot hide useful baseline behavior."
+  },
+  "evaluationCounts": {
+    "planned": 54,
+    "finished": 54,
+    "reviewed": 54,
+    "completeSubmissions": 0,
+    "sourceReviewedSuccesses": 0,
+    "partial": 7,
+    "failed": 47,
+    "invalid": 0,
+    "criticalCells": 1,
+    "kotlinArtifacts": 9,
+    "compilePassed": 8,
+    "compileFailed": 1,
+    "behaviorPassed": 7,
+    "behaviorFailed": 1,
+    "timedOut": 54,
+    "elapsedSeconds": {
+      "minimum": 180.0134889580002,
+      "mean": 180.0272233409259,
+      "maximum": 180.03288841700007
+    },
+    "tokenUsage": "unavailable for interrupted sessions unless individual row records a completed-turn usage report"
+  },
+  "executedTestTotals": {
+    "tests": 27,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "reviewPath": "evidence/store6-agent-release-review.md",
+  "observedLocalChecksComplete": true,
+  "fullReleaseValidated": false,
+  "remainingChecks": [
+    "Immutable reviewed Store6 source available to intended readers",
+    "Successful independently reviewed skill outcome for every frozen case",
+    "Actual immutable public skill ref and deployment",
+    "Actual HTTPS manifest/page delivery and immutable installs",
+    "Claude Code and Cursor native invocation/unrelated activation",
+    "Native browser opening of text/markdown"
+  ]
+}

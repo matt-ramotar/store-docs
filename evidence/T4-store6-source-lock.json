@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "revision": "5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71",
+  "revision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
   "sources": [
     {
       "path": "docs/store6/quickstart.md",
-      "sha256": "d8a44ee58d38549549c6fe63aad1844612ba26896906af3c89decbda3307ef73",
+      "sha256": "4136cae0a004aa8b63f057b81ded11c405504d1191445837019fa2399cf63ed4",
       "target": "content/docs/store6/quickstart.mdx"
     },
     {
@@ -64,8 +64,8 @@
     },
     {
       "path": "llms.txt",
-      "sha256": "12a3e368393a60099e3c6a5e86ad86f3723f79edefe414a6d741bc0dd9baa1e0",
-      "markdownLinkCount": 36,
+      "sha256": "a927090c508543ca5bc3bb32fadd87be80fdcb0204b34257d60d2c1bdd780893",
+      "markdownLinkCount": 40,
       "target": "public/llms.txt"
     }
   ]

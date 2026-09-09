@@ -1,0 +1,205 @@
+# Testing with store6-testing
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/guides/testing
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/guides/testing.md
+
+Source kind: site-authored; source path: content/docs/store6/guides/testing.mdx
+
+`store6-testing` provides two different ways to test code that uses Store. `FakeStore` replaces
+Store at an application boundary. The seam fakes run inside a real Store so the engine still makes
+policy decisions. Choose the tier based on which behavior the test needs to prove.
+
+> **Note**
+>
+> `store6-testing` is Experimental. Every public declaration in the artifact carries
+> `@ExperimentalStoreApi` and may change or be removed in any release. Tests that use it must opt in.
+> See [API tiers](https://store.mobilenativefoundation.org/llms/store6/concepts/api-tiers.md) for the stability contract.
+
+## Two tiers, taught as two tiers
+
+| Tier                             | Use it for                                                             | What the test exercises                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `FakeStore`                      | ViewModels, presenters, and other Store consumers                      | Scripted `StoreResult` outcomes, deterministic age, and recorded Store calls               |
+| Real `store { }` plus seam fakes | Freshness, staleness, watermarks, persistence, and other engine policy | The real engine with controlled fetcher, source-of-truth, bookkeeper, and clock boundaries |
+
+`FakeStore` records the `Freshness` supplied to `stream` and `get`, but it never interprets that
+policy. Use a real store when a test must prove the behavior described by the
+[freshness contract](https://store.mobilenativefoundation.org/llms/store6/concepts/freshness.md) or the
+[read contract](https://store.mobilenativefoundation.org/llms/store6/concepts/read-contract.md).
+
+The boundary is also visible at runtime: `FakeStore.runtime()` returns `null`. It produces no key
+events and performs no overlay projection. Tests for runtime events, overlays, or engine policy
+belong in the real-store tier.
+
+## ViewModel tests with FakeStore
+
+`FakeStore<K, V>` is a programmable `Store<K, V>`. Its three fetch scripting methods append
+per-key FIFO outcomes:
+
+* `enqueueFetchValue(key, value)` commits a demanded value with `Origin.FETCHER`.
+* `enqueueFetchError(key, error, servedStale)` delivers a demanded `StoreResult.Error`.
+* `enqueueFetchRevalidated(key, age)` confirms an existing resident value without replacing it.
+
+Enqueueing does not emit anything by itself. Demand consumes at most one queued head. Use
+`setValue(key, value)` to seed residence without consuming a script; it defaults to
+`Origin.MEMORY`. The fake's `TestWallClock` starts at epoch millisecond `0`, and its `advanceBy`
+and `setEpochMillis` members make `Data.age` deterministic.
+
+Stream failures follow Store's one failure channel: they are `StoreResult.Error` values, not thrown
+exceptions. An absent `get` is the exception. It consumes a queued value or failure and throws a
+`StoreException` when it cannot return a value.
+
+Every Store call is recorded in `interactions` in call order. `FakeStoreInteraction` distinguishes
+`Stream`, `Get`, each key/namespace/global invalidate and clear operation, and `Close`.
+`clearInteractions()` empties the record without stopping later recording. A `Stream` interaction
+is recorded when its cold flow is collected, not when the flow is created.
+
+The repository sample folds all four result kinds into UI state, asserts the emitted states with
+Turbine, checks the recorded stream call, and closes the fake. `UserKey`, `User`, and `UserUiState`
+are sample-local types declared immediately above this excerpt.
+
+```kotlin
+private class UserViewModel(store: Store<UserKey, User>, key: UserKey, scope: CoroutineScope) {
+    val state: StateFlow<UserUiState> =
+        store.stream(key)
+            .runningFold<StoreResult<User>, UserUiState>(UserUiState.Loading) { previous, result ->
+                when (result) {
+                    is StoreResult.Loading -> UserUiState.Loading
+                    is StoreResult.Data -> UserUiState.Ready(result.value.name, result.refreshing)
+                    is StoreResult.Revalidated -> previous // still fresh; keep what is shown
+                    is StoreResult.Error -> UserUiState.Failed(result.error)
+                }
+            }
+            .stateIn(scope, SharingStarted.Eagerly, UserUiState.Loading)
+}
+
+@OptIn(ExperimentalStoreApi::class)
+class UserViewModelSampleTest {
+    @Test
+    fun viewModel_rendersLoadingDataAndErrorFromFakeStore() = runTest {
+        val fake = FakeStore<UserKey, User>()
+        val key = UserKey("42")
+        fake.enqueueFetchValue(key, User("42", "Matt"))
+        val vm = UserViewModel(fake, key, backgroundScope)
+        vm.state.test {
+            assertIs<UserUiState.Loading>(awaitItem())
+            assertEquals("Matt", assertIs<UserUiState.Ready>(awaitItem()).name)
+
+            fake.enqueueFetchError(key, TestStoreResults.fetchError("refresh users/42 failed: server 500. Retry later."), servedStale = true)
+            fake.invalidate(key)
+            assertTrue(assertIs<UserUiState.Ready>(awaitItem()).refreshing) // stale shown while refreshing
+            assertIs<StoreError.Fetch>(assertIs<UserUiState.Failed>(awaitItem()).error)
+            cancelAndIgnoreRemainingEvents()
+        }
+        assertEquals("42", fake.interactions.filterIsInstance<FakeStoreInteraction.Stream>().single().key.canonicalId())
+        fake.close()
+    }
+}
+```
+
+> **Note**
+>
+> `FakeStore` follows every history frame with `yield`. That deliberately provides stronger delivery
+> than the engine so `StateFlow` and `stateIn` consumers can assert each lifecycle frame without
+> conflation. A passing `FakeStore` test therefore does not prove that a consumer is safe under a
+> real store's conflation. It also does not prove freshness behavior: the fake records `Freshness`
+> but never interprets it.
+
+## Policy tests with a real store
+
+Compose the seam fakes into a real `store { }` when the engine's decisions are the subject of the
+test:
+
+* `FakeFetcher` holds per-key FIFO `FetcherResult` queues. Its ordered `invocations` include the
+  nullable ETag passed by a conditional fetch plan. An unscripted call returns a descriptive
+  `FetcherResult.Error` unless the test replaces `onUnscripted`. The
+  [fetcher guide](https://store.mobilenativefoundation.org/llms/store6/guides/fetchers.md) explains conditional requests and the result
+  vocabulary.
+* `FakeSourceOfTruth` uses versioned cells, so writing an equal value still emits. Deletes emit
+  `null`, readers never complete, and the fake passes `SourceOfTruthContractKit` on every target.
+* `FakeBookkeeper` uses one sequence for successes, per-key stale marks, and watermarks. Its exact
+  rule is `max(perKeyMark, namespaceWatermark, globalWatermark) > (lastSuccessSequence ?: 0)`.
+  Watermarks never reset. Share one instance across reconstructed stores to simulate retained
+  bookkeeping across a process restart.
+
+The baseline composition installs all three fakes and the same controllable clock used by the
+test:
+
+```kotlin
+@OptIn(ExperimentalStoreApi::class)
+fun userStoreForPolicyTests(): Store<UserKey, User> {
+    val fetcher = FakeFetcher<UserKey, User>()
+    val sourceOfTruth = FakeSourceOfTruth<UserKey, User>()
+    val bookkeeper = FakeBookkeeper()
+    val clock = TestWallClock()
+
+    return store {
+        fetcher(fetcher)
+        persistence(sourceOfTruth)
+        bookkeeper(bookkeeper)
+        wallClock(clock)
+    }
+}
+```
+
+This tier keeps the controlled boundaries while exercising the real engine. Add the real seam
+configuration relevant to the policy under test, such as an overlay, instead of expecting
+`FakeStore` to approximate it.
+
+The [mutation-specific testing guide](https://store.mobilenativefoundation.org/llms/store6/mutations/testing.md) covers journal storage,
+deterministic crash scenarios, and projector purity.
+
+## Contract kits: certification suites for custom seams
+
+The contract kits turn seam requirements into inherited tests. Extend
+`SourceOfTruthContractKit<K, V>`, return a fresh source of truth for each test, and provide two keys
+in one namespace, one key in another namespace, and distinct values. Every inherited `@Test`
+executes on every target the test class compiles for.
+
+This example is verbatim from the kit's KDoc:
+
+```kotlin
+class MySourceOfTruthContractTest : SourceOfTruthContractKit<MyKey, MyValue>() {
+    override fun createSourceOfTruth() = MySourceOfTruth()
+    override val keyA = MyKey("users", "a")
+    override val keyB = MyKey("users", "b")
+    override val keyOtherNamespace = MyKey("teams", "a")
+    override fun value(index: Int) = MyValue("value-$index")
+}
+```
+
+`BookkeeperContractKit` needs only a fresh bookkeeper. Among its contracts, the kit verifies that
+record identity comes from `(key.namespace.value, key.canonicalId())`, not the key's concrete
+class.
+
+This example is also verbatim from the kit's KDoc:
+
+```kotlin
+class MyBookkeeperContractTest : BookkeeperContractKit() {
+    override fun createBookkeeper() = MyBookkeeper()
+}
+```
+
+Read the [persistence guide](https://store.mobilenativefoundation.org/llms/store6/guides/persistence.md) for the contracts these suites
+certify. The [Room adapter](https://store.mobilenativefoundation.org/llms/store6/room.md) and
+[SQLDelight adapter](https://store.mobilenativefoundation.org/llms/store6/sqldelight.md) are concrete implementations that run the kits.
+
+## Building results in tests
+
+`StoreResult`, `StoreError`, and `StoreException` have internal constructors. `TestStoreResults`
+is their public test-facing construction door and delegates to the seam's sanctioned
+`StoreResults` factory.
+
+It covers every result state with `loading`, `data`, `revalidated`, and `error`; creates throwable
+wrappers with `exception`; and exposes factories for `Fetch`, `Persistence`, `Conversion`,
+`FreshnessUnsatisfiable`, `Conflict`, and `Missing` errors. Its defaults are test-oriented: `data`
+uses `Origin.MEMORY`, zero age, and false stale/refreshing flags unless the test supplies different
+values.
+
+Use these factories when scripting `FakeStore` or directly constructing an expected result. They
+keep tests on the public construction path instead of reaching for internal constructors.
+
+***
+
+Source recorded 2026-08-12 · [`main@539614c0`](https://github.com/matt-ramotar/Store6/commit/539614c06be1a8f20dead562585e47394551ebae) · pre-6.0.0-alpha01

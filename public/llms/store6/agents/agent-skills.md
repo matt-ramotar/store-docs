@@ -1,0 +1,107 @@
+# Agent skills
+
+Canonical page: https\://store.mobilenativefoundation.org/docs/store6/agents/agent-skills
+
+Markdown: https\://store.mobilenativefoundation.org/llms/store6/agents/agent-skills.md
+
+Source kind: site-authored; source path: content/docs/store6/agents/agent-skills.mdx
+
+Install the Store6 coding skill and retrieve documentation for your project's source version.
+
+The Store6 skill provides task routing and a documentation retrieval helper. It checks the project's
+Store6 identity, selects relevant guides, and requires citations and appropriate verification when
+generating code. It retrieves current pages only when they match its packaged documentation manifest.
+
+## Prerequisites
+
+Use a coding agent that supports the [Agent Skills format](https://agentskills.io/specification),
+Node.js 22.18 or newer, and network access to the documentation site. The retrieval helper uses
+Node's built-in APIs and needs no additional package installation.
+
+## Install in your project
+
+The skill lives in [matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills)
+as a development candidate. Its paired Markdown bundle is not yet available on the public
+documentation site, so retrieval cannot succeed yet. Use **Copy Markdown** for page context meanwhile.
+**Copy Prompt** checks that the repository exposes the `store6` skill before installing.
+
+To install the candidate, run this command from your project directory using the
+[skills CLI](https://github.com/vercel-labs/skills):
+
+```sh
+npx skills add matt-ramotar/store-agent-skills
+```
+
+Select `store6` and your coding agent when prompted. Use project scope and choose Copy for the
+installation method. To select an agent explicitly, append `--agent codex` or `--agent claude-code`.
+Review the installer's reported destination, then start a fresh agent session in that project.
+
+This command installs from the repository's default branch. The installed skill retains its
+packaged documentation manifest and still requires matching source and content. For a reproducible
+installation, use a reviewed commit or release URL and record the installed source revision.
+
+### Cursor
+
+Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent cursor
+```
+
+Start a fresh agent session, then find `store6` in Cursor's skills or slash menu. Follow the version
+and retrieval checks below before asking it to generate code.
+
+### VS Code
+
+Use GitHub Copilot's agent skills support. Install the candidate from your project directory:
+
+```sh
+npx skills add matt-ramotar/store-agent-skills --agent github-copilot
+```
+
+Start a fresh Copilot chat and select `/store6`. See
+[VS Code's agent skills guide](https://code.visualstudio.com/docs/agent-customization/agent-skills)
+if the skill is not discovered. Follow the same version and retrieval checks below.
+
+## Invoke the skill
+
+* **Codex:** select `store6` from `/skills` or include `$store6` in your request.
+* **Claude Code:** invoke `/store6`.
+* **Cursor:** find `store6` under Customize → Skills and select it from the slash menu.
+
+Ask the agent to identify the installed skill path and list its available guide IDs. It can run
+`node scripts/get-docs.mjs --list` from the installed skill directory without network access.
+
+## Match your project before coding
+
+Ask the agent to inspect your dependency declaration or source checkout. The helper accepts one
+`--source-revision` or `--coordinate` argument followed by one to four guide IDs. A coordinate must
+be explicitly listed in the packaged manifest. A full source revision must match the manifest
+exactly; copying the documentation revision into a prompt does not establish your project's identity.
+
+Mutable `SNAPSHOT` labels and an unlisted Store6 version are insufficient. When a match cannot be
+established, resolve the version or supply matching documentation before generating code.
+
+Useful tasks include building a typed repository, adding pull-to-refresh, selecting a persistence
+adapter, binding collection to a UI lifetime, preserving queued mutations across restart, and
+migrating a Store5 repository. State the desired behavior and platform, and ask for the contracts
+used and the checks actually run.
+
+## Handle retrieval failures
+
+| Error              | Next step                                                                                                  |
+| ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `VERSION_MISMATCH` | Verify the project's dependency or source revision and obtain matching documentation.                      |
+| `BUNDLE_MISMATCH`  | Choose an explicitly updated skill release paired with the documentation, or provide matching context.     |
+| `CONTENT_MISMATCH` | Stop using the returned context and verify the document source; its bytes differ from the packaged record. |
+| `NETWORK_ERROR`    | Restore access and request the guides again. The helper returns no partial page set.                       |
+
+To update, deliberately repeat the installation and version checks. For installations from a fixed
+commit or release, explicitly select a newer tested ref. A site build does not update the skill's
+packaged manifest.
+
+## Source and license
+
+The skill is licensed under Apache-2.0. Its source, license, and notices are maintained in
+[matt-ramotar/store-agent-skills](https://github.com/matt-ramotar/store-agent-skills).
+The skill links to Store6 documentation rather than maintaining a second API manual.
