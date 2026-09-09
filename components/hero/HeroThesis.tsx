@@ -2,6 +2,8 @@
 
 import { Link, Typography } from "@heroui/react";
 
+import { HOMEPAGE_GUIDANCE, HOMEPAGE_INTRO, HOMEPAGE_TITLE } from "@/lib/homepage-content";
+
 export function HeroThesis() {
   return (
     <header className="flex max-w-xl flex-col items-start">
@@ -13,11 +15,13 @@ export function HeroThesis() {
         id="hero-thesis"
         level={1}
       >
-        One read contract for every copy of your data.
+        {HOMEPAGE_TITLE}
       </Typography.Heading>
       <Typography.Paragraph className="mt-5 max-w-lg text-base leading-7 text-foreground-secondary sm:mt-7 sm:text-lg sm:leading-8">
-        Store coordinates network, persistence, and memory behind typed Kotlin Multiplatform reads.
-        Start with a key and a fetcher, then add persistence and projections as needed.
+        {HOMEPAGE_INTRO}
+      </Typography.Paragraph>
+      <Typography.Paragraph className="mt-4 max-w-lg text-base leading-7 text-foreground-secondary">
+        {HOMEPAGE_GUIDANCE}
       </Typography.Paragraph>
       <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
         <Link

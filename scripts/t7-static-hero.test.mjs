@@ -79,11 +79,12 @@ test("T7 owns the static root, hero components, and relocated read-contract trac
 
 test("the hero leads with purpose, the first action, and the source-backed example", () => {
   const thesis = source("components/hero/HeroThesis.tsx");
+  const copy = source("lib/homepage-content.ts");
   const example = source("components/hero/KeyEngineTrace.tsx");
   const hero = HERO_FILES.map(source).join("\n");
 
-  assert.match(thesis, /One read contract for every copy of your data\./);
-  assert.match(thesis, /Store coordinates network, persistence, and memory/);
+  assert.match(copy, /One read contract for every copy of your data\./);
+  assert.match(copy, /Store coordinates network, persistence, and memory/);
   assert.ok(thesis.indexOf('href="/docs/store6/quickstart"') < thesis.indexOf('href="/docs/store6/overview"'));
   assert.match(thesis, />\s*Build your first store\s*<\/Link>/);
   assert.match(thesis, /href="\/docs\/store6\/concepts\/read-contract#failure-trace-invalidated-persisted-data"/);
