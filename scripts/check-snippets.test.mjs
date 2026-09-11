@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
@@ -371,6 +372,144 @@ test("CLI parsing requires exactly one source root", async () => {
     /unknown argument: --check/,
   );
 });
+
+test("pinned snippets read an immutable file absent from the checked-out revision", async () => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    const oldRevision = initializeGit(sourceRoot);
+    writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("sample", "val answer = 42"));
+    const pinnedRevision = commitFixture(sourceRoot);
+    git(sourceRoot, "checkout", "--detach", oldRevision);
+    writePage(root, sampleRoute(), pageRegion("sample", "val answer = 42"));
+    writeManifest(root, [entry({ revision: pinnedRevision })]);
+
+    const result = await checkSnippets({ root, sourceRoot });
+    assert.equal(result.snippetCount, 1);
+    assert.equal(result.revision, oldRevision);
+    assert.deepEqual(result.additionalRevisions, [pinnedRevision]);
+  });
+});
+
+test("pinned snippet mismatch uses the pinned blob and identifies its revision", async () => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    initializeGit(sourceRoot);
+    writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("sample", "val answer = 41"));
+    const pinnedRevision = commitFixture(sourceRoot);
+    writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("sample", "val answer = 42"));
+    commitFixture(sourceRoot);
+    writePage(root, sampleRoute(), pageRegion("sample", "val answer = 42"));
+    writeManifest(root, [entry({ revision: pinnedRevision })]);
+
+    await assert.rejects(checkSnippets({ root, sourceRoot }), (error) => {
+      assert.match(error.message, new RegExp(`differs from samples/Sample\\.kt at ${pinnedRevision}`));
+      assert.match(error.message, /-val answer = 41/);
+      assert.match(error.message, /\+val answer = 42/);
+      return true;
+    });
+  });
+});
+
+test("snippet revisions must be full lowercase commit hashes", async () => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  for (const revision of ["main", "abc123", "A".repeat(40), null, 42, "a".repeat(41)]) {
+    await withFixture(async ({ root, sourceRoot }) => {
+      writeManifest(root, [entry({ revision })]);
+      await assert.rejects(checkSnippets({ revision: REVISION, root, sourceRoot }), /snippet sample has invalid revision/);
+    });
+  }
+});
+
+test("pinned snippets fail closed for missing commits, non-commit hashes, and missing paths", async (t) => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  for (const kind of ["missing commit", "blob hash", "missing path"]) {
+    await t.test(kind, async () => {
+      await withFixture(async ({ root, sourceRoot }) => {
+        const firstRevision = initializeGit(sourceRoot);
+        writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("sample", "val answer = 42"));
+        commitFixture(sourceRoot);
+        const pin = kind === "missing commit" ? "0".repeat(40)
+          : kind === "blob hash" ? git(sourceRoot, "rev-parse", "HEAD:samples/Sample.kt") : firstRevision;
+        writePage(root, sampleRoute(), pageRegion("sample", "val answer = 42"));
+        writeManifest(root, [entry({ revision: pin })]);
+        await assert.rejects(checkSnippets({ root, sourceRoot }), (error) => {
+          assert.ok(error.message.includes(pin), error.message);
+          assert.match(error.message, kind === "missing path" ? /source path is missing/ : /revision.*(?:missing|not a commit|unavailable)/);
+          return true;
+        });
+      });
+    });
+  }
+});
+
+test("pinned snippets reject symlink and directory entries even when working files look usable", async (t) => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  for (const kind of ["symlink", "directory"]) {
+    await t.test(kind, async () => {
+      await withFixture(async ({ root, sourceRoot }) => {
+        initializeGit(sourceRoot);
+        writeFixture(sourceRoot, "samples/Real.kt", sourceRegion("sample", "val answer = 42"));
+        if (kind === "symlink") symlinkSync("Real.kt", resolve(sourceRoot, "samples/Sample.kt"));
+        else writeFixture(sourceRoot, "samples/Sample.kt/inside.kt", "val inside = true\n");
+        const pin = commitFixture(sourceRoot);
+        rmSync(resolve(sourceRoot, "samples/Sample.kt"), { recursive: true });
+        writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("sample", "val answer = 42"));
+        writePage(root, sampleRoute(), pageRegion("sample", "val answer = 42"));
+        writeManifest(root, [entry({ revision: pin })]);
+        await assert.rejects(checkSnippets({ root, sourceRoot }), (error) => {
+          assert.ok(error.message.includes(pin), error.message);
+          assert.match(error.message, /not a regular Git file/);
+          return true;
+        });
+      });
+    });
+  }
+});
+
+test("the same source path at different pinned revisions has independent snippet regions", async () => {
+  const { checkSnippets } = await import("./check-snippets.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    initializeGit(sourceRoot);
+    writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("old-sample", "val oldAnswer = 41"));
+    const oldRevision = commitFixture(sourceRoot);
+    writeFixture(sourceRoot, "samples/Sample.kt", sourceRegion("new-sample", "val newAnswer = 42"));
+    const newRevision = commitFixture(sourceRoot);
+    writePage(root, "/docs/store6/guides/old", pageRegion("old-sample", "val oldAnswer = 41"));
+    writePage(root, "/docs/store6/guides/new", pageRegion("new-sample", "val newAnswer = 42"));
+    writeManifest(root, [
+      entry({ name: "old-sample", revision: oldRevision, pages: ["/docs/store6/guides/old"] }),
+      entry({ name: "new-sample", revision: newRevision, pages: ["/docs/store6/guides/new"] }),
+    ]);
+    const result = await checkSnippets({ root, sourceRoot });
+    assert.equal(result.snippetCount, 2);
+    assert.equal(result.pageReferenceCount, 2);
+    assert.deepEqual(result.additionalRevisions, [oldRevision]);
+  });
+});
+
+function sourceRegion(name, body) {
+  return `// docs:snippet:${name}\n${body}\n// docs:snippet:end\n`;
+}
+
+function pageRegion(name, body) {
+  return `{/* snippet: ${name} */}\n\`\`\`kotlin\n${body}\n\`\`\`\n`;
+}
+
+function git(sourceRoot, ...args) {
+  return execFileSync("git", ["-C", sourceRoot, "-c", "user.name=Snippet Fixture", "-c", "user.email=snippet@example.invalid", "-c", "commit.gpgsign=false", "-c", "core.hooksPath=/dev/null", ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+}
+
+function initializeGit(sourceRoot) {
+  git(sourceRoot, "init", "--quiet");
+  writeFixture(sourceRoot, "README.md", "Snippet fixture\n");
+  return commitFixture(sourceRoot);
+}
+
+function commitFixture(sourceRoot) {
+  git(sourceRoot, "add", "--all");
+  git(sourceRoot, "commit", "--quiet", "-m", "Update snippet fixture");
+  return git(sourceRoot, "rev-parse", "HEAD");
+}
 
 function entry(overrides = {}) {
   return {

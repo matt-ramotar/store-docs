@@ -123,6 +123,19 @@ node scripts/repin-store6-lock.mjs --source-root ../Store6 --skills-root ../stor
 ```
 
 Store6 anchors are checked against the pinned source revision and checkout bytes.
+An optional full-commit `revision` on a Store6 claim anchor or snippet entry pins
+that evidence independently of the shared source lock. Evidence at a different
+revision is checked against immutable Git blobs, including whole-file claim hashes
+and exact snippet regions. The commit must exist in the source repository; missing
+commits, files, and symlink sources fail verification. Use an explicit revision
+only for a guide that identifies that source version. CI's full Store6 clone
+includes the published branches containing these pins. For an existing local
+checkout, fetch a missing pin before running the checks:
+
+```sh
+git -C ../Store6 fetch origin b123c95a373f3629c23e797cb97e2bca18bb260a
+```
+
 Site and skill anchors are checked against the whole-file hashes recorded in the
 claims ledger. A skill change requires claim review before explicitly reconciling
 its hash. Both CI workflows check out the skill repository at

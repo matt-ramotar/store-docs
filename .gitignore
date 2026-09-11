@@ -6,6 +6,9 @@ next-env.d.ts
 /lib/agent-routes.generated.json
 /public/agent-markdown/
 
+# Local planning and authoring artifacts.
+/docs/superpowers/
+
 # Local run artifacts. Required evidence manifests remain tracked.
 /evidence/design-revision/
 /evidence/sidebar-navigation/

@@ -107,7 +107,7 @@ terminal. With one, the policy can retry a new generation or accept server-wins.
 
 ## Where each piece is documented
 
-The mutations family has ten subpages, in adoption order:
+The mutations family has eleven subpages, in adoption order:
 
 | Page                                                                                                                  | Scope                                                                                                                                    |
 | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -118,6 +118,7 @@ The mutations family has ten subpages, in adoption order:
 | [Conflict resolution](https://store.mobilenativefoundation.org/llms/store6/mutations/conflicts.md)                    | Select preconditions, retry merged generations, and understand the server-wins terminal.                                                 |
 | [Aliases and canonical rekeying](https://store.mobilenativefoundation.org/llms/store6/mutations/aliases.md)           | Follow a provisional identity through its durable alias edge to the server's canonical identity.                                         |
 | [Draining, offline, and restart](https://store.mobilenativefoundation.org/llms/store6/mutations/drain-and-restart.md) | Choose keyed or global drains and reconstruct durable identities after restart.                                                          |
+| [Background work](https://store.mobilenativefoundation.org/llms/store6/mutations/background-work.md)                  | Schedule pending mutation work across connectivity and application lifetimes.                                                            |
 | [Journal storage](https://store.mobilenativefoundation.org/llms/store6/mutations/journal-storage.md)                  | Choose the in-memory default, install SQLDelight storage, or implement the storage seam.                                                 |
 | [Inspection and observability](https://store.mobilenativefoundation.org/llms/store6/mutations/inspection.md)          | Read pending work and dead letters, and separate durable truth from advisory flows.                                                      |
 | [Testing mutations](https://store.mobilenativefoundation.org/llms/store6/mutations/testing.md)                        | Certify storage behavior and exercise projector purity and crash boundaries.                                                             |

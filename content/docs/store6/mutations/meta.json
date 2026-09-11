@@ -8,6 +8,7 @@
     "conflicts",
     "aliases",
     "drain-and-restart",
+    "background-work",
     "journal-storage",
     "inspection",
     "testing"

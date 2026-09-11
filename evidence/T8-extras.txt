@@ -22,11 +22,13 @@
 /docs/store6/important-defaults
 /docs/store6/invalidate-vs-clear
 /docs/store6/key-design
+/docs/store6/meeseeks
 /docs/store6/migration/component-map
 /docs/store6/migration/from-store4
 /docs/store6/migration/from-store5
 /docs/store6/mutations
 /docs/store6/mutations/aliases
+/docs/store6/mutations/background-work
 /docs/store6/mutations/conflicts
 /docs/store6/mutations/drain-and-restart
 /docs/store6/mutations/inspection
