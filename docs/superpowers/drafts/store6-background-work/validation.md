@@ -12,20 +12,45 @@ Started 2026-09-11 04:07:57 UTC. Deadline 05:07:57 UTC. This is the private evid
 ## Environment
 
 - Node `v22.22.0`; pnpm `10.30.3`.
-- Dependencies were absent. First `pnpm install --frozen-lockfile` attempt encountered `ENOTFOUND registry.npmjs.org` under restricted network access. Its final outcome will be recorded before any dependent validation claim.
+- Dependencies were absent. First `pnpm install --frozen-lockfile` attempt exited 1 with `ENOTFOUND registry.npmjs.org` under restricted network access. The same locked install with authorized network access then exited 0, installing 506 packages and running `fumadocs-mdx`. No dependency or lockfile version changed.
 - Initial local branch creation encountered sandbox filesystem denial. The authorized sandbox escalation succeeded and created `matt-ramotar/background-work-meeseeks-docs`.
 
 ## Snippet fidelity and draft parsing
 
-Not run. Awaiting both draft pages and dependencies.
+Passed for both completed drafts, including a final check after the review corrections:
+
+- Ran the plan's one-off `parsePage` and exact marked-source-region comparison using the recovered candidate root. Both Kotlin bodies match their source regions byte for byte after CRLF normalization.
+- Lowered each real draft through the site's `lowerMdx` with `semanticContext([])`, serialized it to GFM, and parsed that Markdown again. Code language/body, table structure/cells, and links match the original draft AST. The Note/Warning callouts remain present and no MDX syntax remains in the lowered tree.
+- All eight distinct local destinations resolve to six existing content pages or the two explicitly planned future routes.
+- All 13 distinct external links use the exact Store6 candidate or Meeseeks 1.1.1 commit. Every URL returned HTTP 200. The upstream Android and iOS documents were read at that version, not inferred from the older local Meeseeks checkout.
+- No TODO/TBD/FIXME placeholders remain. `git diff --check` passes.
+- Existing parser/export tests: `node --test scripts/agent-docs.test.mjs scripts/agent-docs-lowering.test.mjs scripts/agent-docs-semantics.test.mjs` exited 0 with 34 passed, 0 failed, 0 skipped.
+
+Final draft SHA-256 values:
+
+| Draft | SHA-256 |
+|---|---|
+| `background-work.mdx` | `a8be52b7068ccfc0f69f7037e5f94a9d586a3a7d004b5f71690c1482674371b8` |
+| `meeseeks.mdx` | `4ef8dbeaab28ce174d6792573ac1c4f213844cf0b678fb977290f2393132857d` |
+
+These are draft parsing, source fidelity, and semantic Markdown checks. They do not establish browser rendering, public routes, or deployed endpoint behavior. The existing Node module-type warning was emitted during the semantic checks.
 
 ## Snippet compilation
 
-Not run. Planned narrow command: `./gradlew :mutations-drain-meeseeks:compileTestKotlinJvm` in the candidate checkout, subject to the shared Gradle/safety boundary.
+Ran `./gradlew :mutations-drain-meeseeks:compileTestKotlinJvm` in `/private/tmp/store6-background-work-source-20260911`. Exit 0, `BUILD SUCCESSFUL in 1s`. The target `compileTestKotlinJvm` was `FROM-CACHE`: compatible task output was restored, but no fresh compiler invocation occurred. This is neither fresh compilation nor runtime execution evidence. No rerun was performed to strengthen the result.
 
 ## In-process execution and simulated restart
 
-Not run. Planned narrow command: `./gradlew :mutations-drain:jvmTest --tests '*DrainQuickstartDocsSnippet*' --tests '*RestartReplayTest*'` in the candidate checkout.
+Ran `./gradlew :mutations-drain:jvmTest --tests '*DrainQuickstartDocsSnippet*' --tests '*RestartReplayTest*'` in `/private/tmp/store6-background-work-source-20260911`. Exit 0, `BUILD SUCCESSFUL in 3s`. Compilation dependencies used cached outputs, but `:mutations-drain:jvmTest` executed freshly.
+
+Inspected both XML files under `mutations-drain/build/test-results/jvmTest/`:
+
+| Class | Test | Timestamp UTC | Outcome |
+|---|---|---|---|
+| `org.mobilenativefoundation.store6.mutations.drain.RestartReplayTest` | `watchLaunchPassReplaysJournalAfterStoreRestart[jvm]` | 2026-09-11 04:12:55 | 1 test, 0 failures, 0 errors, 0 skips |
+| `org.mobilenativefoundation.store6.mutations.drain.docs.DrainQuickstartDocsSnippet` | `watchAndManualActivationDrainPendingWrite[jvm]` | 2026-09-11 04:12:56 | 1 test, 0 failures, 0 errors, 0 skips |
+
+The tests validate an in-process fixture and reopening a store in the same test process. They do not establish physical disk recovery, process-death behavior, or operating-system activations. Gradle emitted pre-existing deprecation and configuration-on-demand warnings. No Gradle startup safety rejection occurred.
 
 ## Android, iOS, and device execution
 
@@ -37,12 +62,35 @@ The candidate excludes `MeeseeksExecutionIntegrationTest` and `MeeseeksRecoveryI
 
 ## Local site rendering and deployed checks
 
-Not run. Drafts remain outside the public route tree until source alignment is complete. Local site rendering, search, canonical Markdown endpoint verification, and deployed behavior are separate Milestone B evidence.
+Rendering and deployed checks not run. Drafts remain outside the public route tree until source alignment is complete. Local site rendering, search, canonical Markdown endpoint verification, and deployed behavior are separate Milestone B evidence.
+
+Existing baseline preservation checks did run:
+
+- `node scripts/sync-store6-docs.mjs --source-root /private/tmp/store6-agent-docs-source-20260908 --check`: exit 0, checked 13 locked outputs at `ad435df1095673709a22f1b52a82aa03748cd9b3`.
+- `node scripts/build-agent-docs.mjs --check`: exit 0, checked 45 agent-doc outputs. An existing Node module-type warning was emitted.
+- Candidate README public availability: a GET to `https://raw.githubusercontent.com/matt-ramotar/Store6/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/README.md` returned HTTP 200. Earlier browser-tool cache misses did not establish HTTP failure. This proves that source blob is public, not that source alignment has occurred.
 
 ## Reviews
 
-Pending. Each writer will complete factual review followed by the three writing-voice passes. The orchestrator will verify spec compliance and integrate evidence, followed by one bounded independent review. No recursive review chains.
+Two bounded writers, each using `gpt-5.6-sol` at high effort, owned one draft apiece. They completed factual accuracy, warranted guarantees, and reader-utility passes, then Matt's three writing-voice passes. The orchestrator retained ownership of shared records, Gradle, and commits. The writers changed only their assigned page.
+
+The orchestrator checked the shared scenario and source assertions, correcting cache-revalidation lifetime, transport-idempotency wording, platform grant qualifiers, and the cancellation/re-registration verification recipe. The Meeseeks startup guidance now distinguishes missing payload registration, missing coordinator attachment, and an unknown store name.
+
+One independent `gpt-6-astra` reviewer at high effort found an omitted Kotlin-context prerequisite: the visible local-variable opt-in does not cover later statements, and the Background example's direct activation needs an enclosing suspending context. Adjacent prose now explains file/function-level `ExperimentalStoreApi` opt-in for both snippets and the Background coroutine/suspending-function requirement. The exact copied regions remain unchanged. The reviewer found no other blocking factual or guarantee errors. The orchestrator checked the corrections against source and repeated the affected draft checks. No recursive review was requested.
+
+## Spec acceptance and local checkpoints
+
+| Acceptance item | Result |
+|---|---|
+| Complete Background work and Meeseeks prose | Complete, with the requested frontmatter, scenario, prerequisites, exact snippets, platform sections, recovery guidance, and next-page links |
+| Source authority and support status | Both drafts point to the inspected scheduling candidate; optional/experimental alpha02 targets and runtime gaps remain explicit |
+| Warranted guarantees | No exactly-once, bounded wake-up latency, universal constraints, or in-memory process-durability promise |
+| Evidence classes remain distinct | Fresh in-process tests, cached compilation output, source-documented platform behavior, and unexecuted device/site/deployed checks are identified separately |
+| Source-alignment handoff | Complete in `sources.md`, including both routes, old/candidate revisions, snippet paths, source-owned discovery links, and the one-revision acceptance conditions |
+| Existing public site | Source lock, content, navigation, application code, dependency versions, and generated corpus remain unchanged |
+
+Local checkpoint commits: `e1a764d` records the initial sources, `e9f0f65` adds Background work, and `224e67c` adds Meeseeks. The final evidence checkpoint uses `docs: verify background work documentation drafts`. Plan/spec progress is recorded separately. Nothing was pushed, opened as a PR, merged, deployed, or released.
 
 ## Completion status
 
-Milestone A is in progress. Milestone B remains pending source alignment. The full implementation goal is not complete while the integrated guides and their required verification are missing.
+Milestone A is complete within the 60-minute limit. Milestone B remains pending the separate source-alignment dependency. Per Task 5, execution stops before Task 6: the current site pin lacks both documented scheduling modules, and the candidate cannot replace it without migrating existing source contracts and discovery inputs coherently. The full implementation goal is not complete while integrated guides and their required verification are missing.
