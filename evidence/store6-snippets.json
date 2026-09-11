@@ -112,6 +112,16 @@
       "pages": ["/docs/store6/mutations/conflicts"]
     },
     {
+      "name": "mutations-drain-meeseeks-jvm-wiring",
+      "path": "mutations-drain-meeseeks/src/jvmTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/meeseeks/docs/MeeseeksWiringDocsSnippet.kt",
+      "pages": ["/docs/store6/meeseeks"]
+    },
+    {
+      "name": "mutations-drain-quickstart",
+      "path": "mutations-drain/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/docs/DrainQuickstartDocsSnippet.kt",
+      "pages": ["/docs/store6/mutations/background-work"]
+    },
+    {
       "name": "mutations-inspection-event-collector",
       "path": "store6-mutations/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/docs/MutationDocsSnippetFixtures.kt",
       "pages": ["/docs/store6/mutations/inspection"]

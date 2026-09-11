@@ -153,9 +153,26 @@ test('buildAgentDocs emits one Markdown file per configured page plus manifest a
   const outputs = await buildAgentDocs({ root: ROOT });
   const config = JSON.parse(readFileSync(resolve(ROOT, 'scripts/agent-docs/config.json'), 'utf8'));
   assert.equal(outputs.size, config.pages.length + 2);
-  assert.equal(outputs.size, 45);
+  assert.equal(outputs.size, 47);
   const manifest = manifestOf(outputs);
-  assert.equal(manifest.pages.length, 43);
+  assert.equal(manifest.pages.length, 45);
+  assert.deepEqual(
+    manifest.pages
+      .filter(({ id }) => id === 'meeseeks' || id === 'mutations/background-work')
+      .map(({ id, canonicalUrl, markdownUrl }) => ({ id, canonicalUrl, markdownUrl })),
+    [
+      {
+        id: 'meeseeks',
+        canonicalUrl: `${ORIGIN}/docs/store6/meeseeks`,
+        markdownUrl: `${ORIGIN}/llms/store6/meeseeks.md`,
+      },
+      {
+        id: 'mutations/background-work',
+        canonicalUrl: `${ORIGIN}/docs/store6/mutations/background-work`,
+        markdownUrl: `${ORIGIN}/llms/store6/mutations/background-work.md`,
+      },
+    ],
+  );
   assert.equal(manifest.verifiedArtifacts.length, 0);
   assert.equal(manifest.sourceRevision, JSON.parse(readFileSync(resolve(ROOT, 'evidence/T4-store6-source-lock.json'))).revision);
   assert.equal(manifest.pages.every(entry => /^sha256:[a-f0-9]{64}$/.test(manifest.bundleId) && /^[a-f0-9]{64}$/.test(entry.sha256)), true);

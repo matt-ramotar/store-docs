@@ -4,11 +4,11 @@
     "build-agent-docs": [
       {
         "path": "public/llms-full.txt",
-        "sha256": "b0424537064b111225d9c225774ca4c68e595876b4b707c5603c3d3e2429d4d9"
+        "sha256": "ddd6e5872ff6dcbd4f77639f074e97a2e5d3bf0707e2ba563a69d4a9716076e8"
       },
       {
         "path": "public/llms/store6-manifest.json",
-        "sha256": "772ed87aa49b5e55df5b116be850c69e9b3c5c772be82d5a9b6c132cfe90d9a4"
+        "sha256": "461fc29fbbf166f7f7816f9647197b8a5aaf9dc8da3bfb69aa3e9c5558ae415f"
       },
       {
         "path": "public/llms/store6/agents/agent-skills.md",
@@ -95,6 +95,10 @@
         "sha256": "f7922f999b2ee59ae07fece5e4bc2bcedda0055a6f56b11e16ff7dae192789fa"
       },
       {
+        "path": "public/llms/store6/meeseeks.md",
+        "sha256": "bb95bd65b5f3d79ac881a044c82d79427a5a21a33d22bf44bdbe745379c5ed47"
+      },
+      {
         "path": "public/llms/store6/migration/component-map.md",
         "sha256": "69aa3d8f787d85495ee811aee21114e7abaef89e1fd7f00a33bfb44c74884173"
       },
@@ -108,11 +112,15 @@
       },
       {
         "path": "public/llms/store6/mutations.md",
-        "sha256": "7bacb3b1625db1d45084b1ef80f4ff947a7ab06b325150c23e347e418dfda921"
+        "sha256": "18fe8fd257fb47166287006dde00c69cb3bf88572d0df78d5a5ae867e3cd5d67"
       },
       {
         "path": "public/llms/store6/mutations/aliases.md",
         "sha256": "17d318288dd62149575e603c7a4c74c5822b96ad7505fa7a875dcbfcde2b134a"
+      },
+      {
+        "path": "public/llms/store6/mutations/background-work.md",
+        "sha256": "38aadb3e343b41fbe138ff7dc0c491fe368dbb271d06159612e97dc2ac5bdf60"
       },
       {
         "path": "public/llms/store6/mutations/conflicts.md",
@@ -120,7 +128,7 @@
       },
       {
         "path": "public/llms/store6/mutations/drain-and-restart.md",
-        "sha256": "06fa584a20178bfe2ee2defefb72b407c3de57c9fd529719ff2c424d44706792"
+        "sha256": "e5fc6c556027c7a15bb0b0036331cc718b89a033a24e952f739cd5aabfb04379"
       },
       {
         "path": "public/llms/store6/mutations/inspection.md",

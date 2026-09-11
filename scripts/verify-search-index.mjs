@@ -53,6 +53,14 @@ try {
     assert.ok(results.some(result => result.url === destination || result.pageUrl === destination),
       `${query} must include ${destination}`);
   }
+  for (const [query, destination] of [
+    ["background work", "/docs/store6/mutations/background-work"],
+    ["Meeseeks", "/docs/store6/meeseeks"],
+  ]) {
+    const results = normalizeSearchResults(await store6Client.search(query), query);
+    assert.ok(results.some(result => result.url === destination || result.pageUrl === destination),
+      `${query} must include ${destination}`);
+  }
   const freshness = normalizeSearchResults(await store6Client.search("freshness"), "freshness");
   assert.equal(freshness[0]?.url, "/docs/store6/concepts/freshness", "canonical Freshness policies must rank first");
   assert.ok(freshness.every((result) => result.version === "store6"), "Store 6 scope must exclude Store 5");

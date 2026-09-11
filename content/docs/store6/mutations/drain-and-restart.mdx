@@ -35,9 +35,10 @@ processing is deterministic by durable client sequence. There is no promised ord
 
 <Callout type="Note">
 
-**Store does not include a background scheduler.** Call `drain(key)` or `drain()` from your own
-foreground, connectivity, or application-owned worker triggers. Each call is a bounded foreground
-pass; it does not start a retry loop.
+The mutation engine does not schedule background work by itself. Call `drain(key)` or `drain()`
+from an application-owned trigger, or connect the optional drain coordinator to a scheduler.
+Each drain is a bounded pass. See [Background work](/docs/store6/mutations/background-work)
+for lifecycle and scheduling setup.
 
 </Callout>
 

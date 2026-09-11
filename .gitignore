@@ -4,6 +4,9 @@ node_modules/
 *.tsbuildinfo
 next-env.d.ts
 
+# Local planning and authoring artifacts.
+/docs/superpowers/
+
 # Local run artifacts. Required evidence manifests remain tracked.
 /evidence/design-revision/
 /evidence/sidebar-navigation/
