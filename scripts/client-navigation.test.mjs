@@ -16,12 +16,18 @@ async function payloadFiles(directory) {
 }
 
 test("public page Flight payloads contain no server-render errors during client navigation", async () => {
+  const manifest = JSON.parse(await readFile(resolve(app, "../../prerender-manifest.json"), "utf8"));
+  const published = new Set(Object.entries(manifest.routes)
+    .filter(([path, route]) => route.dataRoute?.endsWith(".rsc") && path !== "/design-review/components")
+    .map(([path]) => path === "/" ? "index" : path.slice(1)));
   const files = (await payloadFiles(app)).filter((path) => {
     const name = relative(app, path);
-    // This internal gallery intentionally emits notFound in the public build.
-    return name !== "design-review/components.rsc" &&
-      !name.startsWith("design-review/components.segments/");
+    // HTTP recovery checks can create cached 404 payloads for unpublished URLs.
+    // A 404 digest on any published route must still fail this assertion.
+    const stem = name.includes(".segments/") ? name.split(".segments/")[0] : name.replace(/\.rsc$/, "");
+    return published.has(stem);
   });
+  for (const stem of published) assert.ok(files.includes(resolve(app, `${stem}.rsc`)), `${stem}: missing published Flight payload`);
   assert.ok(files.some((path) => path.endsWith("__PAGE__.segment.rsc")),
     "Build the site before checking its client-navigation payloads");
 

@@ -22,7 +22,7 @@ test('only declared Markdown and discovery text receive explicit public headers'
 
 test('build and dev regenerate agent documents while start serves the built candidate', async () => {
   const pkg = JSON.parse(await readFile(new URL('package.json', root), 'utf8'));
-  assert.equal(pkg.scripts.build, 'node scripts/build-agent-docs.mjs && next build --webpack');
-  assert.equal(pkg.scripts.dev, 'node scripts/build-agent-docs.mjs && next dev -p 3111');
+  assert.equal(pkg.scripts.build, 'node scripts/build-agent-docs.mjs && node scripts/generate-agent-routes.mjs && next build --webpack && node scripts/export-agent-pages.mjs && node scripts/finalize-agent-headers.mjs');
+  assert.equal(pkg.scripts.dev, 'node scripts/build-agent-docs.mjs && node scripts/generate-agent-routes.mjs && next dev -p 3111');
   assert.equal(pkg.scripts.start, 'next start -p 3222');
 });

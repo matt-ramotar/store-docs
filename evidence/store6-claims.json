@@ -98,7 +98,7 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
+          "sha256": "8c742c7c01fb275b0e8884922c7c0732ba49a76b253ba47d9012fa89440be4e5",
           "lines": {
             "start": 14,
             "end": 16
@@ -107,10 +107,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
+          "sha256": "8c742c7c01fb275b0e8884922c7c0732ba49a76b253ba47d9012fa89440be4e5",
           "lines": {
-            "start": 136,
-            "end": 161
+            "start": 138,
+            "end": 164
           }
         }
       ]
@@ -262,7 +262,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 258,
             "end": 259
@@ -364,7 +364,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 254,
             "end": 255
@@ -451,7 +451,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 262,
             "end": 263
@@ -519,7 +519,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 210,
             "end": 211
@@ -570,7 +570,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 214,
             "end": 215
@@ -621,7 +621,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 194,
             "end": 195
@@ -706,7 +706,7 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "08a73d67482cb132ea79f2d6ec020e978e244596ecabbee8e8e2da3dae217e81",
+          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
           "lines": {
             "start": 198,
             "end": 199
@@ -786,10 +786,10 @@
         {
           "repository": "store-docs",
           "path": "scripts/t7-static-hero.test.mjs",
-          "sha256": "4bf3c8eddda03b51d74b80d60ed901be56eeb2c63a7b04550a178f0e0d0b294b",
+          "sha256": "8c742c7c01fb275b0e8884922c7c0732ba49a76b253ba47d9012fa89440be4e5",
           "lines": {
-            "start": 122,
-            "end": 134
+            "start": 123,
+            "end": 136
           }
         }
       ]

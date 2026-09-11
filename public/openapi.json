@@ -1,0 +1,142 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Store documentation API",
+    "version": "1.0.0",
+    "description": "The documentation site's public, read-only API exports its client search index. It does not provide a hosted Store data API. Unknown /api paths return HTTP 404; unsupported methods on /api/search return HTTP 405 with Allow: GET, HEAD, OPTIONS. API errors use RFC 9457 application/problem+json with code and resolution extensions, as defined in the response components. HEAD responses have no body. Read /llms.txt for the documentation index and /sitemap.xml for page discovery."
+  },
+  "servers": [
+    { "url": "https://store.mattramotar.dev" }
+  ],
+  "security": [],
+  "paths": {
+    "/api/search": {
+      "get": {
+        "operationId": "downloadSearchIndex",
+        "summary": "Download the documentation search index",
+        "description": "Returns the complete serialized Orama search index for client-side search across Store 5 and Store 6 documentation. Consume it with the Fumadocs oramaStaticClient. The index is generated at build time, and query parameters are ignored; this endpoint does not execute search queries or return a list of search results. The serialized database fields are an implementation format and can change with Fumadocs or Orama upgrades.",
+        "responses": {
+          "200": {
+            "description": "The complete, serialized search database.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SearchIndex" }
+              }
+            }
+          },
+          "500": { "$ref": "#/components/responses/Error500" }
+        }
+      },
+      "head": {
+        "operationId": "inspectSearchIndex",
+        "summary": "Read search index response headers",
+        "responses": {
+          "200": { "description": "The GET response headers, with no response body." },
+          "500": { "description": "The search index could not be generated. This HEAD response has no body." }
+        }
+      },
+      "options": {
+        "operationId": "getSearchIndexMethods",
+        "summary": "Discover supported search index methods",
+        "responses": {
+          "204": {
+            "description": "Supported methods, with no response body.",
+            "headers": {
+              "Allow": {
+                "description": "Supported methods. Method ordering is not significant.",
+                "schema": { "type": "string" },
+                "example": "GET, HEAD, OPTIONS"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SearchIndex": {
+        "type": "object",
+        "description": "An opaque Orama database export consumed by Fumadocs oramaStaticClient. It is a database snapshot, not search results.",
+        "required": ["type"],
+        "properties": {
+          "type": { "type": "string", "const": "advanced" }
+        },
+        "additionalProperties": true
+      },
+      "Problem": {
+        "type": "object",
+        "description": "RFC 9457 Problem Details. The type URI identifies the problem type; code is a stable site-specific error code and resolution provides recovery guidance. Unknown extension members may be added and must be ignored by clients.",
+        "required": ["type", "title", "status", "detail", "instance", "code", "resolution"],
+        "properties": {
+          "type": { "type": "string", "format": "uri-reference", "const": "about:blank" },
+          "title": { "type": "string" },
+          "status": { "type": "integer", "minimum": 400, "maximum": 599 },
+          "detail": { "type": "string" },
+          "instance": { "type": "string", "format": "uri-reference", "description": "The request pathname, without query parameters." },
+          "code": { "type": "string", "enum": ["API_NOT_FOUND", "METHOD_NOT_ALLOWED", "SEARCH_INDEX_UNAVAILABLE"] },
+          "resolution": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "responses": {
+      "Error404": {
+        "description": "No API endpoint exists at the requested /api path. HEAD requests return these headers and status without a body.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/Problem" },
+            "example": {
+              "type": "about:blank",
+              "title": "Not Found",
+              "status": 404,
+              "detail": "This API endpoint does not exist.",
+              "instance": "/api/missing",
+              "code": "API_NOT_FOUND",
+              "resolution": "Read /openapi.json for the available API, or use /llms.txt and /docs to find documentation."
+            }
+          }
+        }
+      },
+      "Error405": {
+        "description": "The requested method is not supported by /api/search.",
+        "headers": {
+          "Allow": {
+            "schema": { "type": "string", "const": "GET, HEAD, OPTIONS" }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/Problem" },
+            "example": {
+              "type": "about:blank",
+              "title": "Method Not Allowed",
+              "status": 405,
+              "detail": "This API endpoint only supports GET, HEAD, and OPTIONS.",
+              "instance": "/api/search",
+              "code": "METHOD_NOT_ALLOWED",
+              "resolution": "Use GET /api/search to download the search index. Read /openapi.json for its response format."
+            }
+          }
+        }
+      },
+      "Error500": {
+        "description": "The documentation search index could not be generated.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/Problem" },
+            "example": {
+              "type": "about:blank",
+              "title": "Internal Server Error",
+              "status": 500,
+              "detail": "The documentation search index could not be generated.",
+              "instance": "/api/search",
+              "code": "SEARCH_INDEX_UNAVAILABLE",
+              "resolution": "Retry later, or use /llms.txt and /docs to find documentation."
+            }
+          }
+        }
+      }
+    }
+  }
+}
