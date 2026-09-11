@@ -994,6 +994,107 @@ test("an idempotent reconcile preserves canonical ledger bytes", async () => {
   });
 });
 
+test("explicit Store6 revisions verify immutable blobs alongside the shared source pin", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    writeFixture(sourceRoot, "src/Value.kt", "old\n");
+    const revision = commitStore6(sourceRoot);
+    writeFixture(sourceRoot, "src/Value.kt", "new\n");
+    writeFixture(sourceRoot, "src/New.kt", "new API\n");
+    const guideRevision = commitStore6(sourceRoot);
+    execFileSync("git", ["checkout", "-q", "--detach", revision], { cwd: sourceRoot });
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    const anchors = [
+      { repository: "store6", path: "src/Value.kt", sha256: sha256("old\n") },
+      { repository: "store6", path: "src/Value.kt", revision: guideRevision, sha256: sha256("new\n") },
+      { repository: "store6", path: "src/New.kt", revision: guideRevision, sha256: sha256("new API\n") },
+    ];
+    writeJson(root, "evidence/store6-claims.json", {
+      schemaVersion: 1, revision,
+      claims: anchors.map((anchor, index) => claim({ anchor,
+        id: `docs/store6/concepts/value/00${index + 1}`, statement: "The named source revision defines the API." })),
+    });
+    assert.equal((await checkClaims({ root, sourceRoot })).anchorCount, 3);
+
+    const ledger = readJson(root, "evidence/store6-claims.json");
+    ledger.claims[1].anchors[0].sha256 = sha256("wrong\n");
+    writeJson(root, "evidence/store6-claims.json", ledger);
+    await assert.rejects(checkClaims({ root, sourceRoot }), new RegExp(`pinned revision ${guideRevision} hashes to`));
+    await checkClaims({ root, sourceRoot, reconcileId: "docs/store6/concepts/value/002" });
+    assert.equal(readJson(root, "evidence/store6-claims.json").claims[1].anchors[0].sha256, sha256("new\n"));
+  });
+});
+
+test("explicit Store6 revisions reject missing commits and files without falling back to the checkout", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    writeFixture(sourceRoot, "src/Value.kt", "value\n");
+    const revision = commitStore6(sourceRoot);
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    const ledger = { schemaVersion: 1, revision, claims: [claim({
+      anchor: { repository: "store6", path: "src/Value.kt", revision: "0".repeat(40), sha256: sha256("value\n") },
+      id: "docs/store6/concepts/value/001", statement: "The named source contains Value.",
+    })] };
+    writeJson(root, "evidence/store6-claims.json", ledger);
+    await assert.rejects(checkClaims({ root, sourceRoot }), /Git preflight failed for pinned revision 0{40}/);
+    ledger.claims[0].anchors[0].revision = revision;
+    ledger.claims[0].anchors[0].path = "src/Uncommitted.kt";
+    writeFixture(sourceRoot, "src/Uncommitted.kt", "value\n");
+    writeJson(root, "evidence/store6-claims.json", ledger);
+    await assert.rejects(checkClaims({ root, sourceRoot }), /is missing from pinned revision/);
+  });
+});
+
+test("explicit Store6 revisions reject committed symlinks", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    writeFixture(sourceRoot, "Value.kt", "value\n");
+    const revision = commitStore6(sourceRoot);
+    symlinkSync("Value.kt", resolve(sourceRoot, "Link.kt"));
+    const guideRevision = commitStore6(sourceRoot);
+    execFileSync("git", ["checkout", "-q", "--detach", revision], { cwd: sourceRoot });
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    writeJson(root, "evidence/store6-claims.json", { schemaVersion: 1, revision, claims: [claim({
+      anchor: { repository: "store6", path: "Link.kt", revision: guideRevision, sha256: sha256("Value.kt") },
+      id: "docs/store6/concepts/value/001", statement: "The named source contains Value.",
+    })] });
+    await assert.rejects(checkClaims({ root, sourceRoot }), /committed Store6 symlink Link.kt/);
+  });
+});
+
+test("explicit Store6 revisions require commit objects rather than annotated tags", async () => {
+  const { checkClaims } = await import("./check-claims.mjs");
+  await withFixture(async ({ root, sourceRoot }) => {
+    writeFixture(sourceRoot, "Value.kt", "value\n");
+    const revision = commitStore6(sourceRoot);
+    execFileSync("git", ["-c", "user.name=Claims Test", "-c", "user.email=claims@example.test", "tag", "-am", "tag", "guide"], { cwd: sourceRoot });
+    const tag = execFileSync("git", ["rev-parse", "guide"], { cwd: sourceRoot, encoding: "utf8" }).trim();
+    writeJson(root, "evidence/T4-store6-source-lock.json", lock([], revision));
+    writeJson(root, "evidence/store6-claims.json", { schemaVersion: 1, revision, claims: [claim({
+      anchor: { repository: "store6", path: "Value.kt", revision: tag, sha256: sha256("value\n") },
+      id: "docs/store6/concepts/value/001", statement: "The named source contains Value.",
+    })] });
+    await assert.rejects(checkClaims({ root, sourceRoot }), /pinned revision .* is not a commit/);
+  });
+});
+
+for (const [repository, revision] of [["store6", "main"], ["store6", "a".repeat(39)], ["store-docs", REVISION], ["store-agent-skills", REVISION]]) {
+  test(`explicit anchor revisions reject ${repository} with ${revision}`, async () => {
+    const { checkClaims } = await import("./check-claims.mjs");
+    await withFixture(async ({ root, sourceRoot }) => {
+      writeFixture(sourceRoot, "Value.kt", "value\n");
+      const sharedRevision = commitStore6(sourceRoot);
+      writeFixture(root, "Value.kt", "value\n");
+      writeJson(root, "evidence/T4-store6-source-lock.json", lock([], sharedRevision));
+      writeJson(root, "evidence/store6-claims.json", { schemaVersion: 1, revision: sharedRevision, claims: [claim({
+        anchor: { repository, path: "Value.kt", revision, sha256: sha256("value\n") },
+        id: "docs/store6/concepts/value/001", statement: "The named source contains Value.",
+      })] });
+      await assert.rejects(checkClaims({ root, sourceRoot }), /\.revision: (expected a full 40-character|only Store6 anchors)/);
+    });
+  });
+}
+
 function lock(sources = [], revision = REVISION) {
   return { schemaVersion: 1, revision, sources };
 }

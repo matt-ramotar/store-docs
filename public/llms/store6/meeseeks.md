@@ -23,7 +23,7 @@ worker finishing does not itself prove that the mutation was acknowledged.
 > **Warning**
 >
 > `mutations-drain-meeseeks` is an optional experimental artifact targeted for `6.0.0-alpha02`.
-> [Upstream JVM scheduling fixes and concurrent scheduling uniqueness verification remain required](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/STABILITY.md#L60-L61).
+> [Upstream JVM scheduling fixes remain required](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/STABILITY.md#L60).
 > The candidate README uses a `6.0.0-SNAPSHOT` coordinate. That line does not establish that an artifact
 > is available, so this guide does not provide a dependency declaration.
 
@@ -44,14 +44,14 @@ Prepare the host-owned pieces before adding the adapter:
 * The required Android or iOS host configuration described below.
 
 The candidate module declares Android, JVM, `iosArm64`, `iosSimulatorArm64`, `iosX64`, and JS targets
-in its [build configuration](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/build.gradle.kts#L8-L21).
+in its [build configuration](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/build.gradle.kts#L8-L21).
 A larger `commonMain` target matrix cannot resolve this artifact for targets it does not publish.
 JVM consumers also need Java 17 because Meeseeks 1.1.1 publishes Java 17 bytecode and exposes a public
 inline API. The candidate module sets `jvmToolchain(17)` for that reason. Its publication metadata
 declares `mutations-drain-meeseeks` as the
-[artifact id](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/gradle.properties#L1-L2)
+[artifact id](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/gradle.properties#L1-L2)
 under the repository's
-[`org.mobilenativefoundation.store` group](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/gradle.properties#L11).
+[`org.mobilenativefoundation.store` group](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/gradle.properties#L11).
 
 ## How the adapter fits
 
@@ -80,7 +80,7 @@ already has a manager and other workers, add this registration to that existing 
 
 The following is the candidate's compile-only JVM host wiring body. It expects host-provided
 `appContext`, the fully constructed `users` store, and `scope`. The
-[complete source fixture](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/src/jvmTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/meeseeks/docs/MeeseeksWiringDocsSnippet.kt)
+[complete source fixture](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/src/jvmTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/meeseeks/docs/MeeseeksWiringDocsSnippet.kt)
 contains its exact imports. The function is not a runtime test and must not be invoked as one.
 
 Apply `@OptIn(ExperimentalStoreApi::class)` to the enclosing host function, or use
@@ -89,28 +89,28 @@ file's package declaration. The source fixture supplies that file-level opt-in. 
 inside the copied region applies only to the following local declaration.
 
 ```kotlin
-    @OptIn(ExperimentalStoreApi::class)   // required: the whole module is experimental
-    lateinit var bgTaskManager: BGTaskManager
-    val drainScheduler = MeeseeksDrainScheduler(manager = { bgTaskManager })
-    bgTaskManager =
-        Meeseeks.initialize(appContext) {
-            register<StoreDrainPayload> { workerContext ->
-                StoreDrainWorker(workerContext, drainScheduler)
-            }
+@OptIn(ExperimentalStoreApi::class)   // required: the whole module is experimental
+lateinit var bgTaskManager: BGTaskManager
+val drainScheduler = MeeseeksDrainScheduler(manager = { bgTaskManager })
+bgTaskManager =
+    Meeseeks.initialize(appContext) {
+        register<StoreDrainPayload> { workerContext ->
+            StoreDrainWorker(workerContext, drainScheduler)
         }
-    val coordinator = mutationDrainCoordinator(drainScheduler)
-    coordinator.register(
-        "com.example.users",
-        users,
-        DrainPolicy(
-            constraints = DrainConstraints(
-                requiresNetwork = false,
-                requiresCharging = false,
-            ),
+    }
+val coordinator = mutationDrainCoordinator(drainScheduler)
+coordinator.register(
+    "com.example.users",
+    users,
+    DrainPolicy(
+        constraints = DrainConstraints(
+            requiresNetwork = false,
+            requiresCharging = false,
         ),
-    )
-    val watch = scope.launch { coordinator.watch("com.example.users") }
-    scope.launch { coordinator.runActivation("com.example.users") }
+    ),
+)
+val watch = scope.launch { coordinator.watch("com.example.users") }
+scope.launch { coordinator.runActivation("com.example.users") }
 ```
 
 The two constraint flags are `false` because Meeseeks does not support Store6 network or charging
@@ -122,7 +122,7 @@ Meeseeks 1.1.1 initializes on JVM, but the candidate records unresolved Quartz e
 recovery failures. Scheduled tasks do not execute with its bundled Quartz store, and a recovery scan
 can fail when the Meeseeks database contains a payload type that the current process did not
 register. The candidate's
-[`jvmTest` configuration](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/build.gradle.kts#L44-L58)
+[`jvmTest` configuration](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/build.gradle.kts#L44-L58)
 excludes the two integration suites that exercise these paths unless an opt-in Gradle property is
 set. Use `InProcessDrainScheduler` for a JVM host until those upstream failures are resolved.
 
@@ -134,7 +134,7 @@ Meeseeks, registers `StoreDrainPayload`, implements WorkManager's `Configuration
 before starting its coordinator watch.
 
 The candidate README contains the
-[full Android host example](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/README.md#L86-L122).
+[full Android host example](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/README.md#L86-L122).
 It follows the
 [Meeseeks 1.1.1 Android guide](https://github.com/matt-ramotar/meeseeks/blob/171c1a1301f7486b53b881cdcfaac6767c273276/docs/platforms/android.md).
 The candidate source documents that setup. It does not record an Android device run. Android
@@ -145,7 +145,7 @@ mutation journal is what lets a later execution opportunity resume from the same
 ## iOS setup
 
 Initialize one application-scoped manager and register `StoreDrainPayload` as shown in the
-[candidate iOS setup](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain-meeseeks/README.md#L124-L161).
+[candidate iOS setup](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain-meeseeks/README.md#L124-L161).
 Complete the host configuration in the
 [Meeseeks 1.1.1 iOS guide](https://github.com/matt-ramotar/meeseeks/blob/171c1a1301f7486b53b881cdcfaac6767c273276/docs/platforms/ios.md),
 including the app refresh and processing background modes. Add both Meeseeks identifiers to
@@ -237,10 +237,10 @@ a server receipt nor a settlement signal.
 
 ### Scheduling appears duplicated
 
-The scheduler tracks a logical pending slot per store name, but platform recovery may expose
-duplicates and concurrent scheduling uniqueness still requires verification before release. Keep the
-server idempotent, inspect the Store6 journal after each pass, and do not assume one worker invocation
-per mutation or safe behavior for overlapping activations on every platform.
+The scheduler tracks a logical pending slot per store name, but recovery can find multiple platform
+tasks for that name. A tracked slot does not establish one worker invocation per mutation. Keep the
+server idempotent, inspect the Store6 journal after each pass, and verify overlapping activations on
+each platform the application uses.
 
 ## Verify your host
 

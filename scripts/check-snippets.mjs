@@ -8,12 +8,14 @@ const ROOT = resolve(import.meta.dirname, "..");
 const USAGE = "usage: check-snippets.mjs --source-root <checkout>";
 const execFileAsync = promisify(execFile);
 const SNIPPET_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const COMMIT_REVISION = /^[a-f0-9]{40}$/;
 
 if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))) {
   try {
     const result = await checkSnippets(parseArguments(process.argv.slice(2)));
     console.log(
-      `checked ${result.snippetCount} snippets (${result.pageReferenceCount} page references) at ${result.revision}`,
+      `checked ${result.snippetCount} snippets (${result.pageReferenceCount} page references) at ${result.revision}` +
+      (result.additionalRevisions?.length ? `; additional immutable revisions: ${result.additionalRevisions.join(", ")}` : ""),
     );
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
@@ -73,34 +75,42 @@ export async function checkSnippets({ revision, root = ROOT, sourceRoot }) {
   }
 
   const sourceRegionsByPath = new Map();
+  const verifiedCommitRevisions = new Set();
   let pageReferenceCount = 0;
   for (const snippet of manifest.snippets) {
-    let regions = sourceRegionsByPath.get(snippet.path);
+    const sourceKey = `${snippet.revision ?? "working-tree"}:${snippet.path}`;
+    let regions = sourceRegionsByPath.get(sourceKey);
     if (!regions) {
       const sourcePath = resolve(sourceRoot, snippet.path);
       let source;
-      try {
-        const resolvedSourcePath = await realpath(sourcePath);
-        const sourceRelativePath = relative(resolvedSourceRoot, resolvedSourcePath);
-        if (
-          sourceRelativePath === ".." ||
-          sourceRelativePath.startsWith(`..${sep}`) ||
-          isAbsolute(sourceRelativePath)
-        ) {
-          throw new Error(`snippet ${snippet.name} has unsafe source path: ${snippet.path}`);
+      if (snippet.revision !== undefined) {
+        source = await readPinnedSource(sourceRoot, snippet, verifiedCommitRevisions);
+      } else {
+        try {
+          const resolvedSourcePath = await realpath(sourcePath);
+          const sourceRelativePath = relative(resolvedSourceRoot, resolvedSourcePath);
+          if (
+            sourceRelativePath === ".." ||
+            sourceRelativePath.startsWith(`..${sep}`) ||
+            isAbsolute(sourceRelativePath)
+          ) {
+            throw new Error(`snippet ${snippet.name} has unsafe source path: ${snippet.path}`);
+          }
+          source = await readFile(resolvedSourcePath, "utf8");
+        } catch (error) {
+          if (error?.code === "ENOENT") {
+            throw new Error(`snippet ${snippet.name} source path is missing: ${snippet.path}`);
+          }
+          throw error;
         }
-        source = await readFile(resolvedSourcePath, "utf8");
-      } catch (error) {
-        if (error?.code === "ENOENT") {
-          throw new Error(`snippet ${snippet.name} source path is missing: ${snippet.path}`);
-        }
-        throw error;
       }
-      regions = extractSourceRegions(source, snippet.path);
-      sourceRegionsByPath.set(snippet.path, regions);
+      const sourceDescription = snippet.revision ? `${snippet.path} at revision ${snippet.revision}` : snippet.path;
+      regions = extractSourceRegions(source, sourceDescription);
+      sourceRegionsByPath.set(sourceKey, regions);
     }
     if (!regions.has(snippet.name)) {
-      throw new Error(`snippet ${snippet.name} is missing from ${snippet.path}`);
+      throw new Error(`snippet ${snippet.name} is missing from ${snippet.path}` +
+        (snippet.revision ? ` at revision ${snippet.revision}` : ""));
     }
     const expected = regions.get(snippet.name);
 
@@ -119,7 +129,7 @@ export async function checkSnippets({ revision, root = ROOT, sourceRoot }) {
       if (actual !== expected) {
         throw new Error(
           [
-            `snippet ${snippet.name} on ${route} differs from ${snippet.path} at ${checkedRevision}`,
+            `snippet ${snippet.name} on ${route} differs from ${snippet.path} at ${snippet.revision ?? checkedRevision}`,
             createDiff(expected, actual, `${snippet.path}:${snippet.name}`, target.relativePath),
           ].join("\n"),
         );
@@ -127,11 +137,53 @@ export async function checkSnippets({ revision, root = ROOT, sourceRoot }) {
     }
   }
 
+  const additionalRevisions = [...verifiedCommitRevisions].filter((value) => value !== checkedRevision).sort();
   return {
     pageReferenceCount,
     revision: checkedRevision,
     snippetCount: manifest.snippets.length,
+    ...(additionalRevisions.length ? { additionalRevisions } : {}),
   };
+}
+
+async function readPinnedSource(sourceRoot, snippet, verifiedCommitRevisions) {
+  const { name, path, revision } = snippet;
+  const executeGit = async (...args) => (await execFileAsync("git", ["-C", sourceRoot, ...args], {
+    encoding: "utf8",
+    env: { ...process.env, GIT_NO_REPLACE_OBJECTS: "1" },
+  })).stdout;
+  if (!verifiedCommitRevisions.has(revision)) {
+    let type;
+    try {
+      type = (await executeGit("cat-file", "-t", revision)).trim();
+    } catch {
+      throw new Error(`snippet ${name} revision ${revision} is unavailable in the source repository`);
+    }
+    if (type !== "commit") throw new Error(`snippet ${name} revision ${revision} is not a commit`);
+    verifiedCommitRevisions.add(revision);
+  }
+
+  let listing;
+  try {
+    listing = await executeGit("ls-tree", "-z", revision, "--", path);
+  } catch {
+    throw new Error(`snippet ${name} cannot read source path ${path} at revision ${revision}`);
+  }
+  const treeEntry = listing.split("\0")
+    .map((line) => line.match(/^([0-7]{6}) ([a-z]+) ([a-f0-9]{40})\t([\s\S]+)$/))
+    .find((match) => match?.[4] === path);
+  if (!treeEntry) {
+    throw new Error(`snippet ${name} source path is missing: ${path} at revision ${revision}`);
+  }
+  const [, mode, type, objectId] = treeEntry;
+  if ((mode !== "100644" && mode !== "100755") || type !== "blob") {
+    throw new Error(`snippet ${name} source path ${path} is not a regular Git file at revision ${revision}`);
+  }
+  try {
+    return await executeGit("cat-file", "blob", objectId);
+  } catch {
+    throw new Error(`snippet ${name} source blob is unavailable: ${path} at revision ${revision}`);
+  }
 }
 
 function validateManifest(manifest) {
@@ -144,6 +196,10 @@ function validateManifest(manifest) {
     }
     if (typeof snippet.name !== "string" || !SNIPPET_NAME.test(snippet.name)) {
       throw new Error(`invalid snippet name: ${String(snippet.name)}`);
+    }
+    if (Object.hasOwn(snippet, "revision") &&
+      (typeof snippet.revision !== "string" || !COMMIT_REVISION.test(snippet.revision))) {
+      throw new Error(`snippet ${snippet.name} has invalid revision: ${String(snippet.revision)}; expected a full lowercase commit hash`);
     }
     if (!isSafeSourcePath(snippet.path)) {
       throw new Error(`snippet ${snippet.name} has unsafe source path: ${String(snippet.path)}`);

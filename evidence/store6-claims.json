@@ -256,16 +256,16 @@
       "page": "/docs/meet-store",
       "claim": "The file's bytes are owned by the port-page:generate ledger, so hand edits are detected and block the generator's reconciliation.",
       "verdict": "REFUTED",
-      "note": "Ownership half is true: line 258-259 lists content/docs/meet-store.mdx under owners['port-page:generate'] with a pinned sha256. But the enforcement half is wrong: reconcileOwnedOutputs (store-docs/scripts/generated-output-transaction.mjs:45-58) never compares the current on-disk bytes of a CONTINUING owned output against its ledger hash — it stages and overwrites them unconditionally. Byte-mismatch blocking exists only for stale entries leaving the output set (OWNED_STALE_MODIFIED, line 55-57) and for newly claimed paths that already exist (OWNED_TARGET_UNCLAIMED, line 47-49); neither applies to meet-store.mdx, which stays in the inventory-derived output set. The byte-verifying verifyOwnedOutputs (line 201-219) is wired only to the sync-store6-docs owner via sync-store6-docs.mjs --check; port-page.mjs supports only --acquire | --generate (port-page.mjs:1349-1350), and neither package.json nor t8-verification.mjs hash-checks port-page:generate outputs against disk. So a hand edit to meet-store.mdx is silently overwritten on the next generate run, not detected-and-blocked — the practical conclusion for planning (do not hand-edit; edits will not survive) still holds, but via silent overwrite, not a blocking check.",
+      "note": "Ownership half is true: line 266-267 lists content/docs/meet-store.mdx under owners['port-page:generate'] with a pinned sha256. But the enforcement half is wrong: reconcileOwnedOutputs (store-docs/scripts/generated-output-transaction.mjs:45-58) never compares the current on-disk bytes of a CONTINUING owned output against its ledger hash — it stages and overwrites them unconditionally. Byte-mismatch blocking exists only for stale entries leaving the output set (OWNED_STALE_MODIFIED, line 55-57) and for newly claimed paths that already exist (OWNED_TARGET_UNCLAIMED, line 47-49); neither applies to meet-store.mdx, which stays in the inventory-derived output set. The byte-verifying verifyOwnedOutputs (line 201-219) is wired only to the sync-store6-docs owner via sync-store6-docs.mjs --check; port-page.mjs supports only --acquire | --generate (port-page.mjs:1349-1350), and neither package.json nor t8-verification.mjs hash-checks port-page:generate outputs against disk. So a hand edit to meet-store.mdx is silently overwritten on the next generate run, not detected-and-blocked — the practical conclusion for planning (do not hand-edit; edits will not survive) still holds, but via silent overwrite, not a blocking check.",
       "correction": "Hand edits to port-page-owned files are silently overwritten by reconcileOwnedOutputs on the next generate run, not detected-and-blocked; no byte-verifying --check is wired to the port-page:generate owner.",
       "anchors": [
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 258,
-            "end": 259
+            "start": 266,
+            "end": 267
           }
         }
       ]
@@ -364,10 +364,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 254,
-            "end": 255
+            "start": 262,
+            "end": 263
           }
         }
       ]
@@ -451,10 +451,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 262,
-            "end": 263
+            "start": 270,
+            "end": 271
           }
         }
       ]
@@ -519,10 +519,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 210,
-            "end": 211
+            "start": 218,
+            "end": 219
           }
         }
       ]
@@ -570,10 +570,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 214,
-            "end": 215
+            "start": 222,
+            "end": 223
           }
         }
       ]
@@ -621,10 +621,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 194,
-            "end": 195
+            "start": 202,
+            "end": 203
           }
         }
       ]
@@ -706,10 +706,10 @@
         {
           "repository": "store-docs",
           "path": "evidence/T4-owned-targets.json",
-          "sha256": "c85ff2380f5f94232bda50fdb0972d772c4f7d6c374ef01e24e56dbc27c043a2",
+          "sha256": "1dfa1570db1dd3f0c7b6b6c6a502ef6124947b8246209e41e7117fd854652cbc",
           "lines": {
-            "start": 198,
-            "end": 199
+            "start": 206,
+            "end": 207
           }
         }
       ]
@@ -8626,33 +8626,25 @@
     {
       "id": "docs/store6/mutations/background-work/001",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 places mutations-drain and mutations-drain-meeseeks on the experimental alpha02 track; that target does not establish artifact availability.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a places mutations-drain and mutations-drain-meeseeks on the experimental alpha02 track; that target does not establish artifact availability.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "f24a85b670a32a76f87d441a33e71c0a63cdf55258a7d3c190638dc7cf643781",
+          "sha256": "3e678512d8fb375e9f2c85a3ddc68d91b38aec427cbd32d74900bc628978190a",
           "lines": {
             "start": 60,
             "end": 61
-          }
-        },
-        {
-          "repository": "store6",
-          "path": "STABILITY.md",
-          "sha256": "f24a85b670a32a76f87d441a33e71c0a63cdf55258a7d3c190638dc7cf643781",
-          "lines": {
-            "start": 88,
-            "end": 91
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/002",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "In candidate 3d62af803b96e59af23e647228f0807f5c62b3e7, keyed and global mutation drains are bounded, scheduler-agnostic calls; the coordinator supplies later execution opportunities and does not own transport or connectivity monitoring.",
+      "claim": "In candidate b123c95a373f3629c23e797cb97e2bca18bb260a, keyed and global mutation drains are bounded, scheduler-agnostic calls; the coordinator supplies later execution opportunities and does not own transport or connectivity monitoring.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8662,7 +8654,8 @@
           "lines": {
             "start": 255,
             "end": 289
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8671,14 +8664,15 @@
           "lines": {
             "start": 3,
             "end": 6
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/003",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 defaults mutation journal storage to memory, so process-death recovery requires host-installed durable storage; a scheduler cannot reconstruct intent that was never persisted.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a defaults mutation journal storage to memory, so process-death recovery requires host-installed durable storage; a scheduler cannot reconstruct intent that was never persisted.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8688,7 +8682,8 @@
           "lines": {
             "start": 160,
             "end": 170
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8697,14 +8692,15 @@
           "lines": {
             "start": 75,
             "end": 79
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/004",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 validates a registration's constraints and requires its stable name to match [A-Za-z0-9._-]{1,64}; persisted scheduler payloads make name reuse across launches part of recovery.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a validates a registration's constraints and requires its stable name to match [A-Za-z0-9._-]{1,64}; persisted scheduler payloads make name reuse across launches part of recovery.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8714,7 +8710,8 @@
           "lines": {
             "start": 52,
             "end": 69
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8723,14 +8720,15 @@
           "lines": {
             "start": 65,
             "end": 73
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/005",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "In candidate 3d62af803b96e59af23e647228f0807f5c62b3e7, watch subscribes to enqueue events before its unconditional launch pass, then observes enqueues only while its coroutine remains alive.",
+      "claim": "In candidate b123c95a373f3629c23e797cb97e2bca18bb260a, watch subscribes to enqueue events before its unconditional launch pass, then observes enqueues only while its coroutine remains alive.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8740,14 +8738,15 @@
           "lines": {
             "start": 109,
             "end": 150
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/006",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 reconcile runs an unconditional pass for every idle registration, including retirement-checkpoint work that pending-write inspection does not expose.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a reconcile runs an unconditional pass for every idle registration, including retirement-checkpoint work that pending-write inspection does not expose.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8757,14 +8756,15 @@
           "lines": {
             "start": 87,
             "end": 106
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/007",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 runActivation attempts a persisted safety activation, continues the pass after scheduling failure, and deadlocks if called recursively from the same store's drain stack.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a runActivation attempts a persisted safety activation, continues the pass after scheduling failure, and deadlocks if called recursively from the same store's drain stack.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8774,14 +8774,15 @@
           "lines": {
             "start": 154,
             "end": 181
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/008",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "In candidate 3d62af803b96e59af23e647228f0807f5c62b3e7, drainOnEnqueue defaults true; that fast path conflates enqueues and omits the pre-pass persisted safety activation, while false requests a zero-delay scheduled activation.",
+      "claim": "In candidate b123c95a373f3629c23e797cb97e2bca18bb260a, drainOnEnqueue defaults true; that fast path conflates enqueues and omits the pre-pass persisted safety activation, while false requests a zero-delay scheduled activation.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8791,7 +8792,8 @@
           "lines": {
             "start": 138,
             "end": 145
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8800,14 +8802,15 @@
           "lines": {
             "start": 13,
             "end": 19
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/009",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 InProcessDrainScheduler timers use the supplied CoroutineScope and ignore DrainConstraints, so they provide neither post-process lifetime nor OS constraint enforcement.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a InProcessDrainScheduler timers use the supplied CoroutineScope and ignore DrainConstraints, so they provide neither post-process lifetime nor OS constraint enforcement.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8817,7 +8820,8 @@
           "lines": {
             "start": 12,
             "end": 55
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8826,14 +8830,15 @@
           "lines": {
             "start": 45,
             "end": 47
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/010",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "In candidate 3d62af803b96e59af23e647228f0807f5c62b3e7, unregister cancels a registration's watch and tracked activation, while close cancels watches but does not close registered stores or cancel persisted scheduler activations.",
+      "claim": "In candidate b123c95a373f3629c23e797cb97e2bca18bb260a, unregister cancels a registration's watch and tracked activation, while close cancels watches but does not close registered stores or cancel persisted scheduler activations.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8843,7 +8848,8 @@
           "lines": {
             "start": 72,
             "end": 84
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8852,24 +8858,26 @@
           "lines": {
             "start": 184,
             "end": 194
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/011",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 keeps mutation eligibility separate from coordinator scheduling delay; uncertain INFLIGHT transport replays the immutable generation with the same idempotency key and therefore requires an idempotent endpoint.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a keeps mutation eligibility separate from coordinator scheduling delay; uncertain INFLIGHT transport replays the immutable generation with the same idempotency key and therefore requires an idempotent endpoint.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store6",
           "path": "mutations/src/commonMain/kotlin/org/mobilenativefoundation/store6/mutations/MutationEngine.kt",
-          "sha256": "dd1a9f1de85c62194e3269bbc6ce99184226dc3ca36d99de4eada952904068be",
+          "sha256": "4a7d198aa8fcb0073a3ed376008d8d03fbad2dc494989a8048336a1f39548b89",
           "lines": {
-            "start": 3904,
-            "end": 3967
-          }
+            "start": 3757,
+            "end": 3820
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8878,14 +8886,15 @@
           "lines": {
             "start": 254,
             "end": 269
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/012",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 defines pending writes as nonterminal journal intent and dead letters as terminal failures; coordinator events have no replay, may drop old entries, and are not settlement evidence.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a defines pending writes as nonterminal journal intent and dead letters as terminal failures; coordinator events have no replay, may drop old entries, and are not settlement evidence.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8895,7 +8904,8 @@
           "lines": {
             "start": 307,
             "end": 339
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8904,14 +8914,15 @@
           "lines": {
             "start": 196,
             "end": 202
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/013",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 includes a restart fixture that reopens a store over the same in-memory storage object in one process; it does not prove disk persistence, process termination, OS wake-up, or device constraint enforcement.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a includes a restart fixture that reopens a store over the same in-memory storage object in one process; it does not prove disk persistence, process termination, OS wake-up, or device constraint enforcement.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8921,7 +8932,8 @@
           "lines": {
             "start": 19,
             "end": 57
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8930,14 +8942,15 @@
           "lines": {
             "start": 155,
             "end": 192
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/014",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7's copied quickstart body requires an enclosing ExperimentalStoreApi opt-in and a coroutine or suspending function; its source fixture provides the file-level opt-in.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a's copied quickstart body requires an enclosing ExperimentalStoreApi opt-in and a coroutine or suspending function; its source fixture provides the file-level opt-in.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8947,7 +8960,8 @@
           "lines": {
             "start": 1,
             "end": 5
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -8956,14 +8970,15 @@
           "lines": {
             "start": 45,
             "end": 55
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/mutations/background-work/015",
       "page": "/docs/store6/mutations/background-work",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 allows stale cache reads to return before revalidation finishes; this read-demand work runs in the Store engine lifecycle and does not install an operating-system job.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a allows stale cache reads to return before revalidation finishes; this read-demand work runs in the Store engine lifecycle and does not install an operating-system job.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -8973,40 +8988,33 @@
           "lines": {
             "start": 16,
             "end": 42
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/001",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 marks mutations-drain-meeseeks experimental for alpha02 and retains JVM scheduling fixes plus concurrent scheduling uniqueness verification as release requirements.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a marks mutations-drain-meeseeks experimental for alpha02 and retains upstream Meeseeks JVM scheduling fixes as a release requirement; the target does not establish artifact availability.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
           "repository": "store6",
           "path": "STABILITY.md",
-          "sha256": "f24a85b670a32a76f87d441a33e71c0a63cdf55258a7d3c190638dc7cf643781",
+          "sha256": "3e678512d8fb375e9f2c85a3ddc68d91b38aec427cbd32d74900bc628978190a",
           "lines": {
             "start": 60,
             "end": 61
-          }
-        },
-        {
-          "repository": "store6",
-          "path": "STABILITY.md",
-          "sha256": "f24a85b670a32a76f87d441a33e71c0a63cdf55258a7d3c190638dc7cf643781",
-          "lines": {
-            "start": 88,
-            "end": 91
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/002",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 declares Android, JVM, iosArm64, iosSimulatorArm64, iosX64, and JS targets and Java 17 for Meeseeks 1.1.1 consumers; its SNAPSHOT coordinate is source metadata, not publication proof.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a declares Android, JVM, iosArm64, iosSimulatorArm64, iosX64, and JS targets and Java 17 for Meeseeks 1.1.1 consumers; its SNAPSHOT coordinate is source metadata, not publication proof.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9016,7 +9024,8 @@
           "lines": {
             "start": 8,
             "end": 29
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9025,14 +9034,15 @@
           "lines": {
             "start": 14,
             "end": 28
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/003",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 leaves Meeseeks initialization, payload registration, platform setup, and the stable BGTaskManager instance with the host; constructing a coordinator attaches the scheduler.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a leaves Meeseeks initialization, payload registration, platform setup, and the stable BGTaskManager instance with the host; constructing a coordinator attaches the scheduler.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9042,7 +9052,8 @@
           "lines": {
             "start": 18,
             "end": 48
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9051,14 +9062,15 @@
           "lines": {
             "start": 11,
             "end": 30
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/004",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 maps a cleared pass or a remaining pass with a scheduled follow-up to worker success, a remaining unscheduled pass to retry, and an unavailable registration to transient failure; worker success is not a server receipt.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a maps a cleared pass or a remaining pass with a scheduled follow-up to worker success, a remaining unscheduled pass to retry, and an unavailable registration to transient failure; worker success is not a server receipt.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9068,14 +9080,15 @@
           "lines": {
             "start": 29,
             "end": 36
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/005",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 forwards only network and charging constraints to Meeseeks; JVM and JS reject either flag during registration instead of silently dropping it.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a forwards only network and charging constraints to Meeseeks; JVM and JS reject either flag during registration instead of silently dropping it.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9085,7 +9098,8 @@
           "lines": {
             "start": 5,
             "end": 14
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9094,14 +9108,15 @@
           "lines": {
             "start": 40,
             "end": 48
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/006",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 documents Android WorkManager host initialization and worker-factory wiring, with network and charging support plus possible Doze and App Standby deferral; it records no Android device run.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a documents Android WorkManager host initialization and worker-factory wiring, with network and charging support plus possible Doze and App Standby deferral; it records no Android device run.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9111,7 +9126,8 @@
           "lines": {
             "start": 86,
             "end": 122
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9120,14 +9136,15 @@
           "lines": {
             "start": 163,
             "end": 179
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/007",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 documents both Meeseeks iOS task identifiers, app-active or reachability activation, best-effort BGTaskScheduler grants, and next-open recovery after force-quit; it records no iOS device run.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a documents both Meeseeks iOS task identifiers, app-active or reachability activation, best-effort BGTaskScheduler grants, and next-open recovery after force-quit; it records no iOS device run.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9137,7 +9154,8 @@
           "lines": {
             "start": 124,
             "end": 161
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9146,14 +9164,15 @@
           "lines": {
             "start": 168,
             "end": 179
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/008",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 documents no post-process background lifetime for JS and unresolved Quartz scheduled execution on JVM, so both platforms should prefer InProcessDrainScheduler.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a documents no post-process background lifetime for JS and unresolved Quartz scheduled execution on JVM, so both platforms should prefer InProcessDrainScheduler.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9163,14 +9182,15 @@
           "lines": {
             "start": 172,
             "end": 202
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/009",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 persists the stable Store6 registration name in StoreDrainPayload, so an old task cannot find a store renamed by a later host release.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a persists the stable Store6 registration name in StoreDrainPayload, so an old task cannot find a store renamed by a later host release.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9180,14 +9200,15 @@
           "lines": {
             "start": 7,
             "end": 13
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/010",
       "page": "/docs/store6/meeseeks",
-      "claim": "In candidate 3d62af803b96e59af23e647228f0807f5c62b3e7, scheduling before coordinator attachment throws; after attachment, activation for an unknown store returns Unavailable and maps to a transient worker failure.",
+      "claim": "In candidate b123c95a373f3629c23e797cb97e2bca18bb260a, scheduling before coordinator attachment throws; after attachment, activation for an unknown store returns Unavailable and maps to a transient worker failure.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9197,7 +9218,8 @@
           "lines": {
             "start": 95,
             "end": 127
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9206,14 +9228,15 @@
           "lines": {
             "start": 29,
             "end": 36
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/011",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 records Meeseeks 1.1.1 JVM scheduled-execution failure and foreign-payload recovery failure; its opt-in integration suites are excluded from default jvmTest and were not freshly executed for these guides.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a records Meeseeks 1.1.1 JVM scheduled-execution failure and foreign-payload recovery failure; its opt-in integration suites are excluded from default jvmTest and were not freshly executed for these guides.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9223,7 +9246,8 @@
           "lines": {
             "start": 181,
             "end": 202
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9232,14 +9256,15 @@
           "lines": {
             "start": 44,
             "end": 58
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/012",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 tracks one logical task slot per store name, but concurrent scheduling uniqueness remains unverified; the candidate does not establish one invocation per mutation or universally safe overlap.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a tracks one logical task slot per store name, but concurrent scheduling uniqueness remains unverified; the candidate does not establish one invocation per mutation or universally safe overlap.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9249,23 +9274,15 @@
           "lines": {
             "start": 52,
             "end": 118
-          }
-        },
-        {
-          "repository": "store6",
-          "path": "STABILITY.md",
-          "sha256": "f24a85b670a32a76f87d441a33e71c0a63cdf55258a7d3c190638dc7cf643781",
-          "lines": {
-            "start": 60,
-            "end": 61
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/013",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 keeps the mutation journal as the durable record of pending intent; Meeseeks scheduling persistence cannot recover mutation data lost with the default in-memory journal.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a keeps the mutation journal as the durable record of pending intent; Meeseeks scheduling persistence cannot recover mutation data lost with the default in-memory journal.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9275,7 +9292,8 @@
           "lines": {
             "start": 160,
             "end": 170
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9284,14 +9302,15 @@
           "lines": {
             "start": 204,
             "end": 214
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/014",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7's JVM wiring fixture is compile-only and its copied body requires an enclosing ExperimentalStoreApi opt-in; compilation does not establish scheduled execution, recovery, or an OS background grant.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a's JVM wiring fixture is compile-only and its copied body requires an enclosing ExperimentalStoreApi opt-in; compilation does not establish scheduled execution, recovery, or an OS background grant.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9301,7 +9320,8 @@
           "lines": {
             "start": 1,
             "end": 1
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         },
         {
           "repository": "store6",
@@ -9310,14 +9330,15 @@
           "lines": {
             "start": 24,
             "end": 52
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     },
     {
       "id": "docs/store6/meeseeks/015",
       "page": "/docs/store6/meeseeks",
-      "claim": "Candidate 3d62af803b96e59af23e647228f0807f5c62b3e7 maps Store6's network and charging flags into Meeseeks preconditions and fixes requiresBatteryNotLow to false, so the adapter does not expose that additional upstream option.",
+      "claim": "Candidate b123c95a373f3629c23e797cb97e2bca18bb260a maps Store6's network and charging flags into Meeseeks preconditions and fixes requiresBatteryNotLow to false, so the adapter does not expose that additional upstream option.",
       "verdict": "UNSAMPLED",
       "anchors": [
         {
@@ -9327,7 +9348,8 @@
           "lines": {
             "start": 15,
             "end": 26
-          }
+          },
+          "revision": "b123c95a373f3629c23e797cb97e2bca18bb260a"
         }
       ]
     }

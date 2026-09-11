@@ -29,6 +29,9 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(fileURLToPath(import
     } else {
       console.log(`checked ${result.claimCount} claims (${result.anchorCount} anchors) at ${result.revision}`);
     }
+    if (result.explicitRevisions?.length) {
+      console.log(`verified explicit Store6 revisions: ${result.explicitRevisions.join(", ")}`);
+    }
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
     process.exitCode = 1;
@@ -96,6 +99,11 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
   if (censusIssues.length > 0) throw new Error(censusIssues.join("\n"));
 
   const store6Context = await preflightStore6Root(sourceRoot, claims.revision);
+  const explicitRevisions = [...new Set(claims.claims.flatMap((claim) =>
+    claim.anchors.flatMap((anchor) => anchor.revision === undefined ? [] : [anchor.revision])))];
+  for (const revision of explicitRevisions) {
+    await preflightStore6Root(sourceRoot, revision);
+  }
   const storeDocsContext = await prepareRepositoryRoot(repositoryRoot, "store-docs");
   const contexts = { store6: store6Context, "store-docs": storeDocsContext };
   if (claims.claims.some((claim) => claim.anchors.some((anchor) => anchor.repository === "store-agent-skills"))) {
@@ -115,7 +123,7 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
       const jsonPath = `$.claims[${index}].anchors[${anchorIndex}]`;
       const pinned =
         anchor.repository === "store6"
-          ? await readPinnedBlob(store6Context, claims.revision, anchor.path, pinnedBlobs)
+          ? await readPinnedBlob(store6Context, anchor.revision ?? claims.revision, anchor.path, pinnedBlobs)
           : undefined;
       const content =
         anchor.repository === "store6"
@@ -124,7 +132,7 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
       if (content === undefined) {
         const message =
           anchor.repository === "store6"
-            ? missingPinnedAnchorMessage(selected, anchor, claims.revision)
+            ? missingPinnedAnchorMessage(selected, anchor, anchor.revision ?? claims.revision)
             : changedAnchorMessage(selected, anchor, claims.revision);
         throw new Error(message);
       }
@@ -161,6 +169,7 @@ export async function checkClaims({ reconcileAll = false, reconcileId, root = RO
     mutated,
     reconciledClaimCount: selectedIndexes.length,
     revision: candidate.revision,
+    ...(explicitRevisions.length ? { explicitRevisions } : {}),
   };
 }
 
@@ -213,6 +222,12 @@ function validateClaimsLedger(value) {
           `${anchorPath}.repository`,
           `claim ${claim.id} has unsupported anchor repository: ${String(anchor.repository)}`,
         );
+      }
+      if (anchor.revision !== undefined) {
+        if (anchor.repository !== "store6") {
+          schemaError(CLAIMS_FILE, `${anchorPath}.revision`, "only Store6 anchors support an explicit revision");
+        }
+        validateCommit(anchor.revision, CLAIMS_FILE, `${anchorPath}.revision`);
       }
       validateSafeRelativePath(anchor.path, CLAIMS_FILE, `${anchorPath}.path`, {
         rejectPrivateRecords: anchor.repository === "store6",
@@ -370,6 +385,13 @@ async function preflightStore6Root(sourceRoot, revision) {
     ["-C", realRoot, "rev-parse", "--verify", "--end-of-options", `${revision}^{commit}`],
     `Store6 source root Git preflight failed for pinned revision ${revision}`,
   );
+  const objectType = await runGit(
+    ["-C", realRoot, "cat-file", "-t", revision],
+    `Store6 source root Git preflight failed for pinned revision ${revision}`,
+  );
+  if (bufferText(objectType.stdout).trim() !== "commit") {
+    throw new Error(`Store6 pinned revision ${revision} is not a commit`);
+  }
   return { label: "store6", realRoot, root: resolvedRoot };
 }
 
@@ -380,7 +402,10 @@ async function prepareRepositoryRoot(root, label) {
 
 async function runGit(argumentsList, operation) {
   try {
-    return await execFile("git", argumentsList, { encoding: "buffer", maxBuffer: 64 * 1024 * 1024 });
+    return await execFile("git", argumentsList, {
+      encoding: "buffer", maxBuffer: 64 * 1024 * 1024,
+      env: { ...process.env, GIT_NO_REPLACE_OBJECTS: "1" },
+    });
   } catch (error) {
     const stderr = bufferText(error?.stderr).trim();
     throw new Error(`${operation}\ngit stderr: ${stderr || error.message}`);
@@ -388,13 +413,14 @@ async function runGit(argumentsList, operation) {
 }
 
 async function readPinnedBlob(context, revision, path, cache) {
-  if (cache.has(path)) return cache.get(path);
+  const cacheKey = `${revision}\0${path}`;
+  if (cache.has(cacheKey)) return cache.get(cacheKey);
   const tree = await runGit(
     ["-C", context.realRoot, "ls-tree", "-z", "--full-tree", revision, "--", path],
     `Store6 Git object lookup failed for ${revision}:${path}`,
   );
   if (tree.stdout.length === 0) {
-    cache.set(path, undefined);
+    cache.set(cacheKey, undefined);
     return undefined;
   }
   const record = tree.stdout.subarray(0, tree.stdout.indexOf(0)).toString("utf8");
@@ -402,7 +428,7 @@ async function readPinnedBlob(context, revision, path, cache) {
   const [mode, type, object] = record.slice(0, tab).split(" ");
   const recordPath = record.slice(tab + 1);
   if (tab === -1 || recordPath !== path || type !== "blob" || !/^[0-9a-f]{40,64}$/.test(object) || !/^100[0-7]{3}$|^120000$/.test(mode)) {
-    cache.set(path, undefined);
+    cache.set(cacheKey, undefined);
     return undefined;
   }
   const blob = await runGit(
@@ -410,7 +436,7 @@ async function readPinnedBlob(context, revision, path, cache) {
     `Store6 Git blob read failed for ${revision}:${path}`,
   );
   const pinned = { content: blob.stdout, mode };
-  cache.set(path, pinned);
+  cache.set(cacheKey, pinned);
   return pinned;
 }
 
@@ -425,20 +451,24 @@ async function inspectAnchors({ claims, pinnedBlobs, revision, contexts, working
       const anchor = claim.anchors[anchorIndex];
       const jsonPath = `$.claims[${claimIndex}].anchors[${anchorIndex}]`;
       if (anchor.repository === "store6") {
-        const pinned = await readPinnedBlob(contexts.store6, revision, anchor.path, pinnedBlobs);
+        const sourceRevision = anchor.revision ?? revision;
+        const pinned = await readPinnedBlob(contexts.store6, sourceRevision, anchor.path, pinnedBlobs);
         if (pinned === undefined) {
-          integrityIssues.push(missingPinnedAnchorMessage(claim, anchor, revision));
+          integrityIssues.push(missingPinnedAnchorMessage(claim, anchor, sourceRevision));
           continue;
         }
         if (pinned.mode === "120000") {
-          integrityIssues.push(committedSymlinkMessage(claim, anchor, claimIndex, anchorIndex, revision));
+          integrityIssues.push(committedSymlinkMessage(claim, anchor, claimIndex, anchorIndex, sourceRevision));
           continue;
         }
         const pinnedHash = sha256(pinned.content);
         if (anchor.sha256 !== pinnedHash) {
-          driftIssues.push(pinnedHashMismatchMessage(claim, anchor, revision, pinnedHash));
+          driftIssues.push(pinnedHashMismatchMessage(claim, anchor, sourceRevision, pinnedHash));
           continue;
         }
+        // A separately pinned guide is verified against immutable Git content;
+        // its files need not exist in the shared source checkout.
+        if (sourceRevision !== revision) continue;
       }
       const context = contexts[anchor.repository];
       const content = await readWorkingFile(context, anchor.path, CLAIMS_FILE, `${jsonPath}.path`, workingFiles);

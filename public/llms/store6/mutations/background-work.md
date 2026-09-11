@@ -19,7 +19,7 @@ opportunity after the network or application state changes.
 > source revision linked below. The artifact targets alpha02 and is outside the
 > alpha01 publication roster. The target does not establish artifact availability.
 
-Source: [Store6 `3d62af803b96e59af23e647228f0807f5c62b3e7`](https://github.com/matt-ramotar/Store6/tree/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain).
+Source: [Store6 `b123c95a373f3629c23e797cb97e2bca18bb260a`](https://github.com/matt-ramotar/Store6/tree/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain).
 
 ## What background work means here
 
@@ -97,11 +97,11 @@ file's package declaration. The source fixture supplies that file-level opt-in. 
 inside the copied region applies only to the following local declaration.
 
 ```kotlin
-    @OptIn(ExperimentalStoreApi::class)   // required: the whole module is experimental
-    val coordinator = mutationDrainCoordinator(InProcessDrainScheduler(scope))
-    coordinator.register("com.example.users", users)
-    val watch = scope.launch { coordinator.watch("com.example.users") }
-    coordinator.runActivation("com.example.users")
+@OptIn(ExperimentalStoreApi::class)   // required: the whole module is experimental
+val coordinator = mutationDrainCoordinator(InProcessDrainScheduler(scope))
+coordinator.register("com.example.users", users)
+val watch = scope.launch { coordinator.watch("com.example.users") }
+coordinator.runActivation("com.example.users")
 ```
 
 `watch` is a long-running suspending operation, so launch it as a coroutine. The explicit
@@ -160,8 +160,8 @@ leave the durable generation `INFLIGHT`. A later drain may replay it. The
 Cancellation propagates from a drain pass. When a safety activation was successfully persisted
 before that pass, it remains a hint for later execution. A scheduling request can still fail, and
 an operating system can defer or suppress work. Treat neither scheduling nor worker completion as
-settlement proof. The candidate's Meeseeks adapter still requires concurrent scheduling uniqueness
-verification, so the integration must not depend on an overlap-prevention guarantee.
+settlement proof. A platform activation can overlap with a host trigger. Keep the mutation endpoint
+idempotent and derive completion from the journal.
 
 Inspect `pendingWrites()` for nonterminal intents and `deadLetters()` for terminal failures. Those
 journal-backed snapshots are the state to use for recovery and UI decisions. Coordinator and
@@ -186,9 +186,9 @@ Exercise each trigger and lifetime that the application depends on:
    and inspect `deadLetters()` rather than inferring completion from a worker result or event.
 
 The candidate source contains an executable
-[quickstart fixture](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/docs/DrainQuickstartDocsSnippet.kt)
+[quickstart fixture](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/docs/DrainQuickstartDocsSnippet.kt)
 and an executable
-[restart replay fixture](https://github.com/matt-ramotar/Store6/blob/3d62af803b96e59af23e647228f0807f5c62b3e7/mutations-drain/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/RestartReplayTest.kt).
+[restart replay fixture](https://github.com/matt-ramotar/Store6/blob/b123c95a373f3629c23e797cb97e2bca18bb260a/mutations-drain/src/commonTest/kotlin/org/mobilenativefoundation/store6/mutations/drain/RestartReplayTest.kt).
 The restart fixture closes and reopens a store over the same `InMemoryMutationJournalStorage`
 object in the same test process. It does not prove physical disk recovery, operating-system process
 death, a later device wake-up, or host constraint enforcement. Those behaviors require platform

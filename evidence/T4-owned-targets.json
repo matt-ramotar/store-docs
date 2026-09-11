@@ -4,11 +4,11 @@
     "build-agent-docs": [
       {
         "path": "public/llms-full.txt",
-        "sha256": "ddd6e5872ff6dcbd4f77639f074e97a2e5d3bf0707e2ba563a69d4a9716076e8"
+        "sha256": "e3f62259172778371a4f07ca630da6c59bab06d4c7e170a3b1b7ae4c81b53672"
       },
       {
         "path": "public/llms/store6-manifest.json",
-        "sha256": "446958ce8e7e3ab5e704ba5c4ec455e9532ee4cd052cc018ff1ee54a16104490"
+        "sha256": "c7140e226b32e278ed83dc782e8724b1fdee55d51fbf01f697bf0c3231c51703"
       },
       {
         "path": "public/llms/store6/agents/agent-skills.md",
@@ -96,7 +96,7 @@
       },
       {
         "path": "public/llms/store6/meeseeks.md",
-        "sha256": "bb95bd65b5f3d79ac881a044c82d79427a5a21a33d22bf44bdbe745379c5ed47"
+        "sha256": "0f731dab201f01ce209528e3e922b1ef54d299ba0adb3c4419fb8b7f91a4bd15"
       },
       {
         "path": "public/llms/store6/migration/component-map.md",
@@ -120,7 +120,7 @@
       },
       {
         "path": "public/llms/store6/mutations/background-work.md",
-        "sha256": "38aadb3e343b41fbe138ff7dc0c491fe368dbb271d06159612e97dc2ac5bdf60"
+        "sha256": "3c4731b9c6a662697210414392ab01ccc1c95960eea1ea9c54610cd95cfc3fe0"
       },
       {
         "path": "public/llms/store6/mutations/conflicts.md",
