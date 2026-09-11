@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "bundleId": "sha256:6302b4d64fade3f0345fb95faff08a3b078606d26d6131d14390d3ae09006bd5",
+  "bundleId": "sha256:22ba08a3f0600202d3cedb17dee989f2d6c98e5c3019079044417cf845775553",
   "origin": "https://store.mobilenativefoundation.org",
   "sourceRevision": "ad435df1095673709a22f1b52a82aa03748cd9b3",
   "verifiedArtifacts": [],
@@ -300,6 +300,20 @@
       }
     },
     {
+      "id": "meeseeks",
+      "title": "Meeseeks",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/meeseeks",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/meeseeks.md",
+      "sha256": "bb95bd65b5f3d79ac881a044c82d79427a5a21a33d22bf44bdbe745379c5ed47",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/meeseeks.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "4ef8dbeaab28ce174d6792573ac1c4f213844cf0b678fb977290f2393132857d",
+        "recordedAttribution": null
+      }
+    },
+    {
       "id": "migration/component-map",
       "title": "Store 5 component → Store 6 map",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/migration/component-map",
@@ -346,12 +360,12 @@
       "title": "Mutations: the journalled write path",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations",
       "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations.md",
-      "sha256": "7bacb3b1625db1d45084b1ef80f4ff947a7ab06b325150c23e347e418dfda921",
+      "sha256": "18fe8fd257fb47166287006dde00c69cb3bf88572d0df78d5a5ae867e3cd5d67",
       "provenance": {
         "kind": "site-authored",
         "sourcePath": "content/docs/store6/mutations/index.mdx",
         "sourceRevision": null,
-        "sourceSha256": "f711c92305c7270ca73e8826d53d0c85ead26d3c0b8133a7153d974b44b7be56",
+        "sourceSha256": "a76c2707147ff2d4cd19bd24392c0666b3e4f2c4a2ee26f4db2a9355b7bacf22",
         "recordedAttribution": "Last verified: 2026-08-12 · main @ c67a94ed, pre-6.0.0-alpha01"
       }
     },
@@ -367,6 +381,20 @@
         "sourceRevision": null,
         "sourceSha256": "c79ef19a4f63088aae5e877c87dd0cd9d7257b606bd16547551d9986b4bd777a",
         "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
+      }
+    },
+    {
+      "id": "mutations/background-work",
+      "title": "Background work",
+      "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/background-work",
+      "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/background-work.md",
+      "sha256": "38aadb3e343b41fbe138ff7dc0c491fe368dbb271d06159612e97dc2ac5bdf60",
+      "provenance": {
+        "kind": "site-authored",
+        "sourcePath": "content/docs/store6/mutations/background-work.mdx",
+        "sourceRevision": null,
+        "sourceSha256": "a8be52b7068ccfc0f69f7037e5f94a9d586a3a7d004b5f71690c1482674371b8",
+        "recordedAttribution": null
       }
     },
     {
@@ -388,12 +416,12 @@
       "title": "Draining, offline, and restart",
       "canonicalUrl": "https://store.mobilenativefoundation.org/docs/store6/mutations/drain-and-restart",
       "markdownUrl": "https://store.mobilenativefoundation.org/llms/store6/mutations/drain-and-restart.md",
-      "sha256": "06fa584a20178bfe2ee2defefb72b407c3de57c9fd529719ff2c424d44706792",
+      "sha256": "e5fc6c556027c7a15bb0b0036331cc718b89a033a24e952f739cd5aabfb04379",
       "provenance": {
         "kind": "site-authored",
         "sourcePath": "content/docs/store6/mutations/drain-and-restart.mdx",
         "sourceRevision": null,
-        "sourceSha256": "601c374d0905aeaa08b447aed0592878df7afa974938a095756a24ef7fffb008",
+        "sourceSha256": "b637a796bc041b13ececce81ed5575280a139bb43aa4fb51c26b0d2dfaa175f1",
         "recordedAttribution": "Last verified: 2026-08-12 · main @ 539614c0, pre-6.0.0-alpha01"
       }
     },
