@@ -9,6 +9,23 @@ Started 2026-09-11 04:07:57 UTC. Deadline 05:07:57 UTC. This is the private evid
 - The old candidate directory was absent. Recovered the exact `3d62af803b96e59af23e647228f0807f5c62b3e7` into `/private/tmp/store6-background-work-source-20260911` using a local shared clone and detached checkout. Source clean at setup.
 - Source-alignment prerequisite is pending. Tasks 6–8 cannot promote these candidate APIs into the current site.
 
+### Dependency recheck, 2026-09-11 04:32 UTC
+
+The first execution turn made concrete progress: it completed, checked, reviewed, and committed both drafts and their evidence. The continuation checked for an existing aligned baseline before considering Task 6.
+
+Public `main` returned HTTP 200 for both `evidence/T4-store6-source-lock.json` and `evidence/store6-claims.json`; both still name `ad435df1095673709a22f1b52a82aa03748cd9b3`. The current branch has the same source pin. Neither scheduling module exists at that Git revision.
+
+A bounded read-only subagent inspected local site branch refs and their matched lock/claims revisions. It found five distinct source revisions (`ad435df1095673709a22f1b52a82aa03748cd9b3`, `5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71`, `c67a94ed30460a35161c2cbc3e725f127caf055e`, `fc85a221140fb9f8b203acbe08007ba89123a2dc`, and `333a54d4d97eb7a37b45481e0cc4524f91c44476`). Including registered worktree heads adds `539614c06be1a8f20dead562585e47394551ebae` from a prunable detached worktree record. None of these six revisions contains either scheduling module or the new source discovery links. No site ref already pins the scheduling candidate. Local `main` at `25b253bb52458756ecb374956d97c7d6929dec40` is distinct from public main and pins `5a8c956bc1dbd6ad838ea9da3b34c7d76c703a71`; it is not an aligned replacement.
+
+A direct comparison of all 13 locked source mappings with the scheduling candidate found:
+
+- Five missing paths: `store6-compose/README.md`, `store6-sqldelight/README.md`, `store6-room/README.md`, `store6-realtime/README.md`, and `store6-graphql/README.md`.
+- Seven changed source inputs: the four `docs/store6/` guides, `STABILITY.md`, `ROADMAP.md`, and `llms.txt`.
+- One byte-identical input: `CONTRIBUTING.md`.
+- Neither `/docs/store6/mutations/background-work` nor `/docs/store6/meeseeks` is present in the candidate's authoritative `llms.txt`.
+
+This is a source migration prerequisite, not an unexecuted generator command. Task 6's source gate remains unsatisfied; Task 7's route/discovery integration and Task 8's built-site verification remain incomplete. No claim of full-plan completion is made.
+
 ## Environment
 
 - Node `v22.22.0`; pnpm `10.30.3`.
