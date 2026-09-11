@@ -22,11 +22,13 @@ This is one documentation project: the background-work guide establishes the res
 
 **Milestone B: integrated site pages.** Tasks 6–8 require the source-alignment acceptance conditions below. Until those pass, report “both drafts complete; site integration pending source alignment.” Do not report both public guides complete.
 
+**PR handoff, 2026-09-11:** The user confirmed that source alignment is being handled in a different session and requested a commit and pull request for the completed work. This PR contains Milestone A's drafts, plan/spec, and evidence. Tasks 6–8 remain the integration handoff after that separate dependency is delivered.
+
 Use @authoring:documentation-discipline for exact contracts and reader utility. Use @superpowers:verification-before-completion before reporting either milestone. Apply Matt's writing voice to narrative prose while preserving source contracts and technical qualifiers. Do not add tests that merely assert prose wording; reuse semantic export, source-snippet, route, and search checks.
 
 Do not run Gradle concurrently. One integration owner holds the Gradle and generated-file write responsibility. Preserve the first failing output. A wrapper rejection before Gradle startup means zero tests executed; do not probe caches, daemons, or locks or try alternate rejected variants.
 
-Commit boundaries below are local implementation checkpoints. The user's execution request authorizes the local checkpoints. Pushing, opening a PR, merging, deploying, and releasing remain outside this task.
+Commit boundaries below are implementation checkpoints. The user's execution request authorizes local commits, and the subsequent PR request authorizes pushing this branch and opening its pull request. Merging, deploying, and releasing remain outside this task.
 
 ## Workspace and source map
 

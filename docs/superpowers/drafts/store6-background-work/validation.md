@@ -106,7 +106,13 @@ One independent `gpt-6-astra` reviewer at high effort found an omitted Kotlin-co
 | Source-alignment handoff | Complete in `sources.md`, including both routes, old/candidate revisions, snippet paths, source-owned discovery links, and the one-revision acceptance conditions |
 | Existing public site | Source lock, content, navigation, application code, dependency versions, and generated corpus remain unchanged |
 
-Local checkpoint commits: `e1a764d` records the initial sources, `e9f0f65` adds Background work, and `224e67c` adds Meeseeks. The final evidence checkpoint uses `docs: verify background work documentation drafts`. Plan/spec progress is recorded separately. Nothing was pushed, opened as a PR, merged, deployed, or released.
+Local checkpoint commits: `e1a764d` records the initial sources, `e9f0f65` adds Background work, and `224e67c` adds Meeseeks. The final evidence checkpoint uses `docs: verify background work documentation drafts`. Plan/spec progress is recorded separately. At the drafting closeout, nothing had been pushed, opened as a PR, merged, deployed, or released.
+
+## PR handoff
+
+The user subsequently confirmed that source alignment is handled in a different session and authorized committing and opening a PR. The PR scope is the two completed drafts, their plan/spec, and evidence records. Public-page integration remains a separate follow-up after source alignment.
+
+Pre-push verification repeated the actual draft content-hash, exact source-snippet, MDX parsing, and semantic Markdown roundtrip checks successfully. The existing export checks also passed again: 45 agent-doc outputs and 13 locked Store6 outputs. Source behavior and Kotlin bodies did not change, so Gradle was not rerun. Earlier fresh JVM test results and cached compilation output retain their evidence boundaries above.
 
 ## Completion status
 

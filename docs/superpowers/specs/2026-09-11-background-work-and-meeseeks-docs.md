@@ -31,4 +31,4 @@ Therefore complete both reviewable drafts against the candidate immediately. Pro
 - No promise of exactly-once delivery, bounded operating-system wake-up latency, universal constraint support, or process durability from the in-memory journal.
 - Code compilation, in-process runtime tests, simulated restart, device background execution, local site rendering, and deployed behavior remain separate evidence classes.
 - Once source alignment is complete, both pages enter navigation, route census, claims/snippet checks, search, and canonical Markdown discovery together.
-- All existing routes remain available. No push, deployment, merge, tag, or artifact publication is part of writing these guides.
+- All existing routes remain available. The subsequent PR handoff authorizes pushing the completed draft branch and opening its pull request. Deployment, merge, tags, and artifact publication remain outside this work.
